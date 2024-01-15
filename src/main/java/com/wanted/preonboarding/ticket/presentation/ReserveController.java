@@ -1,21 +1,19 @@
 package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.ticket.application.TicketSeller;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
+@RequestMapping("/reserve")
 @RequiredArgsConstructor
 public class ReserveController {
     private final TicketSeller ticketSeller;
 
-    @GetMapping("/reserve")
+    @PostMapping("/")
     public boolean reservation() {
         System.out.println("reservation");
 
