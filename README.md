@@ -1,6 +1,14 @@
 # wanted-preonboarding-challenge-backend-16
 원티드 프리온보딩 백엔드 챌린지 사전과제
 
+## 프로젝트 필수 패키지 및 버전 정보
+### 버전 정보
+- Spring Boot; 3.2.1
+- JDK(Java Development Kit); Java 17 이상
+  - Intellij에서 JDK 버전 변경하는 방법(참고 URL: https://inpa.tistory.com/entry/IntelliJ-%F0%9F%92%BD-%EC%9E%90%EB%B0%94-JDK-%EB%B2%84%EC%A0%84-%EB%B3%80%EA%B2%BD-%EB%B0%A9%EB%B2%95)
+### 필수 설치 패키지
+- Docker Desktop
+
 ## 과제1 - 필수
 - 고객의 요구사항: 빠르게 변화는 고객의 니즈를 빠른 시간 내에 적용할 수 있는 Wanted Ticket 서비스를 아래와 같이 개발 해주세요.
 - 비즈니스 요구사항:
@@ -23,11 +31,16 @@
      - 개발 실력 브실골 이하: 기존에 작성 되어 있는 코드를 삭제 하지 않고! 기존 코드 위에 코드를 작성해주세요!
      - 다이아 이상: ticket 패키지를 삭제하고 새롭게 패키지를 만든 후에 Application을 개발해주세요!
   2. 데이터베이스는 MySQL를 사용 해주시고 프로젝트 내에 docker-compose.yml를 이용하여 MySQL 서비스를 Running 시키면 됩니다.
+     - DB의 데이터를 저장하는 경로(`/Users/black/dev/mysql_docker/data`)와 DB 초기화 쿼리 파일의 경로(`/Users/black/IdeaProjects/backend-preonboarding/src/main/resources/initd`)는 개인의 환경에 맞게 수정 해주세요!
   3. 스키마 정보 및 테스트 데이터는 "./resources/initdb"에 디렉토리에 *.sql 확장자로 정의 되어 있습니다. Application의 DTO와 Entity를 구성할 때 참고 해주세요!
      - Application 개발 중 새로운 테이블이 필요하다면 테이블을 추가는 마음대로 하셔도 됩니다.
 - 심화 과제
   1. Application을 모두 작성 했다면! 코드를 읽는 동료가 코드를 쉽게 이해할 수 있도록 코드를 리팩토링 해주세요!
   2. 리팩토링을 진행할 때는! 기술 위주가 아니라! "변경"에 쉽게 적응할 수 있는 코드 구조로 리팩토링 해주세요!
+
+### 환경 설정과 Github에 대한 궁금증이 있다면! Issues에 등록해주시면 답변 드리겠습니다.
+- https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/issues
+- 참고 URL: https://devlog-wjdrbs96.tistory.com/227
        
 
 ## 과제2 - 선택사항
