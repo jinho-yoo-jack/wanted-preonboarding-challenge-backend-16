@@ -5,7 +5,6 @@ import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import lombok.Builder;
 import lombok.Value;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.wanted.preonboarding.ticket.application.util.TimeFormatter.convertToReadableFormat;
