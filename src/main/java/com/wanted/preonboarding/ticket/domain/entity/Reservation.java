@@ -24,16 +24,16 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
-    private UUID performanceId;
+    private UUID performanceId; // 공연id
     @Column(nullable = false)
-    private String name;
+    private String name; // 이름
     @Column(nullable = false, name = "phone_number")
-    private String phoneNumber;
+    private String phoneNumber; // 연락처
     @Column(nullable = false)
-    private int round;
+    private int round; // 회차
     private int gate;
-    private char line;
-    private int seat;
+    private char line; // 좌석
+    private int seat; // 좌석
 
     public static Reservation of(ReserveInfo info) {
         return Reservation.builder()
