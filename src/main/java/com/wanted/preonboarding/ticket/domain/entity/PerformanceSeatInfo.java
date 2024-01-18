@@ -48,4 +48,8 @@ public class PerformanceSeatInfo extends BaseEntity {
     @Column(name = "is_reserve", nullable = false, columnDefinition = "varchar(20) default 'AVAILABLE'")
     private ReservationAvailability isReserve;
 
+    public void modifyReservationAvailability(ReservationAvailability reservationAvailability) {
+        this.isReserve = reservationAvailability;
+    }
+
 }
