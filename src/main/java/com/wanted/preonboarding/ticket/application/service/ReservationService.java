@@ -1,12 +1,12 @@
 package com.wanted.preonboarding.ticket.application.service;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.application.CancellationEvent;
+import com.wanted.preonboarding.ticket.application.event.ReservationCancelledEvent;
+import com.wanted.preonboarding.ticket.application.repository.PerformanceSeatInfoRepository;
+import com.wanted.preonboarding.ticket.application.repository.ReservationRepository;
 import com.wanted.preonboarding.ticket.domain.dto.PaymentResponse;
 import com.wanted.preonboarding.ticket.domain.dto.RequestReservation;
 import com.wanted.preonboarding.ticket.domain.dto.ReservationResponse;
-import com.wanted.preonboarding.ticket.application.repository.PerformanceSeatInfoRepository;
-import com.wanted.preonboarding.ticket.application.repository.ReservationRepository;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
@@ -41,6 +40,7 @@ public class ReservationService {
             final String name,
             final String phoneNumber
     ) {
+        log.info("--- Get Reservation Info ---");
         validateNameAndPhoneNumber(name, phoneNumber);
         Reservation reservation = getReservationEntity(name, phoneNumber);
         Performance performance = reservation.getPerformanceSeatInfo().getPerformance();
@@ -49,6 +49,7 @@ public class ReservationService {
     }
     @Transactional
     public ResponseEntity<ResponseHandler<ReservationResponse>> processReservation(RequestReservation requestReservation) {
+        log.info("--- Process Reservation ---");
         PerformanceSeatInfo seatInfo = getSeatInfoEntity(requestReservation);
         Performance performance = seatInfo.getPerformance();
         Reservation reservation = Reservation.of(requestReservation, seatInfo);
@@ -63,11 +64,14 @@ public class ReservationService {
     }
 
     @Transactional
-    public ResponseEntity<ResponseHandler<Void>> cancelReservation(String name, String phoneNumber) {
-        Reservation reservation = getReservationEntity(name, phoneNumber);
+    public ResponseEntity<ResponseHandler<Void>> cancelReservation(int id) {
+        log.info("--- Cancel Reservation ---");
+        Reservation reservation = getReservationEntity(id);
+        PerformanceSeatInfo seatInfo = reservation.getPerformanceSeatInfo();
+
         reservationRepository.delete(reservation);
-        reservation.getPerformanceSeatInfo().modifyReservationAvailability(AVAILABLE);
-        eventPublisher.publishEvent(new CancellationEvent(this));
+        seatInfo.modifyReservationAvailability(AVAILABLE);
+        eventPublisher.publishEvent(new ReservationCancelledEvent(this, reservation));
         return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, null);
     }
 
@@ -92,6 +96,11 @@ public class ReservationService {
 
     private Reservation getReservationEntity(String name, String phoneNumber) {
         return reservationRepository.findByNameAndPhoneNumber(name, phoneNumber)
+                .orElseThrow(() -> new IllegalArgumentException("해당 예약 정보를 찾을 수 없습니다."));
+    }
+
+    private Reservation getReservationEntity(int id) {
+        return reservationRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 예약 정보를 찾을 수 없습니다."));
     }
 

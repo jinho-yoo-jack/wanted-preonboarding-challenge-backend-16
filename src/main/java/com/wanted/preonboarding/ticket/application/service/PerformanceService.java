@@ -31,6 +31,7 @@ public class PerformanceService {
 
     @Transactional(readOnly = true)
     public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
+        log.info("--- Get All Performance Info List ---");
         return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, getAllAvailalePerformance());
     }
 
@@ -43,6 +44,7 @@ public class PerformanceService {
 
     @Transactional(readOnly = true)
     public ResponseEntity<ResponseHandler<PerformanceDetail>> getPerformanceInfoDetail(UUID id, int round) {
+        log.info("--- Get Performance Info Detail ---");
         Performance performance = performanceRepository.findByIdAndRound(id, round)
                 .orElseThrow(() -> new IllegalArgumentException("해당 공연/전시 정보 또는 회차 정보를 찾을 수 없습니다."));
 
