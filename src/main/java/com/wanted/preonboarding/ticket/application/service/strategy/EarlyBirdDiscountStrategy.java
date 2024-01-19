@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.application.service.stratedegy;
+package com.wanted.preonboarding.ticket.application.service.strategy;
 
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
-public class EarlyBirdDiscountStradegy implements DiscountStradegy {
+public class EarlyBirdDiscountStrategy implements DiscountStrategy {
 
     // Clock 적용 해보기
     public static final String NAME = "얼리버드 할인";

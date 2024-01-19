@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.application.service;
 
-import com.wanted.preonboarding.ticket.application.service.stratedegy.DiscountStradegy;
+import com.wanted.preonboarding.ticket.application.service.strategy.DiscountStrategy;
 import com.wanted.preonboarding.ticket.domain.dto.PaymentResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PaymentService {
     // 책임 : 결제 진행 & 취소 처리 (할인 적용 포함)
-    private final List<DiscountStradegy> discountStradegies;
+    private final List<DiscountStrategy> discountStradegies;
 
     public PaymentResponse processPayment(Reservation reservation, int balance) {
         log.info("--- Process Payment ---");
@@ -24,9 +24,9 @@ public class PaymentService {
         List<String> discountDetails = new ArrayList<>();
         int price = performance.getPrice();
 
-        for (DiscountStradegy discountStradegy : discountStradegies) {
-            price = discountStradegy.caculateDiscount(reservation);
-            discountDetails.add(discountStradegy.getName());
+        for (DiscountStrategy discountStrategy : discountStradegies) {
+            price = discountStrategy.caculateDiscount(reservation);
+            discountDetails.add(discountStrategy.getName());
         }
 
         return PaymentResponse.builder()
