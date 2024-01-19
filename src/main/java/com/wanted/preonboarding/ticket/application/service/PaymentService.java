@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.application.service;
 
+import com.wanted.preonboarding.ticket.application.exception.PaymentFailedException;
 import com.wanted.preonboarding.ticket.application.service.strategy.DiscountStrategy;
 import com.wanted.preonboarding.ticket.domain.dto.PaymentResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.wanted.preonboarding.ticket.application.exception.ExceptionStatus.PAYMENT_FAILED_INSUFFICIENT_BALANCE;
 
 @Slf4j
 @Service
@@ -38,7 +41,7 @@ public class PaymentService {
 
     private int caculateRemainBalance(int balance, int discountedPrice) {
         if (balance < discountedPrice) {
-            throw new IllegalArgumentException("잔액이 부족합니다.");
+            throw new PaymentFailedException(PAYMENT_FAILED_INSUFFICIENT_BALANCE);
         }
         return balance - discountedPrice;
     }
