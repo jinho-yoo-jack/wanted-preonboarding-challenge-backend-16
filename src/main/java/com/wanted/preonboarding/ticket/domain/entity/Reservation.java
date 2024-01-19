@@ -23,7 +23,7 @@ public class Reservation extends BaseEntity {
     private Integer id;
 
     @Comment("공연 좌석 정보")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "performance_seat_info_id", nullable = false)
     private PerformanceSeatInfo performanceSeatInfo;
 
