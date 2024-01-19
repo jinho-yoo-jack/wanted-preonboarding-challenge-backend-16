@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wanted.preonboarding.ticket.domain.dto.RequestNotification;
 import com.wanted.preonboarding.ticket.domain.dto.RequestReservation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
@@ -116,7 +117,9 @@ class ControllerTest {
     Stream<DynamicTest> dynamicTestForReservationInfo() {
         // Given
         String[] successCase = {"홍길동", "010-1234-1234"};
-        String[] failCase = {"김철수", "010-1234-1234"};
+        String[] failCaseA = {"김철수", "010-1234-1234"};
+        String[] failCaseB = {"Peter", "1234"};
+
 
         // When & Then
         return Stream.of(
@@ -128,8 +131,14 @@ class ControllerTest {
                         jsonPath("$.data").isNotEmpty()),
                 testApiEndpoint("예약 조회 실패 - 존재하지 않는 예약자",
                         get("/api/v1/reservation/info")
-                                .param("name", failCase[0])
-                                .param("phone_number", failCase[1]),
+                                .param("name", failCaseA[0])
+                                .param("phone_number", failCaseA[1]),
+                        status().is4xxClientError(),
+                        jsonPath("$.data").isEmpty()),
+                testApiEndpoint("예약 조회 실패 - 잘못된 요청",
+                        get("/api/v1/reservation/info")
+                                .param("name", failCaseB[0])
+                                .param("phone_number", failCaseB[1]),
                         status().is4xxClientError(),
                         jsonPath("$.data").isEmpty())
         );
@@ -152,6 +161,33 @@ class ControllerTest {
                 testApiEndpoint("예약 취소 실패 - 존재하지 않는 예약",
                         delete("/api/v1/reservation/cancel/" + failCase),
                         status().is4xxClientError(),
+                        jsonPath("$.data").isEmpty())
+        );
+    }
+
+    @TestFactory
+    @Transactional
+    @DisplayName("알림 설정 기능 테스트")
+    Stream<DynamicTest> dynamicTestForNotification() throws Exception {
+        // Given
+        UUID validId = UUID.fromString("2e1347ac-b556-11ee-9508-0242ac130002");
+        UUID invalidId = UUID.fromString("1e1111ac-b556-11ee-9508-0242ac130003");
+        RequestNotification caseA = new RequestNotification(validId, 1, "test@test.com");
+        RequestNotification caseB = new RequestNotification(invalidId, 1, "test@test.com");
+
+        // When & Then
+        return Stream.of(
+                testApiEndpoint("알림 설정 성공",
+                        post("/api/v1/notification/set")
+                                .contentType("application/json")
+                                .content(convertToJSONString(caseA)),
+                        status().isOk()),
+                testApiEndpoint("알림 설정 실패 - 존재하지 않는 공연",
+                        post("/api/v1/notification/set")
+                                .contentType("application/json")
+                                .content(convertToJSONString(caseB)),
+                        status().is4xxClientError(),
+                        content().contentType("application/json"),
                         jsonPath("$.data").isEmpty())
         );
     }
