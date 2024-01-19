@@ -2,6 +2,9 @@ package com.wanted.preonboarding.ticket.application.service;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.event.ReservationCancelledEvent;
+import com.wanted.preonboarding.ticket.application.exception.ArgumentNotValidException;
+import com.wanted.preonboarding.ticket.application.exception.EntityNotFoundException;
+import com.wanted.preonboarding.ticket.application.exception.SeatNotAvailableException;
 import com.wanted.preonboarding.ticket.application.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.application.repository.ReservationRepository;
 import com.wanted.preonboarding.ticket.domain.dto.PaymentResponse;
@@ -23,6 +26,7 @@ import java.util.UUID;
 
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.MESSAGE_SUCCESS;
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.createResponse;
+import static com.wanted.preonboarding.ticket.application.exception.ExceptionStatus.*;
 import static com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability.AVAILABLE;
 import static com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability.OCCUPIED;
 
@@ -81,37 +85,37 @@ public class ReservationService {
         String phoneRegex = "^01(?:0|1|[6-9])-?(?:\\d{3}|\\d{4})-?\\d{4}$";
 
         if (!name.matches(nameRegex) || !phone.matches(phoneRegex)) {
-            throw new IllegalArgumentException("잘못된 형식의 이름 또는 전화번호입니다.");
+            throw new ArgumentNotValidException(ARGUMENT_NOT_VALID);
         }
     }
 
     private void checkSeatAvailability(PerformanceSeatInfo seatInfo) {
         if (seatInfo.getIsReserve().equals(OCCUPIED)) {
-            throw new IllegalArgumentException("이미 예약된 좌석입니다.");
+            throw new SeatNotAvailableException(SEAT_ALREADY_OCCUPIED);
         }
         if (seatInfo.getIsReserve().equals(ReservationAvailability.DISABLED)) {
-            throw new IllegalArgumentException("예약할 수 없는 좌석입니다.");
+            throw new SeatNotAvailableException(SEAT_DISABLED);
         }
     }
 
     private Reservation getReservationEntity(String name, String phoneNumber) {
         return reservationRepository.findByNameAndPhoneNumber(name, phoneNumber)
-                .orElseThrow(() -> new IllegalArgumentException("해당 예약 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
     }
 
     private Reservation getReservationEntity(int id) {
         return reservationRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 예약 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
     }
 
     private PerformanceSeatInfo getSeatInfoEntity(RequestReservation requestReservation) {
         UUID id = requestReservation.performanceId();
-        int round = requestReservation.round();
-        char line = requestReservation.line();
-        int seat = requestReservation.seat();
+        Integer round = requestReservation.round();
+        Character line = requestReservation.line();
+        Integer seat = requestReservation.seat();
 
         return seatInfoRepository.findByPerformanceIdAndRoundAndLineAndSeat(id, round, String.valueOf(line), seat)
-                .orElseThrow(() -> new IllegalArgumentException("해당 좌석 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
     }
 
 }

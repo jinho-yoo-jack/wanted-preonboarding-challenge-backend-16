@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.application.service;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.event.ReservationCancelledEvent;
+import com.wanted.preonboarding.ticket.application.exception.EntityNotFoundException;
 import com.wanted.preonboarding.ticket.application.repository.NotificationRepository;
 import com.wanted.preonboarding.ticket.application.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.domain.dto.RequestNotification;
@@ -23,6 +24,7 @@ import java.util.UUID;
 
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.MESSAGE_SUCCESS;
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.createResponse;
+import static com.wanted.preonboarding.ticket.application.exception.ExceptionStatus.NOT_FOUND_INFO;
 
 @Slf4j
 @Service
@@ -40,7 +42,7 @@ public class NotificationService {
         UUID id = requestNotification.performanceId();
         int round = requestNotification.round();
         Performance performance = performanceRepository.findByIdAndRound(id, round)
-                .orElseThrow(() -> new IllegalArgumentException("해당 공연/전시 정보 또는 회차 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
 
         notificationRepository.save(Notification.of(requestNotification, performance));
         return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, null);
