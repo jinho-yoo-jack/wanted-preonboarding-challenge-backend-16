@@ -1,9 +1,9 @@
 package com.wanted.preonboarding.ticket.application.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
+import com.wanted.preonboarding.ticket.application.service.ReservationService;
 import com.wanted.preonboarding.ticket.domain.dto.RequestReservation;
 import com.wanted.preonboarding.ticket.domain.dto.ReservationResponse;
-import com.wanted.preonboarding.ticket.application.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -9,9 +9,6 @@ import java.util.Arrays;
 
 import static com.wanted.preonboarding.ticket.application.util.TimeFormatter.convertToReadableFormat;
 
-/**
- * DTO for {@link com.wanted.preonboarding.ticket.domain.entity.Performance}
- */
 @Value
 @Builder
 public class PerformanceInfo {
