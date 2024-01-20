@@ -1,10 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -25,6 +22,7 @@ public class PerformanceSeatInfo {
     private int gate;
     private char line;
     private int seat;
+    @Setter
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;
 

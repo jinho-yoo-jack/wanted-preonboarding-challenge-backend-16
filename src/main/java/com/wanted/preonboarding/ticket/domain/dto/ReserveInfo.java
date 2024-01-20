@@ -1,10 +1,10 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
+import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -20,4 +20,15 @@ public class ReserveInfo {
     private int round;
     private char line;
     private int seat;
+    public static ReserveInfo of(Reservation reservation) {
+        return ReserveInfo.builder()
+                .performanceId(reservation.getPerformanceId())
+                .reservationName(reservation.getName())
+                .reservationPhoneNumber(reservation.getPhoneNumber())
+                .reservationStatus(reservation.getReservationStatus())
+                .round(reservation.getRound())
+                .line(reservation.getLine())
+                .seat(reservation.getSeat())
+                .build();
+    }
 }

@@ -1,10 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
@@ -33,6 +30,7 @@ public class Performance {
     @Column(nullable = false)
     private Date start_date;
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
+    @Setter
     private String isReserve;
 
 }
