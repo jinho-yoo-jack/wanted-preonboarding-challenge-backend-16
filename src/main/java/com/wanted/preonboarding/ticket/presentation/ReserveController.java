@@ -35,4 +35,29 @@ public class ReserveController {
                         .build());
     }
 
+    /*
+       예약 조회 시스템
+       Request Message: 고객의 이름, 휴대 전화
+       Response Message: 예매가 완료된 공연의 정보(회차, 공연명, 좌석정보, 공연ID) + 예매자 정보(이름, 연락처)
+    */
+    @PostMapping("/reservations")
+    public ResponseEntity<ResponseHandler<List<ReserveInfo>>> getReservationInfo(
+            @Valid @RequestBody ReservationInfoRequest reservationInfoRequest
+    ) {
+        log.info("getAllPerformanceInfoList");
+        return ResponseEntity.ok()
+                .body(ResponseHandler.<List<ReserveInfo>>builder()
+                        .message("Success")
+                        .data(ticketSeller.getReservationInfos(reservationInfoRequest))
+                        .statusCode(HttpStatus.OK)
+                        .build());
+    }
+
+    /*
+        예약 가능 알림 서비스
+        특정 공연에 대해서 취소 건이 발생하는 경우, 알림 신청을 해놓은 고객에게 취소된 예약이 있다는 사실을 알리는 알림 서비스
+        Send Message: 공연ID, 공연명, 회차, 시작 일시 예매 가능한 좌석 정보
+    */
+
+
 }

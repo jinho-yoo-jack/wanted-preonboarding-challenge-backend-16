@@ -83,4 +83,11 @@ public class TicketSeller {
         }
     }
 
+    public List<ReserveInfo> getReservationInfos(ReservationInfoRequest reservationInfoRequest) {
+        List<Reservation> reservations = reservationRepository.findByNameAndPhoneNumber(reservationInfoRequest.getName(),
+                reservationInfoRequest.getPhoneNumber());
+
+        return reservations.stream().map(ReserveInfo::of)
+                .collect(Collectors.toList());
+    }
 }
