@@ -52,6 +52,32 @@ public class TicketSeller {
 
     }
 
+    public List<ReserveInfo> getReservationInfos(ReservationInfoRequest reservationInfoRequest) {
+        String name = reservationInfoRequest.getName();
+        String phoneNumber = reservationInfoRequest.getPhoneNumber();
+        List<Reservation> reserveInfos = reservationRepository.findByNameAndPhoneNumber(name, phoneNumber);
+        if (reserveInfos.isEmpty()) throw new EntityNotFoundException();
+        return reserveInfos.stream()
+                .map(ReserveInfo::of)
+                .toList();
+    }
+
+    public void cancelReservation(int reservationId) {
+        Reservation reservation = getReservation(reservationId);
+        PerformanceSeatInfo seatInfo = getPerformanceSeatInfo(ReserveInfo.of(reservation));
+        Performance performance = seatInfo.getPerformance();
+
+        reservationRepository.deleteById(reservationId);
+        seatInfo.setIsReserve("enable");
+        seatRepository.save(seatInfo);
+
+        if (performance.getIsReserve().equals("disable")) {
+            performance.setIsReserve("enable");
+            performanceRepository.save(performance);
+        }
+
+
+    }
     private void reserveSeat(PerformanceSeatInfo seatInfo){
         if (seatInfo.getIsReserve().equals("disable")) {
             throw new UnavailableReserveException("이미 선점된 좌석입니다.");
@@ -89,32 +115,7 @@ public class TicketSeller {
         }
     }
 
-    public List<ReserveInfo> getReservationInfos(ReservationInfoRequest reservationInfoRequest) {
-        String name = reservationInfoRequest.getName();
-        String phoneNumber = reservationInfoRequest.getPhoneNumber();
-        List<Reservation> reserveInfos = reservationRepository.findByNameAndPhoneNumber(name, phoneNumber);
-        if (reserveInfos.isEmpty()) throw new EntityNotFoundException();
-        return reserveInfos.stream()
-                .map(ReserveInfo::of)
-                .toList();
-    }
 
-    public void cancelReservation(int reservationId) {
-        Reservation reservation = getReservation(reservationId);
-        PerformanceSeatInfo seatInfo = getPerformanceSeatInfo(ReserveInfo.of(reservation));
-        Performance performance = seatInfo.getPerformance();
-
-        reservationRepository.deleteById(reservationId);
-        seatInfo.setIsReserve("enable");
-        seatRepository.save(seatInfo);
-
-        if (performance.getIsReserve().equals("disable")) {
-            performance.setIsReserve("enable");
-            performanceRepository.save(performance);
-        }
-
-
-    }
 
     private Performance getPerformance(UUID performanceId) {
         return performanceRepository.findById(performanceId).orElseThrow(EntityNotFoundException::new);

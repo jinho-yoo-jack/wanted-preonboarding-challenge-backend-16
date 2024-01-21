@@ -28,7 +28,6 @@ public class QueryController {
      */
     @GetMapping("/all/performance")
     public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
-        log.info("getAllPerformanceInfoList");
         return ResponseEntity.ok()
                 .body(ResponseHandler.<List<PerformanceInfo>>builder()
                         .message("Success")
@@ -44,10 +43,9 @@ public class QueryController {
        Response Message: 예매가 완료된 공연의 정보(회차, 공연명, 좌석정보, 공연ID) + 예매자 정보(이름, 연락처)
     */
     @PostMapping("/reservations")
-    public ResponseEntity<ResponseHandler<List<ReserveInfo>>> getReservationInfo(
+    public ResponseEntity<ResponseHandler<List<ReserveInfo>>> getReservationInfos(
             @Valid @RequestBody ReservationInfoRequest reservationInfoRequest
     ) {
-        log.info("getAllPerformanceInfoList");
         return ResponseEntity.ok()
                 .body(ResponseHandler.<List<ReserveInfo>>builder()
                         .message("Success")
