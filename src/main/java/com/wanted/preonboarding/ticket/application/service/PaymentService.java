@@ -32,11 +32,7 @@ public class PaymentService {
             discountDetails.add(discountStrategy.getName());
         }
 
-        return PaymentResponse.builder()
-                .paidPrice(price)
-                .discountDetails(discountDetails)
-                .remainBalance(caculateRemainBalance(balance, price))
-                .build();
+        return createPaymentResponse(price, discountDetails, caculateRemainBalance(balance, price));
     }
 
     private int caculateRemainBalance(int balance, int discountedPrice) {
@@ -46,5 +42,12 @@ public class PaymentService {
         return balance - discountedPrice;
     }
 
+    private PaymentResponse createPaymentResponse(int price, List<String> discountDetails, int remainBalance) {
+        return PaymentResponse.builder()
+                .paidPrice(price)
+                .discountDetails(discountDetails)
+                .remainBalance(remainBalance)
+                .build();
+    }
 
 }

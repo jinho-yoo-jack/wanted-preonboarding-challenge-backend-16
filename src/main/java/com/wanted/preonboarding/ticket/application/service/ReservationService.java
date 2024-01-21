@@ -41,18 +41,21 @@ public class ReservationService {
     private final ApplicationEventPublisher eventPublisher;
     @Transactional(readOnly = true)
     public ResponseEntity<ResponseHandler<ReservationResponse>> getReservationInfo(
-            final String name,
-            final String phoneNumber
+            String name,
+            String phoneNumber
     ) {
         log.info("--- Get Reservation Info ---");
         validateNameAndPhoneNumber(name, phoneNumber);
+
         Reservation reservation = getReservationEntity(name, phoneNumber);
         Performance performance = reservation.getPerformanceSeatInfo().getPerformance();
 
         return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, ReservationResponse.of(reservation, performance));
     }
     @Transactional
-    public ResponseEntity<ResponseHandler<ReservationResponse>> processReservation(RequestReservation requestReservation) {
+    public ResponseEntity<ResponseHandler<ReservationResponse>> processReservation(
+            RequestReservation requestReservation
+    ) {
         log.info("--- Process Reservation ---");
         PerformanceSeatInfo seatInfo = getSeatInfoEntity(requestReservation);
         Performance performance = seatInfo.getPerformance();
@@ -60,10 +63,9 @@ public class ReservationService {
 
         checkSeatAvailability(seatInfo);
 
-        PaymentResponse paymentResponse = paymentService.processPayment(reservation, requestReservation.balance());
-
         reservationRepository.save(reservation);
         seatInfo.modifyReservationAvailability(OCCUPIED);
+        PaymentResponse paymentResponse = paymentService.processPayment(reservation, requestReservation.balance());
         return createResponse(HttpStatus.CREATED, MESSAGE_SUCCESS, ReservationResponse.of(reservation, performance, paymentResponse));
     }
 
@@ -73,29 +75,16 @@ public class ReservationService {
         Reservation reservation = getReservationEntity(id);
         PerformanceSeatInfo seatInfo = reservation.getPerformanceSeatInfo();
 
-        reservationRepository.delete(reservation);
-        seatInfo.modifyReservationAvailability(AVAILABLE);
-        eventPublisher.publishEvent(new ReservationCancelledEvent(this, reservation));
+        processCancellation(reservation, seatInfo);
         return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, null);
     }
 
     // ========== PRIVATE METHODS ========== //
-    private void validateNameAndPhoneNumber(String name, String phone) {
-        String nameRegex = "^[가-힣]{2,4}$";
-        String phoneRegex = "^01(?:0|1|[6-9])-?(?:\\d{3}|\\d{4})-?\\d{4}$";
 
-        if (!name.matches(nameRegex) || !phone.matches(phoneRegex)) {
-            throw new ArgumentNotValidException(ARGUMENT_NOT_VALID);
-        }
-    }
-
-    private void checkSeatAvailability(PerformanceSeatInfo seatInfo) {
-        if (seatInfo.getIsReserve().equals(OCCUPIED)) {
-            throw new SeatNotAvailableException(SEAT_ALREADY_OCCUPIED);
-        }
-        if (seatInfo.getIsReserve().equals(ReservationAvailability.DISABLED)) {
-            throw new SeatNotAvailableException(SEAT_DISABLED);
-        }
+    private void processCancellation(Reservation reservation, PerformanceSeatInfo seatInfo) {
+        reservationRepository.delete(reservation);
+        seatInfo.modifyReservationAvailability(AVAILABLE);
+        eventPublisher.publishEvent(new ReservationCancelledEvent(this, reservation));
     }
 
     private Reservation getReservationEntity(String name, String phoneNumber) {
@@ -116,6 +105,24 @@ public class ReservationService {
 
         return seatInfoRepository.findByPerformanceIdAndRoundAndLineAndSeat(id, round, String.valueOf(line), seat)
                 .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
+    }
+
+    private void validateNameAndPhoneNumber(String name, String phone) {
+        String nameRegex = "^[가-힣]{2,4}$";
+        String phoneRegex = "^01(?:0|1|[6-9])-?(?:\\d{3}|\\d{4})-?\\d{4}$";
+
+        if (!name.matches(nameRegex) || !phone.matches(phoneRegex)) {
+            throw new ArgumentNotValidException(ARGUMENT_NOT_VALID);
+        }
+    }
+
+    private void checkSeatAvailability(PerformanceSeatInfo seatInfo) {
+        if (seatInfo.getIsReserve().equals(OCCUPIED)) {
+            throw new SeatNotAvailableException(SEAT_ALREADY_OCCUPIED);
+        }
+        if (seatInfo.getIsReserve().equals(ReservationAvailability.DISABLED)) {
+            throw new SeatNotAvailableException(SEAT_DISABLED);
+        }
     }
 
 }

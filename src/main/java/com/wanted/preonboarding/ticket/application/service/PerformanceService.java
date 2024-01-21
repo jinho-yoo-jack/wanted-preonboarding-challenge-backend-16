@@ -34,26 +34,30 @@ public class PerformanceService {
     @Transactional(readOnly = true)
     public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
         log.info("--- Get All Performance Info List ---");
-        return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, getAllAvailalePerformance());
+        List<PerformanceInfo> performanceInfoList = getAllAvailalePerformances();
+        return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, performanceInfoList);
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<ResponseHandler<PerformanceDetail>> getPerformanceInfoDetail(UUID id, int round) {
+        log.info("--- Get Performance Info Detail ---");
+        Performance performance = getPerformanceEntity(id, round);
+        List<PerformanceSeatInfo> seatInfoList = getSeatInfoEntity(performance);
+        return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, PerformanceDetail.of(seatInfoList));
     }
 
-    private List<PerformanceInfo> getAllAvailalePerformance() {
+    // ========== PRIVATE METHODS ========== //
+    private Performance getPerformanceEntity(UUID id, int round) {
+        return performanceRepository.findByIdAndRound(id, round)
+                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
+    }
+    private List<PerformanceSeatInfo> getSeatInfoEntity(Performance performance) {
+        return seatInfoRepository.findAllByPerformanceAndIsReserve(performance, ReservationAvailability.AVAILABLE);
+    }
+    private List<PerformanceInfo> getAllAvailalePerformances() {
         return performanceRepository.findAllByIsReserve(ReservationAvailability.AVAILABLE)
                 .stream()
                 .map(PerformanceInfo::of)
                 .toList();
-    }
-
-    @Transactional(readOnly = true)
-    public ResponseEntity<ResponseHandler<PerformanceDetail>> getPerformanceInfoDetail(UUID id, int round) {
-        log.info("--- Get Performance Info Detail ---");
-        Performance performance = performanceRepository.findByIdAndRound(id, round)
-                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
-
-        List<PerformanceSeatInfo> seatInfoList =
-                seatInfoRepository.findAllByPerformanceAndIsReserve(performance, ReservationAvailability.AVAILABLE);
-
-        return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, PerformanceDetail.of(seatInfoList));
     }
 
 }

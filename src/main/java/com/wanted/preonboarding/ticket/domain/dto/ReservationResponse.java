@@ -30,47 +30,48 @@ public class ReservationResponse {
     private record PaymentDetail(
             String name, String phoneNumber, int paidPrice, List<String> discountDetails, int remainBalance
     ) {
+
     }
 
-
     public static ReservationResponse of(Reservation reservation, Performance performance, PaymentResponse paymentResponse) {
-        PaymentDetail paymentDetail = PaymentDetail.builder()
+        PaymentDetail paymentDetail = createPaymentDetail(reservation, paymentResponse);
+
+        return createReservationResponse(reservation, performance, paymentDetail);
+    }
+
+    public static ReservationResponse of(Reservation reservation, Performance performance) {
+        return createReservationResponse(reservation, performance, null);
+    }
+
+    private static ReservationResponse createReservationResponse(Reservation reservation, Performance performance, PaymentDetail paymentDetail) {
+        ReservationResponse.ReservationResponseBuilder builder = ReservationResponse.builder()
+                .id(reservation.getId())
+                .performanceName(performance.getName())
+                .performanceRound(performance.getRound())
+                .performanceDate(convertToReadableFormat(performance.getStartDate()))
+                .name(reservation.getName())
+                .phoneNumber(reservation.getPhoneNumber())
+                .round(reservation.getRound())
+                .gate(reservation.getGate())
+                .line(reservation.getLine())
+                .seat(reservation.getSeat())
+                .price(performance.getPrice());
+
+        if (paymentDetail != null) {
+            builder.paymentDetail(paymentDetail);
+        }
+
+        return builder.build();
+    }
+
+    private static PaymentDetail createPaymentDetail(Reservation reservation, PaymentResponse paymentResponse) {
+        return PaymentDetail.builder()
                 .name(reservation.getName())
                 .phoneNumber(reservation.getPhoneNumber())
                 .paidPrice(paymentResponse.getPaidPrice())
                 .discountDetails(paymentResponse.getDiscountDetails())
                 .remainBalance(paymentResponse.getRemainBalance())
                 .build();
-
-        return ReservationResponse.builder()
-                .id(reservation.getId())
-                .performanceName(performance.getName())
-                .performanceRound(performance.getRound())
-                .performanceDate(convertToReadableFormat(performance.getStartDate()))
-                .name(reservation.getName())
-                .phoneNumber(reservation.getPhoneNumber())
-                .round(reservation.getRound())
-                .gate(reservation.getGate())
-                .line(reservation.getLine())
-                .seat(reservation.getSeat())
-                .price(performance.getPrice())
-                .paymentDetail(paymentDetail)
-                .build();
     }
 
-    public static ReservationResponse of(Reservation reservation, Performance performance) {
-        return ReservationResponse.builder()
-                .id(reservation.getId())
-                .performanceName(performance.getName())
-                .performanceRound(performance.getRound())
-                .performanceDate(convertToReadableFormat(performance.getStartDate()))
-                .name(reservation.getName())
-                .phoneNumber(reservation.getPhoneNumber())
-                .round(reservation.getRound())
-                .gate(reservation.getGate())
-                .line(reservation.getLine())
-                .seat(reservation.getSeat())
-                .price(performance.getPrice())
-                .build();
-    }
 }
