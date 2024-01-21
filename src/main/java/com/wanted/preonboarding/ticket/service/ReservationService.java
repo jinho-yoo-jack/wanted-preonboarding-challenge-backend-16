@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.application;
+package com.wanted.preonboarding.ticket.service;
 
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
@@ -8,10 +8,12 @@ import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.dto.ReservationInfoRequest;
 import com.wanted.preonboarding.ticket.exception.InsufficientAmountException;
 import com.wanted.preonboarding.ticket.exception.UnavailableReserveException;
+import com.wanted.preonboarding.ticket.infrastructure.repository.NotificationRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,10 @@ import java.util.UUID;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class TicketSeller {
+public class ReservationService {
     private final PerformanceRepository performanceRepository;
     private final ReservationRepository reservationRepository;
+    private final NotificationService notificationService;
     private final PerformanceSeatRepository seatRepository;
 
     public List<PerformanceInfo> getAllPerformanceInfoList() {
@@ -34,6 +37,7 @@ public class TicketSeller {
                 .toList();
     }
 
+    @Transactional
     public ReserveInfo createReservation(ReserveInfo reserveInfo) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
         Performance performanceInfo = performanceRepository.findById(reserveInfo.getPerformanceId())
@@ -62,8 +66,9 @@ public class TicketSeller {
                 .toList();
     }
 
+    @Transactional
     public void cancelReservation(int reservationId) {
-        Reservation reservation = getReservation(reservationId);
+        Reservation reservation = getReservationById(reservationId);
         PerformanceSeatInfo seatInfo = getPerformanceSeatInfo(ReserveInfo.of(reservation));
         Performance performance = seatInfo.getPerformance();
 
@@ -74,6 +79,7 @@ public class TicketSeller {
         if (performance.getIsReserve().equals("disable")) {
             performance.setIsReserve("enable");
             performanceRepository.save(performance);
+            notificationService.notifyCancellation(performance.getId());
         }
 
 
@@ -115,13 +121,7 @@ public class TicketSeller {
         }
     }
 
-
-
-    private Performance getPerformance(UUID performanceId) {
-        return performanceRepository.findById(performanceId).orElseThrow(EntityNotFoundException::new);
-    }
-
-    private Reservation getReservation(int id) {
+    private Reservation getReservationById(int id) {
         return reservationRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 }

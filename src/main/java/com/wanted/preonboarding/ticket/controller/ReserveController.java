@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.application.TicketSeller;
+import com.wanted.preonboarding.ticket.service.ReservationService;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/reserve")
 @RequiredArgsConstructor
 public class ReserveController {
-    private final TicketSeller ticketSeller;
+    private final ReservationService reservationService;
 
     /*
         예약 시스템
@@ -26,20 +26,18 @@ public class ReserveController {
     public ResponseEntity<?> createReservation(@RequestBody ReserveInfo reserveInfo) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ResponseHandler.builder().statusCode(HttpStatus.CREATED)
-                        .data(ticketSeller.createReservation(reserveInfo))
+                        .data(reservationService.createReservation(reserveInfo))
                         .message("Success")
                         .build());
     }
-
-
     /*
         예약 가능 알림 서비스
         특정 공연에 대해서 취소 건이 발생하는 경우, 알림 신청을 해놓은 고객에게 취소된 예약이 있다는 사실을 알리는 알림 서비스
         Send Message: 공연ID, 공연명, 회차, 시작 일시 예매 가능한 좌석 정보
     */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteReservation(@PathVariable int id) {
-        ticketSeller.cancelReservation(id);
+    public ResponseEntity<?> cancelReservation(@PathVariable int id) {
+        reservationService.cancelReservation(id);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseHandler.builder().statusCode(HttpStatus.OK)
                         .data(null)

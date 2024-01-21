@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.application.TicketSeller;
+import com.wanted.preonboarding.ticket.service.ReservationService;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReservationInfoRequest;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("query")
 @RequiredArgsConstructor
 public class QueryController {
-    private final TicketSeller ticketSeller;
+    private final ReservationService reservationService;
 
     /*
         공연 및 전시 정보 조회(목록, 상세 조회)
@@ -32,7 +32,7 @@ public class QueryController {
                 .body(ResponseHandler.<List<PerformanceInfo>>builder()
                         .message("Success")
                         .statusCode(HttpStatus.OK)
-                        .data(ticketSeller.getAllPerformanceInfoList())
+                        .data(reservationService.getAllPerformanceInfoList())
                         .build()
                 );
     }
@@ -49,7 +49,7 @@ public class QueryController {
         return ResponseEntity.ok()
                 .body(ResponseHandler.<List<ReserveInfo>>builder()
                         .message("Success")
-                        .data(ticketSeller.getReservationInfos(reservationInfoRequest))
+                        .data(reservationService.getReservationInfos(reservationInfoRequest))
                         .statusCode(HttpStatus.OK)
                         .build());
     }

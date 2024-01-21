@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.application;
+package com.wanted.preonboarding.ticket.service;
 
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class TicketSellerTest {
+public class ReservationServiceTest {
     @Autowired
     private PerformanceRepository performanceRepository;
 
