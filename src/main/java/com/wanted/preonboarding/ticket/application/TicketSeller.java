@@ -6,6 +6,8 @@ import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.dto.ReservationInfoRequest;
+import com.wanted.preonboarding.ticket.exception.InsufficientAmountException;
+import com.wanted.preonboarding.ticket.exception.UnavailableReserveException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
@@ -59,7 +61,7 @@ public class TicketSeller {
         PerformanceSeatInfo seatInfo = seatRepository
                 .findByPerformanceIdAndRoundAndLineAndSeat(performanceId, round, line, seat);
 
-        if (seatInfo.getIsReserve().equals("disable")) throw new RuntimeException("이미 선점된 좌석입니다.");
+        if (seatInfo.getIsReserve().equals("disable")) throw new UnavailableReserveException("이미 선점된 좌석입니다.");
         seatInfo.setIsReserve("disable");
         seatRepository.save(seatInfo);
     }
@@ -69,8 +71,8 @@ public class TicketSeller {
         long amount = reserveInfo.getAmount();
         boolean isReserveEnable = performanceInfo.getIsReserve().equalsIgnoreCase("enable");
 
-        if (price > amount) throw new RuntimeException("잔액이 부족합니다.");
-        if (!isReserveEnable) throw new RuntimeException("매진되었습니다.");
+        if (price > amount) throw new InsufficientAmountException("잔액이 부족합니다.");
+        if (!isReserveEnable) throw new UnavailableReserveException("매진되었습니다.");
 
         return price;
     }
@@ -89,9 +91,10 @@ public class TicketSeller {
     public List<ReserveInfo> getReservationInfos(ReservationInfoRequest reservationInfoRequest) {
         String name = reservationInfoRequest.getName();
         String phoneNumber = reservationInfoRequest.getPhoneNumber();
-        return  reservationRepository.findByNameAndPhoneNumber(name, phoneNumber)
-                .stream()
+        List<Reservation> reserveInfos = reservationRepository.findByNameAndPhoneNumber(name, phoneNumber);
+        if (reserveInfos.isEmpty()) throw new EntityNotFoundException();
+        return reserveInfos.stream()
                 .map(ReserveInfo::of)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
