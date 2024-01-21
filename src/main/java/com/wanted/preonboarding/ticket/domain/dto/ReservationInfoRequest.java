@@ -1,9 +1,8 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.Getter;
 
-import javax.validation.constraints.NotBlank;
 
 @Data
 public class ReservationInfoRequest {
