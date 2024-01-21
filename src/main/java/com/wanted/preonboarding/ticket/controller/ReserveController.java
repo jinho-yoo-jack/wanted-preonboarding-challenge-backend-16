@@ -1,17 +1,13 @@
-package com.wanted.preonboarding.ticket.presentation;
+package com.wanted.preonboarding.ticket.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.TicketSeller;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
-import com.wanted.preonboarding.ticket.domain.dto.ReservationInfoRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.*;
 
 @Slf4j
 @RestController
@@ -35,21 +31,13 @@ public class ReserveController {
                         .build());
     }
 
-    /*
-       예약 조회 시스템
-       Request Message: 고객의 이름, 휴대 전화
-       Response Message: 예매가 완료된 공연의 정보(회차, 공연명, 좌석정보, 공연ID) + 예매자 정보(이름, 연락처)
-    */
-    @PostMapping("/reservations")
-    public ResponseEntity<ResponseHandler<List<ReserveInfo>>> getReservationInfo(
-            @Valid @RequestBody ReservationInfoRequest reservationInfoRequest
-    ) {
-        log.info("getAllPerformanceInfoList");
-        return ResponseEntity.ok()
-                .body(ResponseHandler.<List<ReserveInfo>>builder()
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteReservation(@PathVariable int id) {
+        ticketSeller.cancelReservation(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ResponseHandler.builder().statusCode(HttpStatus.OK)
+                        .data(null)
                         .message("Success")
-                        .data(ticketSeller.getReservationInfos(reservationInfoRequest))
-                        .statusCode(HttpStatus.OK)
                         .build());
     }
 

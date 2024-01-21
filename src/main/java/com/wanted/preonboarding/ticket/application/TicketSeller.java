@@ -98,4 +98,29 @@ public class TicketSeller {
                 .map(ReserveInfo::of)
                 .toList();
     }
+
+    public void cancelReservation(int reservationId) {
+        Reservation reservation = getReservation(reservationId);
+        PerformanceSeatInfo seatInfo = getPerformanceSeatInfo(ReserveInfo.of(reservation));
+        Performance performance = seatInfo.getPerformance();
+
+        reservationRepository.deleteById(reservationId);
+        seatInfo.setIsReserve("enable");
+        seatRepository.save(seatInfo);
+
+        if (performance.getIsReserve().equals("disable")) {
+            performance.setIsReserve("enable");
+            performanceRepository.save(performance);
+        }
+
+
+    }
+
+    private Performance getPerformance(UUID performanceId) {
+        return performanceRepository.findById(performanceId).orElseThrow(EntityNotFoundException::new);
+    }
+
+    private Reservation getReservation(int id) {
+        return reservationRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
 }
