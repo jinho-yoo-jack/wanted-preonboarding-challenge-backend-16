@@ -12,4 +12,5 @@ public class PaymentResponse {
     Integer paidPrice;
     List<String> discountDetails;
     Integer remainBalance;
+
 }

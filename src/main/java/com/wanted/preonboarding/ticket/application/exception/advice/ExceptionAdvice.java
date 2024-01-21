@@ -14,7 +14,6 @@ import static com.wanted.preonboarding.core.domain.response.ResponseHandler.crea
 @Slf4j
 @RestControllerAdvice
 public class ExceptionAdvice {
-
     public static final String MESSAGE_ERROR_500 = "서버 내부 에러가 발생했습니다.";
 
     @ExceptionHandler({Exception.class})

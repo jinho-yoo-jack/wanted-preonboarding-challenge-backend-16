@@ -7,4 +7,5 @@ public interface DiscountStrategy {
     int caculateDiscount(Reservation reservation);
 
     String getName();
+
 }
