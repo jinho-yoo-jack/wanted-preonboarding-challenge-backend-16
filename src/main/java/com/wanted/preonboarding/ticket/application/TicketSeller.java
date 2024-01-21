@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -35,52 +34,54 @@ public class TicketSeller {
                 .toList();
     }
 
-    public ReserveInfo reserve(ReserveInfo reserveInfo) {
+    public ReserveInfo createReservation(ReserveInfo reserveInfo) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
         Performance performanceInfo = performanceRepository.findById(reserveInfo.getPerformanceId())
                 .orElseThrow(EntityNotFoundException::new);
+        UUID performanceId = performanceInfo.getId();
 
         // 1. 결제
         int price = getPrice(reserveInfo, performanceInfo);
         reserveInfo.setAmount(reserveInfo.getAmount() - price);
 
         // 2. 예매 진행
-        updatePerformanceSeatInfo(performanceInfo, reserveInfo);
-        disablePerformanceByIsReserve(performanceInfo.getId());
+        reserveSeat(getPerformanceSeatInfo(reserveInfo));
+        disablePerformanceByIsReserve(performanceId);
 
-        return ReserveInfo.of(reservationRepository.save(Reservation.of(reserveInfo)));
+        return ReserveInfo.of(reservationRepository.save(Reservation.of(reserveInfo, performanceInfo)));
 
     }
 
-    private void updatePerformanceSeatInfo(Performance performanceInfo, ReserveInfo reserveInfo) {
-        UUID performanceId = performanceInfo.getId();
-        int round = reserveInfo.getRound();
-        char line = reserveInfo.getLine();
-        int seat = reserveInfo.getSeat();
-
-        PerformanceSeatInfo seatInfo = seatRepository
-                .findByPerformanceIdAndRoundAndLineAndSeat(performanceId, round, line, seat);
-
-        if (seatInfo.getIsReserve().equals("disable")) throw new UnavailableReserveException("이미 선점된 좌석입니다.");
+    private void reserveSeat(PerformanceSeatInfo seatInfo){
+        if (seatInfo.getIsReserve().equals("disable")) {
+            throw new UnavailableReserveException("이미 선점된 좌석입니다.");
+        }
         seatInfo.setIsReserve("disable");
         seatRepository.save(seatInfo);
     }
 
+    private PerformanceSeatInfo getPerformanceSeatInfo(ReserveInfo reserveInfo) {
+        return seatRepository.findByPerformanceIdAndRoundAndLineAndSeat(reserveInfo.getPerformanceId(),
+                                                            reserveInfo.getRound(),
+                                                            reserveInfo.getLine(),
+                                                            reserveInfo.getSeat());
+    }
+
     private int getPrice(ReserveInfo reserveInfo, Performance performanceInfo) {
+        boolean isReserveEnable = performanceInfo.getIsReserve().equalsIgnoreCase("enable");
+        if (!isReserveEnable) throw new UnavailableReserveException("매진되었습니다.");
+
         int price = performanceInfo.getPrice();
         long amount = reserveInfo.getAmount();
-        boolean isReserveEnable = performanceInfo.getIsReserve().equalsIgnoreCase("enable");
-
         if (price > amount) throw new InsufficientAmountException("잔액이 부족합니다.");
-        if (!isReserveEnable) throw new UnavailableReserveException("매진되었습니다.");
 
         return price;
     }
 
     // 좌석이 전부 소진되었을때 performance의 예매가능 여부를 변경한다.
     private void disablePerformanceByIsReserve(UUID performanceId) {
-        boolean exists = seatRepository.existsByPerformanceIdAndIsReserve(performanceId, "enable");
-        if (!exists) {
+        boolean isReserve = seatRepository.existsByPerformanceIdAndIsReserve(performanceId, "enable");
+        if (!isReserve) {
             Performance performance = performanceRepository.findById(performanceId)
                     .orElseThrow(EntityNotFoundException::new);
             performance.setIsReserve("disable");

@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
-@Table
+@Table(name = "performance_seat_info")
 @Getter
 @Builder
 @AllArgsConstructor
@@ -15,15 +15,16 @@ public class PerformanceSeatInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
-    private UUID performanceId;
+    @ManyToOne
+    @JoinColumn(name = "performance_id", referencedColumnName = "id")
+    private Performance performance;
     @Column(nullable = false)
     private int round;
     private int gate;
     private char line;
     private int seat;
     @Setter
-    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
+    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar(255) default 'disable'")
     private String isReserve;
 
 

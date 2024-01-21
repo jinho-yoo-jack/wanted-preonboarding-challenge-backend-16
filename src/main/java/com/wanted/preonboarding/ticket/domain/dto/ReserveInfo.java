@@ -22,7 +22,7 @@ public class ReserveInfo {
     private int seat;
     public static ReserveInfo of(Reservation reservation) {
         return ReserveInfo.builder()
-                .performanceId(reservation.getPerformanceId())
+                .performanceId(reservation.getPerformance().getId())
                 .reservationName(reservation.getName())
                 .reservationPhoneNumber(reservation.getPhoneNumber())
                 .reservationStatus(reservation.getReservationStatus())
