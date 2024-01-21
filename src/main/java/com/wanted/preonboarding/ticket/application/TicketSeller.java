@@ -37,39 +37,42 @@ public class TicketSeller {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
         Performance performanceInfo = performanceRepository.findById(reserveInfo.getPerformanceId())
                 .orElseThrow(EntityNotFoundException::new);
-        String enableReserve = performanceInfo.getIsReserve();
 
-        int price = performanceInfo.getPrice();
-        if (price > reserveInfo.getAmount()) throw new RuntimeException("잔액이 부족합니다.");
-
-        if (!enableReserve.equalsIgnoreCase("enable")) {
-            throw new RuntimeException("매진되었습니다.");
-        }
         // 1. 결제
-        // 예약정보에 잔액 반영
+        int price = getPrice(reserveInfo, performanceInfo);
         reserveInfo.setAmount(reserveInfo.getAmount() - price);
 
-        // 좌석 변동사항 반영
-        // - 좌석 테이블
+        // 2. 예매 진행
+        updatePerformanceSeatInfo(performanceInfo, reserveInfo);
+        disablePerformanceByIsReserve(performanceInfo.getId());
+
+        return ReserveInfo.of(reservationRepository.save(Reservation.of(reserveInfo)));
+
+    }
+
+    private void updatePerformanceSeatInfo(Performance performanceInfo, ReserveInfo reserveInfo) {
         UUID performanceId = performanceInfo.getId();
         int round = reserveInfo.getRound();
         char line = reserveInfo.getLine();
         int seat = reserveInfo.getSeat();
+
         PerformanceSeatInfo seatInfo = seatRepository
                 .findByPerformanceIdAndRoundAndLineAndSeat(performanceId, round, line, seat);
-        if (seatInfo.getIsReserve().equals("disable")) {
-            throw new RuntimeException("이미 선점된 좌석입니다.");
-        }
+
+        if (seatInfo.getIsReserve().equals("disable")) throw new RuntimeException("이미 선점된 좌석입니다.");
         seatInfo.setIsReserve("disable");
         seatRepository.save(seatInfo);
+    }
 
-        // - 퍼포먼스 테이블 (만약 자리가 전부 disable 상태일때)
-        disablePerformanceByIsReserve(performanceId);
+    private int getPrice(ReserveInfo reserveInfo, Performance performanceInfo) {
+        int price = performanceInfo.getPrice();
+        long amount = reserveInfo.getAmount();
+        boolean isReserveEnable = performanceInfo.getIsReserve().equalsIgnoreCase("enable");
 
-        // 2. 예매 진행
-        Reservation reservation = reservationRepository.save(Reservation.of(reserveInfo));
-        return ReserveInfo.of(reservation);
+        if (price > amount) throw new RuntimeException("잔액이 부족합니다.");
+        if (!isReserveEnable) throw new RuntimeException("매진되었습니다.");
 
+        return price;
     }
 
     // 좌석이 전부 소진되었을때 performance의 예매가능 여부를 변경한다.
@@ -84,10 +87,11 @@ public class TicketSeller {
     }
 
     public List<ReserveInfo> getReservationInfos(ReservationInfoRequest reservationInfoRequest) {
-        List<Reservation> reservations = reservationRepository.findByNameAndPhoneNumber(reservationInfoRequest.getName(),
-                reservationInfoRequest.getPhoneNumber());
-
-        return reservations.stream().map(ReserveInfo::of)
+        String name = reservationInfoRequest.getName();
+        String phoneNumber = reservationInfoRequest.getPhoneNumber();
+        return  reservationRepository.findByNameAndPhoneNumber(name, phoneNumber)
+                .stream()
+                .map(ReserveInfo::of)
                 .collect(Collectors.toList());
     }
 }
