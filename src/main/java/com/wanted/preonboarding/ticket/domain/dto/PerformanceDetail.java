@@ -1,14 +1,19 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
+import com.wanted.preonboarding.ticket.application.exception.EntityNotFoundException;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
+import com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability;
 import lombok.Builder;
 import lombok.Value;
 
 import java.util.List;
 
+import static com.wanted.preonboarding.ticket.application.exception.ExceptionStatus.NOT_FOUND_INFO;
 import static com.wanted.preonboarding.ticket.application.util.TimeFormatter.convertToReadableFormat;
 import static com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo.convertToName;
+import static com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability.AVAILABLE;
+import static com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability.valueOf;
 
 @Value
 @Builder
@@ -19,22 +24,23 @@ public class PerformanceDetail {
     Integer round;
     String type;
     String startDate;
-    int seatAvailable;
+    Integer seatTotal;
+    Integer seatAvailable;
     List<SeatInfo> seatInfoList;
 
     @Value
     @Builder
     public static class SeatInfo {
-        int gate;
+        Integer gate;
         String line;
-        int seat;
+        Integer seat;
+        String isReserved;
     }
 
     public static PerformanceDetail of(List<PerformanceSeatInfo> seatInfoList) {
         if (seatInfoList == null || seatInfoList.isEmpty()) {
-            throw new IllegalArgumentException("좌석 정보가 존재하지 않습니다.");
+            throw new EntityNotFoundException(NOT_FOUND_INFO);
         }
-
         Performance performance = seatInfoList.get(0).getPerformance();
         return PerformanceDetail.builder()
                 .name(performance.getName())
@@ -42,7 +48,8 @@ public class PerformanceDetail {
                 .round(performance.getRound())
                 .type(convertToName(performance.getType()))
                 .startDate(convertToReadableFormat(performance.getStartDate()))
-                .seatAvailable(seatInfoList.size())
+                .seatTotal(seatInfoList.size())
+                .seatAvailable(caculateAvailableSeat(seatInfoList))
                 .seatInfoList(convertToSeatInfoList(seatInfoList))
                 .build();
     }
@@ -53,8 +60,15 @@ public class PerformanceDetail {
                         .gate(seatInfo.getGate())
                         .line(seatInfo.getLine())
                         .seat(seatInfo.getSeat())
+                        .isReserved((seatInfo.getIsReserve().toString()))
                         .build())
                 .toList();
+    }
+
+    private static int caculateAvailableSeat(List<PerformanceSeatInfo> seatInfoList) {
+        return (int) seatInfoList.stream()
+                .filter(seatInfo -> seatInfo.getIsReserve().equals(AVAILABLE))
+                .count();
     }
 
 }
