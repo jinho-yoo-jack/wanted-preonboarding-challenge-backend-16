@@ -1,15 +1,20 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    java
-    id("org.springframework.boot") version "3.2.1"
-    id("io.spring.dependency-management") version "1.1.4"
+    kotlin("jvm")
+    kotlin("plugin.spring")
+    kotlin("plugin.jpa")
+    idea
+    `java-test-fixtures`
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 group = "com.wanted"
 version = "0.0.1-SNAPSHOT"
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
+java.sourceCompatibility = JavaVersion.valueOf("VERSION_${property("javaVersion")}")
 
 configurations {
     compileOnly {
@@ -24,13 +29,17 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("com.mysql:mysql-connector-j:8.0.33")
-    annotationProcessor("org.projectlombok:lombok")
+    runtimeOnly("com.mysql:mysql-connector-j:8.2.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.junit.vintage:junit-vintage-engine") {
-        exclude("org.hamcrest", "hamcrest-core")
+    testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
+    testImplementation("io.kotest:kotest-assertions-core:5.8.0")
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "${project.property("javaVersion")}"
     }
 }
 
@@ -38,9 +47,14 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.bootJar {
+tasks.getByName("bootJar") {
     enabled = true
-    layered
+}
+
+allOpen {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
 }
 
 tasks.bootBuildImage {
