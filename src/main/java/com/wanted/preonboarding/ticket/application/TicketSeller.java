@@ -32,6 +32,12 @@ public class TicketSeller {
         return PerformanceInfo.of(performanceRepository.findByName(name));
     }
 
+    /*
+        기능 1. 예약 시스템
+        - RequestMessage : ReserveInfor(예약자, 공연 정보)를 받아 예약하는 메서드
+        - ResponseMessage : 예매가 완료된 공연 정보 + 예매자 정보
+        - 특이사항 : 할인 정책 적용될 수 있음
+     */
     public boolean reserve(ReserveInfo reserveInfo) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
         Performance info = performanceRepository.findById(reserveInfo.getPerformanceId())
