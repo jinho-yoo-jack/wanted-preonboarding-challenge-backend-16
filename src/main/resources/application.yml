@@ -8,16 +8,16 @@ spring:
     password: backend
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  # JPA ??
+  # JPA 설정
   jpa:
     hibernate:
-      ddl-auto: none        # DB ??? ?? (none, create, create-drop, update, validate)
+      ddl-auto: none        # DB 초기화 전략 (none, create, create-drop, update, validate)
     properties:
       hibernate:
         auto_quote_keyword: false
         globally_quoted_identifiers: false
-        format_sql: true      # ?? ?? ?? (??)
-        show_sql: true        # ?? ?? ??
+        format_sql: true     # 쿼리 로그 포맷 (정렬)
+        show_sql: true       # 쿼리 로그 출력
 
 logging:
   level:
