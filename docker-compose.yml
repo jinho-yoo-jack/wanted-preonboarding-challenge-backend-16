@@ -5,8 +5,10 @@ services:
     ports:
       - 13306:3306
     volumes:
-      - /Users/black/dev/mysql_docker/data:/var/lib/mysql:rw
-      - /Users/black/IdeaProjects/backend-preonboarding/src/main/resources/initdb:/docker-entrypoint-initdb.d
+      # 호스트 OS에 영속 저장
+      - C:/Users/ch513/docker/mysql_docker/data:/var/lib/mysql:rw
+      # MySQL 이미지는 /docker-entrypoint-initdb.d 위치한 SQL 파일들을 자동 실행하여 초기화
+      - C:/Users/ch513/IdeaProjects/wanted-preonboarding-challenge-backend-16/src/main/resources/initdb:/docker-entrypoint-initdb.d
     command:
       - '--character-set-server=utf8mb4'
       - '--collation-server=utf8mb4_unicode_ci'
