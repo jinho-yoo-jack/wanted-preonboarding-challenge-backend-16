@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.domain.dto.RequestPerformance;
 import com.wanted.preonboarding.ticket.domain.enums.PerformanceType;
 import com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability;
 import jakarta.persistence.*;
@@ -8,6 +9,8 @@ import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -54,7 +57,17 @@ public class Performance extends BaseEntity {
     @Column(name = "is_reserve", nullable = false, columnDefinition = "varchar(20) default 'DISABLED'")
     private ReservationAvailability isReserve;
 
-//    @OneToMany(mappedBy = "performance", cascade = CascadeType.ALL)
-//    private List<PerformanceSeatInfo> performanceSeatInfoList = new ArrayList<>();
+    @OneToMany(mappedBy = "performance", cascade = CascadeType.ALL)
+    private List<PerformanceSeatInfo> performanceSeatInfoList = new ArrayList<>();
+
+    public static Performance of(RequestPerformance request) {
+        return Performance.builder()
+                .name(request.name())
+                .price(request.price())
+                .round(request.round())
+                .startDate(LocalDateTime.parse(request.startDate()))
+                .isReserve(ReservationAvailability.DISABLED)
+                .build();
+    }
 
 }
