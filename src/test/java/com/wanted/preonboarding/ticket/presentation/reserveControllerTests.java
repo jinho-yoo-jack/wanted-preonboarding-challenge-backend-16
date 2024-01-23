@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -110,7 +109,6 @@ public class reserveControllerTests {
 			.andExpect(jsonPath("$.msg").value("해당 좌석은 이미 다른 사용자가 예매중입니다."));
 	}
 
-
 	@Test
 	@DisplayName("POST /reserve는 특정 공연 예약이 가능하고, 사용자가 돈이 충분하면 예매 가능")
 	void t4() throws Exception {
@@ -156,6 +154,38 @@ public class reserveControllerTests {
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(jsonPath("$.resultCode").value(startsWith("F-")))
 			.andExpect(jsonPath("$.msg").value("해당 공연을 예매하기 위한 예산이 부족합니다."));
+	}
+
+	@Test
+	@DisplayName("GET /reserve는 예매자의 이름과 전화번호로 예매 내역을 조회할 수 있다")
+	void t6() throws Exception {
+		// When
+		mvc.perform(get("/reserve")
+				.param("name", "박철현")
+				.param("phoneNumber", "010-1231-1231"))
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(jsonPath("$.resultCode").value(startsWith("S-")))
+			.andExpect(jsonPath("$.msg").value("예매 내역 조회 성공"))
+			.andExpect(jsonPath("$.data[0].reservationName").value("박철현"))
+			.andExpect(jsonPath("$.data[0].performanceName").value("영웅"))
+			.andExpect(jsonPath("$.data[0].reservationPhoneNumber").value("010-1231-1231"));
+	}
+
+	@Test
+	@DisplayName("GET /reserve는 예매자의 이름과 전화번호 모두 입력해야 예매 내역을 조회할 수 있다")
+	void t7() throws Exception {
+		// When
+		mvc.perform(get("/reserve")
+				.param("name", "박철현"))
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(jsonPath("$.resultCode").value(startsWith("F-")))
+			.andExpect(jsonPath("$.msg").value("예약자 휴대폰 번호는 필수 항목입니다."));
+
+		mvc.perform(get("/reserve")
+				.param("phoneNumber", "010-1231-1231"))
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(jsonPath("$.resultCode").value(startsWith("F-")))
+			.andExpect(jsonPath("$.msg").value("예약자 이름은 필수 항목입니다."));
 	}
 
 }

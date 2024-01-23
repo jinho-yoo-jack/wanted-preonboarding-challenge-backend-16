@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.wanted.preonboarding.ticket.application.TicketSeller;
+import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
@@ -19,7 +21,7 @@ import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeat
 public class NotProd {
 	@Bean
 	CommandLineRunner initData(PerformanceRepository performanceRepository,
-		PerformanceSeatInfoRepository performanceSeatInfoRepository) {
+		PerformanceSeatInfoRepository performanceSeatInfoRepository, TicketSeller ticketSeller) {
 		return args -> {
 
 			List<Performance> performanceList = new ArrayList<>();
@@ -76,12 +78,25 @@ public class NotProd {
 				.gate(1)
 				.line("A")
 				.seat(18)
-				.isReserve("disable")
+				.isReserve("enable")
 				.build();
 			performanceSeatInfos.add(seatInfo3);
 
 			// PerformanceSeatInfo 저장
 			performanceSeatInfoRepository.saveAll(performanceSeatInfos);
+
+			// 자리 예약 초기 데이터 1
+			ticketSeller.reserve(ReserveInfo.builder()
+				.age(29)
+				.amount(300_000)
+				.reservationName("박철현")
+				.reservationPhoneNumber("010-1231-1231")
+				.reservationStatus("reserve")
+				.performanceId(performance2.getId())
+				.line("A")
+				.seat(18)
+				.round(1)
+				.build());
 		};
 	}
 }
