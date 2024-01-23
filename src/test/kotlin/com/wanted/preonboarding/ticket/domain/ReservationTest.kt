@@ -276,6 +276,45 @@ class ReservationTest {
     }
 
     @Test
+    fun `자신이 예약하지 않은 예약은 취소할 수 없다`() {
+        // given
+        val seatInfo = SeatInfoFixtureBuilder().build()
+        val userInfo = UserInfoFixtureBuilder().build()
+        val performance =
+            PerformanceFixtureBuilder(
+                price = 1000,
+                performanceSeatInfos =
+                mutableListOf(
+                    PerformanceSeatInfoFixtureBuilder(
+                        seatInfo = seatInfo,
+                        isReserve = false,
+                    ).build(),
+                ),
+                reservations =
+                mutableListOf(
+                    ReservationFixtureBuilder(
+                        seatInfo = seatInfo,
+                        userInfo = UserInfoFixtureBuilder(
+                            name = "김길동"
+                        ).build(),
+                    ).build(),
+                ),
+            ).build()
+
+        // when
+        val exception =
+            shouldThrow<RuntimeException> {
+                performance.cancel(
+                    userInfo = userInfo,
+                    seatInfo = seatInfo,
+                )
+            }
+
+        // then
+        exception.message shouldBe "예약된 내역이 없습니다."
+    }
+
+    @Test
     fun `예약 취소에 성공한다`() {
         // given
         val seatInfo = SeatInfoFixtureBuilder().build()
