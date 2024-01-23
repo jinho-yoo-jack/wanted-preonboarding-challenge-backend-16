@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.application.ticket
 
+import com.wanted.preonboarding.core.CursorResult
 import com.wanted.preonboarding.ticket.domain.Performance
 import com.wanted.preonboarding.ticket.domain.PerformanceId
 import org.springframework.stereotype.Service
@@ -17,7 +18,7 @@ class PerformanceService(
         reserveAvailable: Boolean,
         size: Int = 10,
         cursor: PerformanceId? = null,
-    ): List<Performance> {
+    ): CursorResult<Performance> {
         return performancePort.findAllPerformanceByReserveAvailable(reserveAvailable, cursor, size)
     }
 }

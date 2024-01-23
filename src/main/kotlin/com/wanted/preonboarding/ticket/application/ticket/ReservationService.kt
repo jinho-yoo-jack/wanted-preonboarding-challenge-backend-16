@@ -3,7 +3,6 @@ package com.wanted.preonboarding.ticket.application.ticket
 import com.wanted.preonboarding.ticket.application.discount.DiscountPolicy
 import com.wanted.preonboarding.ticket.domain.Performance
 import com.wanted.preonboarding.ticket.domain.PerformanceId
-import com.wanted.preonboarding.ticket.domain.ReservationId
 import com.wanted.preonboarding.ticket.domain.SeatInfo
 import com.wanted.preonboarding.ticket.domain.UserInfo
 import jakarta.transaction.Transactional
@@ -50,14 +49,5 @@ class ReservationService(
         performance.cancel(userInfo, seatInfo)
         performancePort.update(performance)
         return performance
-    }
-
-    fun findReservation(
-        userInfo: UserInfo,
-        size: Int = 10,
-        cursor: ReservationId? = null,
-    ): List<Performance> {
-        val performances = performancePort.findByReservationInfo(userInfo, cursor, size)
-        return performances.filter { true }
     }
 }

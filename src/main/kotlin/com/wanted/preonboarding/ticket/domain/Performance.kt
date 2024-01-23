@@ -62,4 +62,8 @@ class Performance(
     fun getPerformanceSeatInfos(): List<PerformanceSeatInfo> {
         return performanceSeatInfos
     }
+
+    fun isReserveAvailable(): Boolean {
+        return isReserve
+    }
 }

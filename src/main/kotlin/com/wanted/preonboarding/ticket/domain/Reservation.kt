@@ -24,4 +24,8 @@ class Reservation(
     fun isReserved(userInfo: UserInfo): Boolean {
         return this.userInfo == userInfo
     }
+
+    fun getCreatedAt(): LocalDateTime {
+        return createdAt
+    }
 }
