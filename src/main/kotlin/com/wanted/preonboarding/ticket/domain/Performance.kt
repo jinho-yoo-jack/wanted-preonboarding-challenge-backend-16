@@ -31,7 +31,7 @@ class Performance(
             throw RuntimeException("이미 예약된 좌석입니다.")
         }
 
-        performanceSeatInfos.find { it.isSameSeat(seatInfo) }?.setReserveAvailable()
+        performanceSeatInfos.find { it.isSameSeat(seatInfo) }?.setAsReservedSeat()
         reservations.add(
             Reservation(
                 userInfo = userInfo,
@@ -51,7 +51,7 @@ class Performance(
             reservations.find { it.isSameSeat(seatInfo) && it.isReserved(userInfo) }
                 ?: throw RuntimeException("예약된 내역이 없습니다.")
 
-        performanceSeatInfos.find { it.isSameSeat(seatInfo) }?.setReserveNotAvailable()
+        performanceSeatInfos.find { it.isSameSeat(seatInfo) }?.setAsNotReservedSeat()
         reservations.remove(reservation)
     }
 

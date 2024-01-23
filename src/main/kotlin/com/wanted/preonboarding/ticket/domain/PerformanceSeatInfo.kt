@@ -17,11 +17,11 @@ class PerformanceSeatInfo(
         return isReserve
     }
 
-    fun setReserveAvailable() {
+    fun setAsReservedSeat() {
         isReserve = false
     }
 
-    fun setReserveNotAvailable() {
+    fun setAsNotReservedSeat() {
         isReserve = true
     }
 }
