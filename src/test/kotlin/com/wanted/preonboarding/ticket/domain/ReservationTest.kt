@@ -51,6 +51,29 @@ class ReservationTest {
     }
 
     @Test
+    fun `할인율을 적용한 공연 금액보다 사용자의 결제 금액이 적으면, 예약에 실패한다`() {
+        // given
+        val performance =
+            PerformanceFixtureBuilder(
+                price = 10000,
+            ).build()
+
+        // when
+        val exception =
+            shouldThrow<RuntimeException> {
+                performance.reserve(
+                    userInfo = UserInfoFixtureBuilder().build(),
+                    balance = 9000,
+                    seatInfo = SeatInfoFixtureBuilder().build(),
+                    discountRate = 0.001,
+                )
+            }
+
+        // then
+        exception.message shouldBe "잔액이 부족합니다."
+    }
+
+    @Test
     fun `예약하려는 좌석이 존재하지 않으면, 예약에 실패한다`() {
         // given
         val performance =
@@ -161,6 +184,38 @@ class ReservationTest {
             userInfo = userInfo,
             balance = 9999,
             seatInfo = seatInfo,
+        )
+
+        // then
+        performance.getPerformanceSeatInfos().find { it.isSameSeat(seatInfo) }?.isReserveAvailable() shouldBe false
+        performance.getReservations().size shouldBe 1
+        performance.getReservations().find { it.isReserved(userInfo) } shouldNotBe null
+        performance.getReservations().find { it.isSameSeat(seatInfo) } shouldNotBe null
+    }
+
+    @Test
+    fun `예약 가능한 상황에서 예매자가 가진 금액이 할인 후 공연 금액보다 크거나 같다면, 예약에 성공한다`() {
+        // given
+        val seatInfo = SeatInfoFixtureBuilder().build()
+        val performance =
+            PerformanceFixtureBuilder(
+                price = 1000,
+                performanceSeatInfos =
+                mutableListOf(
+                    PerformanceSeatInfoFixtureBuilder(
+                        seatInfo = seatInfo,
+                        isReserve = true,
+                    ).build(),
+                ),
+            ).build()
+        val userInfo = UserInfoFixtureBuilder().build()
+
+        // when
+        performance.reserve(
+            userInfo = userInfo,
+            balance = 999,
+            seatInfo = seatInfo,
+            discountRate = 0.001
         )
 
         // then
