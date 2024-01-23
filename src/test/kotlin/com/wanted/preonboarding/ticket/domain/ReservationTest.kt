@@ -201,12 +201,12 @@ class ReservationTest {
             PerformanceFixtureBuilder(
                 price = 1000,
                 performanceSeatInfos =
-                mutableListOf(
-                    PerformanceSeatInfoFixtureBuilder(
-                        seatInfo = seatInfo,
-                        isReserve = true,
-                    ).build(),
-                ),
+                    mutableListOf(
+                        PerformanceSeatInfoFixtureBuilder(
+                            seatInfo = seatInfo,
+                            isReserve = true,
+                        ).build(),
+                    ),
             ).build()
         val userInfo = UserInfoFixtureBuilder().build()
 
@@ -215,7 +215,7 @@ class ReservationTest {
             userInfo = userInfo,
             balance = 999,
             seatInfo = seatInfo,
-            discountRate = 0.001
+            discountRate = 0.001,
         )
 
         // then
@@ -284,21 +284,22 @@ class ReservationTest {
             PerformanceFixtureBuilder(
                 price = 1000,
                 performanceSeatInfos =
-                mutableListOf(
-                    PerformanceSeatInfoFixtureBuilder(
-                        seatInfo = seatInfo,
-                        isReserve = false,
-                    ).build(),
-                ),
-                reservations =
-                mutableListOf(
-                    ReservationFixtureBuilder(
-                        seatInfo = seatInfo,
-                        userInfo = UserInfoFixtureBuilder(
-                            name = "김길동"
+                    mutableListOf(
+                        PerformanceSeatInfoFixtureBuilder(
+                            seatInfo = seatInfo,
+                            isReserve = false,
                         ).build(),
-                    ).build(),
-                ),
+                    ),
+                reservations =
+                    mutableListOf(
+                        ReservationFixtureBuilder(
+                            seatInfo = seatInfo,
+                            userInfo =
+                                UserInfoFixtureBuilder(
+                                    name = "김길동",
+                                ).build(),
+                        ).build(),
+                    ),
             ).build()
 
         // when

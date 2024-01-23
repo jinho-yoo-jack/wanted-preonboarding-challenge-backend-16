@@ -20,7 +20,7 @@ class Performance(
         userInfo: UserInfo,
         balance: Int,
         seatInfo: SeatInfo,
-        discountRate: Double = 0.0
+        discountRate: Double = 0.0,
     ) {
         if (!isReserve) throw RuntimeException("예약이 마감되었습니다.")
         if (balance < price * (1.0 - discountRate)) throw RuntimeException("잔액이 부족합니다.")

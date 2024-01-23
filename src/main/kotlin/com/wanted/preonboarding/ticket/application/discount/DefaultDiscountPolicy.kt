@@ -7,7 +7,11 @@ import org.springframework.stereotype.Component
 
 @Component
 class DefaultDiscountPolicy : DiscountPolicy {
-    override fun isAcceptable(userInfo: UserInfo, seatInfo: SeatInfo, performance: Performance): Boolean {
+    override fun isAcceptable(
+        userInfo: UserInfo,
+        seatInfo: SeatInfo,
+        performance: Performance,
+    ): Boolean {
         return true
     }
 

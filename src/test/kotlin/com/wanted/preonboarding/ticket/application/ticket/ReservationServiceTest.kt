@@ -30,9 +30,10 @@ class ReservationServiceTest {
         every { performancePort.findPerformance(performanceId) } returns null
 
         // when
-        val exception = shouldThrow<RuntimeException> {
-            sut.reserve(performanceId, userInfo, balance, seatInfo)
-        }
+        val exception =
+            shouldThrow<RuntimeException> {
+                sut.reserve(performanceId, userInfo, balance, seatInfo)
+            }
 
         // then
         exception.message shouldBe "존재하지 않는 공연입니다."
@@ -47,16 +48,18 @@ class ReservationServiceTest {
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
         val seatInfo = SeatInfoFixtureBuilder().build()
-        val performance = PerformanceFixtureBuilder(
-            id = performanceId,
-            isReserve = false
-        ).build()
+        val performance =
+            PerformanceFixtureBuilder(
+                id = performanceId,
+                isReserve = false,
+            ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
 
         // when
-        val exception = shouldThrow<RuntimeException> {
-            sut.reserve(performanceId, userInfo, balance, seatInfo)
-        }
+        val exception =
+            shouldThrow<RuntimeException> {
+                sut.reserve(performanceId, userInfo, balance, seatInfo)
+            }
 
         // then
         exception.message shouldBe "예약이 마감되었습니다."
@@ -71,16 +74,18 @@ class ReservationServiceTest {
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
         val seatInfo = SeatInfoFixtureBuilder().build()
-        val performance = PerformanceFixtureBuilder(
-            id = performanceId,
-            price = 10000
-        ).build()
+        val performance =
+            PerformanceFixtureBuilder(
+                id = performanceId,
+                price = 10000,
+            ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
 
         // when
-        val exception = shouldThrow<RuntimeException> {
-            sut.reserve(performanceId, userInfo, balance, seatInfo)
-        }
+        val exception =
+            shouldThrow<RuntimeException> {
+                sut.reserve(performanceId, userInfo, balance, seatInfo)
+            }
 
         // then
         exception.message shouldBe "잔액이 부족합니다."
@@ -96,18 +101,20 @@ class ReservationServiceTest {
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
         val seatInfo = SeatInfoFixtureBuilder().build()
-        val performance = PerformanceFixtureBuilder(
-            id = performanceId,
-            price = 10000
-        ).build()
+        val performance =
+            PerformanceFixtureBuilder(
+                id = performanceId,
+                price = 10000,
+            ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
         every { eightyPercentDiscountPolicy.isAcceptable(userInfo, seatInfo, performance) } returns true
         every { eightyPercentDiscountPolicy.discountRate() } returns 0.8
 
         // when
-        val exception = shouldThrow<RuntimeException> {
-            sut.reserve(performanceId, userInfo, balance, seatInfo)
-        }
+        val exception =
+            shouldThrow<RuntimeException> {
+                sut.reserve(performanceId, userInfo, balance, seatInfo)
+            }
 
         // then
         exception.message shouldBe "잔액이 부족합니다."
@@ -122,17 +129,19 @@ class ReservationServiceTest {
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
         val seatInfo = SeatInfoFixtureBuilder().build()
-        val performance = PerformanceFixtureBuilder(
-            id = performanceId,
-            price = 1000,
-            performanceSeatInfos = mutableListOf(),
-        ).build()
+        val performance =
+            PerformanceFixtureBuilder(
+                id = performanceId,
+                price = 1000,
+                performanceSeatInfos = mutableListOf(),
+            ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
 
         // when
-        val exception = shouldThrow<RuntimeException> {
-            sut.reserve(performanceId, userInfo, balance, seatInfo)
-        }
+        val exception =
+            shouldThrow<RuntimeException> {
+                sut.reserve(performanceId, userInfo, balance, seatInfo)
+            }
 
         // then
         exception.message shouldBe "존재하지 않는 좌석입니다."
@@ -147,22 +156,25 @@ class ReservationServiceTest {
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
         val seatInfo = SeatInfoFixtureBuilder().build()
-        val performance = PerformanceFixtureBuilder(
-            id = performanceId,
-            price = 1000,
-            performanceSeatInfos = mutableListOf(
-                PerformanceSeatInfoFixtureBuilder(
-                    seatInfo = seatInfo,
-                    isReserve = false
-                ).build()
-            ),
-        ).build()
+        val performance =
+            PerformanceFixtureBuilder(
+                id = performanceId,
+                price = 1000,
+                performanceSeatInfos =
+                    mutableListOf(
+                        PerformanceSeatInfoFixtureBuilder(
+                            seatInfo = seatInfo,
+                            isReserve = false,
+                        ).build(),
+                    ),
+            ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
 
         // when
-        val exception = shouldThrow<RuntimeException> {
-            sut.reserve(performanceId, userInfo, balance, seatInfo)
-        }
+        val exception =
+            shouldThrow<RuntimeException> {
+                sut.reserve(performanceId, userInfo, balance, seatInfo)
+            }
 
         // then
         exception.message shouldBe "존재하지 않는 좌석입니다."
@@ -177,27 +189,31 @@ class ReservationServiceTest {
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
         val seatInfo = SeatInfoFixtureBuilder().build()
-        val performance = PerformanceFixtureBuilder(
-            id = performanceId,
-            price = 1000,
-            performanceSeatInfos = mutableListOf(
-                PerformanceSeatInfoFixtureBuilder(
-                    seatInfo = seatInfo
-                ).build()
-            ),
-            reservations = mutableListOf(
-                ReservationFixtureBuilder(
-                    seatInfo = seatInfo,
-                    userInfo = UserInfoFixtureBuilder().build()
-                ).build()
-            ),
-        ).build()
+        val performance =
+            PerformanceFixtureBuilder(
+                id = performanceId,
+                price = 1000,
+                performanceSeatInfos =
+                    mutableListOf(
+                        PerformanceSeatInfoFixtureBuilder(
+                            seatInfo = seatInfo,
+                        ).build(),
+                    ),
+                reservations =
+                    mutableListOf(
+                        ReservationFixtureBuilder(
+                            seatInfo = seatInfo,
+                            userInfo = UserInfoFixtureBuilder().build(),
+                        ).build(),
+                    ),
+            ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
 
         // when
-        val exception = shouldThrow<RuntimeException> {
-            sut.reserve(performanceId, userInfo, balance, seatInfo)
-        }
+        val exception =
+            shouldThrow<RuntimeException> {
+                sut.reserve(performanceId, userInfo, balance, seatInfo)
+            }
 
         // then
         exception.message shouldBe "이미 예약된 좌석입니다."
@@ -212,15 +228,17 @@ class ReservationServiceTest {
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
         val seatInfo = SeatInfoFixtureBuilder().build()
-        val performance = PerformanceFixtureBuilder(
-            id = performanceId,
-            price = 1000,
-            performanceSeatInfos = mutableListOf(
-                PerformanceSeatInfoFixtureBuilder(
-                    seatInfo = seatInfo
-                ).build()
-            )
-        ).build()
+        val performance =
+            PerformanceFixtureBuilder(
+                id = performanceId,
+                price = 1000,
+                performanceSeatInfos =
+                    mutableListOf(
+                        PerformanceSeatInfoFixtureBuilder(
+                            seatInfo = seatInfo,
+                        ).build(),
+                    ),
+            ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
         justRun { performancePort.update(performance) }
 
@@ -245,15 +263,17 @@ class ReservationServiceTest {
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 200
         val seatInfo = SeatInfoFixtureBuilder().build()
-        val performance = PerformanceFixtureBuilder(
-            id = performanceId,
-            price = 1000,
-            performanceSeatInfos = mutableListOf(
-                PerformanceSeatInfoFixtureBuilder(
-                    seatInfo = seatInfo
-                ).build()
-            )
-        ).build()
+        val performance =
+            PerformanceFixtureBuilder(
+                id = performanceId,
+                price = 1000,
+                performanceSeatInfos =
+                    mutableListOf(
+                        PerformanceSeatInfoFixtureBuilder(
+                            seatInfo = seatInfo,
+                        ).build(),
+                    ),
+            ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
         every { eightyPercentDiscountPolicy.isAcceptable(userInfo, seatInfo, performance) } returns true
         every { eightyPercentDiscountPolicy.discountRate() } returns 0.8
@@ -281,9 +301,10 @@ class ReservationServiceTest {
         every { performancePort.findPerformance(performanceId) } returns null
 
         // when
-        val exception = shouldThrow<RuntimeException> {
-            sut.cancel(performanceId, userInfo, seatInfo)
-        }
+        val exception =
+            shouldThrow<RuntimeException> {
+                sut.cancel(performanceId, userInfo, seatInfo)
+            }
 
         // then
         exception.message shouldBe "존재하지 않는 공연입니다."
@@ -297,15 +318,17 @@ class ReservationServiceTest {
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val seatInfo = SeatInfoFixtureBuilder().build()
-        val performance = PerformanceFixtureBuilder(
-            id = performanceId
-        ).build()
+        val performance =
+            PerformanceFixtureBuilder(
+                id = performanceId,
+            ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
 
         // when
-        val exception = shouldThrow<RuntimeException> {
-            sut.cancel(performanceId, userInfo, seatInfo)
-        }
+        val exception =
+            shouldThrow<RuntimeException> {
+                sut.cancel(performanceId, userInfo, seatInfo)
+            }
 
         // then
         exception.message shouldBe "존재하지 않는 좌석입니다."
@@ -319,21 +342,24 @@ class ReservationServiceTest {
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val seatInfo = SeatInfoFixtureBuilder().build()
-        val performance = PerformanceFixtureBuilder(
-            id = performanceId,
-            performanceSeatInfos = mutableListOf(
-                PerformanceSeatInfoFixtureBuilder(
-                    seatInfo = seatInfo,
-                    isReserve = false,
-                ).build(),
-            )
-        ).build()
+        val performance =
+            PerformanceFixtureBuilder(
+                id = performanceId,
+                performanceSeatInfos =
+                    mutableListOf(
+                        PerformanceSeatInfoFixtureBuilder(
+                            seatInfo = seatInfo,
+                            isReserve = false,
+                        ).build(),
+                    ),
+            ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
 
         // when
-        val exception = shouldThrow<RuntimeException> {
-            sut.cancel(performanceId, userInfo, seatInfo)
-        }
+        val exception =
+            shouldThrow<RuntimeException> {
+                sut.cancel(performanceId, userInfo, seatInfo)
+            }
 
         // then
         exception.message shouldBe "예약된 내역이 없습니다."
@@ -347,29 +373,34 @@ class ReservationServiceTest {
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val seatInfo = SeatInfoFixtureBuilder().build()
-        val performance = PerformanceFixtureBuilder(
-            id = performanceId,
-            performanceSeatInfos = mutableListOf(
-                PerformanceSeatInfoFixtureBuilder(
-                    seatInfo = seatInfo,
-                    isReserve = false,
-                ).build(),
-            ),
-            reservations = mutableListOf(
-                ReservationFixtureBuilder(
-                    seatInfo = seatInfo,
-                    userInfo = UserInfoFixtureBuilder(
-                        name = "김길동"
-                    ).build(),
-                ).build(),
-            ),
-        ).build()
+        val performance =
+            PerformanceFixtureBuilder(
+                id = performanceId,
+                performanceSeatInfos =
+                    mutableListOf(
+                        PerformanceSeatInfoFixtureBuilder(
+                            seatInfo = seatInfo,
+                            isReserve = false,
+                        ).build(),
+                    ),
+                reservations =
+                    mutableListOf(
+                        ReservationFixtureBuilder(
+                            seatInfo = seatInfo,
+                            userInfo =
+                                UserInfoFixtureBuilder(
+                                    name = "김길동",
+                                ).build(),
+                        ).build(),
+                    ),
+            ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
 
         // when
-        val exception = shouldThrow<RuntimeException> {
-            sut.cancel(performanceId, userInfo, seatInfo)
-        }
+        val exception =
+            shouldThrow<RuntimeException> {
+                sut.cancel(performanceId, userInfo, seatInfo)
+            }
 
         // then
         exception.message shouldBe "예약된 내역이 없습니다."
@@ -383,21 +414,24 @@ class ReservationServiceTest {
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val seatInfo = SeatInfoFixtureBuilder().build()
-        val performance = PerformanceFixtureBuilder(
-            id = performanceId,
-            performanceSeatInfos = mutableListOf(
-                PerformanceSeatInfoFixtureBuilder(
-                    seatInfo = seatInfo,
-                    isReserve = false,
-                ).build(),
-            ),
-            reservations = mutableListOf(
-                ReservationFixtureBuilder(
-                    seatInfo = seatInfo,
-                    userInfo = userInfo,
-                ).build(),
-            ),
-        ).build()
+        val performance =
+            PerformanceFixtureBuilder(
+                id = performanceId,
+                performanceSeatInfos =
+                    mutableListOf(
+                        PerformanceSeatInfoFixtureBuilder(
+                            seatInfo = seatInfo,
+                            isReserve = false,
+                        ).build(),
+                    ),
+                reservations =
+                    mutableListOf(
+                        ReservationFixtureBuilder(
+                            seatInfo = seatInfo,
+                            userInfo = userInfo,
+                        ).build(),
+                    ),
+            ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
         justRun { performancePort.update(performance) }
 

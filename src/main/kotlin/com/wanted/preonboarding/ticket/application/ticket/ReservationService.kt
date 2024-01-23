@@ -25,11 +25,12 @@ class ReservationService(
             performancePort.findPerformance(performanceId)
                 ?: throw RuntimeException("존재하지 않는 공연입니다.")
 
-        val maxDiscountRate = discountPolicies.filter {
-            it.isAcceptable(userInfo, seatInfo, performance)
-        }.maxOfOrNull {
-            it.discountRate()
-        } ?: 0.0
+        val maxDiscountRate =
+            discountPolicies.filter {
+                it.isAcceptable(userInfo, seatInfo, performance)
+            }.maxOfOrNull {
+                it.discountRate()
+            } ?: 0.0
 
         performance.reserve(userInfo, balance, seatInfo, maxDiscountRate)
         performancePort.update(performance)

@@ -8,7 +8,8 @@ interface DiscountPolicy {
     fun isAcceptable(
         userInfo: UserInfo,
         seatInfo: SeatInfo,
-        performance: Performance
+        performance: Performance,
     ): Boolean
+
     fun discountRate(): Double
 }
