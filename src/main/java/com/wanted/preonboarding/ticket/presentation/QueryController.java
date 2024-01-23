@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("query")
+@RequestMapping("/query")
 @RequiredArgsConstructor
 public class QueryController {
     private final TicketSeller ticketSeller;
