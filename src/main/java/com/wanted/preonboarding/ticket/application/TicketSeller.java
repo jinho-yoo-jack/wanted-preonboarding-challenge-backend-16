@@ -1,10 +1,7 @@
 package com.wanted.preonboarding.ticket.application;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +16,7 @@ import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepo
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,7 +55,8 @@ public class TicketSeller {
 		String enableReserve = performance.getIsReserve();
 		// 공연이 예약 가능한 상태인지
 		if (enableReserve.equals("enable")) {
-			List<PerformanceSeatInfo> performanceSeats = performanceSeatInfoRepository.findAllByPerformanceId(performance.getId());
+			List<PerformanceSeatInfo> performanceSeats = performanceSeatInfoRepository.findAllByPerformanceId(
+				performance.getId());
 
 			PerformanceSeatInfo seat = performanceSeats.stream()
 				.filter(a -> a.getRound() == reserveInfo.getRound())
@@ -73,29 +64,29 @@ public class TicketSeller {
 				.filter(a -> a.getSeat() == reserveInfo.getSeat())
 				.findFirst().orElse(null);
 
-			if(seat == null) {
+			if (seat == null) {
 				return RsData.of("F-1", "해당 좌석은 존재하지 않습니다");
 			}
 
-			if(seat.getIsReserve().equals("disable")) {
+			if (seat.getIsReserve().equals("disable")) {
 				return RsData.of("F-1", "해당 좌석은 이미 다른 사용자가 예매중입니다.");
 			}
 
 			int ticketPrice = performance.getPrice();
 			// 65세 이상인 경우 10% 할인, 10원 단위까지 그냥 버림
-			if(reserveInfo.getAge() >= 65) {
+			if (reserveInfo.getAge() >= 65) {
 				ticketPrice = (int)((ticketPrice * 0.9) / 10) * 10;
 			}
 			long userBudget = reserveInfo.getAmount();
-            // 돈이 충분히 있는지 확인
+			// 돈이 충분히 있는지 확인
 			RsData ticketingRsData = canTicketing(ticketPrice, userBudget);
 
-            // 2. 예매 진행
-            if(ticketingRsData.isSuccess()) {
+			// 2. 예매 진행
+			if (ticketingRsData.isSuccess()) {
 				reserveInfo.setAmount((Long)ticketingRsData.getData());
 				// 예매 처리하고 상태 변경
-                reservationRepository.save(Reservation.of(reserveInfo, performance, seat.getGate()));
-                seat.updateIsReserve("disable");
+				reservationRepository.save(Reservation.of(reserveInfo, performance, seat.getGate()));
+				seat.updateIsReserve("disable");
 				ReserveResult reserveResult = ReserveResult.builder()
 					.round(reserveInfo.getRound())
 					.performanceName(performance.getName())
@@ -106,7 +97,7 @@ public class TicketSeller {
 					.reservationPhoneNumber(reserveInfo.getReservationPhoneNumber())
 					.build();
 				ticketingRsData = RsData.of(ticketingRsData.getResultCode(), ticketingRsData.getMsg(), reserveResult);
-            }
+			}
 
 			return ticketingRsData;
 		}
