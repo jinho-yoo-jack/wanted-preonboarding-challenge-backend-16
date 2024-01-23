@@ -22,7 +22,7 @@ public class Reservation {
     @Comment("ID")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "performance_id", columnDefinition = "BINARY(16)", nullable = false)
     @Comment("공연전시ID")
     private Performance performance;
