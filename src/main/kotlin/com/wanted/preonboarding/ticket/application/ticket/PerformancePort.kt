@@ -15,4 +15,10 @@ interface PerformancePort {
     ): List<Performance>
 
     fun update(performance: Performance)
+
+    fun findAllPerformanceByReserveAvailable(
+        reserveAvailable: Boolean,
+        cursor: PerformanceId?,
+        size: Int,
+    ): List<Performance>
 }
