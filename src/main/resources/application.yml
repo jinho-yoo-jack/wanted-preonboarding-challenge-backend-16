@@ -2,6 +2,9 @@ server:
   port: 8016
 
 spring:
+  sql:
+    init:
+      encoding: utf-8
   datasource:
     url: jdbc:mysql://localhost:13306/wanted
     username: wanted
@@ -26,3 +29,22 @@ logging:
         type:
           descriptor:
             sql: trace
+
+---
+spring:
+  profiles:
+    active: test
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    url: jdbc:h2:mem:wanted;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        auto_quote_keyword: false
+        globally_quoted_identifiers: false
+        format_sql: true
+        show_sql: true
