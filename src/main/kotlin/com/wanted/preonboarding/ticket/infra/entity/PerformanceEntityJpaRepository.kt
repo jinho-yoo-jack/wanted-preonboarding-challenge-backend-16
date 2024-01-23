@@ -18,7 +18,7 @@ interface PerformanceEntityJpaRepository : JpaRepository<PerformanceEntity, UUID
         WHERE p.isReserve = :isReserve
         AND ((p.id < :id AND p.createdAt = :createdAt) OR p.createdAt < :createdAt)
         ORDER BY p.createdAt DESC, p.id DESC
-        """
+        """,
     )
     fun search(
         isReserve: Boolean,

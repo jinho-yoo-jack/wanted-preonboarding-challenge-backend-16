@@ -100,16 +100,17 @@ class PerformanceAdapter(
                     reservations.filter { it.performanceId == performance.id }.map { it.toDomain() },
                 )
             }
-        val item = if (performanceList.size > size) {
-            performanceList.dropLast(1)
-        } else {
-            performanceList
-        }
+        val item =
+            if (performanceList.size > size) {
+                performanceList.dropLast(1)
+            } else {
+                performanceList
+            }
 
         return CursorResult(
             cursor = item.lastOrNull()?.id?.value,
             hasNext = performanceList.size > size,
-            item = item
+            item = item,
         )
     }
 }
