@@ -131,7 +131,8 @@ public class reserveControllerTests {
 			.andDo(print())
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(jsonPath("$.resultCode").value(startsWith("S-")))
-			.andExpect(jsonPath("$.msg").value("예매 성공"));
+			.andExpect(jsonPath("$.msg").value("예매 성공"))
+			.andExpect(jsonPath("$.data.reservationName").value("유진호"));
 	}
 
 	@Test

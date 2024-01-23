@@ -18,7 +18,9 @@ public class ReserveController {
     @PostMapping("")
     public RsData reservation(@RequestBody ReserveInfo reserveInfo) {
         RsData reserveResult = ticketSeller.reserve(reserveInfo);
-        // 결과와 메세지를 같이 넘기기
-        return RsData.of(reserveResult.getResultCode(), reserveResult.getMsg());
+        if(reserveResult.isFail())
+            return RsData.of(reserveResult.getResultCode(), reserveResult.getMsg());
+        // 성공할때만 데이터 같이 넘기기
+        return reserveResult;
     }
 }

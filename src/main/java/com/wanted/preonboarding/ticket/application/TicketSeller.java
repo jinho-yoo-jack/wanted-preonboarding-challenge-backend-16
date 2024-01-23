@@ -2,12 +2,16 @@ package com.wanted.preonboarding.ticket.application;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wanted.preonboarding.base.rsData.RsData;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.dto.ReserveResult;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
@@ -15,13 +19,21 @@ import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepo
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class TicketSeller {
 	private final PerformanceRepository performanceRepository;
 	private final ReservationRepository reservationRepository;
@@ -44,6 +56,7 @@ public class TicketSeller {
 		- ResponseMessage : 예매가 완료된 공연 정보 + 예매자 정보
 		- 특이사항 : 할인 정책 적용될 수 있음
 	 */
+	@Transactional
 	public RsData reserve(ReserveInfo reserveInfo) {
 		log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
 		// 공연 정보 찾기
@@ -71,16 +84,27 @@ public class TicketSeller {
 			int ticketPrice = performance.getPrice();
 			long userBudget = reserveInfo.getAmount();
             // 돈이 충분히 있는지 확인
-			RsData<Long> canTicketingRsData = canTicketing(ticketPrice, userBudget);
+			RsData ticketingRsData = canTicketing(ticketPrice, userBudget);
 
             // 2. 예매 진행
-            if(canTicketingRsData.isSuccess()) {
-				reserveInfo.setAmount(canTicketingRsData.getData());
+            if(ticketingRsData.isSuccess()) {
+				reserveInfo.setAmount((Long)ticketingRsData.getData());
+				// 예매 처리하고 상태 변경
                 reservationRepository.save(Reservation.of(reserveInfo, performance, seat.getGate()));
                 seat.updateIsReserve("disable");
+				ReserveResult reserveResult = ReserveResult.builder()
+					.round(reserveInfo.getRound())
+					.performanceName(performance.getName())
+					.performanceId(performance.getId())
+					.line(seat.getLine())
+					.gate(seat.getGate())
+					.reservationName(reserveInfo.getReservationName())
+					.reservationPhoneNumber(reserveInfo.getReservationPhoneNumber())
+					.build();
+				ticketingRsData = RsData.of(ticketingRsData.getResultCode(), ticketingRsData.getMsg(), reserveResult);
             }
 
-			return canTicketingRsData;
+			return ticketingRsData;
 		}
 		// 예매 불가능한 공연일 경우
 		else {
