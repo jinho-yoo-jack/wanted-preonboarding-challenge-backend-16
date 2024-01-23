@@ -12,5 +12,5 @@ public class SeatInfo {
     private char section;
 
     @Comment("좌석 예약 가능 여부")
-    private Boolean IsReserved;
+    private Boolean isReserved;
 }
