@@ -1,6 +1,8 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.antlr.v4.runtime.misc.NotNull;
@@ -14,6 +16,8 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -37,10 +41,9 @@ import lombok.NoArgsConstructor;
 public class PerformanceSeatInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	@Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
-	private UUID performanceId;
-
+	private long id;
+	@ManyToOne
+	private Performance performance;
 	@Column(nullable = false)
 	private int round;
 

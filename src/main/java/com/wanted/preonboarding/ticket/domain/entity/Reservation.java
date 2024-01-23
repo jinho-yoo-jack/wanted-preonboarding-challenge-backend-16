@@ -22,9 +22,9 @@ import java.util.UUID;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
-    private UUID performanceId;
+    private long id;
+    @ManyToOne
+    private Performance performance;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false, name = "phone_number")
@@ -35,16 +35,7 @@ public class Reservation {
     private char line;
     private int seat;
 
-    public static Reservation of(ReserveInfo info) {
-        return Reservation.builder()
-            .performanceId(info.getPerformanceId())
-            .name(info.getReservationName())
-            .phoneNumber(info.getReservationPhoneNumber())
-            .round(info.getRound())
-            .gate(1)
-            .line(info.getLine())
-            .seat(info.getSeat())
-            .build();
-    }
+    @ManyToOne
+    private PerformanceSeatInfo performanceSeatInfo;
 
 }

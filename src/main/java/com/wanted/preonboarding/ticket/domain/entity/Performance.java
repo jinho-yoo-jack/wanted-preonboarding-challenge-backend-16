@@ -5,9 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -16,6 +21,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicUpdate
 public class Performance {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -31,8 +37,17 @@ public class Performance {
     @Column(nullable = false)
     private int type;
     @Column(nullable = false)
-    private Date start_date;
-    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
+    private LocalDateTime start_date;
+    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar(255) default 'disable'")
     private String isReserve;
 
+    @OneToMany
+    private List<PerformanceSeatInfo> performanceSeatInfoList = new ArrayList<>();
+
+    /*
+        예약 상태 변경
+     */
+    public void updateIsReserve(String status) {
+        this.isReserve = status;
+    }
 }
