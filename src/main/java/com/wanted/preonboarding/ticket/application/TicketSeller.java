@@ -29,17 +29,6 @@ public class TicketSeller {
 	private final ReservationRepository reservationRepository;
 	private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
 
-	public List<PerformanceInfo> getAllPerformanceInfoList() {
-		return performanceRepository.findByIsReserve("enable")
-			.stream()
-			.map(PerformanceInfo::of)
-			.toList();
-	}
-
-	public PerformanceInfo getPerformanceInfoDetail(String name) {
-		return PerformanceInfo.of(performanceRepository.findByName(name));
-	}
-
 	/*
 		기능 1. 예약 시스템
 		- RequestMessage : ReserveInfor(예약자, 공연 정보)를 받아 예약하는 메서드
