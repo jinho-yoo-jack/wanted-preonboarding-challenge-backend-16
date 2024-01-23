@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.application.ticket
 
 import com.wanted.preonboarding.ticket.application.discount.DiscountPolicy
+import com.wanted.preonboarding.ticket.application.notification.NotificationEvent
 import com.wanted.preonboarding.ticket.domain.PerformanceFixtureBuilder
 import com.wanted.preonboarding.ticket.domain.PerformanceId
 import com.wanted.preonboarding.ticket.domain.PerformanceSeatInfoFixtureBuilder
@@ -15,6 +16,7 @@ import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
+import org.springframework.context.ApplicationEventPublisher
 import java.util.UUID
 
 class ReservationServiceTest {
@@ -22,7 +24,7 @@ class ReservationServiceTest {
     fun `공연이 존재하지 않으면, 예약에 실패한다`() {
         // given
         val performancePort = mockk<PerformancePort>()
-        val sut = ReservationService(performancePort, emptyList())
+        val sut = ReservationService(performancePort, emptyList(), mockk<ApplicationEventPublisher>())
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
@@ -43,7 +45,7 @@ class ReservationServiceTest {
     fun `예약이 불가능한 공연은 예약에 실패한다`() {
         // given
         val performancePort = mockk<PerformancePort>()
-        val sut = ReservationService(performancePort, emptyList())
+        val sut = ReservationService(performancePort, emptyList(), mockk<ApplicationEventPublisher>())
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
@@ -69,7 +71,7 @@ class ReservationServiceTest {
     fun `공연 금액보다 사용자의 결제 금액이 적으면, 예약에 실패한다`() {
         // given
         val performancePort = mockk<PerformancePort>()
-        val sut = ReservationService(performancePort, emptyList())
+        val sut = ReservationService(performancePort, emptyList(), mockk<ApplicationEventPublisher>())
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
@@ -96,7 +98,7 @@ class ReservationServiceTest {
         // given
         val performancePort = mockk<PerformancePort>()
         val eightyPercentDiscountPolicy = mockk<DiscountPolicy>()
-        val sut = ReservationService(performancePort, listOf(eightyPercentDiscountPolicy))
+        val sut = ReservationService(performancePort, listOf(eightyPercentDiscountPolicy), mockk<ApplicationEventPublisher>())
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
@@ -124,7 +126,7 @@ class ReservationServiceTest {
     fun `예약하려는 좌석이 존재하지 않으면, 예약에 실패한다`() {
         // given
         val performancePort = mockk<PerformancePort>()
-        val sut = ReservationService(performancePort, emptyList())
+        val sut = ReservationService(performancePort, emptyList(), mockk<ApplicationEventPublisher>())
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
@@ -151,7 +153,7 @@ class ReservationServiceTest {
     fun `예약하려는 좌석이 존재하지만 예약을 받지 않는 상태라면, 예약에 실패한다`() {
         // given
         val performancePort = mockk<PerformancePort>()
-        val sut = ReservationService(performancePort, emptyList())
+        val sut = ReservationService(performancePort, emptyList(), mockk<ApplicationEventPublisher>())
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
@@ -184,7 +186,7 @@ class ReservationServiceTest {
     fun `이미 예약된 좌석이라면, 예약에 실패한다`() {
         // given
         val performancePort = mockk<PerformancePort>()
-        val sut = ReservationService(performancePort, emptyList())
+        val sut = ReservationService(performancePort, emptyList(), mockk<ApplicationEventPublisher>())
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
@@ -223,7 +225,7 @@ class ReservationServiceTest {
     fun `예약에 성공한다`() {
         // given
         val performancePort = mockk<PerformancePort>()
-        val sut = ReservationService(performancePort, emptyList())
+        val sut = ReservationService(performancePort, emptyList(), mockk<ApplicationEventPublisher>())
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 1000
@@ -258,7 +260,7 @@ class ReservationServiceTest {
         // given
         val performancePort = mockk<PerformancePort>()
         val eightyPercentDiscountPolicy = mockk<DiscountPolicy>()
-        val sut = ReservationService(performancePort, listOf(eightyPercentDiscountPolicy))
+        val sut = ReservationService(performancePort, listOf(eightyPercentDiscountPolicy), mockk<ApplicationEventPublisher>())
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val balance = 200
@@ -294,7 +296,7 @@ class ReservationServiceTest {
     fun `공연이 존재하지 않으면, 취소에 실패한다`() {
         // given
         val performancePort = mockk<PerformancePort>()
-        val sut = ReservationService(performancePort, emptyList())
+        val sut = ReservationService(performancePort, emptyList(), mockk<ApplicationEventPublisher>())
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val seatInfo = SeatInfoFixtureBuilder().build()
@@ -314,7 +316,7 @@ class ReservationServiceTest {
     fun `존재하지 않는 좌석은 취소할 수 없다`() {
         // given
         val performancePort = mockk<PerformancePort>()
-        val sut = ReservationService(performancePort, emptyList())
+        val sut = ReservationService(performancePort, emptyList(), mockk<ApplicationEventPublisher>())
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val seatInfo = SeatInfoFixtureBuilder().build()
@@ -338,7 +340,7 @@ class ReservationServiceTest {
     fun `존재하지 않는 예약은 취소할 수 없다`() {
         // given
         val performancePort = mockk<PerformancePort>()
-        val sut = ReservationService(performancePort, emptyList())
+        val sut = ReservationService(performancePort, emptyList(), mockk<ApplicationEventPublisher>())
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val seatInfo = SeatInfoFixtureBuilder().build()
@@ -369,7 +371,7 @@ class ReservationServiceTest {
     fun `자신이 예약하지 않은 예약은 취소할 수 없다`() {
         // given
         val performancePort = mockk<PerformancePort>()
-        val sut = ReservationService(performancePort, emptyList())
+        val sut = ReservationService(performancePort, emptyList(), mockk<ApplicationEventPublisher>())
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val seatInfo = SeatInfoFixtureBuilder().build()
@@ -410,7 +412,8 @@ class ReservationServiceTest {
     fun `예약 취소에 성공한다`() {
         // given
         val performancePort = mockk<PerformancePort>()
-        val sut = ReservationService(performancePort, emptyList())
+        val applicationEventPublisher = mockk<ApplicationEventPublisher>()
+        val sut = ReservationService(performancePort, emptyList(), applicationEventPublisher)
         val performanceId = PerformanceId(UUID.randomUUID())
         val userInfo = UserInfoFixtureBuilder().build()
         val seatInfo = SeatInfoFixtureBuilder().build()
@@ -434,12 +437,14 @@ class ReservationServiceTest {
             ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
         justRun { performancePort.update(performance) }
+        justRun { applicationEventPublisher.publishEvent(NotificationEvent(performanceId, seatInfo)) }
 
         // when
         sut.cancel(performanceId, userInfo, seatInfo)
 
         // then
-        verify { performancePort.update(performance) }
+        verify(exactly = 1) { performancePort.update(performance) }
+        verify(exactly = 1) { applicationEventPublisher.publishEvent(NotificationEvent(performanceId, seatInfo)) }
         performance.getPerformanceSeatInfos().find { it.isSameSeat(seatInfo) }?.isReserveAvailable() shouldBe true
         performance.getReservations().size shouldBe 0
     }

@@ -1,17 +1,20 @@
 package com.wanted.preonboarding.ticket.application.ticket
 
 import com.wanted.preonboarding.ticket.application.discount.DiscountPolicy
+import com.wanted.preonboarding.ticket.application.notification.NotificationEvent
 import com.wanted.preonboarding.ticket.domain.Performance
 import com.wanted.preonboarding.ticket.domain.PerformanceId
 import com.wanted.preonboarding.ticket.domain.SeatInfo
 import com.wanted.preonboarding.ticket.domain.UserInfo
 import jakarta.transaction.Transactional
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 
 @Service
 class ReservationService(
     private val performancePort: PerformancePort,
     private val discountPolicies: List<DiscountPolicy>,
+    private val applicationEventPublisher: ApplicationEventPublisher,
 ) {
     @Transactional
     fun reserve(
@@ -48,6 +51,8 @@ class ReservationService(
 
         performance.cancel(userInfo, seatInfo)
         performancePort.update(performance)
+
+        applicationEventPublisher.publishEvent(NotificationEvent(performanceId, seatInfo))
         return performance
     }
 }
