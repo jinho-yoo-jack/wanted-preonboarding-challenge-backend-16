@@ -42,7 +42,7 @@ public class PerformanceSeatInfo {
     @Comment("좌석 행")
     private int seat;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     @Comment("예약 가능 여부")
     private String isReserve;
 

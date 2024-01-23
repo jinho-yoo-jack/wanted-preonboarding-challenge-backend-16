@@ -3,10 +3,8 @@ package com.wanted.preonboarding.ticketing.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,7 +20,7 @@ public class Performance {
     @Comment("공연/전시 ID")
     private UUID id;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     @Comment("공연/전시 이름")
     private String name;
 
@@ -42,7 +40,7 @@ public class Performance {
     @Comment("공연 일시")
     private LocalDateTime startDate;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     @Comment("disable")
     private String isReserve;
 

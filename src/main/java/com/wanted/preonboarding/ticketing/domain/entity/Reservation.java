@@ -27,11 +27,11 @@ public class Reservation {
     @Comment("공연전시ID")
     private Performance performance;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     @Comment("예약자명")
     private String name;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     @Comment("예약자 휴대전화 번호")
     private String phoneNumber;
 
