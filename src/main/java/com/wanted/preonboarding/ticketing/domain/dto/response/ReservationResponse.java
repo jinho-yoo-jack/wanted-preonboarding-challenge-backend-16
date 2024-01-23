@@ -10,6 +10,7 @@ import java.util.UUID;
 public class ReservationResponse {
     private String performanceName;
     private UUID performanceId;
+    private int changes;
     private int round;
     private int gate;
     private String line;

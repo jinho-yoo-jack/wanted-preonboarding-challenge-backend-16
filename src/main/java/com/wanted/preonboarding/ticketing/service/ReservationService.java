@@ -22,11 +22,12 @@ public class ReservationService {
 
     @Transactional
     public ReservationResponse createReservation(ReservationRequest reservationRequest) {
-        Reservation reservation = reserveTicket(reservationRequest);
         Performance performance = findPerformanceName(reservationRequest);
+        Reservation reservation = reserveTicket(reservationRequest, performance);
+        int changes = reservationRequest.calculateChange(performance);
         reserveSeat(reservationRequest);
 
-        return reservation.toCreateReservationResponse(performance);
+        return reservation.toCreateReservationResponse(performance, changes);
     }
 
     private Performance findPerformanceName(ReservationRequest reservationRequest) {
@@ -38,9 +39,8 @@ public class ReservationService {
         performanceSeatInfo.updateReservationStatus(reservationRequest);
     }
 
-    private Reservation reserveTicket(ReservationRequest reservationRequest) {
-        Reservation reservation = reservationRequest.fromTicket();
-
+    private Reservation reserveTicket(ReservationRequest reservationRequest, Performance performance) {
+        Reservation reservation = reservationRequest.fromTicket(performance);
         return reservationRepository.save(reservation);
     }
 }

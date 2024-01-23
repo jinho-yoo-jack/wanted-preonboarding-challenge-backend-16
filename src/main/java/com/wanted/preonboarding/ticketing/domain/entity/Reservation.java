@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Builder
@@ -60,10 +59,11 @@ public class Reservation {
     @Comment("업데이트 시간")
     private LocalDateTime updatedAt;
 
-    public ReservationResponse toCreateReservationResponse(Performance performance) {
+    public ReservationResponse toCreateReservationResponse(Performance performance, int changes) {
         return ReservationResponse.builder()
                 .performanceId(this.performance.getId())
                 .performanceName(performance.getName())
+                .changes(changes)
                 .round(this.round)
                 .gate(this.gate)
                 .line(this.line)

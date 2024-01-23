@@ -53,4 +53,8 @@ public class Performance {
     @Column(nullable = false)
     @Comment("업데이트 시간")
     private LocalDateTime updatedAt;
+
+    public int calculateChange(int balance) {
+        return balance - this.price;
+    }
 }

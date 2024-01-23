@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticketing.domain.dto.request;
 
-import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
+import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.Reservation;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import java.util.UUID;
 public class ReservationRequest {
     private String reservationName;
     private String phoneNumber;
-    private Long balance;
+    private int balance;
     private UUID performanceId;
     private Long seatId;
     private int round;
@@ -22,11 +22,11 @@ public class ReservationRequest {
     private int seat;
     private String reservationStatus;
 
-    public Reservation fromTicket() {
+    public Reservation fromTicket(Performance performance) {
         return Reservation.builder()
                 .name(reservationName)
                 .phoneNumber(phoneNumber)
-                .performanceId(performanceId)
+                .performance(performance)
                 .round(round)
                 .gate(gate)
                 .line(line)
@@ -34,5 +34,9 @@ public class ReservationRequest {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
+    }
+
+    public int calculateChange(Performance performance) {
+        return performance.calculateChange(this.balance);
     }
 }
