@@ -34,27 +34,28 @@
       - `Send Message: 공연ID, 공연명, 회차, 시작 일시 예매 가능한 좌석 정보`의 기능을 구현할 수 있다. 
 
 ### 도메인 이벤트들 생각해보기
-![스크린샷 2024-01-23 14.39.51.png](..%2F..%2F..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fmv%2Fyzjj2qhn12b9zgjbqk6k_mfh0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_G7v9og%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-01-23%2014.39.51.png)
+![스크린샷 2024-01-23 15 54 32](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/848e7096-8c00-408c-a5f2-fc5364f04e80)
 - 1차적으로 생각한 도메인 이벤트들이다.
 
 ### 외부 이벤트 생각해보기
-![스크린샷 2024-01-23 14.40.46.png](..%2F..%2F..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fmv%2Fyzjj2qhn12b9zgjbqk6k_mfh0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_PDhuX5%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-01-23%2014.40.46.png)
+![스크린샷 2024-01-23 15 54 50](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/b6d8c010-53ac-4c6f-8753-0eb9467e0060)
 - 도입할 가능성이 있는 외부 이벤트들도 생각해보았다. 
 - 결제 시스템의 경우, 후에 실제 결제 기능을 만들 수 있기 때문에 여지만 남겨두었다. 
 - 알림 문자 발송은 Twilio를 이용한 SMS 요청 기능을 활용할 계획이다. 
 
 ### 커맨드 작성하기
 - 위에서 비즈니스 요구사항을 커맨드라고 했지만, 커맨드를 추가로 작성하는 이유는, 비즈니스 요구사항을 충족하기 위해서 선행되어야 할 커맨드들이 있을 수 있다고 판단했기 때문이다.
-![스크린샷 2024-01-23 14.44.26.png](..%2F..%2F..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fmv%2Fyzjj2qhn12b9zgjbqk6k_mfh0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_NYQ6qX%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-01-23%2014.44.26.png)
+![스크린샷 2024-01-23 15 55 16](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/57fbb6ed-c703-46cc-9f2e-f4e26963beb7)
 - 실제로 예약 가능 공연 전체 조회/예약 가능 공연의 좌석 조회 api가 분리되었다. 
 - 예약 취소시 예약 가능 알림 기능은 예약 취소 api의 호출시에 성공했을 때 알림처리가 되도록 만들었다. 
 
 ### 핫스팟 생각해보기
+![스크린샷 2024-01-23 15 55 45](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/8502ce68-aa47-46b5-97a0-7ba8f4b9159a)
 
-![스크린샷 2024-01-23 14.47.24.png](..%2F..%2F..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fmv%2Fyzjj2qhn12b9zgjbqk6k_mfh0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_JuMeBv%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-01-23%2014.47.24.png)
 - README.md에 할인이 적용될 수 있다고 했지만, 그 방식이 모호했다. 
 - 할인율이 공연의 분류에 따른 할인인지, 공연의 UUID를 이용한 할인율 저장인지 확실치가 않았다. 
-- init.db를 보았을 때, 공연마다 할인율을 적용하는 것으로 인식해, UUID에 할인율을 저장하는 방식으로 객체를 생성하기로 했다. 
+- init.db를 보았을 때, 공연마다 할인율을 적용하는 것으로 인식해, UUID에 할인율을 저장하는 방식으로 객체를 생성하기로 했다.
+- 또한, 예약 가능 여부확인과 좌석 처리에 대해 고민했었고, 이에 대한 해결방안을 같이 올려두었다.
 
 ### 액터 배치하기(안한 이유)
 
@@ -69,23 +70,29 @@
 - 액터는 배치하지 않기로 했다. 
 
 ### 애그리게이트 정의
-![img_1.png](img_1.png)
+![img_1](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/b493472d-d214-4728-947e-4c9287bc2d56)
+
 - 회원, 공연, 좌석이라는 애그리게이트 루트를 두어서 정의를 해보았다. 
 - 하지만, 해당 애그리게이트를 전체로 보기에는, 너무 방대하다는 생각이 들었다. 
 
 ### 애그리게이트 루트에서 밸류 객체 분리해보기
-![img.png](img.png)
+![img](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/223c2607-f226-4104-b6a9-36842c4041ab)
+
+
 - 이러한 방식으로 애그리게이트를 원시값을 포장할 때 까지 분류해보았다. 
 - 회원의 경우, 요청시에 회원 정보와 잔고로 묶어 회원 정보만으로도 요청이 오갈 수 있기 때문에 다시 캡슐화시켰다. 
 
 ### 다시 밸류 객체를 올려보기
-![img_2.png](img_2.png)
+![img_2](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/157df6ac-c289-42c1-9d5b-84ec419cf5da)
+
 - 이런식으로 객체를 올릴 수 있게 되었다. 
 
 ### 바운디드 컨텍스트 정의하기 및 정책 도출
-![img_3.png](img_3.png)
+![img_3](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/fa785821-63d3-498e-8c99-bf71a7fc222f)
+
 - 애그리게이트를 기준으로 새롭게 칸을 정리해보려고 한다. 
 
-![img_4.png](img_4.png)
+![img_4](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/71ee2192-0a7a-4d5e-8dad-38996449328f)
+
 - 회원, 공연, 좌석이라는 바운디드 컨텍스트가 있고, 해당 컨텍스트에 따른 정책들을 등록했다. 
 
