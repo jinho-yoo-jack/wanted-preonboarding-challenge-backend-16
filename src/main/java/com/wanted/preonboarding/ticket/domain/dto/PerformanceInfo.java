@@ -4,6 +4,8 @@ import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
@@ -14,7 +16,7 @@ public class PerformanceInfo {
     private UUID performanceId;
     private String performanceName;
     private String performanceType;
-    private Date startDate;
+    private LocalDateTime startDate;
     private String isReserve;
 
     public static PerformanceInfo of(Performance entity) {

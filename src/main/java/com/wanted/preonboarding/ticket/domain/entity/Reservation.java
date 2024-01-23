@@ -32,10 +32,21 @@ public class Reservation {
     @Column(nullable = false)
     private int round;
     private int gate;
-    private char line;
+    private String line;
     private int seat;
 
     @ManyToOne
     private PerformanceSeatInfo performanceSeatInfo;
 
+    public static Reservation of(ReserveInfo info, Performance performance, int gate) {
+        return Reservation.builder()
+            .performance(performance)
+            .name(info.getReservationName())
+            .phoneNumber(info.getReservationPhoneNumber())
+            .round(info.getRound())
+            .gate(gate)
+            .line(info.getLine())
+            .seat(info.getSeat())
+            .build();
+    }
 }
