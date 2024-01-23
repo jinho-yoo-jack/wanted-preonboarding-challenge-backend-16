@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.infra.adapter
 
 import com.wanted.preonboarding.core.CursorResult
+import com.wanted.preonboarding.core.exception.ApplicationException
 import com.wanted.preonboarding.ticket.application.ticket.PerformancePort
 import com.wanted.preonboarding.ticket.domain.Performance
 import com.wanted.preonboarding.ticket.domain.PerformanceId
@@ -77,7 +78,7 @@ class PerformanceAdapter(
             } else {
                 val cursorEntity =
                     performanceEntityJpaRepository.findByIdOrNull(cursor.value)
-                        ?: throw RuntimeException("존재하지 않는 공연입니다.")
+                        ?: throw ApplicationException.NotFoundException("존재하지 않는 공연입니다.")
                 performanceEntityJpaRepository.search(
                     reserveAvailable,
                     cursorEntity.id!!,

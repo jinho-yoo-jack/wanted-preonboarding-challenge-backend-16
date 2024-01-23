@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain
 
+import com.wanted.preonboarding.core.exception.ApplicationException
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -22,13 +23,13 @@ class Performance(
         seatInfo: SeatInfo,
         discountRate: Double = 0.0,
     ) {
-        if (!isReserve) throw RuntimeException("예약이 마감되었습니다.")
-        if (balance < price * (1.0 - discountRate)) throw RuntimeException("잔액이 부족합니다.")
+        if (!isReserve) throw ApplicationException.BadRequestException("예약이 마감되었습니다.")
+        if (balance < price * (1.0 - discountRate)) throw ApplicationException.BadRequestException("잔액이 부족합니다.")
         if (performanceSeatInfos.find { it.isSameSeat(seatInfo) && it.isReserveAvailable() } == null) {
-            throw RuntimeException("존재하지 않는 좌석입니다.")
+            throw ApplicationException.NotFoundException("존재하지 않는 좌석입니다.")
         }
         if (reservations.find { it.isSameSeat(seatInfo) } != null) {
-            throw RuntimeException("이미 예약된 좌석입니다.")
+            throw ApplicationException.BadRequestException("이미 예약된 좌석입니다.")
         }
 
         performanceSeatInfos.find { it.isSameSeat(seatInfo) }?.setAsReservedSeat()
@@ -45,11 +46,11 @@ class Performance(
         seatInfo: SeatInfo,
     ) {
         if (performanceSeatInfos.find { it.isSameSeat(seatInfo) } == null) {
-            throw RuntimeException("존재하지 않는 좌석입니다.")
+            throw ApplicationException.NotFoundException("존재하지 않는 좌석입니다.")
         }
         val reservation =
             reservations.find { it.isSameSeat(seatInfo) && it.isReserved(userInfo) }
-                ?: throw RuntimeException("예약된 내역이 없습니다.")
+                ?: throw ApplicationException.BadRequestException("예약된 내역이 없습니다.")
 
         performanceSeatInfos.find { it.isSameSeat(seatInfo) }?.setAsNotReservedSeat()
         reservations.remove(reservation)

@@ -20,22 +20,24 @@ class ReservationControllerTest : IntegrationTest() {
     @Test
     fun `공연이 존재하지 않으면 예약에 실패한다`() {
         // given
-        val request = ReservationRequest(
-            performanceId = UUID.randomUUID(),
-            userInfo = UserInfoFixtureBuilder().build(),
-            balance = 10000,
-            seatInfo = SeatInfoFixtureBuilder().build(),
-        )
+        val request =
+            ReservationRequest(
+                performanceId = UUID.randomUUID(),
+                userInfo = UserInfoFixtureBuilder().build(),
+                balance = 10000,
+                seatInfo = SeatInfoFixtureBuilder().build(),
+            )
 
         // when
-        val response = request(
-            method = HttpMethod.POST,
-            url = "/v1/reservations",
-            body = request,
-        )
+        val response =
+            request(
+                method = HttpMethod.POST,
+                url = "/v1/reservations",
+                body = request,
+            )
 
         // then
-        response.andExpect(status().isBadRequest).andExpect {
+        response.andExpect(status().isNotFound).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "존재하지 않는 공연입니다."
         }
@@ -44,29 +46,32 @@ class ReservationControllerTest : IntegrationTest() {
     @Test
     fun `예약이 마감된 공연은 예약할 수 없다`() {
         // given
-        val performance = save(
-            PerformanceEntity(
-                name = "performance",
-                type = PerformanceType.CONCERT,
-                price = 10000,
-                round = 1,
-                startDate = LocalDateTime.now(),
-                isReserve = false,
+        val performance =
+            save(
+                PerformanceEntity(
+                    name = "performance",
+                    type = PerformanceType.CONCERT,
+                    price = 10000,
+                    round = 1,
+                    startDate = LocalDateTime.now(),
+                    isReserve = false,
+                ),
             )
-        )
-        val request = ReservationRequest(
-            performanceId = performance.id!!,
-            userInfo = UserInfoFixtureBuilder().build(),
-            balance = 10000,
-            seatInfo = SeatInfoFixtureBuilder().build(),
-        )
+        val request =
+            ReservationRequest(
+                performanceId = performance.id!!,
+                userInfo = UserInfoFixtureBuilder().build(),
+                balance = 10000,
+                seatInfo = SeatInfoFixtureBuilder().build(),
+            )
 
         // when
-        val response = request(
-            method = HttpMethod.POST,
-            url = "/v1/reservations",
-            body = request,
-        )
+        val response =
+            request(
+                method = HttpMethod.POST,
+                url = "/v1/reservations",
+                body = request,
+            )
 
         // then
         response.andExpect(status().isBadRequest).andExpect {
@@ -78,29 +83,32 @@ class ReservationControllerTest : IntegrationTest() {
     @Test
     fun `잔액이 부족하면 예약할 수 없다`() {
         // given
-        val performance = save(
-            PerformanceEntity(
-                name = "performance",
-                type = PerformanceType.CONCERT,
-                price = 10000,
-                round = 1,
-                startDate = LocalDateTime.now(),
-                isReserve = true,
+        val performance =
+            save(
+                PerformanceEntity(
+                    name = "performance",
+                    type = PerformanceType.CONCERT,
+                    price = 10000,
+                    round = 1,
+                    startDate = LocalDateTime.now(),
+                    isReserve = true,
+                ),
             )
-        )
-        val request = ReservationRequest(
-            performanceId = performance.id!!,
-            userInfo = UserInfoFixtureBuilder().build(),
-            balance = 10,
-            seatInfo = SeatInfoFixtureBuilder().build(),
-        )
+        val request =
+            ReservationRequest(
+                performanceId = performance.id!!,
+                userInfo = UserInfoFixtureBuilder().build(),
+                balance = 10,
+                seatInfo = SeatInfoFixtureBuilder().build(),
+            )
 
         // when
-        val response = request(
-            method = HttpMethod.POST,
-            url = "/v1/reservations",
-            body = request,
-        )
+        val response =
+            request(
+                method = HttpMethod.POST,
+                url = "/v1/reservations",
+                body = request,
+            )
 
         // then
         response.andExpect(status().isBadRequest).andExpect {
@@ -112,32 +120,35 @@ class ReservationControllerTest : IntegrationTest() {
     @Test
     fun `좌석이 존재하지 않으면 예약할 수 없다`() {
         // given
-        val performance = save(
-            PerformanceEntity(
-                name = "performance",
-                type = PerformanceType.CONCERT,
-                price = 10000,
-                round = 1,
-                startDate = LocalDateTime.now(),
-                isReserve = true,
+        val performance =
+            save(
+                PerformanceEntity(
+                    name = "performance",
+                    type = PerformanceType.CONCERT,
+                    price = 10000,
+                    round = 1,
+                    startDate = LocalDateTime.now(),
+                    isReserve = true,
+                ),
             )
-        )
-        val request = ReservationRequest(
-            performanceId = performance.id!!,
-            userInfo = UserInfoFixtureBuilder().build(),
-            balance = 10000,
-            seatInfo = SeatInfoFixtureBuilder().build(),
-        )
+        val request =
+            ReservationRequest(
+                performanceId = performance.id!!,
+                userInfo = UserInfoFixtureBuilder().build(),
+                balance = 10000,
+                seatInfo = SeatInfoFixtureBuilder().build(),
+            )
 
         // when
-        val response = request(
-            method = HttpMethod.POST,
-            url = "/v1/reservations",
-            body = request,
-        )
+        val response =
+            request(
+                method = HttpMethod.POST,
+                url = "/v1/reservations",
+                body = request,
+            )
 
         // then
-        response.andExpect(status().isBadRequest).andExpect {
+        response.andExpect(status().isNotFound).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "존재하지 않는 좌석입니다."
         }
@@ -146,16 +157,17 @@ class ReservationControllerTest : IntegrationTest() {
     @Test
     fun `예약할 수 없는 좌석은 예약할 수 없다`() {
         // given
-        val performance = save(
-            PerformanceEntity(
-                name = "performance",
-                type = PerformanceType.CONCERT,
-                price = 10000,
-                round = 1,
-                startDate = LocalDateTime.now(),
-                isReserve = true,
+        val performance =
+            save(
+                PerformanceEntity(
+                    name = "performance",
+                    type = PerformanceType.CONCERT,
+                    price = 10000,
+                    round = 1,
+                    startDate = LocalDateTime.now(),
+                    isReserve = true,
+                ),
             )
-        )
         val seatInfo = SeatInfoFixtureBuilder().build()
         save(
             PerformanceSeatInfoEntity(
@@ -165,24 +177,26 @@ class ReservationControllerTest : IntegrationTest() {
                 line = seatInfo.line,
                 seat = seatInfo.seat,
                 isReserve = false,
+            ),
+        )
+        val request =
+            ReservationRequest(
+                performanceId = performance.id!!,
+                userInfo = UserInfoFixtureBuilder().build(),
+                balance = 10000,
+                seatInfo = seatInfo,
             )
-        )
-        val request = ReservationRequest(
-            performanceId = performance.id!!,
-            userInfo = UserInfoFixtureBuilder().build(),
-            balance = 10000,
-            seatInfo = seatInfo,
-        )
 
         // when
-        val response = request(
-            method = HttpMethod.POST,
-            url = "/v1/reservations",
-            body = request,
-        )
+        val response =
+            request(
+                method = HttpMethod.POST,
+                url = "/v1/reservations",
+                body = request,
+            )
 
         // then
-        response.andExpect(status().isBadRequest).andExpect {
+        response.andExpect(status().isNotFound).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "존재하지 않는 좌석입니다."
         }
@@ -191,16 +205,17 @@ class ReservationControllerTest : IntegrationTest() {
     @Test
     fun `이미 예약된 좌석은 예약할 수 없다`() {
         // given
-        val performance = save(
-            PerformanceEntity(
-                name = "performance",
-                type = PerformanceType.CONCERT,
-                price = 10000,
-                round = 1,
-                startDate = LocalDateTime.now(),
-                isReserve = true,
+        val performance =
+            save(
+                PerformanceEntity(
+                    name = "performance",
+                    type = PerformanceType.CONCERT,
+                    price = 10000,
+                    round = 1,
+                    startDate = LocalDateTime.now(),
+                    isReserve = true,
+                ),
             )
-        )
         val seatInfo = SeatInfoFixtureBuilder().build()
         save(
             PerformanceSeatInfoEntity(
@@ -210,7 +225,7 @@ class ReservationControllerTest : IntegrationTest() {
                 line = seatInfo.line,
                 seat = seatInfo.seat,
                 isReserve = true,
-            )
+            ),
         )
         save(
             ReservationEntity(
@@ -221,21 +236,23 @@ class ReservationControllerTest : IntegrationTest() {
                 seat = seatInfo.seat,
                 name = "name",
                 phoneNumber = "01012345678",
+            ),
+        )
+        val request =
+            ReservationRequest(
+                performanceId = performance.id!!,
+                userInfo = UserInfoFixtureBuilder().build(),
+                balance = 10000,
+                seatInfo = seatInfo,
             )
-        )
-        val request = ReservationRequest(
-            performanceId = performance.id!!,
-            userInfo = UserInfoFixtureBuilder().build(),
-            balance = 10000,
-            seatInfo = seatInfo,
-        )
 
         // when
-        val response = request(
-            method = HttpMethod.POST,
-            url = "/v1/reservations",
-            body = request,
-        )
+        val response =
+            request(
+                method = HttpMethod.POST,
+                url = "/v1/reservations",
+                body = request,
+            )
 
         // then
         response.andExpect(status().isBadRequest).andExpect {
@@ -247,16 +264,17 @@ class ReservationControllerTest : IntegrationTest() {
     @Test
     fun `예약에 성공한다`() {
         // given
-        val performance = save(
-            PerformanceEntity(
-                name = "performance",
-                type = PerformanceType.CONCERT,
-                price = 10000,
-                round = 1,
-                startDate = LocalDateTime.now(),
-                isReserve = true,
+        val performance =
+            save(
+                PerformanceEntity(
+                    name = "performance",
+                    type = PerformanceType.CONCERT,
+                    price = 10000,
+                    round = 1,
+                    startDate = LocalDateTime.now(),
+                    isReserve = true,
+                ),
             )
-        )
         val seatInfo = SeatInfoFixtureBuilder().build()
         save(
             PerformanceSeatInfoEntity(
@@ -266,24 +284,26 @@ class ReservationControllerTest : IntegrationTest() {
                 line = seatInfo.line,
                 seat = seatInfo.seat,
                 isReserve = true,
+            ),
+        )
+        val request =
+            ReservationRequest(
+                performanceId = performance.id!!,
+                userInfo = UserInfoFixtureBuilder().build(),
+                balance = 10000,
+                seatInfo = seatInfo,
             )
-        )
-        val request = ReservationRequest(
-            performanceId = performance.id!!,
-            userInfo = UserInfoFixtureBuilder().build(),
-            balance = 10000,
-            seatInfo = seatInfo,
-        )
 
         // when
-        val response = request(
-            method = HttpMethod.POST,
-            url = "/v1/reservations",
-            body = request,
-        )
+        val response =
+            request(
+                method = HttpMethod.POST,
+                url = "/v1/reservations",
+                body = request,
+            )
 
         // then
-        response.andExpect(status().isOk()).andExpect {
+        response.andExpect(status().isOk).andExpect {
             val performanceId = JsonPath.read(it.response.contentAsString, "$.data.performanceId") as String
             val name = JsonPath.read(it.response.contentAsString, "$.data.userInfo.name") as String
             val phoneNumber = JsonPath.read(it.response.contentAsString, "$.data.userInfo.phoneNumber") as String
@@ -300,17 +320,18 @@ class ReservationControllerTest : IntegrationTest() {
             line shouldBe seatInfo.line
             seat shouldBe seatInfo.seat
 
-            val reservation = findOne<ReservationEntity>(
-                """
+            val reservation =
+                findOne<ReservationEntity>(
+                    """
                     SELECT r FROM ReservationEntity r
                     WHERE r.performanceId = :performanceId AND r.name = :name AND r.phoneNumber = :phoneNumber
-                """.trimIndent(),
-                mapOf(
-                    "performanceId" to performance.id!!,
-                    "name" to request.userInfo.name,
-                    "phoneNumber" to request.userInfo.phoneNumber,
+                    """.trimIndent(),
+                    mapOf(
+                        "performanceId" to performance.id!!,
+                        "name" to request.userInfo.name,
+                        "phoneNumber" to request.userInfo.phoneNumber,
+                    ),
                 )
-            )
             reservation.performanceId shouldBe performance.id
             reservation.name shouldBe request.userInfo.name
             reservation.phoneNumber shouldBe request.userInfo.phoneNumber
@@ -319,19 +340,20 @@ class ReservationControllerTest : IntegrationTest() {
             reservation.line shouldBe seatInfo.line
             reservation.seat shouldBe seatInfo.seat
 
-            val performanceSeatInfo = findOne<PerformanceSeatInfoEntity>(
-                """
+            val performanceSeatInfo =
+                findOne<PerformanceSeatInfoEntity>(
+                    """
                     SELECT psi FROM PerformanceSeatInfoEntity psi
                     WHERE psi.performanceId = :performanceId AND psi.round = :round AND psi.gate = :gate AND psi.line = :line AND psi.seat = :seat
-                """.trimIndent(),
-                mapOf(
-                    "performanceId" to performance.id!!,
-                    "round" to seatInfo.round,
-                    "gate" to seatInfo.gate,
-                    "line" to seatInfo.line,
-                    "seat" to seatInfo.seat,
+                    """.trimIndent(),
+                    mapOf(
+                        "performanceId" to performance.id!!,
+                        "round" to seatInfo.round,
+                        "gate" to seatInfo.gate,
+                        "line" to seatInfo.line,
+                        "seat" to seatInfo.seat,
+                    ),
                 )
-            )
             performanceSeatInfo.isReserve shouldBe false
         }
     }
@@ -339,21 +361,23 @@ class ReservationControllerTest : IntegrationTest() {
     @Test
     fun `공연이 존재하지 않으면 예약취소에 실패한다`() {
         // given
-        val request = ReservationCancelRequest(
-            performanceId = UUID.randomUUID(),
-            userInfo = UserInfoFixtureBuilder().build(),
-            seatInfo = SeatInfoFixtureBuilder().build(),
-        )
+        val request =
+            ReservationCancelRequest(
+                performanceId = UUID.randomUUID(),
+                userInfo = UserInfoFixtureBuilder().build(),
+                seatInfo = SeatInfoFixtureBuilder().build(),
+            )
 
         // when
-        val response = request(
-            method = HttpMethod.POST,
-            url = "/v1/reservations/cancel",
-            body = request,
-        )
+        val response =
+            request(
+                method = HttpMethod.POST,
+                url = "/v1/reservations/cancel",
+                body = request,
+            )
 
         // then
-        response.andExpect(status().isBadRequest).andExpect {
+        response.andExpect(status().isNotFound).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "존재하지 않는 공연입니다."
         }
@@ -362,31 +386,34 @@ class ReservationControllerTest : IntegrationTest() {
     @Test
     fun `좌석이 존재하지 않으면 예약을 취소할 수 없다`() {
         // given
-        val performance = save(
-            PerformanceEntity(
-                name = "performance",
-                type = PerformanceType.CONCERT,
-                price = 10000,
-                round = 1,
-                startDate = LocalDateTime.now(),
-                isReserve = true,
+        val performance =
+            save(
+                PerformanceEntity(
+                    name = "performance",
+                    type = PerformanceType.CONCERT,
+                    price = 10000,
+                    round = 1,
+                    startDate = LocalDateTime.now(),
+                    isReserve = true,
+                ),
             )
-        )
-        val request = ReservationCancelRequest(
-            performanceId = performance.id!!,
-            userInfo = UserInfoFixtureBuilder().build(),
-            seatInfo = SeatInfoFixtureBuilder().build(),
-        )
+        val request =
+            ReservationCancelRequest(
+                performanceId = performance.id!!,
+                userInfo = UserInfoFixtureBuilder().build(),
+                seatInfo = SeatInfoFixtureBuilder().build(),
+            )
 
         // when
-        val response = request(
-            method = HttpMethod.POST,
-            url = "/v1/reservations/cancel",
-            body = request,
-        )
+        val response =
+            request(
+                method = HttpMethod.POST,
+                url = "/v1/reservations/cancel",
+                body = request,
+            )
 
         // then
-        response.andExpect(status().isBadRequest).andExpect {
+        response.andExpect(status().isNotFound).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "존재하지 않는 좌석입니다."
         }
@@ -395,16 +422,17 @@ class ReservationControllerTest : IntegrationTest() {
     @Test
     fun `예약된 내역이 존재하지 않으면 예약을 취소할 수 없다`() {
         // given
-        val performance = save(
-            PerformanceEntity(
-                name = "performance",
-                type = PerformanceType.CONCERT,
-                price = 10000,
-                round = 1,
-                startDate = LocalDateTime.now(),
-                isReserve = true,
+        val performance =
+            save(
+                PerformanceEntity(
+                    name = "performance",
+                    type = PerformanceType.CONCERT,
+                    price = 10000,
+                    round = 1,
+                    startDate = LocalDateTime.now(),
+                    isReserve = true,
+                ),
             )
-        )
         val seatInfo = SeatInfoFixtureBuilder().build()
         save(
             PerformanceSeatInfoEntity(
@@ -414,20 +442,22 @@ class ReservationControllerTest : IntegrationTest() {
                 line = seatInfo.line,
                 seat = seatInfo.seat,
                 isReserve = true,
+            ),
+        )
+        val request =
+            ReservationCancelRequest(
+                performanceId = performance.id!!,
+                userInfo = UserInfoFixtureBuilder().build(),
+                seatInfo = seatInfo,
             )
-        )
-        val request = ReservationCancelRequest(
-            performanceId = performance.id!!,
-            userInfo = UserInfoFixtureBuilder().build(),
-            seatInfo = seatInfo
-        )
 
         // when
-        val response = request(
-            method = HttpMethod.POST,
-            url = "/v1/reservations/cancel",
-            body = request,
-        )
+        val response =
+            request(
+                method = HttpMethod.POST,
+                url = "/v1/reservations/cancel",
+                body = request,
+            )
 
         // then
         response.andExpect(status().isBadRequest).andExpect {
@@ -439,16 +469,17 @@ class ReservationControllerTest : IntegrationTest() {
     @Test
     fun `타인이 한 예약은 취소할 수 없다`() {
         // given
-        val performance = save(
-            PerformanceEntity(
-                name = "performance",
-                type = PerformanceType.CONCERT,
-                price = 10000,
-                round = 1,
-                startDate = LocalDateTime.now(),
-                isReserve = true,
+        val performance =
+            save(
+                PerformanceEntity(
+                    name = "performance",
+                    type = PerformanceType.CONCERT,
+                    price = 10000,
+                    round = 1,
+                    startDate = LocalDateTime.now(),
+                    isReserve = true,
+                ),
             )
-        )
         val seatInfo = SeatInfoFixtureBuilder().build()
         save(
             PerformanceSeatInfoEntity(
@@ -458,7 +489,7 @@ class ReservationControllerTest : IntegrationTest() {
                 line = seatInfo.line,
                 seat = seatInfo.seat,
                 isReserve = true,
-            )
+            ),
         )
         save(
             ReservationEntity(
@@ -469,20 +500,22 @@ class ReservationControllerTest : IntegrationTest() {
                 seat = seatInfo.seat,
                 name = "모르는 사람",
                 phoneNumber = "01012345678",
+            ),
+        )
+        val request =
+            ReservationCancelRequest(
+                performanceId = performance.id!!,
+                userInfo = UserInfoFixtureBuilder().build(),
+                seatInfo = seatInfo,
             )
-        )
-        val request = ReservationCancelRequest(
-            performanceId = performance.id!!,
-            userInfo = UserInfoFixtureBuilder().build(),
-            seatInfo = seatInfo,
-        )
 
         // when
-        val response = request(
-            method = HttpMethod.POST,
-            url = "/v1/reservations/cancel",
-            body = request,
-        )
+        val response =
+            request(
+                method = HttpMethod.POST,
+                url = "/v1/reservations/cancel",
+                body = request,
+            )
 
         // then
         response.andExpect(status().isBadRequest).andExpect {
@@ -494,16 +527,17 @@ class ReservationControllerTest : IntegrationTest() {
     @Test
     fun `예약 취소에 성공한다`() {
         // given
-        val performance = save(
-            PerformanceEntity(
-                name = "performance",
-                type = PerformanceType.CONCERT,
-                price = 10000,
-                round = 1,
-                startDate = LocalDateTime.now(),
-                isReserve = true,
+        val performance =
+            save(
+                PerformanceEntity(
+                    name = "performance",
+                    type = PerformanceType.CONCERT,
+                    price = 10000,
+                    round = 1,
+                    startDate = LocalDateTime.now(),
+                    isReserve = true,
+                ),
             )
-        )
         val seatInfo = SeatInfoFixtureBuilder().build()
         val userInfo = UserInfoFixtureBuilder().build()
         save(
@@ -514,7 +548,7 @@ class ReservationControllerTest : IntegrationTest() {
                 line = seatInfo.line,
                 seat = seatInfo.seat,
                 isReserve = false,
-            )
+            ),
         )
         save(
             ReservationEntity(
@@ -524,50 +558,54 @@ class ReservationControllerTest : IntegrationTest() {
                 line = seatInfo.line,
                 seat = seatInfo.seat,
                 name = userInfo.name,
-                phoneNumber = userInfo.phoneNumber
+                phoneNumber = userInfo.phoneNumber,
+            ),
+        )
+        val request =
+            ReservationCancelRequest(
+                performanceId = performance.id!!,
+                userInfo = userInfo,
+                seatInfo = seatInfo,
             )
-        )
-        val request = ReservationCancelRequest(
-            performanceId = performance.id!!,
-            userInfo = userInfo,
-            seatInfo = seatInfo,
-        )
 
         // when
-        val response = request(
-            method = HttpMethod.POST,
-            url = "/v1/reservations/cancel",
-            body = request,
-        )
+        val response =
+            request(
+                method = HttpMethod.POST,
+                url = "/v1/reservations/cancel",
+                body = request,
+            )
 
         // then
-        response.andExpect(status().isOk()).andExpect {
-            val reservation = findAll<ReservationEntity>(
-                """
+        response.andExpect(status().isOk).andExpect {
+            val reservation =
+                findAll<ReservationEntity>(
+                    """
                     SELECT r FROM ReservationEntity r
                     WHERE r.performanceId = :performanceId AND r.name = :name AND r.phoneNumber = :phoneNumber
-                """.trimIndent(),
-                mapOf(
-                    "performanceId" to performance.id!!,
-                    "name" to userInfo.name,
-                    "phoneNumber" to userInfo.phoneNumber,
+                    """.trimIndent(),
+                    mapOf(
+                        "performanceId" to performance.id!!,
+                        "name" to userInfo.name,
+                        "phoneNumber" to userInfo.phoneNumber,
+                    ),
                 )
-            )
             reservation.size shouldBe 0
 
-            val performanceSeatInfo = findOne<PerformanceSeatInfoEntity>(
-                """
+            val performanceSeatInfo =
+                findOne<PerformanceSeatInfoEntity>(
+                    """
                     SELECT psi FROM PerformanceSeatInfoEntity psi
                     WHERE psi.performanceId = :performanceId AND psi.round = :round AND psi.gate = :gate AND psi.line = :line AND psi.seat = :seat
-                """.trimIndent(),
-                mapOf(
-                    "performanceId" to performance.id!!,
-                    "round" to seatInfo.round,
-                    "gate" to seatInfo.gate,
-                    "line" to seatInfo.line,
-                    "seat" to seatInfo.seat,
+                    """.trimIndent(),
+                    mapOf(
+                        "performanceId" to performance.id!!,
+                        "round" to seatInfo.round,
+                        "gate" to seatInfo.gate,
+                        "line" to seatInfo.line,
+                        "seat" to seatInfo.seat,
+                    ),
                 )
-            )
             performanceSeatInfo.isReserve shouldBe true
         }
     }

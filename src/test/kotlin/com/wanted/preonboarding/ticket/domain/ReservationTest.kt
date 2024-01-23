@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain
 
+import com.wanted.preonboarding.core.exception.ApplicationException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -16,7 +17,7 @@ class ReservationTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 performance.reserve(
                     userInfo = UserInfoFixtureBuilder().build(),
                     balance = 10000,
@@ -38,7 +39,7 @@ class ReservationTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 performance.reserve(
                     userInfo = UserInfoFixtureBuilder().build(),
                     balance = 9999,
@@ -60,7 +61,7 @@ class ReservationTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 performance.reserve(
                     userInfo = UserInfoFixtureBuilder().build(),
                     balance = 9000,
@@ -84,7 +85,7 @@ class ReservationTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 performance.reserve(
                     userInfo = UserInfoFixtureBuilder().build(),
                     balance = 9999,
@@ -114,7 +115,7 @@ class ReservationTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 performance.reserve(
                     userInfo = UserInfoFixtureBuilder().build(),
                     balance = 9999,
@@ -150,7 +151,7 @@ class ReservationTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 performance.reserve(
                     userInfo = UserInfoFixtureBuilder().build(),
                     balance = 9999,
@@ -235,7 +236,7 @@ class ReservationTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 performance.cancel(
                     userInfo = UserInfoFixtureBuilder().build(),
                     seatInfo = SeatInfoFixtureBuilder().build(),
@@ -264,7 +265,7 @@ class ReservationTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 performance.cancel(
                     userInfo = UserInfoFixtureBuilder().build(),
                     seatInfo = seatInfo,
@@ -304,7 +305,7 @@ class ReservationTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 performance.cancel(
                     userInfo = userInfo,
                     seatInfo = seatInfo,

@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.application.ticket
 
+import com.wanted.preonboarding.core.exception.ApplicationException
 import com.wanted.preonboarding.ticket.application.discount.DiscountPolicy
 import com.wanted.preonboarding.ticket.application.notification.NotificationEvent
 import com.wanted.preonboarding.ticket.domain.Performance
@@ -25,7 +26,7 @@ class ReservationService(
     ): Performance {
         val performance =
             performancePort.findPerformance(performanceId)
-                ?: throw RuntimeException("존재하지 않는 공연입니다.")
+                ?: throw ApplicationException.NotFoundException("존재하지 않는 공연입니다.")
 
         val maxDiscountRate =
             discountPolicies.filter {
@@ -47,7 +48,7 @@ class ReservationService(
     ): Performance {
         val performance =
             performancePort.findPerformance(performanceId)
-                ?: throw RuntimeException("존재하지 않는 공연입니다.")
+                ?: throw ApplicationException.NotFoundException("존재하지 않는 공연입니다.")
 
         performance.cancel(userInfo, seatInfo)
         performancePort.update(performance)

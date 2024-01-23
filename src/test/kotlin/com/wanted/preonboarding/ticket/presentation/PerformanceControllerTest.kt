@@ -15,25 +15,27 @@ class PerformanceControllerTest : IntegrationTest() {
     @Test
     fun `공연 조회에 성공한다`() {
         // given
-        val entity = save(
-            PerformanceEntity(
-                name = "performance",
-                type = PerformanceType.CONCERT,
-                price = 10000,
-                round = 1,
-                startDate = LocalDateTime.now(),
-                isReserve = true,
+        val entity =
+            save(
+                PerformanceEntity(
+                    name = "performance",
+                    type = PerformanceType.CONCERT,
+                    price = 10000,
+                    round = 1,
+                    startDate = LocalDateTime.now(),
+                    isReserve = true,
+                ),
             )
-        )
 
         // when
-        val response = request(
-            method = HttpMethod.GET,
-            url = "/v1/performances/${entity.id}",
-        )
+        val response =
+            request(
+                method = HttpMethod.GET,
+                url = "/v1/performances/${entity.id}",
+            )
 
         // then
-        response.andExpect(status().isOk()).andExpect {
+        response.andExpect(status().isOk).andExpect {
             val id = JsonPath.read(it.response.contentAsString, "$.data.performanceId") as String
             val name = JsonPath.read(it.response.contentAsString, "$.data.name") as String
             val round = JsonPath.read(it.response.contentAsString, "$.data.round") as Int
@@ -53,13 +55,14 @@ class PerformanceControllerTest : IntegrationTest() {
         val id = UUID.randomUUID()
 
         // when
-        val response = request(
-            method = HttpMethod.GET,
-            url = "/v1/performances/${id}",
-        )
+        val response =
+            request(
+                method = HttpMethod.GET,
+                url = "/v1/performances/$id",
+            )
 
         // then
-        response.andExpect(status().isBadRequest).andExpect {
+        response.andExpect(status().isNotFound).andExpect {
             val error = JsonPath.read(it.response.contentAsString, "$.error") as String
             error shouldBe "존재하지 않는 공연입니다."
         }
@@ -76,7 +79,7 @@ class PerformanceControllerTest : IntegrationTest() {
                 round = 1,
                 startDate = LocalDateTime.now(),
                 isReserve = true,
-            )
+            ),
         )
         save(
             PerformanceEntity(
@@ -86,7 +89,7 @@ class PerformanceControllerTest : IntegrationTest() {
                 round = 1,
                 startDate = LocalDateTime.now(),
                 isReserve = true,
-            )
+            ),
         )
         save(
             PerformanceEntity(
@@ -96,17 +99,18 @@ class PerformanceControllerTest : IntegrationTest() {
                 round = 1,
                 startDate = LocalDateTime.now(),
                 isReserve = false,
-            )
+            ),
         )
 
         // when
-        val response = request(
-            method = HttpMethod.GET,
-            url = "/v1/performances?reserveAvailable=true&size=2",
-        )
+        val response =
+            request(
+                method = HttpMethod.GET,
+                url = "/v1/performances?reserveAvailable=true&size=2",
+            )
 
         // then
-        response.andExpect(status().isOk()).andExpect {
+        response.andExpect(status().isOk).andExpect {
             val cursor = JsonPath.read(it.response.contentAsString, "$.data.cursor") as String
             val hasNext = JsonPath.read(it.response.contentAsString, "$.data.hasNext") as Boolean
             val item = JsonPath.read(it.response.contentAsString, "$.data.item") as List<Map<String, Any>>
@@ -127,18 +131,19 @@ class PerformanceControllerTest : IntegrationTest() {
                 round = 1,
                 startDate = LocalDateTime.now(),
                 isReserve = true,
-            )
+            ),
         )
-        val cursorEntity = save(
-            PerformanceEntity(
-                name = "performance2",
-                type = PerformanceType.CONCERT,
-                price = 10000,
-                round = 1,
-                startDate = LocalDateTime.now(),
-                isReserve = true,
+        val cursorEntity =
+            save(
+                PerformanceEntity(
+                    name = "performance2",
+                    type = PerformanceType.CONCERT,
+                    price = 10000,
+                    round = 1,
+                    startDate = LocalDateTime.now(),
+                    isReserve = true,
+                ),
             )
-        )
         save(
             PerformanceEntity(
                 name = "performance3",
@@ -147,17 +152,18 @@ class PerformanceControllerTest : IntegrationTest() {
                 round = 1,
                 startDate = LocalDateTime.now(),
                 isReserve = true,
-            )
+            ),
         )
 
         // when
-        val response = request(
-            method = HttpMethod.GET,
-            url = "/v1/performances?reserveAvailable=true&size=2&cursor=${cursorEntity.id}",
-        )
+        val response =
+            request(
+                method = HttpMethod.GET,
+                url = "/v1/performances?reserveAvailable=true&size=2&cursor=${cursorEntity.id}",
+            )
 
         // then
-        response.andExpect(status().isOk()).andExpect {
+        response.andExpect(status().isOk).andExpect {
             val cursor = JsonPath.read(it.response.contentAsString, "$.data.cursor") as String
             val hasNext = JsonPath.read(it.response.contentAsString, "$.data.hasNext") as Boolean
             val item = JsonPath.read(it.response.contentAsString, "$.data.item") as List<Map<String, Any>>
@@ -170,25 +176,27 @@ class PerformanceControllerTest : IntegrationTest() {
     @Test
     fun `커서 이후에 데이터가 없으면 다건 조회시 빈 데이터를 반환한다`() {
         // given
-        val cursorEntity =  save(
-            PerformanceEntity(
-                name = "performance",
-                type = PerformanceType.CONCERT,
-                price = 10000,
-                round = 1,
-                startDate = LocalDateTime.now(),
-                isReserve = true,
+        val cursorEntity =
+            save(
+                PerformanceEntity(
+                    name = "performance",
+                    type = PerformanceType.CONCERT,
+                    price = 10000,
+                    round = 1,
+                    startDate = LocalDateTime.now(),
+                    isReserve = true,
+                ),
             )
-        )
 
         // when
-        val response = request(
-            method = HttpMethod.GET,
-            url = "/v1/performances?reserveAvailable=true&size=2&cursor=${cursorEntity.id}",
-        )
+        val response =
+            request(
+                method = HttpMethod.GET,
+                url = "/v1/performances?reserveAvailable=true&size=2&cursor=${cursorEntity.id}",
+            )
 
         // then
-        response.andExpect(status().isOk()).andExpect {
+        response.andExpect(status().isOk).andExpect {
             val cursor = JsonPath.read(it.response.contentAsString, "$.data.cursor") as String?
             val hasNext = JsonPath.read(it.response.contentAsString, "$.data.hasNext") as Boolean
             val item = JsonPath.read(it.response.contentAsString, "$.data.item") as List<Map<String, Any>>

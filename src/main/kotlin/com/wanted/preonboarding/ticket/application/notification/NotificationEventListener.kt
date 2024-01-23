@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.application.notification
 
+import com.wanted.preonboarding.core.exception.ApplicationException
 import com.wanted.preonboarding.ticket.application.ticket.PerformancePort
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
@@ -16,7 +17,7 @@ class NotificationEventListener(
     fun sendNotification(notificationEvent: NotificationEvent) {
         val performance =
             performancePort.findPerformance(notificationEvent.performanceId)
-                ?: throw RuntimeException("존재하지 않는 공연입니다.")
+                ?: throw ApplicationException.NotFoundException("존재하지 않는 공연입니다.")
 
         val targetUsers = notificationPort.findNotificationTargetUsers(notificationEvent.performanceId)
         val notificationMessage = NotificationMessage.from(performance, notificationEvent.seatInfo)

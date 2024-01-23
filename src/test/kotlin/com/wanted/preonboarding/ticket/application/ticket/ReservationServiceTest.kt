@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.application.ticket
 
+import com.wanted.preonboarding.core.exception.ApplicationException
 import com.wanted.preonboarding.ticket.application.discount.DiscountPolicy
 import com.wanted.preonboarding.ticket.application.notification.NotificationEvent
 import com.wanted.preonboarding.ticket.domain.PerformanceFixtureBuilder
@@ -33,7 +34,7 @@ class ReservationServiceTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 sut.reserve(performanceId, userInfo, balance, seatInfo)
             }
 
@@ -59,7 +60,7 @@ class ReservationServiceTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 sut.reserve(performanceId, userInfo, balance, seatInfo)
             }
 
@@ -85,7 +86,7 @@ class ReservationServiceTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 sut.reserve(performanceId, userInfo, balance, seatInfo)
             }
 
@@ -114,7 +115,7 @@ class ReservationServiceTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 sut.reserve(performanceId, userInfo, balance, seatInfo)
             }
 
@@ -141,7 +142,7 @@ class ReservationServiceTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 sut.reserve(performanceId, userInfo, balance, seatInfo)
             }
 
@@ -174,7 +175,7 @@ class ReservationServiceTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 sut.reserve(performanceId, userInfo, balance, seatInfo)
             }
 
@@ -213,7 +214,7 @@ class ReservationServiceTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 sut.reserve(performanceId, userInfo, balance, seatInfo)
             }
 
@@ -304,7 +305,7 @@ class ReservationServiceTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 sut.cancel(performanceId, userInfo, seatInfo)
             }
 
@@ -328,7 +329,7 @@ class ReservationServiceTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 sut.cancel(performanceId, userInfo, seatInfo)
             }
 
@@ -359,7 +360,7 @@ class ReservationServiceTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 sut.cancel(performanceId, userInfo, seatInfo)
             }
 
@@ -400,7 +401,7 @@ class ReservationServiceTest {
 
         // when
         val exception =
-            shouldThrow<RuntimeException> {
+            shouldThrow<ApplicationException> {
                 sut.cancel(performanceId, userInfo, seatInfo)
             }
 
