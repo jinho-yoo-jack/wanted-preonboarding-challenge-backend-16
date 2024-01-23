@@ -70,7 +70,7 @@
 - 액터는 배치하지 않기로 했다. 
 
 ### 애그리게이트 정의
-![img_1](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/b493472d-d214-4728-947e-4c9287bc2d56)
+![img_1](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/a71e9d20-b685-4b2a-8953-83ed58532c5d)
 
 - 회원, 공연, 좌석이라는 애그리게이트 루트를 두어서 정의를 해보았다. 
 - 하지만, 해당 애그리게이트를 전체로 보기에는, 너무 방대하다는 생각이 들었다. 
