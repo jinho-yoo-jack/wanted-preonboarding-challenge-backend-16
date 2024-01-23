@@ -39,3 +39,5 @@ out/
 ### Docker ####
 Dockerfile_bak
 
+### MAC ###
+.DS_Store
