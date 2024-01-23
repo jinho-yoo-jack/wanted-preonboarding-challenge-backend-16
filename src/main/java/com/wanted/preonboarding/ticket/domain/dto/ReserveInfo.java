@@ -23,4 +23,5 @@ public class ReserveInfo {
 	private int round;
 	private String line;
 	private int seat;
+	private int age = 0;
 }

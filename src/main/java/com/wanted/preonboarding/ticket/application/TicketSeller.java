@@ -54,7 +54,7 @@ public class TicketSeller {
 		기능 1. 예약 시스템
 		- RequestMessage : ReserveInfor(예약자, 공연 정보)를 받아 예약하는 메서드
 		- ResponseMessage : 예매가 완료된 공연 정보 + 예매자 정보
-		- 특이사항 : 할인 정책 적용될 수 있음
+		- 특이사항 : 65세 이상 10% 할인
 	 */
 	@Transactional
 	public RsData reserve(ReserveInfo reserveInfo) {
@@ -82,6 +82,10 @@ public class TicketSeller {
 			}
 
 			int ticketPrice = performance.getPrice();
+			// 65세 이상인 경우 10% 할인, 10원 단위까지 그냥 버림
+			if(reserveInfo.getAge() >= 65) {
+				ticketPrice = (int)((ticketPrice * 0.9) / 10) * 10;
+			}
 			long userBudget = reserveInfo.getAmount();
             // 돈이 충분히 있는지 확인
 			RsData ticketingRsData = canTicketing(ticketPrice, userBudget);
