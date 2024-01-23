@@ -35,7 +35,7 @@ class ReservationControllerTest : IntegrationTest() {
         )
 
         // then
-        response.andExpect {
+        response.andExpect(status().isBadRequest).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "존재하지 않는 공연입니다."
         }
@@ -69,7 +69,7 @@ class ReservationControllerTest : IntegrationTest() {
         )
 
         // then
-        response.andExpect {
+        response.andExpect(status().isBadRequest).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "예약이 마감되었습니다."
         }
@@ -103,7 +103,7 @@ class ReservationControllerTest : IntegrationTest() {
         )
 
         // then
-        response.andExpect {
+        response.andExpect(status().isBadRequest).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "잔액이 부족합니다."
         }
@@ -137,7 +137,7 @@ class ReservationControllerTest : IntegrationTest() {
         )
 
         // then
-        response.andExpect {
+        response.andExpect(status().isBadRequest).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "존재하지 않는 좌석입니다."
         }
@@ -182,7 +182,7 @@ class ReservationControllerTest : IntegrationTest() {
         )
 
         // then
-        response.andExpect {
+        response.andExpect(status().isBadRequest).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "존재하지 않는 좌석입니다."
         }
@@ -238,7 +238,7 @@ class ReservationControllerTest : IntegrationTest() {
         )
 
         // then
-        response.andExpect {
+        response.andExpect(status().isBadRequest).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "이미 예약된 좌석입니다."
         }
@@ -353,7 +353,7 @@ class ReservationControllerTest : IntegrationTest() {
         )
 
         // then
-        response.andExpect {
+        response.andExpect(status().isBadRequest).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "존재하지 않는 공연입니다."
         }
@@ -386,7 +386,7 @@ class ReservationControllerTest : IntegrationTest() {
         )
 
         // then
-        response.andExpect {
+        response.andExpect(status().isBadRequest).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "존재하지 않는 좌석입니다."
         }
@@ -430,7 +430,7 @@ class ReservationControllerTest : IntegrationTest() {
         )
 
         // then
-        response.andExpect {
+        response.andExpect(status().isBadRequest).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "예약된 내역이 없습니다."
         }
@@ -485,7 +485,7 @@ class ReservationControllerTest : IntegrationTest() {
         )
 
         // then
-        response.andExpect {
+        response.andExpect(status().isBadRequest).andExpect {
             val message = JsonPath.read(it.response.contentAsString, "$.error") as String
             message shouldBe "예약된 내역이 없습니다."
         }

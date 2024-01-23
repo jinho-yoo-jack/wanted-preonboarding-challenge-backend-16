@@ -59,7 +59,7 @@ class PerformanceControllerTest : IntegrationTest() {
         )
 
         // then
-        response.andExpect {
+        response.andExpect(status().isBadRequest).andExpect {
             val error = JsonPath.read(it.response.contentAsString, "$.error") as String
             error shouldBe "존재하지 않는 공연입니다."
         }
