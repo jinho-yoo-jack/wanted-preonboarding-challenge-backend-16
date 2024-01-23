@@ -29,6 +29,7 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j:8.0.33")
     testRuntimeOnly ("com.h2database:h2")
     annotationProcessor("org.projectlombok:lombok")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.vintage:junit-vintage-engine") {
         exclude("org.hamcrest", "hamcrest-core")
