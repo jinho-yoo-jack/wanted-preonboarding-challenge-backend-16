@@ -70,29 +70,32 @@
 - 액터는 배치하지 않기로 했다. 
 
 ### 애그리게이트 정의
-![img_1](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/a71e9d20-b685-4b2a-8953-83ed58532c5d)
+![스크린샷 2024-01-23 15 13 30](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/ea003c42-6c3d-4cb9-a5f9-e5df40445345)
+
 
 - 회원, 공연, 좌석이라는 애그리게이트 루트를 두어서 정의를 해보았다. 
 - 하지만, 해당 애그리게이트를 전체로 보기에는, 너무 방대하다는 생각이 들었다. 
 
 ### 애그리게이트 루트에서 밸류 객체 분리해보기
-![img](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/223c2607-f226-4104-b6a9-36842c4041ab)
-
+![스크린샷 2024-01-23 15 24 23](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/4a444bb3-ce51-498f-95d7-a35d053f6383)
 
 - 이러한 방식으로 애그리게이트를 원시값을 포장할 때 까지 분류해보았다. 
 - 회원의 경우, 요청시에 회원 정보와 잔고로 묶어 회원 정보만으로도 요청이 오갈 수 있기 때문에 다시 캡슐화시켰다. 
 
 ### 다시 밸류 객체를 올려보기
-![img_2](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/157df6ac-c289-42c1-9d5b-84ec419cf5da)
+![스크린샷 2024-01-23 15 26 46](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/53606d18-0d83-42a1-9a38-b7f766371662)
+
 
 - 이런식으로 객체를 올릴 수 있게 되었다. 
 
 ### 바운디드 컨텍스트 정의하기 및 정책 도출
-![img_3](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/fa785821-63d3-498e-8c99-bf71a7fc222f)
+![스크린샷 2024-01-23 15 38 27](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/860ceeb0-9181-48b5-ae6b-b6035f558de0)
+
 
 - 애그리게이트를 기준으로 새롭게 칸을 정리해보려고 한다. 
 
-![img_4](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/71ee2192-0a7a-4d5e-8dad-38996449328f)
+![스크린샷 2024-01-23 15 47 38](https://github.com/JangAJang/wanted-preonboarding-challenge-backend-16/assets/99702271/1ca9cbd4-a0d4-4b9f-a76a-f1bb624cb6aa)
+
 
 - 회원, 공연, 좌석이라는 바운디드 컨텍스트가 있고, 해당 컨텍스트에 따른 정책들을 등록했다. 
 
