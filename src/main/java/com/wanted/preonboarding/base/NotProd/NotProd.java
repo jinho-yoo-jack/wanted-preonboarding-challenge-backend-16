@@ -1,0 +1,87 @@
+package com.wanted.preonboarding.base.NotProd;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+
+import com.wanted.preonboarding.ticket.domain.entity.Performance;
+import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
+import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
+import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
+
+@Configuration
+@Profile({"dev", "test"})
+public class NotProd {
+	@Bean
+	CommandLineRunner initData(PerformanceRepository performanceRepository,
+		PerformanceSeatInfoRepository performanceSeatInfoRepository) {
+		return args -> {
+
+			List<Performance> performanceList = new ArrayList<>();
+			// Performance 객체 생성
+			Performance performance1 = Performance.builder()
+				.name("레베카")
+				.price(100_000)
+				.round(1)
+				.type(0)
+				.start_date(LocalDateTime.of(2024, 1, 20, 19, 30))
+				.isReserve("disable")
+				.build();
+
+			performanceList.add(performance1);
+
+			Performance performance2 = Performance.builder()
+				.name("영웅")
+				.price(100_000)
+				.round(1)
+				.type(0)
+				.start_date(LocalDateTime.of(2024, 1, 21, 19, 30))
+				.isReserve("enable")
+				.build();
+			performanceList.add(performance2);
+			performanceRepository.saveAll(performanceList);
+
+			// PerformanceSeatInfo 객체들 생성
+			List<PerformanceSeatInfo> performanceSeatInfos = new ArrayList<>();
+			for (int i = 1; i <= 4; i++) {
+				PerformanceSeatInfo seatInfo1 = PerformanceSeatInfo.builder()
+					.performance(performance1)
+					.round(1)
+					.gate(1)
+					.line("A")
+					.seat(i)
+					.isReserve("enable")
+					.build();
+				performanceSeatInfos.add(seatInfo1);
+
+				PerformanceSeatInfo seatInfo2 = PerformanceSeatInfo.builder()
+					.performance(performance2)
+					.round(1)
+					.gate(1)
+					.line("A")
+					.seat(i)
+					.isReserve("enable")
+					.build();
+				performanceSeatInfos.add(seatInfo2);
+			}
+
+			PerformanceSeatInfo seatInfo3 = PerformanceSeatInfo.builder()
+				.performance(performance2)
+				.round(1)
+				.gate(1)
+				.line("A")
+				.seat(18)
+				.isReserve("disable")
+				.build();
+			performanceSeatInfos.add(seatInfo3);
+
+			// PerformanceSeatInfo 저장
+			performanceSeatInfoRepository.saveAll(performanceSeatInfos);
+		};
+	}
+}
