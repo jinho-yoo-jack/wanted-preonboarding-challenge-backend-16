@@ -2,6 +2,8 @@ services:
   mysql:
     user: 501:20
     image: mysql:8.0.33
+    # 명시적으로 중단하지 않는 한 계속 재실행
+    restart: unless-stopped
     ports:
       - 13306:3306
     volumes:
