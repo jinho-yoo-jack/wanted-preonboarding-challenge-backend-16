@@ -38,10 +38,11 @@ class IntegrationTest {
 
     @BeforeEach
     fun setup() {
-        mockMvc = MockMvcBuilders
-            .webAppContextSetup(ctx)
-            .addFilters<DefaultMockMvcBuilder?>(CharacterEncodingFilter("UTF-8", true))
-            .build()
+        mockMvc =
+            MockMvcBuilders
+                .webAppContextSetup(ctx)
+                .addFilters<DefaultMockMvcBuilder?>(CharacterEncodingFilter("UTF-8", true))
+                .build()
     }
 
     @AfterEach
@@ -76,7 +77,7 @@ class IntegrationTest {
             entity
         }
 
-    fun deleteAll(tableName: String) {
+    private fun deleteAll(tableName: String) {
         runWithEntityManager(readonly = false) {
             it.createNativeQuery("DELETE FROM $tableName").executeUpdate()
         }
@@ -102,14 +103,6 @@ class IntegrationTest {
             val query = it.createQuery(qlString, Any::class.java)
             setParams(query, params)
             query.resultList as List<T>
-        }
-
-    fun <T> findById(
-        id: Long,
-        clazz: Class<T>,
-    ): T =
-        runWithEntityManager {
-            it.find(clazz, id)
         }
 
     private fun setParams(
