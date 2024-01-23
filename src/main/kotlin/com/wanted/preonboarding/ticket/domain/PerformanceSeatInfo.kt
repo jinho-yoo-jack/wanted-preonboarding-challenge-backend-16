@@ -3,7 +3,7 @@ package com.wanted.preonboarding.ticket.domain
 import java.time.LocalDateTime
 
 class PerformanceSeatInfo(
-    private val id: PerformanceSeatInfoId = PerformanceSeatInfoId(0),
+    val id: PerformanceSeatInfoId = PerformanceSeatInfoId(0),
     private val seatInfo: SeatInfo,
     private var isReserve: Boolean,
     private val createdAt: LocalDateTime,

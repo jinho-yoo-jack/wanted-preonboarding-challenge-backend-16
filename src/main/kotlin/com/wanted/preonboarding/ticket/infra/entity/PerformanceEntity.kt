@@ -32,11 +32,10 @@ class PerformanceEntity(
     @Column(name = "round")
     val round: Int,
     @Column(name = "type")
-    @Enumerated(value = EnumType.STRING)
     val type: PerformanceType,
     @Column(name = "start_date")
     val startDate: LocalDateTime,
-    @Column(name = "is_reserved")
+    @Column(name = "is_reserve")
     @Convert(converter = EnableDisableConverter::class)
     val isReserve: Boolean,
 ) : BaseEntity() {

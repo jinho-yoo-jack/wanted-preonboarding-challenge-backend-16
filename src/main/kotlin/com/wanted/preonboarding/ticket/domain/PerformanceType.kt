@@ -4,6 +4,6 @@ enum class PerformanceType(
     val description: String,
 ) {
     NONE("그 외"),
-    MUSICAL("뮤지컬"),
+    CONCERT("콘서트"),
     EXHIBITION("전시"),
 }

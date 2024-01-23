@@ -31,7 +31,7 @@ class PerformanceSeatInfoEntity(
     val seat: Int,
     @Column(name = "is_reserve")
     @Convert(converter = EnableDisableConverter::class)
-    val isReserve: Boolean,
+    var isReserve: Boolean,
 ) : BaseEntity() {
     fun toDomain(): PerformanceSeatInfo {
         return PerformanceSeatInfo(
