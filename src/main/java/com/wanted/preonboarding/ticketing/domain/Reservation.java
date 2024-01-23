@@ -23,7 +23,7 @@ public class Reservation {
 
     @Column(nullable = false)
     @Comment("예약자 이름")
-    private String customerName;
+    private String name;
 
     @Column(nullable = false)
     @Comment("휴대 전화")
