@@ -46,6 +46,30 @@ public class NotProd {
 				.isReserve("enable")
 				.build();
 			performanceList.add(performance2);
+
+			for(int i=3; i<=10; i++) {
+				Performance performance3 = Performance.builder()
+					.name("영웅 조회 테스트용" + i)
+					.price(100_000)
+					.round(1)
+					.type(0)
+					.start_date(LocalDateTime.of(2024, 1, 21, 19, 30))
+					.isReserve("enable")
+					.build();
+				performanceList.add(performance3);
+
+				Performance performance4 = Performance.builder()
+					.name("레베카 조회 테스트용" + i)
+					.price(100_000)
+					.round(1)
+					.type(0)
+					.start_date(LocalDateTime.of(2024, 1, 21, 19, 30))
+					.isReserve("disable")
+					.build();
+				performanceList.add(performance3);
+				performanceList.add(performance4);
+
+			}
 			performanceRepository.saveAll(performanceList);
 
 			// PerformanceSeatInfo 객체들 생성
