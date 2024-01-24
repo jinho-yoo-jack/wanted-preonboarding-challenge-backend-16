@@ -8,6 +8,8 @@ import com.wanted.preonboarding.ticket.domain.Reservation
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import jakarta.persistence.Table
@@ -30,6 +32,7 @@ class PerformanceEntity(
     @Column(name = "round")
     val round: Int,
     @Column(name = "type")
+    @Enumerated(EnumType.STRING)
     val type: PerformanceType,
     @Column(name = "start_date")
     val startDate: LocalDateTime,
