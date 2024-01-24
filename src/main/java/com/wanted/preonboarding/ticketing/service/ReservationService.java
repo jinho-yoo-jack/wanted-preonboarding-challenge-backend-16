@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticketing.service;
 
 import com.wanted.preonboarding.ticketing.domain.dto.request.ReadReservationRequest;
+import com.wanted.preonboarding.ticketing.domain.dto.response.ReadPerformanceResponse;
 import com.wanted.preonboarding.ticketing.domain.dto.response.ReadReservationResponse;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
@@ -55,5 +56,12 @@ public class ReservationService {
                 , pageable);
 
         return reservations.map(Reservation::toReadReservationResponse);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ReadPerformanceResponse> readPerformance(String isReserve, Pageable pageable) {
+        Page<Performance> performances = performanceRepository.findByIsReserve(isReserve, pageable);
+
+        return performances.map(Performance::toReadPerformanceResponse);
     }
 }

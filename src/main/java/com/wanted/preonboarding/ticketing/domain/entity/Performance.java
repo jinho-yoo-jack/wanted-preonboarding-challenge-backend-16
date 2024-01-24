@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
+import com.wanted.preonboarding.ticketing.domain.dto.response.ReadPerformanceResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -54,5 +55,14 @@ public class Performance {
 
     public int calculateChange(int balance) {
         return balance - this.price;
+    }
+
+    public ReadPerformanceResponse toReadPerformanceResponse() {
+        return ReadPerformanceResponse.builder()
+                .performanceName(this.name)
+                .round(this.round)
+                .startDate(this.startDate)
+                .isReserve(this.isReserve)
+                .build();
     }
 }

@@ -1,7 +1,6 @@
 package com.wanted.preonboarding.ticketing.controller;
 
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
-import com.wanted.preonboarding.ticketing.domain.dto.request.ReadPerformanceRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.ReadReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CreateReservationResponse;
 import com.wanted.preonboarding.ticketing.domain.dto.response.ReadPerformanceResponse;
@@ -32,9 +31,9 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.readReservation(reservationRequest, pageable));
     }
 
-    @GetMapping
-    public ResponseEntity<ReadPerformanceResponse> readPerformance(@ModelAttribute ReadPerformanceRequest readPerformanceRequest,
-                                                                   @PageableDefault(sort = "id", direction = Sort.Direction.DESC)) {
-        return ResponseEntity.ok(reservationService.readPerformance(readPerformanceRequest));
+    @GetMapping("/performance")
+    public ResponseEntity<Page<ReadPerformanceResponse>> readPerformance(@RequestParam String isReserve,
+                                                                          @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(reservationService.readPerformance(isReserve, pageable));
     }
 }
