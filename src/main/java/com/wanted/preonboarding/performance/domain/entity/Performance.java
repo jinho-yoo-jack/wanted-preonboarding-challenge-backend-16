@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.performance.domain.entity;
 
-import com.wanted.preonboarding.common.model.DefaultEntity;
+import com.wanted.preonboarding.common.model.ReservableEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Builder
-public class Performance extends DefaultEntity {
+public class Performance extends ReservableEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -38,11 +38,4 @@ public class Performance extends DefaultEntity {
 
     @Column(nullable = false, name = "start_date")
     private Date startDate;
-
-    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
-    private String isReserve;
-
-    public boolean canReserve() {
-        return this.isReserve.equals("enable");
-    }
 }

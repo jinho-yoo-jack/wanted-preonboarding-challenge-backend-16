@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.performanceSeat.entity;
 
-import com.wanted.preonboarding.common.model.DefaultEntity;
+import com.wanted.preonboarding.common.model.ReservableEntity;
 import com.wanted.preonboarding.common.model.SeatInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PerformanceSeatInfo extends DefaultEntity {
+public class PerformanceSeatInfo extends ReservableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

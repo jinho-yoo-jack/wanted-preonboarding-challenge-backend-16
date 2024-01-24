@@ -101,3 +101,11 @@ private Performance performance;
   - 개인적인 생각 : 이번 과제의 중심은 DDD와 디자인 패턴인 것 같다. 
     - 데이터베이스 스키마나 JPA등에 의존하기보단, 도메인 모델에 집중해보기로 하자. 
     - 나중에 리펙토링이라는 마개조(?)를 하는 것을 고려하자!
+
+`
+@Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
+private String isReserve;
+`
+- 하다보니 느꼈지만, Performance와 PerformanceSeatInfo가 모두 이 속성을 사용한다. 
+- 그렇다면, 이걸 재사용성 있게 분리하면 좋지 않을까?
+- ReserveState라는 상태를 common.model에서 공유하게 하자!
