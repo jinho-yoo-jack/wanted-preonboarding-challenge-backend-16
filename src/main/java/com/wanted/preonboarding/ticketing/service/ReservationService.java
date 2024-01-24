@@ -3,8 +3,8 @@ package com.wanted.preonboarding.ticketing.service;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.domain.entity.Reservation;
-import com.wanted.preonboarding.ticketing.domain.dto.request.ReservationRequest;
-import com.wanted.preonboarding.ticketing.domain.dto.response.ReservationResponse;
+import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
+import com.wanted.preonboarding.ticketing.domain.dto.response.CreateReservationResponse;
 import com.wanted.preonboarding.ticketing.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticketing.repository.ReservationRepository;
 import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
@@ -21,26 +21,26 @@ public class ReservationService {
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
 
     @Transactional
-    public ReservationResponse createReservation(ReservationRequest reservationRequest) {
-        Performance performance = findPerformanceName(reservationRequest);
-        Reservation reservation = reserveTicket(reservationRequest, performance);
-        int changes = reservationRequest.calculateChange(performance);
-        reserveSeat(reservationRequest);
+    public CreateReservationResponse createReservation(CreateReservationRequest createReservationRequest) {
+        Performance performance = findPerformanceName(createReservationRequest);
+        Reservation reservation = reserveTicket(createReservationRequest, performance);
+        int changes = createReservationRequest.calculateChange(performance);
+        reserveSeat(createReservationRequest);
 
         return reservation.toCreateReservationResponse(performance, changes);
     }
 
-    private Performance findPerformanceName(ReservationRequest reservationRequest) {
-        return performanceRepository.getReferenceById(reservationRequest.getPerformanceId());
+    private Performance findPerformanceName(CreateReservationRequest createReservationRequest) {
+        return performanceRepository.getReferenceById(createReservationRequest.getPerformanceId());
     }
 
-    private void reserveSeat(ReservationRequest reservationRequest) {
-        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.getReferenceById(reservationRequest.getSeatId());
-        performanceSeatInfo.updateReservationStatus(reservationRequest);
+    private void reserveSeat(CreateReservationRequest createReservationRequest) {
+        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.getReferenceById(createReservationRequest.getSeatId());
+        performanceSeatInfo.updateReservationStatus(createReservationRequest);
     }
 
-    private Reservation reserveTicket(ReservationRequest reservationRequest, Performance performance) {
-        Reservation reservation = reservationRequest.fromTicket(performance);
+    private Reservation reserveTicket(CreateReservationRequest createReservationRequest, Performance performance) {
+        Reservation reservation = createReservationRequest.fromTicket(performance);
         return reservationRepository.save(reservation);
     }
 }

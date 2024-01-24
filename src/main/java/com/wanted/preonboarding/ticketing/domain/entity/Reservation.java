@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
-import com.wanted.preonboarding.ticketing.domain.dto.response.ReservationResponse;
+import com.wanted.preonboarding.ticketing.domain.dto.response.CreateReservationResponse;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -59,8 +59,8 @@ public class Reservation {
     @Comment("업데이트 시간")
     private LocalDateTime updatedAt;
 
-    public ReservationResponse toCreateReservationResponse(Performance performance, int changes) {
-        return ReservationResponse.builder()
+    public CreateReservationResponse toCreateReservationResponse(Performance performance, int changes) {
+        return CreateReservationResponse.builder()
                 .performanceId(this.performance.getId())
                 .performanceName(performance.getName())
                 .changes(changes)

@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class ReservationRequest {
+public class CreateReservationRequest {
     private String reservationName;
     private String phoneNumber;
     private int balance;

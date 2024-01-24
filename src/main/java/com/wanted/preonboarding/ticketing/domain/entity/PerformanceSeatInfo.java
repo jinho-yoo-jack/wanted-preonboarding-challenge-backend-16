@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
-import com.wanted.preonboarding.ticketing.domain.dto.request.ReservationRequest;
+import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -54,8 +54,8 @@ public class PerformanceSeatInfo {
     @Comment("업데이트 시간")
     private LocalDateTime updatedAt;
 
-    public void updateReservationStatus(ReservationRequest reservationRequest) {
-        String requestStatus = reservationRequest.getReservationStatus();
+    public void updateReservationStatus(CreateReservationRequest createReservationRequest) {
+        String requestStatus = createReservationRequest.getReservationStatus();
         if (!this.isReserve.equals(requestStatus)) {
             this.isReserve = requestStatus;
         }
