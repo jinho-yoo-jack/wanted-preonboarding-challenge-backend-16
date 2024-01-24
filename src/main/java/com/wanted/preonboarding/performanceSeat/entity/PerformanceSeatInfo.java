@@ -3,11 +3,19 @@ package com.wanted.preonboarding.performanceSeat.entity;
 import com.wanted.preonboarding.common.model.DefaultEntity;
 import com.wanted.preonboarding.common.model.SeatInfo;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "performance_seat_info")
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PerformanceSeatInfo extends DefaultEntity {
 
     @Id
