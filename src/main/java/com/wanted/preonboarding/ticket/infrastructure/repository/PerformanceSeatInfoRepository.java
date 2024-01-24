@@ -9,4 +9,6 @@ import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 
 public interface PerformanceSeatInfoRepository extends JpaRepository<PerformanceSeatInfo, Long> {
 	List<PerformanceSeatInfo> findAllByPerformanceId(UUID id);
+
+	List<PerformanceSeatInfo> findAllByPerformanceIdAndIsReserve(UUID id, String status);
 }

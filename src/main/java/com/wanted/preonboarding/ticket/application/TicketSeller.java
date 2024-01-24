@@ -86,6 +86,14 @@ public class TicketSeller {
 					.reservationPhoneNumber(reserveInfo.getReservationPhoneNumber())
 					.build();
 				ticketingRsData = RsData.of(ticketingRsData.getResultCode(), ticketingRsData.getMsg(), reserveResult);
+
+				performanceSeats = performanceSeatInfoRepository.findAllByPerformanceIdAndIsReserve(
+					performance.getId(), "enable");
+
+				// 자리 예매 후 빈 좌석이 없다면 상태 변경
+				if(performanceSeats.isEmpty()) {
+					performance.updateIsReserve("disable");
+				}
 			}
 
 			return ticketingRsData;
