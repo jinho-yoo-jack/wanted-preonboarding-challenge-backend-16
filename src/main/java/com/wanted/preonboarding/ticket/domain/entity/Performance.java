@@ -48,7 +48,7 @@ public class Performance {
     private LocalDateTime start_date;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar(255) default 'disable'")
+    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar(20) default 'DISABLED'")
     private ReservationStatus status;
 
     @OneToMany(mappedBy = "performance")
