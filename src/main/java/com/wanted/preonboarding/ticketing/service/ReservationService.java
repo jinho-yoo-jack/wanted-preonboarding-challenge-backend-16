@@ -1,5 +1,7 @@
 package com.wanted.preonboarding.ticketing.service;
 
+import com.wanted.preonboarding.ticketing.domain.dto.request.ReadReservationRequest;
+import com.wanted.preonboarding.ticketing.domain.dto.response.ReadReservationResponse;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.domain.entity.Reservation;
@@ -9,6 +11,8 @@ import com.wanted.preonboarding.ticketing.repository.PerformanceSeatInfoReposito
 import com.wanted.preonboarding.ticketing.repository.ReservationRepository;
 import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,5 +46,14 @@ public class ReservationService {
     private Reservation reserveTicket(CreateReservationRequest createReservationRequest, Performance performance) {
         Reservation reservation = createReservationRequest.fromTicket(performance);
         return reservationRepository.save(reservation);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ReadReservationResponse> readReservation(ReadReservationRequest reservationRequest, Pageable pageable) {
+        Page<Reservation> reservations = reservationRepository.findByPhoneNumberAndName(reservationRequest.getPhoneNumber()
+                , reservationRequest.getReservationName()
+                , pageable);
+
+        return reservations.map(Reservation::toReadReservationResponse);
     }
 }

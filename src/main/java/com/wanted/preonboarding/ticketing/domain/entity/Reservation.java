@@ -1,11 +1,9 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
 import com.wanted.preonboarding.ticketing.domain.dto.response.CreateReservationResponse;
+import com.wanted.preonboarding.ticketing.domain.dto.response.ReadReservationResponse;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
@@ -15,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table
+@Getter
 public class Reservation {
 
     @Id
@@ -68,6 +67,19 @@ public class Reservation {
                 .gate(this.gate)
                 .line(this.line)
                 .seat(this.seat)
+                .reservationName(this.name)
+                .phoneNumber(this.phoneNumber)
+                .build();
+    }
+
+    public ReadReservationResponse toReadReservationResponse() {
+        return ReadReservationResponse.builder()
+                .performanceId(this.performance.getId())
+                .performanceName(this.performance.getName())
+                .gate(this.gate)
+                .line(this.line)
+                .seat(this.seat)
+                .round(this.round)
                 .reservationName(this.name)
                 .phoneNumber(this.phoneNumber)
                 .build();
