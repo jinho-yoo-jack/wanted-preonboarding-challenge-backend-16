@@ -2,7 +2,6 @@ package com.wanted.preonboarding.reservation.domain.entity;
 
 import com.wanted.preonboarding.common.model.DefaultEntity;
 import com.wanted.preonboarding.common.model.SeatInfo;
-import com.wanted.preonboarding.performance.domain.entity.Performance;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
