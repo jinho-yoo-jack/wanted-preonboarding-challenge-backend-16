@@ -36,6 +36,4 @@ public class Reservation extends DefaultEntity {
 
     @Embedded
     private SeatInfo seatInfo;
-
-
 }

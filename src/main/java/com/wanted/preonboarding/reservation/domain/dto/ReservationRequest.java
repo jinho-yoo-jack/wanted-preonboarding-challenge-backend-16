@@ -1,6 +1,5 @@
 package com.wanted.preonboarding.reservation.domain.dto;
 
-import com.wanted.preonboarding.common.model.SeatInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
