@@ -1,8 +1,10 @@
 package com.wanted.preonboarding.ticketing.controller;
 
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
+import com.wanted.preonboarding.ticketing.domain.dto.request.ReadPerformanceRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.ReadReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CreateReservationResponse;
+import com.wanted.preonboarding.ticketing.domain.dto.response.ReadPerformanceResponse;
 import com.wanted.preonboarding.ticketing.domain.dto.response.ReadReservationResponse;
 import com.wanted.preonboarding.ticketing.service.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +27,13 @@ public class ReservationController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ReadReservationResponse>> readReservation(@ModelAttribute ReadReservationRequest reservationRequest,
-                                                                        @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<Page<ReadReservationResponse>> readAll(@ModelAttribute ReadReservationRequest reservationRequest,
+                                                                 @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(reservationService.readReservation(reservationRequest, pageable));
+    }
+
+    @GetMapping
+    public ResponseEntity<ReadPerformanceResponse> read(@ModelAttribute ReadPerformanceRequest readPerformanceRequest) {
+
     }
 }
