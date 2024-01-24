@@ -88,3 +88,16 @@ createdAt, updatedAt을 넣어서 처리해야겠다는 생각이 든다.
 궁극적으로 이전의 워크플로우에서 수정사항이 생겨 이를 피그마를 이용해 다시 그려보았다.
 ![스크린샷 2024-01-24 19 13 23](https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/assets/99702271/5513ed95-4efe-4a30-9872-56de38e107ca)
 
+---
+
+# 구현중 궁금해진 사항들
+`
+@ManyToOne(fetch = FetchType.LAZY)
+@Column(name = "performance_id")
+private Performance performance;
+`
+- ManyToOne으로 외래키를 이용해 Performance를 가져오려 했다. 
+- 그런데, 예시 코드에서는 외래키가 아닌, 단순 UUID로 가져왔다. 왜일까?
+  - 개인적인 생각 : 이번 과제의 중심은 DDD와 디자인 패턴인 것 같다. 
+    - 데이터베이스 스키마나 JPA등에 의존하기보단, 도메인 모델에 집중해보기로 하자. 
+    - 나중에 리펙토링이라는 마개조(?)를 하는 것을 고려하자!
