@@ -48,12 +48,12 @@ public class Reservation {
     public static Reservation of(final ReserveInfo info, final Performance performance) {
         return Reservation.builder()
                 .performance(performance)
-                .name(info.getReservationName())
-                .phoneNumber(info.getReservationPhoneNumber())
-                .round(info.getRound())
+                .name(info.reservationName())
+                .phoneNumber(info.reservationPhoneNumber())
+                .round(info.round())
                 .gate(1)
-                .line(info.getLine())
-                .seat(info.getSeat())
+                .line(info.line())
+                .seat(info.seat())
                 .build();
     }
 

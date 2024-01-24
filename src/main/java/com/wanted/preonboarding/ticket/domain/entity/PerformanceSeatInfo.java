@@ -47,4 +47,13 @@ public class PerformanceSeatInfo {
     public void updateReservationStatus(final ReservationStatus status) {
         this.status = status;
     }
+
+    public void validate() {
+        if (status == ReservationStatus.OCCUPIED) {
+            throw new IllegalArgumentException("Already Reserved");
+        }
+        if (status == ReservationStatus.DISABLED) {
+            throw new IllegalArgumentException("Unavailable Seat");
+        }
+    }
 }
