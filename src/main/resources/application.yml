@@ -32,8 +32,9 @@ logging:
 
 ---
 spring:
-  profiles:
-    active: test
+  config:
+    activate:
+      on-profile: test
   datasource:
     driver-class-name: org.h2.Driver
     username: sa
