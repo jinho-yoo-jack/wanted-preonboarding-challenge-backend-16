@@ -10,4 +10,8 @@ import java.util.UUID;
 public class SeatSoldOutEvent {
 
     private final UUID performanceId;
+
+    public static SeatSoldOutEvent of(UUID uuid) {
+        return new SeatSoldOutEvent(uuid);
+    }
 }
