@@ -30,6 +30,7 @@ public class Reservation extends DefaultEntity {
 
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false, name = "phone_number")
     private String phoneNumber;
 
