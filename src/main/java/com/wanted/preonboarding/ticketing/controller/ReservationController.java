@@ -27,13 +27,14 @@ public class ReservationController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ReadReservationResponse>> readAll(@ModelAttribute ReadReservationRequest reservationRequest,
-                                                                 @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<Page<ReadReservationResponse>> readReservation(@ModelAttribute ReadReservationRequest reservationRequest,
+                                                                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(reservationService.readReservation(reservationRequest, pageable));
     }
 
     @GetMapping
-    public ResponseEntity<ReadPerformanceResponse> read(@ModelAttribute ReadPerformanceRequest readPerformanceRequest) {
-
+    public ResponseEntity<ReadPerformanceResponse> readPerformance(@ModelAttribute ReadPerformanceRequest readPerformanceRequest,
+                                                                   @PageableDefault(sort = "id", direction = Sort.Direction.DESC)) {
+        return ResponseEntity.ok(reservationService.readPerformance(readPerformanceRequest));
     }
 }
