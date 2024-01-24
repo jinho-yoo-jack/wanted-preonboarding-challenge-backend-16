@@ -30,24 +30,10 @@ public class Reservation extends DefaultEntity {
 
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false, name = "phone_number")
     private String phoneNumber;
 
     @Embedded
     private SeatInfo seatInfo;
-
-
 }
-
-/*
-    `id`             INT(10)                NOT NULL AUTO_INCREMENT,
-    `performance_id` BINARY(16)             NOT NULL COMMENT '공연전시ID',
-    `name`           varchar(255)           NOT NULL COMMENT '예약자명',
-    `phone_number`   varchar(255)           NOT NULL COMMENT '예약자 휴대전화 번호',
-    `round`          INT                    NOT NULL COMMENT '회차(FK)',
-    `gate`           INT                    NOT NULL COMMENT '입장 게이트',
-    `line`           CHAR                   NOT NULL COMMENT '좌석 열',
-    `seat`           INT                    NOT NULL COMMENT '좌석 행',
-    `created_at`     DATETIME DEFAULT NOW() NOT NULL,
-    `updated_at`     DATETIME DEFAULT NOW() NOT NUll,
- */

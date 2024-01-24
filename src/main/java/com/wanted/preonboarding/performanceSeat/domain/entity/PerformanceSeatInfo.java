@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.performanceSeat.entity;
+package com.wanted.preonboarding.performanceSeat.domain.entity;
 
 import com.wanted.preonboarding.common.model.ReservableEntity;
 import com.wanted.preonboarding.common.model.SeatInfo;
