@@ -2,7 +2,7 @@ package com.wanted.preonboarding.ticket.application.ticket
 
 import com.wanted.preonboarding.core.exception.ApplicationException
 import com.wanted.preonboarding.ticket.application.discount.DiscountPolicy
-import com.wanted.preonboarding.ticket.application.notification.NotificationEvent
+import com.wanted.preonboarding.ticket.application.notification.ReservationCancelEvent
 import com.wanted.preonboarding.ticket.domain.Performance
 import com.wanted.preonboarding.ticket.domain.PerformanceId
 import com.wanted.preonboarding.ticket.domain.SeatInfo
@@ -53,7 +53,7 @@ class ReservationService(
         performance.cancel(userInfo, seatInfo)
         performancePort.update(performance)
 
-        applicationEventPublisher.publishEvent(NotificationEvent(performanceId, seatInfo))
+        applicationEventPublisher.publishEvent(ReservationCancelEvent(performanceId, seatInfo))
         return performance
     }
 }

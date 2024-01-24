@@ -8,19 +8,19 @@ import org.springframework.transaction.event.TransactionPhase
 import org.springframework.transaction.event.TransactionalEventListener
 
 @Component
-class NotificationEventListener(
+class ReservationEventListener(
     private val notificationPort: NotificationPort,
     private val performancePort: PerformancePort,
 ) {
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    fun sendNotification(notificationEvent: NotificationEvent) {
+    fun handleCancelEvent(reservationCancelEvent: ReservationCancelEvent) {
         val performance =
-            performancePort.findPerformance(notificationEvent.performanceId)
+            performancePort.findPerformance(reservationCancelEvent.performanceId)
                 ?: throw ApplicationException.NotFoundException("존재하지 않는 공연입니다.")
 
-        val targetUsers = notificationPort.findNotificationTargetUsers(notificationEvent.performanceId)
-        val notificationMessage = NotificationMessage.from(performance, notificationEvent.seatInfo)
+        val targetUsers = notificationPort.findNotificationTargetUsers(reservationCancelEvent.performanceId)
+        val notificationMessage = NotificationMessage.from(performance, reservationCancelEvent.seatInfo)
         targetUsers.forEach {
             notificationPort.sendNotification(it, notificationMessage)
         }

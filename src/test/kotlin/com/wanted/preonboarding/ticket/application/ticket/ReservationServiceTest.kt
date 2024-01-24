@@ -2,7 +2,7 @@ package com.wanted.preonboarding.ticket.application.ticket
 
 import com.wanted.preonboarding.core.exception.ApplicationException
 import com.wanted.preonboarding.ticket.application.discount.DiscountPolicy
-import com.wanted.preonboarding.ticket.application.notification.NotificationEvent
+import com.wanted.preonboarding.ticket.application.notification.ReservationCancelEvent
 import com.wanted.preonboarding.ticket.domain.PerformanceFixtureBuilder
 import com.wanted.preonboarding.ticket.domain.PerformanceId
 import com.wanted.preonboarding.ticket.domain.PerformanceSeatInfoFixtureBuilder
@@ -438,14 +438,14 @@ class ReservationServiceTest {
             ).build()
         every { performancePort.findPerformance(performanceId) } returns performance
         justRun { performancePort.update(performance) }
-        justRun { applicationEventPublisher.publishEvent(NotificationEvent(performanceId, seatInfo)) }
+        justRun { applicationEventPublisher.publishEvent(ReservationCancelEvent(performanceId, seatInfo)) }
 
         // when
         sut.cancel(performanceId, userInfo, seatInfo)
 
         // then
         verify(exactly = 1) { performancePort.update(performance) }
-        verify(exactly = 1) { applicationEventPublisher.publishEvent(NotificationEvent(performanceId, seatInfo)) }
+        verify(exactly = 1) { applicationEventPublisher.publishEvent(ReservationCancelEvent(performanceId, seatInfo)) }
         performance.getPerformanceSeatInfos().find { it.isSameSeat(seatInfo) }?.isReserveAvailable() shouldBe true
         performance.getReservations().size shouldBe 0
     }
