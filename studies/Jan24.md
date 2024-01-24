@@ -82,7 +82,8 @@ createdAt, updatedAt을 넣어서 처리해야겠다는 생각이 든다.
 - Reservation 객체
   - Reservation객체를 만들어 저장하는 방식으로 데이터를 처리하는 것이 요구사항인것이다. 
   - 어떻게 보면, PerformanceSeatInfo의 round, gate, line, seat을 가지고 있어야 하는 구조다. 
-  - `round, gate, line, seat`를 담는 ValueObject를 사용해서 데이터를 처리해야겠다는 생각이 든다. 
+  - `round, gate, line, seat`를 담는 객체를 사용해서 데이터를 처리해야겠다는 생각이 든다.
+  - 결국 도메인 디렉토리 구조를 reservation, performance, performanceSeat, common을 두고, common에 model로 디렉토리를 추가한 후 공통적으로 사용하는 좌석정보객체를 넣을 계획이다. 
 
 궁극적으로 이전의 워크플로우에서 수정사항이 생겨 이를 피그마를 이용해 다시 그려보았다.
 ![스크린샷 2024-01-24 19 13 23](https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/assets/99702271/5513ed95-4efe-4a30-9872-56de38e107ca)
