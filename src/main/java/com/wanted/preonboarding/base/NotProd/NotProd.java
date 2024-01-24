@@ -109,6 +109,8 @@ public class NotProd {
 			// PerformanceSeatInfo 저장
 			performanceSeatInfoRepository.saveAll(performanceSeatInfos);
 
+			System.out.println("이거로 테스트해보기" + seatInfo3.getPerformance().getId());
+
 			// 자리 예약 초기 데이터 1
 			ticketSeller.reserve(ReserveInfo.builder()
 				.age(29)
