@@ -41,7 +41,7 @@ public class Performance {
     private LocalDateTime startDate;
 
     @Column(nullable = false)
-    @Comment("disable")
+    @Comment("얘약 가능 여부")
     private String isReserve;
 
     @Column(nullable = false)
