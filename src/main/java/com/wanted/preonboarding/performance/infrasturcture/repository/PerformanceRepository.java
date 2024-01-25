@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.performance.domain.repository;
+package com.wanted.preonboarding.performance.infrasturcture.repository;
 
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import org.springframework.data.jpa.repository.JpaRepository;
