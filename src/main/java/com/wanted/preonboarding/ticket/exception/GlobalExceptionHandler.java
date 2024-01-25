@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.exception;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import org.springframework.http.ResponseEntity;
@@ -28,9 +29,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ResponseHandler<ExceptionResponse>> handleInsufficientPaymentException(
             final InsufficientPaymentException e) {
         log.error(e.getMessage());
-        return ResponseEntity.status(NOT_FOUND)
+        return ResponseEntity.status(BAD_REQUEST)
                 .body(ResponseHandler.<ExceptionResponse>builder()
-                        .statusCode(NOT_FOUND)
+                        .statusCode(BAD_REQUEST)
                         .message(e.getMessage())
                         .build());
     }
