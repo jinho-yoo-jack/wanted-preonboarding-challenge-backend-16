@@ -3,6 +3,7 @@ package com.wanted.preonboarding.ticketing.domain.dto.request;
 import com.wanted.preonboarding.ticketing.domain.entity.Alarm;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Setter
 @Builder
 public class CreateAlarmRequest {
-    @NotBlank
+    @NotNull
     private final UUID performanceId;
     @NotBlank
     private final String customerName;

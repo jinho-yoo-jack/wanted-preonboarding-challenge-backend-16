@@ -20,7 +20,7 @@ public class CreateReservationRequest {
     private String phoneNumber;
     @NotNull
     private int balance;
-    @NotBlank
+    @NotNull
     private UUID performanceId;
     @NotBlank
     private Long seatId;
