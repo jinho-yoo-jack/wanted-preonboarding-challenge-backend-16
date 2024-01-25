@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.reservation.domain.dto;
+package com.wanted.preonboarding.reservation.domain.valueObject;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

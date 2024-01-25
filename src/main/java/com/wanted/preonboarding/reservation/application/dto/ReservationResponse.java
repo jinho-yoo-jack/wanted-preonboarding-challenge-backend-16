@@ -2,7 +2,7 @@ package com.wanted.preonboarding.reservation.application.dto;
 
 import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
-import com.wanted.preonboarding.reservation.domain.dto.UserInfo;
+import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
