@@ -1,28 +1,55 @@
 server:
-  port: 8016
-
+  port: 8080
 spring:
   datasource:
-    url: jdbc:mysql://localhost:13306/wanted
-    username: wanted
-    password: backend
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  # JPA 설정
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/project
+    username: dbuser
+    password: dbuser
   jpa:
     hibernate:
-      ddl-auto: none        # DB 초기화 전략 (none, create, create-drop, update, validate)
+      ddl-auto: create
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    generate-ddl: true
+    defer-datasource-initialization: true
     properties:
       hibernate:
-        auto_quote_keyword: false
-        globally_quoted_identifiers: false
-        format_sql: true     # 쿼리 로그 포맷 (정렬)
-        show_sql: true       # 쿼리 로그 출력
-
+        format_sql: true
+        default_batch_fetch_size: 100
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      enabled: false
+  data:
+    rest:
+      base-path: /api
+      detection-strategy: annotated
+  thymeleaf3:
+    decoupled-logic: true
+debug: false
 logging:
   level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql: trace
+    com.kotlin.wanted : debug
+    org.springframework.web.servlet : debug
+    org.hibernate.type.descriptor.sql.spi : trace
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: testdb
+  datasource:
+    url : jdbc:h2:~/testdb
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+      mode: always
+  test:
+    database:
+      replace : none
