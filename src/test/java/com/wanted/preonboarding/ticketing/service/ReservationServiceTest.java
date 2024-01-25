@@ -110,7 +110,7 @@ class ReservationServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         // when
-        Page<ReadReservationResponse> readReservationResponses = reservationService.readReservation(reservationRequest, pageable);
+        Page<ReadReservationResponse> readReservationResponses = reservationService.readReservations(reservationRequest, pageable);
 
         // then
         assertThat(readReservationResponses).isNotNull();

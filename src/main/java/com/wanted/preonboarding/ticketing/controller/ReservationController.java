@@ -28,9 +28,9 @@ public class ReservationController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ReadReservationResponse>> readReservation(@ModelAttribute @Valid ReadReservationRequest reservationRequest,
-                                                                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(reservationService.readReservation(reservationRequest, pageable));
+    public ResponseEntity<Page<ReadReservationResponse>> read(@ModelAttribute @Valid ReadReservationRequest reservationRequest,
+                                                              @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(reservationService.readReservations(reservationRequest, pageable));
     }
 
     @DeleteMapping("/cancel")

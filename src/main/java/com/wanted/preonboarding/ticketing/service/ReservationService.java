@@ -64,7 +64,7 @@ public class ReservationService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ReadReservationResponse> readReservation(ReadReservationRequest reservationRequest, Pageable pageable) {
+    public Page<ReadReservationResponse> readReservations(ReadReservationRequest reservationRequest, Pageable pageable) {
         Page<Reservation> reservations = findAllReservation(reservationRequest, pageable);
 
         return reservations.map(Reservation::toReadReservationResponse);
