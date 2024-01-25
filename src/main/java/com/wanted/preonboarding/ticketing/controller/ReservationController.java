@@ -40,7 +40,7 @@ public class ReservationController {
     }
 
     @PostMapping("/alarm")
-    public ResponseEntity<CreateAlarmResponse> alarm(@RequestBody CreateAlarmRequest createAlarmRequest) {
+    public ResponseEntity<CreateAlarmResponse> createAlarm(@RequestBody CreateAlarmRequest createAlarmRequest) {
         return ResponseEntity.ok(reservationService.createAlarm(createAlarmRequest));
     }
 
