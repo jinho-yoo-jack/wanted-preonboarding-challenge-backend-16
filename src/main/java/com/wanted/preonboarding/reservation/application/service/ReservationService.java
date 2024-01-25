@@ -4,6 +4,7 @@ import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
 import com.wanted.preonboarding.reservation.application.dto.ReservationResponse;
+import com.wanted.preonboarding.reservation.application.exception.ReservationAlreadyExists;
 import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;
@@ -39,7 +40,7 @@ public class ReservationService {
 
     private void validateReservationExistence(final Performance performance, final SeatInfo seatInfo) {
         if(reservationRepository.existsByPerformanceAndSeatInfo(performance, seatInfo)) {
-            throw new Error("이미 예약된 좌석입니다.");
+            throw new ReservationAlreadyExists();
         }
     }
 }
