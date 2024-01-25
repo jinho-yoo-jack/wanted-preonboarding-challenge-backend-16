@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticketing.service;
 
+import com.wanted.preonboarding.ticketing.aop.advice.exception.PerformanceNotFountException;
 import com.wanted.preonboarding.ticketing.aop.advice.exception.ReservationNotFoundException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CancelReservationRequest;
@@ -42,7 +43,8 @@ public class ReservationService {
     }
 
     private Performance findPerformance(CreateReservationRequest createReservationRequest) {
-        Performance performance = performanceRepository.getReferenceById(createReservationRequest.getPerformanceId());
+        Performance performance = performanceRepository.findById(createReservationRequest.getPerformanceId())
+                .orElseThrow(() -> new PerformanceNotFountException(ErrorCode.NOT_FOUND_PERFORMANCE));
         reservationValidator.validateBalance(createReservationRequest, performance);
 
         return performance;
