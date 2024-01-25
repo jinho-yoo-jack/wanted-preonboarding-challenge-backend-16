@@ -1,5 +1,6 @@
-package com.wanted.preonboarding.performanceSeat.application;
+package com.wanted.preonboarding.performanceSeat.application.service;
 
+import com.wanted.preonboarding.performanceSeat.application.exception.PerformanceSeatInfoNotFound;
 import com.wanted.preonboarding.performanceSeat.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.performanceSeat.domain.event.SeatSoldOutEvent;
 import com.wanted.preonboarding.performanceSeat.infrastructure.repository.PerformanceSeatInfoRepository;
@@ -40,6 +41,6 @@ public class PerformanceSeatService {
         return performanceSeatInfoRepository
                 .findBySeatInfoAndPerformanceId(seatReservedEvent.getSeatInfo(),
                         seatReservedEvent.getPerformanceId())
-                .orElseThrow(Error::new);
+                .orElseThrow(PerformanceSeatInfoNotFound::new);
     }
 }
