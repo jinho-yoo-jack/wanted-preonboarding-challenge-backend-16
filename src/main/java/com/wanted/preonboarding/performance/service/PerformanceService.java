@@ -1,5 +1,7 @@
 package com.wanted.preonboarding.performance.service;
 
+import com.wanted.preonboarding.core.exception.CustomException;
+import com.wanted.preonboarding.core.exception.ExceptionCode;
 import com.wanted.preonboarding.performance.domain.Performance;
 import com.wanted.preonboarding.performance.domain.constant.ReserveStatus;
 import com.wanted.preonboarding.performance.dto.PerformanceSearchParam;
@@ -45,7 +47,7 @@ public class PerformanceService {
     @Transactional(readOnly = true)
     public PerformanceInfo getPerformanceById(UUID performanceId) {
         return PerformanceInfo.of(performanceRepository.findById(performanceId)
-                .orElseThrow(() -> new EntityNotFoundException("Performance not found")));
+                .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_ENTITY)));
     }
 
     /**
@@ -73,7 +75,7 @@ public class PerformanceService {
             return PerformanceInfo.of(performance);
         }catch (EntityNotFoundException e) {
             log.error("not exist performanceId : {}",performanceId);
-            throw new EntityNotFoundException("not exist performanceId : " + performanceId);
+            throw new CustomException(ExceptionCode.NOT_EXIST_ENTITY);
         }
     }
 
