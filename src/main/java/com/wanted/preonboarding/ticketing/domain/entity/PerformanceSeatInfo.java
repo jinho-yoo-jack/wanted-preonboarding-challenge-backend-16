@@ -1,6 +1,5 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
-import com.wanted.preonboarding.ticketing.domain.dto.response.CancelReservationResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;

@@ -5,7 +5,6 @@ import com.wanted.preonboarding.ticketing.domain.entity.Reservation;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
