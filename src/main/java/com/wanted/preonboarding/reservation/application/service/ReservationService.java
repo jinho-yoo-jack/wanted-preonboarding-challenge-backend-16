@@ -5,6 +5,7 @@ import com.wanted.preonboarding.performance.application.exception.PerformanceNot
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
 import com.wanted.preonboarding.reservation.application.dto.ReservationResponse;
+import com.wanted.preonboarding.reservation.application.exception.NotReservedYet;
 import com.wanted.preonboarding.reservation.application.exception.ReservationAlreadyExists;
 import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.domain.entity.Reservation;
@@ -44,7 +45,13 @@ public class ReservationService {
 
     @Transactional(readOnly = true)
     public List<ReservationResponse> findReservationsByUserInfo(final UserInfo userInfo) {
-        return reservationRepository.findReservationResponseByUserInfo(userInfo);
+        List<ReservationResponse> responses =  reservationRepository.findReservationResponseByUserInfo(userInfo);
+
+        if(responses.isEmpty()) {
+            throw new NotReservedYet();
+        }
+
+        return responses;
     }
 
     private void validateReservationExistence(final Performance performance, final SeatInfo seatInfo) {
