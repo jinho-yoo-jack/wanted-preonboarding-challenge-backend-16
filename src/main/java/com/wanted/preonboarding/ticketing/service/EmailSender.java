@@ -25,15 +25,22 @@ public class EmailSender {
     private String writeBody(PerformanceSeatInfo performanceSeatInfo) {
         Performance performance = performanceSeatInfo.getPerformance();
 
-        return "안녕하세요, 공연 예약 알림입니다.\n\n" +
-                "공연 ID: " + performance.getId() + "\n" +
-                "공연명: " + performance.getName() + "\n" +
-                "회차: " + performance.getRound() + "\n" +
-                "시작 일시: " + performance.getStartDate() + "\n" +
-                "예매 가능한 좌석 정보 : \n" +
-                "- 좌석 ID : " + performanceSeatInfo.getId() + "\n" +
-                "- 입장 게이트 : " + performanceSeatInfo.getGate() + "\n" +
-                performanceSeatInfo.getSeat() + "- 좌석 위치 : 열 " + performanceSeatInfo.getLine() + "행" +
-                "\n\n 감사합니다.";
+        return String.format("안녕하세요, 공연 예약 알림입니다.\n\n" +
+                        "공연 ID: %s\n" +
+                        "공연명: %s\n" +
+                        "회차: %d\n" +
+                        "시작 일시: %s\n" +
+                        "예매 가능한 좌석 정보 : \n" +
+                        "- 좌석 ID : %s\n" +
+                        "- 입장 게이트 : %d\n" +
+                        "- %s열 %s행\n\n 감사합니다.",
+                performance.getId(),
+                performance.getName(),
+                performance.getRound(),
+                performance.getStartDate(),
+                performanceSeatInfo.getId(),
+                performanceSeatInfo.getGate(),
+                performanceSeatInfo.getSeat(),
+                performanceSeatInfo.getLine());
     }
 }
