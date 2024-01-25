@@ -31,8 +31,6 @@ public class CreateReservationRequest {
                 .gate(gate)
                 .line(line)
                 .seat(seat)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
     }
 
