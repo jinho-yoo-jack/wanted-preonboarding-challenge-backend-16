@@ -11,18 +11,18 @@ import java.util.UUID;
 @Data
 @Builder
 public class PerformanceInfo {
-    private UUID performanceId;
-    private String performanceName;
-    private String performanceType;
-    private Date startDate;
-    private String isReserve;
+    private UUID performanceId; // 공연 정보
+    private String performanceName; // 공연 이름
+    private String performanceType; // 공연 타입
+    private Date startDate; // 공연 시작 일
+    private String isReserve; // 예약 여부
 
-    public static PerformanceInfo of(Performance entity) {
+    public static PerformanceInfo from(Performance entity) {
         return PerformanceInfo.builder()
             .performanceId(entity.getId())
             .performanceName(entity.getName())
             .performanceType(convertCodeToName(entity.getType()))
-            .startDate(entity.getStart_date())
+            .startDate(entity.getStartDate())
             .isReserve(entity.getIsReserve())
             .build();
     }
@@ -33,5 +33,4 @@ public class PerformanceInfo {
             .orElse(PerformanceType.NONE)
             .name();
     }
-
 }
