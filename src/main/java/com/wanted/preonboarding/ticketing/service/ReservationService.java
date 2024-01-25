@@ -61,11 +61,17 @@ public class ReservationService {
 
     @Transactional(readOnly = true)
     public Page<ReadReservationResponse> readReservation(ReadReservationRequest reservationRequest, Pageable pageable) {
+        Page<Reservation> reservations = findAllReservation(reservationRequest, pageable);
+
+        return reservations.map(Reservation::toReadReservationResponse);
+    }
+
+    private Page<Reservation> findAllReservation(ReadReservationRequest reservationRequest, Pageable pageable) {
         Page<Reservation> reservations = reservationRepository.findByPhoneNumberAndName(reservationRequest.getPhoneNumber()
                 , reservationRequest.getReservationName()
                 , pageable);
 
-        return reservations.map(Reservation::toReadReservationResponse);
+        return reservationValidator.validateReservations(reservations);
     }
 
     @Transactional(readOnly = true)
@@ -99,7 +105,7 @@ public class ReservationService {
 
     private void deleteReservation(CancelReservationRequest cancelReservationRequest) {
         Reservation reservation = reservationRepository.findById(cancelReservationRequest.getReservationId())
-                .orElseThrow(() -> new ReservationNotFoundException(ErrorCode.RESERVATION_NOT_FOUND));
+                .orElseThrow(() -> new ReservationNotFoundException(ErrorCode.NOT_RESERVATION_FOUND));
         reservationRepository.delete(reservation);
     }
 }
