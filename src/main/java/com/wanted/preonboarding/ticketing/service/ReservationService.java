@@ -1,17 +1,19 @@
 package com.wanted.preonboarding.ticketing.service;
 
+import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.ReadReservationRequest;
-import com.wanted.preonboarding.ticketing.domain.dto.response.ReadPerformanceResponse;
-import com.wanted.preonboarding.ticketing.domain.dto.response.ReadReservationResponse;
+import com.wanted.preonboarding.ticketing.domain.dto.response.*;
+import com.wanted.preonboarding.ticketing.domain.entity.Alarm;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.domain.entity.Reservation;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
-import com.wanted.preonboarding.ticketing.domain.dto.response.CreateReservationResponse;
+import com.wanted.preonboarding.ticketing.repository.AlarmRepository;
 import com.wanted.preonboarding.ticketing.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticketing.repository.ReservationRepository;
 import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,10 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
-
     private final ReservationRepository reservationRepository;
     private final PerformanceRepository performanceRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
+    private final AlarmRepository alarmRepository;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public CreateReservationResponse createReservation(CreateReservationRequest createReservationRequest) {
@@ -64,4 +68,27 @@ public class ReservationService {
 
         return performances.map(Performance::toReadPerformanceResponse);
     }
+
+    @Transactional
+    public CreateAlarmResponse createAlarm(CreateAlarmRequest createAlarmRequest) {
+        Performance performance = performanceRepository.getReferenceById(createAlarmRequest.getPerformanceId());
+        Alarm alarm = saveAlarm(createAlarmRequest, performance);
+
+        return alarm.toCreateAlarmResponse();
+    }
+
+    private Alarm saveAlarm(CreateAlarmRequest createAlarmRequest, Performance performance) {
+        Alarm alarm = createAlarmRequest.from(performance);
+        return alarmRepository.save(alarm);
+    }
+
+//    @Transactional
+//    public CancleReservationResponse cancelReservation(Long id) {
+//        Reservation reservation = reservationRepository.getReferenceById(id);
+//        reservationRepository.delete(reservation);
+//        eventPublisher.publishEvent(new ReservationCancelEvent(id));
+//
+//
+//        return null;
+//    }
 }

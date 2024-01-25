@@ -1,10 +1,9 @@
 package com.wanted.preonboarding.ticketing.controller;
 
+import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.ReadReservationRequest;
-import com.wanted.preonboarding.ticketing.domain.dto.response.CreateReservationResponse;
-import com.wanted.preonboarding.ticketing.domain.dto.response.ReadPerformanceResponse;
-import com.wanted.preonboarding.ticketing.domain.dto.response.ReadReservationResponse;
+import com.wanted.preonboarding.ticketing.domain.dto.response.*;
 import com.wanted.preonboarding.ticketing.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,4 +37,14 @@ public class ReservationController {
                                                                           @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(reservationService.readPerformance(isReserve, pageable));
     }
+
+    @PostMapping("/alarm")
+    public ResponseEntity<CreateAlarmResponse> alarm(@RequestBody CreateAlarmRequest createAlarmRequest) {
+        return ResponseEntity.ok(reservationService.createAlarm(createAlarmRequest));
+    }
+
+//    @DeleteMapping("/cancel/{id}")
+//    public ResponseEntity<CancleReservationResponse> cancel(@PathVariable("id")Long id) {
+//        return ResponseEntity.ok(reservationService.cancelReservation(id));
+//    }
 }
