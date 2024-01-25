@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.performanceSeat.application.service;
 
+import com.wanted.preonboarding.performanceSeat.application.exception.PerformanceSeatAlreadyReserved;
 import com.wanted.preonboarding.performanceSeat.application.exception.PerformanceSeatInfoNotFound;
 import com.wanted.preonboarding.performanceSeat.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.performanceSeat.domain.event.SeatSoldOutEvent;
@@ -28,7 +29,7 @@ public class PerformanceSeatService {
         PerformanceSeatInfo performanceSeatInfo = findSeatBySeatReservedEvent(seatReservedEvent);
 
         if(performanceSeatInfo.isReserved()) {
-            throw new Error("이미 예약된 좌석입니다.");
+            throw new PerformanceSeatAlreadyReserved();
         }
         performanceSeatInfo.disableReservation();
 
