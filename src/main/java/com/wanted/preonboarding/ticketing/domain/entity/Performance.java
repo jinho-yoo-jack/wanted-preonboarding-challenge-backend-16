@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
+import com.wanted.preonboarding.ticketing.domain.dto.PerformanceType;
 import com.wanted.preonboarding.ticketing.domain.dto.response.ReadPerformanceResponse;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,7 +36,7 @@ public class Performance extends Time {
 
     @Column(nullable = false)
     @Comment("NONE, CONCERT, EXHIBITION")
-    private int type;
+    private PerformanceType type;
 
     @Column(nullable = false)
     @Comment("공연 일시")
