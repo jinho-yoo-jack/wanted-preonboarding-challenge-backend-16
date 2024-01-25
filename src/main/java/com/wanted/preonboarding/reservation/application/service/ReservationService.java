@@ -7,6 +7,7 @@ import com.wanted.preonboarding.performance.infrasturcture.repository.Performanc
 import com.wanted.preonboarding.reservation.application.dto.ReservationResponse;
 import com.wanted.preonboarding.reservation.application.exception.NotReservedYet;
 import com.wanted.preonboarding.reservation.application.exception.ReservationAlreadyExists;
+import com.wanted.preonboarding.reservation.application.exception.ReservationNotFound;
 import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;
@@ -57,7 +58,7 @@ public class ReservationService {
     @Transactional
     public void cancelReservation(final int reservationId) {
         Reservation reservation = reservationRepository.findReservationById(reservationId)
-                .orElseThrow(Error::new);
+                .orElseThrow(ReservationNotFound::new);
     }
 
     private void validateReservationExistence(final Performance performance, final SeatInfo seatInfo) {
