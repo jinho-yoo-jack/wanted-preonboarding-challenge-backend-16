@@ -3,12 +3,11 @@ package com.wanted.preonboarding.reservation.presentation.controller;
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.reservation.application.service.ReservationService;
 import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
+import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/reserve")
@@ -22,6 +21,14 @@ public class ReservationController {
         return ResponseHandler.builder()
                 .statusCode(HttpStatus.CREATED)
                 .data(reservationService.reservePerformance(reservationRequest))
+                .build();
+    }
+
+    @GetMapping("/")
+    public ResponseHandler<Object> findReservations(@Param("name") String name, @Param("phone") String phoneNumber) {
+        return ResponseHandler.builder()
+                .statusCode(HttpStatus.OK)
+                .data(reservationService.findReservationsByUserInfo(UserInfo.of(name, phoneNumber)))
                 .build();
     }
 }

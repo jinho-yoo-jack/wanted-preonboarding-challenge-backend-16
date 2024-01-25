@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.reservation.presentation.exceptionHandler;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
+import com.wanted.preonboarding.reservation.application.exception.NotReservedYet;
 import com.wanted.preonboarding.reservation.application.exception.ReservationAlreadyExists;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,6 +15,14 @@ public class ReservationExceptionHandler {
         return ResponseHandler.builder()
                 .statusCode(HttpStatus.BAD_REQUEST)
                 .message(ReservationAlreadyExists.getExceptionMessage())
+                .build();
+    }
+
+    @ExceptionHandler(NotReservedYet.class)
+    public ResponseHandler<Object> notReservedYet() {
+        return ResponseHandler.builder()
+                .statusCode(HttpStatus.NOT_FOUND)
+                .message(NotReservedYet.getExceptionMessage())
                 .build();
     }
 }
