@@ -29,7 +29,7 @@ public class ReservationControllerAdvice {
     }
 
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(NullPointerException e) {
+    public ResponseEntity<ErrorResponse> handleEntityNotFoundException() {
         ErrorCode errorCode = ErrorCode.REQUEST_HAS_NULL;
         ErrorResponse errorResponse = ErrorResponse.from(errorCode);
 
