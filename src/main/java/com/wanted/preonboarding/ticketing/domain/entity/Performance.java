@@ -57,4 +57,8 @@ public class Performance extends Time {
                 .isReserve(this.isReserve)
                 .build();
     }
+
+    public boolean isAffordable(int balance) {
+        return this.price <= balance;
+    }
 }

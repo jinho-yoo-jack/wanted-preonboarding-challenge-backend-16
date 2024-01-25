@@ -14,6 +14,7 @@ import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticketing.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticketing.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,15 +29,24 @@ public class ReservationService {
     private final PerformanceRepository performanceRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private final AlarmRepository alarmRepository;
+
     private final AlarmSender alarmSender;
+    private final ReservationValidator reservationValidator;
 
     @Transactional
     public CreateReservationResponse createReservation(CreateReservationRequest createReservationRequest) {
-        Performance performance = performanceRepository.getReferenceById(createReservationRequest.getPerformanceId());
+        Performance performance = findPerformance(createReservationRequest);
         Reservation reservation = reserveTicket(createReservationRequest, performance);
         reserveSeat(createReservationRequest);
 
         return reservation.toCreateReservationResponse(performance);
+    }
+
+    private Performance findPerformance(CreateReservationRequest createReservationRequest) {
+        Performance performance = performanceRepository.getReferenceById(createReservationRequest.getPerformanceId());
+        reservationValidator.validateBalance(createReservationRequest, performance);
+
+        return performance;
     }
 
     private void reserveSeat(CreateReservationRequest createReservationRequest) {
