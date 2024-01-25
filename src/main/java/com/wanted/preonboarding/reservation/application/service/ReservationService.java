@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.reservation.application.service;
 
 import com.wanted.preonboarding.common.model.SeatInfo;
+import com.wanted.preonboarding.performance.application.exception.PerformanceNotFoundException;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
 import com.wanted.preonboarding.reservation.application.dto.ReservationResponse;
@@ -27,7 +28,7 @@ public class ReservationService {
     @Transactional
     public ReservationResponse reservePerformance(final ReservationRequest reservationRequest) {
         Performance performance = performanceRepository.findById(reservationRequest.getPerformanceId())
-                .orElseThrow(Error::new);
+                .orElseThrow(PerformanceNotFoundException::new);
         Reservation reservation = Reservation.from(reservationRequest, performance);
         SeatInfo seatInfo = reservation.getSeatInfo();
 
