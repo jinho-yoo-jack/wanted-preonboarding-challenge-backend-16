@@ -34,10 +34,9 @@ public class ReservationService {
     public CreateReservationResponse createReservation(CreateReservationRequest createReservationRequest) {
         Performance performance = performanceRepository.getReferenceById(createReservationRequest.getPerformanceId());
         Reservation reservation = reserveTicket(createReservationRequest, performance);
-        int changes = createReservationRequest.calculateChange(performance);
         reserveSeat(createReservationRequest);
 
-        return reservation.toCreateReservationResponse(performance, changes);
+        return reservation.toCreateReservationResponse(performance);
     }
 
     private void reserveSeat(CreateReservationRequest createReservationRequest) {
