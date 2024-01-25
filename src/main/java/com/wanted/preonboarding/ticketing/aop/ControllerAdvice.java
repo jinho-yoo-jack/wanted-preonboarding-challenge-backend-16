@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice(annotations = RestController.class)
-public class ReservationControllerAdvice {
+public class ControllerAdvice {
 
     @ExceptionHandler(NotEnoughBalanceException.class)
     public ResponseEntity<ErrorResponse> handleNotEnoughBalanceException(NotEnoughBalanceException e) {
