@@ -10,6 +10,7 @@ import com.wanted.preonboarding.reservation.application.exception.ReservationAlr
 import com.wanted.preonboarding.reservation.application.exception.ReservationNotFound;
 import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.domain.entity.Reservation;
+import com.wanted.preonboarding.reservation.domain.event.ReservationCanceledEvent;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import com.wanted.preonboarding.reservation.infrastructure.repository.ReservationRepository;
@@ -59,6 +60,9 @@ public class ReservationService {
     public void cancelReservation(final int reservationId) {
         Reservation reservation = reservationRepository.findReservationById(reservationId)
                 .orElseThrow(ReservationNotFound::new);
+
+        eventPublisher.publishEvent(ReservationCanceledEvent.of(reservation.getSeatInfo(), reservation.getPerformance()));
+        reservationRepository.delete(reservation);
     }
 
     private void validateReservationExistence(final Performance performance, final SeatInfo seatInfo) {
