@@ -1,6 +1,7 @@
-package com.wanted.preonboarding.reservation.domain.repository;
+package com.wanted.preonboarding.reservation.infrastructure.repository;
 
 import com.wanted.preonboarding.common.model.SeatInfo;
+import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,5 +12,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     List<Reservation> findAllByNameAndPhoneNumber(final String name, final String phoneNumber);
 
-    boolean existsByPerformanceIdAndSeatInfo(final UUID performanceId, final SeatInfo seatInfo);
+    boolean existsByPerformanceAndSeatInfo(final Performance performance, final SeatInfo seatInfo);
 }

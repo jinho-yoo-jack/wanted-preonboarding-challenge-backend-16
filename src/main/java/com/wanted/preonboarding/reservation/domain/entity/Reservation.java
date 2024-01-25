@@ -2,6 +2,7 @@ package com.wanted.preonboarding.reservation.domain.entity;
 
 import com.wanted.preonboarding.common.model.DefaultEntity;
 import com.wanted.preonboarding.common.model.SeatInfo;
+import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,11 +24,9 @@ public class Reservation extends DefaultEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @Column(name = "performance_id")
-//    private Performance performance;
-    @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
-    private UUID performanceId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "performance_id")
+    private Performance performance;
 
     @Column(nullable = false)
     private String name;
@@ -38,11 +37,11 @@ public class Reservation extends DefaultEntity {
     @Embedded
     private SeatInfo seatInfo;
 
-    public static Reservation from(ReservationRequest reservationRequest) {
+    public static Reservation from(final ReservationRequest reservationRequest, final Performance performance) {
         return Reservation.builder()
                 .name(reservationRequest.getName())
                 .phoneNumber(reservationRequest.getPhoneNumber())
-                .performanceId(reservationRequest.getPerformanceId())
+                .performance(performance)
                 .seatInfo(SeatInfo.from(reservationRequest))
                 .build();
     }
