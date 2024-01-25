@@ -16,6 +16,7 @@ public class CreateReservationRequest {
     private String phoneNumber;
     private int balance;
     private UUID performanceId;
+    private Long seatId;
     private int round;
     private int gate;
     private String line;
