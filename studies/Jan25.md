@@ -18,6 +18,11 @@
   - `JOIN`을 사용해야한다는 코멘트가 있었다. 
   - 기존 로직의 연관관계를 전부 집어넣자!(드디어!)
 
+- UserInfo를 가지고 `공연`과 `예약`을 조회해서 ReservationResponse를 초기화해야한다. 
+  - Raw Query를 이용하는 것도 방법일 것이다. 
+  - 근데, 최근 네이버 부스트캠프를 하면서 Java를 잘 안쓰고, NestJS나 실제 쿼리를 쓰는 일이 잦았다. 
+  - 그렇다면, 이참에 QueryDSL을 써보는 것은 어떨까?
+  - QueryDSL을 이용하면 바로 ReservationResponse객체의 배열로 반환할 수 있다. 
 
 # 궁금한 사항
 
