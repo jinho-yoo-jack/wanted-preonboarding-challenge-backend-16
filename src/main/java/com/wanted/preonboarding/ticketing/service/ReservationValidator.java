@@ -19,7 +19,7 @@ public class ReservationValidator {
 
     public Page<Reservation> validateReservations(Page<Reservation> reservations) {
         if (reservations.isEmpty()) {
-            throw new NotFoundReservationsException(ErrorCode.NOT_RESERVATIONS_FOUND);
+            throw new NotFoundReservationsException(ErrorCode.NOT_FOUND_RESERVATIONS);
         }
 
         return reservations;

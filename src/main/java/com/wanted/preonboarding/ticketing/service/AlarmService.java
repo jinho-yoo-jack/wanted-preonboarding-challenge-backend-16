@@ -1,5 +1,7 @@
 package com.wanted.preonboarding.ticketing.service;
 
+import com.wanted.preonboarding.ticketing.aop.advice.exception.PerformanceNotFountException;
+import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CancelReservationResponse;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CreateAlarmResponse;
@@ -21,7 +23,8 @@ public class AlarmService {
     private final PerformanceRepository performanceRepository;
 
     public CreateAlarmResponse createAlarm(CreateAlarmRequest createAlarmRequest) {
-        Performance performance = performanceRepository.getReferenceById(createAlarmRequest.getPerformanceId());
+        Performance performance = performanceRepository.findById(createAlarmRequest.getPerformanceId())
+                .orElseThrow(() -> new PerformanceNotFountException(ErrorCode.NOT_FOUND_PERFORMANCE));
         Alarm alarm = saveAlarm(createAlarmRequest, performance);
 
         return alarm.toCreateAlarmResponse();

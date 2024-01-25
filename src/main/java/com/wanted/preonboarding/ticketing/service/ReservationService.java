@@ -93,7 +93,7 @@ public class ReservationService {
 
     private void deleteReservation(CancelReservationRequest cancelReservationRequest) {
         Reservation reservation = reservationRepository.findById(cancelReservationRequest.getReservationId())
-                .orElseThrow(() -> new ReservationNotFoundException(ErrorCode.NOT_RESERVATION_FOUND));
+                .orElseThrow(() -> new ReservationNotFoundException(ErrorCode.NOT_FOUND_RESERVATION));
         reservationRepository.delete(reservation);
     }
 }
