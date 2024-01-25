@@ -10,7 +10,7 @@ import org.hibernate.annotations.Comment;
 @AllArgsConstructor
 @Table
 @Getter
-public class PerformanceSeatInfo extends Time{
+public class PerformanceSeatInfo extends Time {
     private static final String POSSIBLE = "enable";
     private static final String IMPOSSIBLE = "disable";
 

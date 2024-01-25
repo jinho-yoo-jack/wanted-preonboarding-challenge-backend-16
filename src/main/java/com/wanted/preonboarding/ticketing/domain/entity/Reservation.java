@@ -12,7 +12,7 @@ import org.hibernate.annotations.Comment;
 @AllArgsConstructor
 @Table
 @Getter
-public class Reservation extends Time{
+public class Reservation extends Time {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
