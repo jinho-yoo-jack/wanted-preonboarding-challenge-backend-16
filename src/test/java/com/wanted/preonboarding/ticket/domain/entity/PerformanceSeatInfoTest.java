@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
+import com.wanted.preonboarding.ticket.exception.PerformanceSeatReserveValidationException;
+
 class PerformanceSeatInfoTest {
 
     @Test
@@ -17,7 +19,7 @@ class PerformanceSeatInfoTest {
         // when
         // then
         assertThatThrownBy(() -> seatInfo.validate())
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(PerformanceSeatReserveValidationException.class);
     }
 
     @Test
@@ -30,7 +32,7 @@ class PerformanceSeatInfoTest {
         // when
         // then
         assertThatThrownBy(() -> seatInfo.validate())
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(PerformanceSeatReserveValidationException.class);
     }
 
     @Test

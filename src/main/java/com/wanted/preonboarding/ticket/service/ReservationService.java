@@ -1,11 +1,17 @@
 package com.wanted.preonboarding.ticket.service;
 
+import static com.wanted.preonboarding.ticket.exception.ExceptionMessage.NOT_FOUND_PERFORMANCE;
+import static com.wanted.preonboarding.ticket.exception.ExceptionMessage.NOT_FOUND_SEAT_INFO;
+import static com.wanted.preonboarding.ticket.exception.ExceptionMessage.PAYMENT_FAILED;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.ReservationStatus;
+import com.wanted.preonboarding.ticket.exception.EntityNotFound;
+import com.wanted.preonboarding.ticket.exception.InsufficientPaymentException;
 import com.wanted.preonboarding.ticket.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.repository.ReservationRepository;
@@ -51,12 +57,12 @@ public class ReservationService {
     private PerformanceSeatInfo getReserveSeatInfo(final ReservationRequestDto requestDto) {
         return performanceSeatInfoRepository.findByPerformanceIdAndRoundAndLineAndSeat(
                         requestDto.performanceId(), requestDto.round(), requestDto.line(), requestDto.seat())
-                .orElseThrow(() -> new IllegalArgumentException("Not Found Seat"));
+                .orElseThrow(() -> new EntityNotFound(NOT_FOUND_SEAT_INFO.getMessage()));
     }
 
     private Performance getPerformance(final ReservationRequestDto requestDto) {
         return performanceRepository.findById(requestDto.performanceId())
-                .orElseThrow(() -> new IllegalArgumentException("Not Found Performance"));
+                .orElseThrow(() -> new EntityNotFound(NOT_FOUND_PERFORMANCE.getMessage()));
     }
 
     // TODO: 결제 로직 분리
@@ -66,7 +72,7 @@ public class ReservationService {
         final int balance = amount - price;
 
         if (balance < 0) {
-            throw new IllegalArgumentException("Not Enough Balance");
+            throw new InsufficientPaymentException(PAYMENT_FAILED.getMessage());
         }
         return balance;
     }

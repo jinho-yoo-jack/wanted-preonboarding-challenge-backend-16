@@ -1,5 +1,8 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import static com.wanted.preonboarding.ticket.exception.ExceptionMessage.DISABLED_SEAT;
+import static com.wanted.preonboarding.ticket.exception.ExceptionMessage.OCCUPIED_SEAT;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,6 +12,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+
+import com.wanted.preonboarding.ticket.exception.PerformanceSeatReserveValidationException;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -50,10 +55,10 @@ public class PerformanceSeatInfo {
 
     public void validate() {
         if (status == ReservationStatus.OCCUPIED) {
-            throw new IllegalArgumentException("Already Reserved");
+            throw new PerformanceSeatReserveValidationException(OCCUPIED_SEAT.getMessage());
         }
         if (status == ReservationStatus.DISABLED) {
-            throw new IllegalArgumentException("Unavailable Seat");
+            throw new PerformanceSeatReserveValidationException(DISABLED_SEAT.getMessage());
         }
     }
 }
