@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
+import com.wanted.preonboarding.ticketing.domain.dto.response.CreateAlarmResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -10,7 +11,7 @@ import org.hibernate.annotations.Comment;
 @AllArgsConstructor
 @Table
 @Getter
-public class Alarm {
+public class Alarm extends Time {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Comment("알람 Id")
@@ -28,4 +29,14 @@ public class Alarm {
     @Column(nullable = false)
     @Comment("휴대전화")
     private String phoneNumber;
+
+    public CreateAlarmResponse toCreateAlarmResponse() {
+        return CreateAlarmResponse.builder()
+                .alarmId(this.id)
+                .performanceId(this.performance.getId())
+                .customerName(this.name)
+                .phoneNumber(this.phoneNumber)
+                .startedTime(this.getCreatedAt())
+                .build();
+    }
 }
