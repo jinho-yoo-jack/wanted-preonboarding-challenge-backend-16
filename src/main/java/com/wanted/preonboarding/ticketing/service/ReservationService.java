@@ -56,6 +56,7 @@ public class ReservationService {
 
     private Reservation reserveTicket(CreateReservationRequest createReservationRequest, Performance performance) {
         Reservation reservation = Reservation.from(createReservationRequest, performance);
+
         return reservationRepository.save(reservation);
     }
 
