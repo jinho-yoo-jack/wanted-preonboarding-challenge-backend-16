@@ -33,8 +33,8 @@ public class ReservationService {
         SeatInfo seatInfo = reservation.getSeatInfo();
 
         validateReservationExistence(performance, seatInfo);
-        reservationRepository.save(reservation);
         eventPublisher.publishEvent(SeatReservedEvent.of(seatInfo, reservationRequest.getPerformanceId()));
+        reservationRepository.save(reservation);
 
         return ReservationResponse.from(performance, reservation);
     }
