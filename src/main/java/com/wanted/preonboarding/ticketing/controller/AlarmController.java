@@ -7,14 +7,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/alarm")
 @RequiredArgsConstructor
 public class AlarmController {
     private final AlarmService alarmService;
 
-    @PostMapping("/alarm")
+    @PostMapping
     public ResponseEntity<CreateAlarmResponse> createAlarm(@RequestBody CreateAlarmRequest createAlarmRequest) {
         return ResponseEntity.ok(alarmService.createAlarm(createAlarmRequest));
     }

@@ -9,15 +9,17 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/performance")
 @RequiredArgsConstructor
 public class PerformanceController {
     private final PerformanceService performanceService;
 
-    @GetMapping("/performance")
+    @GetMapping
     public ResponseEntity<Page<ReadPerformanceResponse>> readPerformance(@RequestParam String isReserve,
                                                                          @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(performanceService.readPerformance(isReserve, pageable));
