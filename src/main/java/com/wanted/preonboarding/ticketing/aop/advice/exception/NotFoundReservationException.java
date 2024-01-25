@@ -5,9 +5,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.Getter;
 
 @Getter
-public class PerformanceNotFountException extends EntityNotFoundException {
+public class NotFoundReservationException extends EntityNotFoundException {
     private final ErrorCode errorCode;
-    public PerformanceNotFountException(ErrorCode errorCode) {
+
+    public NotFoundReservationException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }
