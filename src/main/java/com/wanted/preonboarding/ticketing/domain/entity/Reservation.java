@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
+import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CreateReservationResponse;
 import com.wanted.preonboarding.ticketing.domain.dto.response.ReadReservationResponse;
 import jakarta.persistence.*;
@@ -47,6 +48,10 @@ public class Reservation extends Time {
     @Column(nullable = false)
     @Comment("좌석 행")
     private int seat;
+
+    public static Reservation from(CreateReservationRequest createReservationRequest, Performance performance) {
+        return createReservationRequest.fromTicket(performance);
+    }
 
     public CreateReservationResponse toCreateReservationResponse(Performance performance, int changes) {
         return CreateReservationResponse.builder()
