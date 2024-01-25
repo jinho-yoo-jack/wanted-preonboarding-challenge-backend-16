@@ -54,6 +54,12 @@ public class ReservationService {
         return responses;
     }
 
+    @Transactional
+    public void cancelReservation(final int reservationId) {
+        Reservation reservation = reservationRepository.findReservationById(reservationId)
+                .orElseThrow(Error::new);
+    }
+
     private void validateReservationExistence(final Performance performance, final SeatInfo seatInfo) {
         if(reservationRepository.existsByPerformanceAndSeatInfo(performance, seatInfo)) {
             throw new ReservationAlreadyExists();
