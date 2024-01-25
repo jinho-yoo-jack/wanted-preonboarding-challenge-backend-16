@@ -69,7 +69,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException() {
         ErrorCode errorCode = ErrorCode.NOT_VALIDATED_PARAM;
         ErrorResponse errorResponse = ErrorResponse.from(errorCode);
 
