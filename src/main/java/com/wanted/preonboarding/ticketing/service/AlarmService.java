@@ -1,7 +1,10 @@
 package com.wanted.preonboarding.ticketing.service;
 
+import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CancelReservationResponse;
+import com.wanted.preonboarding.ticketing.domain.dto.response.CreateAlarmResponse;
 import com.wanted.preonboarding.ticketing.domain.entity.Alarm;
+import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.repository.AlarmRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +15,20 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AlarmSender {
+public class AlarmService {
     private final AlarmRepository alarmRepository;
+
+    public CreateAlarmResponse createAlarm(CreateAlarmRequest createAlarmRequest, Performance performance) {
+        Alarm alarm = saveAlarm(createAlarmRequest, performance);
+
+        return alarm.toCreateAlarmResponse();
+    }
+
+    private Alarm saveAlarm(CreateAlarmRequest createAlarmRequest, Performance performance) {
+        Alarm alarm = createAlarmRequest.from(performance);
+
+        return alarmRepository.save(alarm);
+    }
 
     public List<CancelReservationResponse> sendAlarm(PerformanceSeatInfo performanceSeatInfo) {
         List<Alarm> alarms = alarmRepository.findAllByPerformance(performanceSeatInfo.getPerformance());
