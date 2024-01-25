@@ -1,10 +1,13 @@
 package com.wanted.preonboarding.performanceSeat.application.service;
 
+import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performanceSeat.application.exception.PerformanceSeatAlreadyReserved;
 import com.wanted.preonboarding.performanceSeat.application.exception.PerformanceSeatInfoNotFound;
 import com.wanted.preonboarding.performanceSeat.domain.entity.PerformanceSeatInfo;
+import com.wanted.preonboarding.performanceSeat.domain.event.EnablePerformanceReservationEvent;
 import com.wanted.preonboarding.performanceSeat.domain.event.SeatSoldOutEvent;
 import com.wanted.preonboarding.performanceSeat.infrastructure.repository.PerformanceSeatInfoRepository;
+import com.wanted.preonboarding.reservation.domain.event.ReservationCanceledEvent;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +15,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,15 +38,40 @@ public class PerformanceSeatService {
         }
         performanceSeatInfo.disableReservation();
 
-        if(!performanceSeatInfoRepository.existsByIsReserveAndPerformanceId(RESERVABLE, seatReservedEvent.getPerformanceId())) {
+        if(!performanceSeatInfoRepository.existsByIsReserveAndPerformanceId(
+                RESERVABLE,
+                seatReservedEvent.getPerformanceId())) {
             eventPublisher.publishEvent(SeatSoldOutEvent.of(seatReservedEvent.getPerformanceId()));
         }
     }
 
+    @Transactional
+    @EventListener(ReservationCanceledEvent.class)
+    public void enableSeatReservation(final ReservationCanceledEvent reservationCanceledEvent) {
+        PerformanceSeatInfo performanceSeatInfo =
+                findSeatByReservationCanceledEvent(reservationCanceledEvent);
+        performanceSeatInfo.enableReservation();
+        eventPublisher.publishEvent(EnablePerformanceReservationEvent.of(reservationCanceledEvent.getPerformance()));
+    }
+
     private PerformanceSeatInfo findSeatBySeatReservedEvent(final SeatReservedEvent seatReservedEvent) {
+        return findSeatBySeatInfoAndPerformanceId(
+                seatReservedEvent.getSeatInfo(),
+                seatReservedEvent.getPerformanceId()
+        );
+    }
+
+    private PerformanceSeatInfo findSeatByReservationCanceledEvent(final ReservationCanceledEvent reservationCanceledEvent) {
+        return findSeatBySeatInfoAndPerformanceId(
+                reservationCanceledEvent.getSeatInfo(),
+                reservationCanceledEvent.getPerformanceId()
+        );
+    }
+
+    private PerformanceSeatInfo findSeatBySeatInfoAndPerformanceId(final SeatInfo seatInfo, final UUID performanceId) {
         return performanceSeatInfoRepository
-                .findBySeatInfoAndPerformanceId(seatReservedEvent.getSeatInfo(),
-                        seatReservedEvent.getPerformanceId())
+                .findBySeatInfoAndPerformanceId(seatInfo,
+                        performanceId)
                 .orElseThrow(PerformanceSeatInfoNotFound::new);
     }
 }

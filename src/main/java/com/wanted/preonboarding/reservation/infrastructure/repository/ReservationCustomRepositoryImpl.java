@@ -5,10 +5,12 @@ import com.wanted.preonboarding.performance.domain.entity.QPerformance;
 import com.wanted.preonboarding.reservation.application.dto.QReservationResponse;
 import com.wanted.preonboarding.reservation.application.dto.ReservationResponse;
 import com.wanted.preonboarding.reservation.domain.entity.QReservation;
+import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.wanted.preonboarding.performance.domain.entity.QPerformance.*;
 import static com.wanted.preonboarding.reservation.domain.entity.QReservation.*;
@@ -33,5 +35,15 @@ public class ReservationCustomRepositoryImpl implements ReservationCustomReposit
                 .leftJoin(reservation.performance, performance)
                 .where(reservation.userInfo.eq(userInfo))
                 .stream().toList();
+    }
+
+    @Override
+    public Optional<Reservation> findReservationById(int reservationId) {
+        return Optional.ofNullable(
+                query.selectFrom(reservation)
+                .leftJoin(reservation.performance, performance)
+                .where(reservation.id.eq(reservationId))
+                .fetchFirst()
+        );
     }
 }
