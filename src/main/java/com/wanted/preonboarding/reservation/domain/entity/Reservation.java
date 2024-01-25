@@ -4,6 +4,7 @@ import com.wanted.preonboarding.common.model.DefaultEntity;
 import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
+import com.wanted.preonboarding.reservation.domain.dto.UserInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,14 +36,16 @@ public class Reservation extends DefaultEntity {
     private String phoneNumber;
 
     @Embedded
+    private UserInfo userInfo;
+
+    @Embedded
     private SeatInfo seatInfo;
 
     public static Reservation from(final ReservationRequest reservationRequest, final Performance performance) {
         return Reservation.builder()
-                .name(reservationRequest.getName())
-                .phoneNumber(reservationRequest.getPhoneNumber())
                 .performance(performance)
                 .seatInfo(SeatInfo.from(reservationRequest))
+                .userInfo(UserInfo.of(reservationRequest.getName(), reservationRequest.getPhoneNumber()))
                 .build();
     }
 }
