@@ -9,6 +9,7 @@ import com.wanted.preonboarding.reservation.application.exception.ReservationAlr
 import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;
+import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import com.wanted.preonboarding.reservation.infrastructure.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,11 @@ public class ReservationService {
         reservationRepository.save(reservation);
 
         return ReservationResponse.from(performance, reservation);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReservationResponse> findReservationsByUserInfo(final UserInfo userInfo) {
+        return reservationRepository.findReservationResponseByUserInfo(userInfo);
     }
 
     private void validateReservationExistence(final Performance performance, final SeatInfo seatInfo) {
