@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
+import com.wanted.preonboarding.ticketing.domain.dto.response.CancelReservationResponse;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CreateAlarmResponse;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,6 +38,19 @@ public class Alarm extends Time {
                 .customerName(this.name)
                 .phoneNumber(this.phoneNumber)
                 .startedTime(this.getCreatedAt())
+                .build();
+    }
+
+    public CancelReservationResponse toCancelReservationResponse(PerformanceSeatInfo performanceSeatInfo) {
+        return CancelReservationResponse.builder()
+                .seat(performanceSeatInfo.getSeat())
+                .gate(performanceSeatInfo.getGate())
+                .round(performanceSeatInfo.getRound())
+                .line(performanceSeatInfo.getLine())
+                .performanceName(this.performance.getName())
+                .performanceId(this.performance.getId())
+                .startedTime(this.performance.getStartDate())
+                .isReserve(performance.getIsReserve())
                 .build();
     }
 }

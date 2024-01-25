@@ -1,23 +1,25 @@
 package com.wanted.preonboarding.ticketing.service;
 
+import com.wanted.preonboarding.ticketing.domain.dto.request.CancelReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
+import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.ReadReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.*;
 import com.wanted.preonboarding.ticketing.domain.entity.Alarm;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.domain.entity.Reservation;
-import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticketing.repository.AlarmRepository;
+import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticketing.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticketing.repository.ReservationRepository;
-import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +28,7 @@ public class ReservationService {
     private final PerformanceRepository performanceRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private final AlarmRepository alarmRepository;
-
-    private final ApplicationEventPublisher eventPublisher;
+    private final AlarmSender alarmSender;
 
     @Transactional
     public CreateReservationResponse createReservation(CreateReservationRequest createReservationRequest) {
@@ -45,7 +46,7 @@ public class ReservationService {
 
     private void reserveSeat(CreateReservationRequest createReservationRequest) {
         PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.getReferenceById(createReservationRequest.getSeatId());
-        performanceSeatInfo.updateReservationStatus(createReservationRequest);
+        performanceSeatInfo.updateReservationStatus(createReservationRequest.getReservationStatus());
     }
 
     private Reservation reserveTicket(CreateReservationRequest createReservationRequest, Performance performance) {
@@ -82,13 +83,24 @@ public class ReservationService {
         return alarmRepository.save(alarm);
     }
 
-//    @Transactional
-//    public CancleReservationResponse cancelReservation(Long id) {
-//        Reservation reservation = reservationRepository.getReferenceById(id);
-//        reservationRepository.delete(reservation);
-//        eventPublisher.publishEvent(new ReservationCancelEvent(id));
-//
-//
-//        return null;
-//    }
+    @Transactional
+    public List<CancelReservationResponse> cancelReservation(CancelReservationRequest cancelReservationRequest) {
+        deleteReservation(cancelReservationRequest);
+        PerformanceSeatInfo performanceSeatInfo = changeSeatInfo(cancelReservationRequest);
+
+        return alarmSender.sendAlarm(performanceSeatInfo);
+    }
+
+    private PerformanceSeatInfo changeSeatInfo(CancelReservationRequest cancelReservationRequest) {
+        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository
+                .getReferenceById(cancelReservationRequest.getReservationSeatId());
+
+        performanceSeatInfo.updateCancelStatus();
+        return performanceSeatInfo;
+    }
+
+    private void deleteReservation(CancelReservationRequest cancelReservationRequest) {
+        Reservation reservation = reservationRepository.getReferenceById(cancelReservationRequest.getReservationId());
+        reservationRepository.delete(reservation);
+    }
 }

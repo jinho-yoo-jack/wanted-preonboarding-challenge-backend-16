@@ -1,11 +1,8 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
-import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
+import com.wanted.preonboarding.ticketing.domain.dto.response.CancelReservationResponse;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
 @Entity
@@ -13,7 +10,11 @@ import org.hibernate.annotations.Comment;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table
+@Getter
 public class PerformanceSeatInfo extends Time{
+    private static final String POSSIBLE = "enable";
+    private static final String IMPOSSIBLE = "disable";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Comment("ID")
@@ -44,10 +45,15 @@ public class PerformanceSeatInfo extends Time{
     @Comment("예약 가능 여부")
     private String isReserve;
 
-    public void updateReservationStatus(CreateReservationRequest createReservationRequest) {
-        String requestStatus = createReservationRequest.getReservationStatus();
+    public void updateReservationStatus(String requestStatus) {
         if (!this.isReserve.equals(requestStatus)) {
             this.isReserve = requestStatus;
+        }
+    }
+
+    public void updateCancelStatus() {
+        if (this.isReserve.equals(IMPOSSIBLE)) {
+            this.isReserve = POSSIBLE;
         }
     }
 }

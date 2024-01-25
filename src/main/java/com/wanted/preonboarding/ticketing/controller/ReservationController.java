@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticketing.controller;
 
+import com.wanted.preonboarding.ticketing.domain.dto.request.CancelReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.ReadReservationRequest;
@@ -13,7 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,8 +44,8 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.createAlarm(createAlarmRequest));
     }
 
-//    @DeleteMapping("/cancel/{id}")
-//    public ResponseEntity<CancleReservationResponse> cancel(@PathVariable("id")Long id) {
-//        return ResponseEntity.ok(reservationService.cancelReservation(id));
-//    }
+    @DeleteMapping("/cancel")
+    public ResponseEntity<List<CancelReservationResponse>> cancel(@RequestBody CancelReservationRequest cancelReservationRequest) {
+        return ResponseEntity.ok(reservationService.cancelReservation(cancelReservationRequest));
+    }
 }
