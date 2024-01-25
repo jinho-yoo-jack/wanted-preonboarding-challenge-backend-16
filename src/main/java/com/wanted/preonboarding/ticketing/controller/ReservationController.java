@@ -7,6 +7,7 @@ import com.wanted.preonboarding.ticketing.domain.dto.response.CancelReservationR
 import com.wanted.preonboarding.ticketing.domain.dto.response.CreateReservationResponse;
 import com.wanted.preonboarding.ticketing.domain.dto.response.ReadReservationResponse;
 import com.wanted.preonboarding.ticketing.service.ReservationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,18 +23,18 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping
-    public ResponseEntity<CreateReservationResponse> create(@RequestBody CreateReservationRequest createReservationRequest) {
+    public ResponseEntity<CreateReservationResponse> create(@RequestBody @Valid CreateReservationRequest createReservationRequest) {
         return ResponseEntity.ok(reservationService.createReservation(createReservationRequest));
     }
 
     @GetMapping
-    public ResponseEntity<Page<ReadReservationResponse>> readReservation(@ModelAttribute ReadReservationRequest reservationRequest,
+    public ResponseEntity<Page<ReadReservationResponse>> readReservation(@ModelAttribute @Valid ReadReservationRequest reservationRequest,
                                                                          @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(reservationService.readReservation(reservationRequest, pageable));
     }
 
     @DeleteMapping("/cancel")
-    public ResponseEntity<CancelReservationResponse> cancel(@RequestBody CancelReservationRequest cancelReservationRequest) {
+    public ResponseEntity<CancelReservationResponse> cancel(@RequestBody @Valid CancelReservationRequest cancelReservationRequest) {
         return ResponseEntity.ok(reservationService.cancelReservation(cancelReservationRequest));
     }
 }

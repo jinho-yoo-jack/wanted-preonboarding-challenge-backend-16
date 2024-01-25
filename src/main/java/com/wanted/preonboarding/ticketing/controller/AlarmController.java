@@ -3,6 +3,7 @@ package com.wanted.preonboarding.ticketing.controller;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CreateAlarmResponse;
 import com.wanted.preonboarding.ticketing.service.AlarmService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,7 @@ public class AlarmController {
     private final AlarmService alarmService;
 
     @PostMapping
-    public ResponseEntity<CreateAlarmResponse> createAlarm(@RequestBody CreateAlarmRequest createAlarmRequest) {
+    public ResponseEntity<CreateAlarmResponse> createAlarm(@RequestBody @Valid CreateAlarmRequest createAlarmRequest) {
         return ResponseEntity.ok(alarmService.createAlarm(createAlarmRequest));
     }
 }

@@ -12,7 +12,8 @@ public enum ErrorCode {
     REQUEST_HAS_NULL(400, "C003", "요청에 null은 입력할 수 없습니다."),
     NOT_FOUND_RESERVATIONS(500, "C004", "예약 정보가 없습니다."),
     NOT_FOUND_PERFORMANCE(500,"C005" , "공연 정보가 존재하지 않습니다."),
-    NOT_FOUND_PERFORMANCE_SEAT_INFO(500, "C006", "좌석 정보가 존재하지 않습니다.");
+    NOT_FOUND_PERFORMANCE_SEAT_INFO(500, "C006", "좌석 정보가 존재하지 않습니다."),
+    NOT_VALIDATED_PARAM(400, "C007", "파라미터가 유효하지 않습니다.");
 
     private final int status;
     private final String code;

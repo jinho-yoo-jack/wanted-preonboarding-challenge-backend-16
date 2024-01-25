@@ -3,6 +3,7 @@ package com.wanted.preonboarding.ticketing.aop;
 import com.wanted.preonboarding.ticketing.aop.advice.exception.*;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorResponse;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,6 +63,14 @@ public class ControllerAdvice {
     @ExceptionHandler(NotFoundPerformanceSeatInfoException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundPerformanceSeatInfoException(NotFoundPerformanceSeatInfoException e) {
         ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.from(errorCode);
+
+        return new ResponseEntity<>(errorResponse, errorCode.toHttpStatus());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
+        ErrorCode errorCode = ErrorCode.NOT_VALIDATED_PARAM;
         ErrorResponse errorResponse = ErrorResponse.from(errorCode);
 
         return new ResponseEntity<>(errorResponse, errorCode.toHttpStatus());
