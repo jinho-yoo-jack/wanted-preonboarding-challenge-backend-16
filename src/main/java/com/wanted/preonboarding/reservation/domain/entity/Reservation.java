@@ -2,6 +2,7 @@ package com.wanted.preonboarding.reservation.domain.entity;
 
 import com.wanted.preonboarding.common.model.DefaultEntity;
 import com.wanted.preonboarding.common.model.SeatInfo;
+import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,4 +37,13 @@ public class Reservation extends DefaultEntity {
 
     @Embedded
     private SeatInfo seatInfo;
+
+    public static Reservation from(ReservationRequest reservationRequest) {
+        return Reservation.builder()
+                .name(reservationRequest.getName())
+                .phoneNumber(reservationRequest.getPhoneNumber())
+                .performanceId(reservationRequest.getPerformanceId())
+                .seatInfo(SeatInfo.from(reservationRequest))
+                .build();
+    }
 }
