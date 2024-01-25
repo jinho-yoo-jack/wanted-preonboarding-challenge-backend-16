@@ -85,6 +85,7 @@ public class ReservationService {
 
     private Alarm saveAlarm(CreateAlarmRequest createAlarmRequest, Performance performance) {
         Alarm alarm = createAlarmRequest.from(performance);
+
         return alarmRepository.save(alarm);
     }
 
@@ -101,6 +102,7 @@ public class ReservationService {
                 .getReferenceById(cancelReservationRequest.getReservationSeatId());
 
         performanceSeatInfo.updateCancelStatus();
+
         return performanceSeatInfo;
     }
 
