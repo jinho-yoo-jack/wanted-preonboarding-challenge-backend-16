@@ -1,8 +1,9 @@
-package com.wanted.preonboarding.reservation.application;
+package com.wanted.preonboarding.reservation.application.service;
 
 import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
+import com.wanted.preonboarding.reservation.application.dto.ReservationResponse;
 import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;
@@ -23,14 +24,17 @@ public class ReservationService {
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public void reservePerformance(final ReservationRequest reservationRequest) {
+    public ReservationResponse reservePerformance(final ReservationRequest reservationRequest) {
         Performance performance = performanceRepository.findById(reservationRequest.getPerformanceId())
                 .orElseThrow(Error::new);
-        SeatInfo seatInfo = SeatInfo.from(reservationRequest);
+        Reservation reservation = Reservation.from(reservationRequest, performance);
+        SeatInfo seatInfo = reservation.getSeatInfo();
 
         validateReservationExistence(performance, seatInfo);
-        reservationRepository.save(Reservation.from(reservationRequest, performance));
+        reservationRepository.save(reservation);
         eventPublisher.publishEvent(SeatReservedEvent.of(seatInfo, reservationRequest.getPerformanceId()));
+
+        return ReservationResponse.from(performance, reservation);
     }
 
     private void validateReservationExistence(final Performance performance, final SeatInfo seatInfo) {
