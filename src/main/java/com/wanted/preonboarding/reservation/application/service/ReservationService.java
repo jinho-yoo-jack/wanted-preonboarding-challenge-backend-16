@@ -5,10 +5,12 @@ import com.wanted.preonboarding.performance.application.exception.PerformanceNot
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
 import com.wanted.preonboarding.reservation.application.dto.ReservationResponse;
+import com.wanted.preonboarding.reservation.application.exception.NotReservedYet;
 import com.wanted.preonboarding.reservation.application.exception.ReservationAlreadyExists;
 import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;
+import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import com.wanted.preonboarding.reservation.infrastructure.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,17 @@ public class ReservationService {
         reservationRepository.save(reservation);
 
         return ReservationResponse.from(performance, reservation);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReservationResponse> findReservationsByUserInfo(final UserInfo userInfo) {
+        List<ReservationResponse> responses =  reservationRepository.findReservationResponseByUserInfo(userInfo);
+
+        if(responses.isEmpty()) {
+            throw new NotReservedYet();
+        }
+
+        return responses;
     }
 
     private void validateReservationExistence(final Performance performance, final SeatInfo seatInfo) {

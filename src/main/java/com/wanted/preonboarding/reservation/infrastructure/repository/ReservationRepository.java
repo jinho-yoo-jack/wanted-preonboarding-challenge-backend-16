@@ -9,9 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.UUID;
 
-public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-
-    List<Reservation> findAllByUserInfo(final UserInfo userInfo);
+public interface ReservationRepository extends JpaRepository<Reservation, Long>, ReservationCustomRepository {
 
     boolean existsByPerformanceAndSeatInfo(final Performance performance, final SeatInfo seatInfo);
 }
