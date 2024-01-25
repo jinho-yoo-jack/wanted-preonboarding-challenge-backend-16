@@ -33,12 +33,18 @@ public class CancelReservationEventListener {
                 .findById(cancelReservationEvent.getPerformanceSeatInfoId())
                 .orElseThrow(() -> new NotFoundPerformanceSeatInfoException(ErrorCode.NOT_FOUND_PERFORMANCE_SEAT_INFO));
 
+        sendAlarm(performanceSeatInfo);
+    }
+
+    private void sendAlarm(PerformanceSeatInfo performanceSeatInfo) {
         List<Alarm> alarms = alarmRepository.findAllByPerformance(performanceSeatInfo.getPerformance());
 
-        for (Alarm alarm : alarms) {
-            emailSender.sendPerformanceInfo(alarm.getEmail(), performanceSeatInfo);
-        }
+        if (!alarms.isEmpty()) {
+            for (Alarm alarm : alarms) {
+                emailSender.sendPerformanceInfo(alarm.getEmail(), performanceSeatInfo);
+            }
 
-        alarmRepository.deleteAllInBatch(alarms);
+            alarmRepository.deleteAllInBatch(alarms);
+        }
     }
 }
