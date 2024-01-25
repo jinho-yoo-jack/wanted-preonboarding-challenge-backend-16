@@ -1,7 +1,8 @@
 package com.wanted.preonboarding.ticketing.service;
 
-import com.wanted.preonboarding.ticketing.aop.advice.exception.PerformanceNotFountException;
-import com.wanted.preonboarding.ticketing.aop.advice.exception.ReservationNotFoundException;
+import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundPerformanceException;
+import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundPerformanceSeatInfoException;
+import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundReservationException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CancelReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
@@ -44,7 +45,7 @@ public class ReservationService {
 
     private Performance findPerformance(CreateReservationRequest createReservationRequest) {
         Performance performance = performanceRepository.findById(createReservationRequest.getPerformanceId())
-                .orElseThrow(() -> new PerformanceNotFountException(ErrorCode.NOT_FOUND_PERFORMANCE));
+                .orElseThrow(() -> new NotFoundPerformanceException(ErrorCode.NOT_FOUND_PERFORMANCE));
         reservationValidator.validateBalance(createReservationRequest, performance);
 
         return performance;
@@ -86,7 +87,8 @@ public class ReservationService {
 
     private PerformanceSeatInfo changeSeatInfo(CancelReservationRequest cancelReservationRequest) {
         PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository
-                .getReferenceById(cancelReservationRequest.getReservationSeatId());
+                .findById(cancelReservationRequest.getReservationSeatId())
+                .orElseThrow(() -> new NotFoundPerformanceSeatInfoException(ErrorCode.NOT_FOUND_PERFORMANCE_SEAT_INFO));
 
         performanceSeatInfo.updateCancelStatus();
 
@@ -95,7 +97,7 @@ public class ReservationService {
 
     private void deleteReservation(CancelReservationRequest cancelReservationRequest) {
         Reservation reservation = reservationRepository.findById(cancelReservationRequest.getReservationId())
-                .orElseThrow(() -> new ReservationNotFoundException(ErrorCode.NOT_FOUND_RESERVATION));
+                .orElseThrow(() -> new NotFoundReservationException(ErrorCode.NOT_FOUND_RESERVATION));
         reservationRepository.delete(reservation);
     }
 }
