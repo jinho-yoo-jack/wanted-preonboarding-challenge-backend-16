@@ -6,15 +6,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table
 @Getter
-public class Reservation {
+public class Reservation extends Time{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,14 +47,6 @@ public class Reservation {
     @Column(nullable = false)
     @Comment("좌석 행")
     private int seat;
-
-    @Column(nullable = false)
-    @Comment("생성 시간")
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    @Comment("업데이트 시간")
-    private LocalDateTime updatedAt;
 
     public CreateReservationResponse toCreateReservationResponse(Performance performance, int changes) {
         return CreateReservationResponse.builder()

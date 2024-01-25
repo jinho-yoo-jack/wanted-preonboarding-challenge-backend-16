@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table
 @Getter
-public class Performance {
+public class Performance extends Time {
     @Id
     @GeneratedValue(generator = "uuid2")
     @Column(columnDefinition = "BINARY(16)", nullable = false)
@@ -41,17 +41,9 @@ public class Performance {
     @Comment("공연 일시")
     private LocalDateTime startDate;
 
-    @Column(nullable = false)
-    @Comment("얘약 가능 여부")
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) default 'disable'")
+    @Comment("예약 가능 여부")
     private String isReserve;
-
-    @Column(nullable = false)
-    @Comment("생성 시간")
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    @Comment("업데이트 시간")
-    private LocalDateTime updatedAt;
 
     public int calculateChange(int balance) {
         return balance - this.price;
