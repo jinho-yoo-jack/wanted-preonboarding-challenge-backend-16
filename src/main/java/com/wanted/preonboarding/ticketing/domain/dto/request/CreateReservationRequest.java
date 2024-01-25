@@ -22,7 +22,7 @@ public class CreateReservationRequest {
     private int balance;
     @NotNull
     private UUID performanceId;
-    @NotBlank
+    @NotNull
     private Long seatId;
     @NotNull
     private int round;
