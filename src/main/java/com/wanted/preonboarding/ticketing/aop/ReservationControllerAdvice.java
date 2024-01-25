@@ -1,9 +1,6 @@
 package com.wanted.preonboarding.ticketing.aop;
 
-import com.wanted.preonboarding.ticketing.aop.advice.exception.DefaultException;
-import com.wanted.preonboarding.ticketing.aop.advice.exception.NotEnoughBalanceException;
-import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundReservationsException;
-import com.wanted.preonboarding.ticketing.aop.advice.exception.ReservationNotFoundException;
+import com.wanted.preonboarding.ticketing.aop.advice.exception.*;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorResponse;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +19,8 @@ public class ReservationControllerAdvice {
         return new ResponseEntity<>(errorResponse, errorCode.toHttpStatus());
     }
 
-    @ExceptionHandler(ReservationNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(ReservationNotFoundException e) {
+    @ExceptionHandler(NotFoundReservationException.class)
+    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(NotFoundReservationException e) {
         ErrorCode errorCode = e.getErrorCode();
         ErrorResponse errorResponse = ErrorResponse.from(errorCode);
 
@@ -31,7 +28,7 @@ public class ReservationControllerAdvice {
     }
 
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<ErrorResponse> handleEntityNotFoundException() {
+    public ResponseEntity<ErrorResponse> handleNullPointerException() {
         ErrorCode errorCode = ErrorCode.REQUEST_HAS_NULL;
         ErrorResponse errorResponse = ErrorResponse.from(errorCode);
 
@@ -39,7 +36,7 @@ public class ReservationControllerAdvice {
     }
 
     @ExceptionHandler(DefaultException.class)
-    public ResponseEntity<ErrorResponse> handleNotEnoughBalanceException(DefaultException e) {
+    public ResponseEntity<ErrorResponse> handleDefaultException(DefaultException e) {
         ErrorCode errorCode = e.getErrorCode();
         ErrorResponse errorResponse = ErrorResponse.from(errorCode);
 
@@ -47,7 +44,23 @@ public class ReservationControllerAdvice {
     }
 
     @ExceptionHandler(NotFoundReservationsException.class)
-    public ResponseEntity<ErrorResponse> handleNotEnoughBalanceException(NotFoundReservationsException e) {
+    public ResponseEntity<ErrorResponse> handleNotFoundReservationsException(NotFoundReservationsException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.from(errorCode);
+
+        return new ResponseEntity<>(errorResponse, errorCode.toHttpStatus());
+    }
+
+    @ExceptionHandler(NotFoundPerformanceException.class)
+    public ResponseEntity<ErrorResponse> handleNotEnoughBalanceException(NotFoundPerformanceException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.from(errorCode);
+
+        return new ResponseEntity<>(errorResponse, errorCode.toHttpStatus());
+    }
+
+    @ExceptionHandler(NotFoundPerformanceSeatInfoException.class)
+    public ResponseEntity<ErrorResponse> handleNotFoundPerformanceSeatInfoException(NotFoundPerformanceSeatInfoException e) {
         ErrorCode errorCode = e.getErrorCode();
         ErrorResponse errorResponse = ErrorResponse.from(errorCode);
 
