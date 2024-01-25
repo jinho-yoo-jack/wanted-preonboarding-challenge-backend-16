@@ -18,6 +18,7 @@ spring:
         globally_quoted_identifiers: false
         format_sql: true     # 쿼리 로그 포맷 (정렬)
         show_sql: true       # 쿼리 로그 출력
+        dialect: org.hibernate.dialect.MySQLDialect # Mysql Dialect 추가
 
 logging:
   level:
