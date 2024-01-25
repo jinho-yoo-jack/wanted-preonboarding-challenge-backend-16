@@ -4,6 +4,7 @@ import com.wanted.preonboarding.ticketing.domain.dto.request.CancelReservationRe
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.ReadReservationRequest;
+import com.wanted.preonboarding.ticketing.domain.dto.response.CancelReservationResponse;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CreateReservationResponse;
 import com.wanted.preonboarding.ticketing.domain.dto.response.ReadReservationResponse;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -120,14 +122,19 @@ class ReservationServiceTest {
     @Test
     void cancelReservation() {
         // given
-//        createReservationForTest();
-//        createAlarmFormTest();
-//        CancelReservationRequest cancelReservationRequest = CancelReservationRequest.builder()
-//                .reservationId()
-//                .build();
-//
-//        // when
-//
+        Reservation reservation = createReservationForTest();
+        createAlarmFormTest();
 
+        CancelReservationRequest cancelReservationRequest = CancelReservationRequest.builder()
+                .reservationId(reservation.getId())
+                .reservationSeatId((long) reservation.getSeat())
+                .build();
+
+        // when
+        List<CancelReservationResponse> cancelReservationResponses = reservationService.cancelReservation(cancelReservationRequest);
+
+        // then
+        assertThat(reservationRepository.existsById(reservation.getId())).isFalse();
+        assertThat(cancelReservationResponses).isNotNull();
     }
 }
