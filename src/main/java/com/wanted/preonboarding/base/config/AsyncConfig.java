@@ -32,7 +32,7 @@ public class AsyncConfig {
 		// 예외가 발생하는데, 이때 예외 처리를 담당한다. 예외 시 이 작업을 요청한 스레드에서 직접 처리하도록
 		taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
 		taskExecutor.setWaitForTasksToCompleteOnShutdown(true); // shutdown시 queue에 남아있는 모든 작업이 완료된 후 shutdown!
-		taskExecutor.setAwaitTerminationSeconds(60);	// shutdown 최대 60초 대기
+		taskExecutor.setAwaitTerminationSeconds(60);    // shutdown 최대 60초 대기
 		return taskExecutor;
 	}
 }

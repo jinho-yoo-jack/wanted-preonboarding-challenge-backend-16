@@ -1,7 +1,5 @@
 package com.wanted.preonboarding.base.event;
 
-import java.util.UUID;
-
 import org.springframework.context.ApplicationEvent;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
@@ -11,8 +9,8 @@ import lombok.Getter;
 
 @Getter
 public class EventCancleTicket extends ApplicationEvent {
-	private Performance performance;
-	private PerformanceSeatInfo performanceSeatInfo;
+	private final Performance performance;
+	private final PerformanceSeatInfo performanceSeatInfo;
 
 	public EventCancleTicket(Object source, Performance performance, PerformanceSeatInfo performanceSeatInfo) {
 		super(source);

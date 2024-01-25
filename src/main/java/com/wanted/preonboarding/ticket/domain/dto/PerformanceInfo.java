@@ -1,39 +1,38 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
-import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import lombok.Builder;
-import lombok.Data;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.UUID;
+
+import com.wanted.preonboarding.ticket.domain.entity.Performance;
+
+import lombok.Builder;
+import lombok.Data;
 
 @Data
 @Builder
 public class PerformanceInfo {
-    private UUID performanceId;
-    private String performanceName;
-    private String performanceType;
-    private LocalDateTime startDate;
-    private String isReserve;
+	private UUID performanceId;
+	private String performanceName;
+	private String performanceType;
+	private LocalDateTime startDate;
+	private String isReserve;
 
-    public static PerformanceInfo of(Performance entity) {
-        return PerformanceInfo.builder()
-            .performanceId(entity.getId())
-            .performanceName(entity.getName())
-            .performanceType(convertCodeToName(entity.getType()))
-            .startDate(entity.getStart_date())
-            .isReserve(entity.getIsReserve())
-            .build();
-    }
+	public static PerformanceInfo of(Performance entity) {
+		return PerformanceInfo.builder()
+			.performanceId(entity.getId())
+			.performanceName(entity.getName())
+			.performanceType(convertCodeToName(entity.getType()))
+			.startDate(entity.getStart_date())
+			.isReserve(entity.getIsReserve())
+			.build();
+	}
 
-    private static String convertCodeToName(int code){
-        return Arrays.stream(PerformanceType.values()).filter(value -> value.getCategory() == code)
-            .findFirst()
-            .orElse(PerformanceType.NONE)
-            .name();
-    }
+	private static String convertCodeToName(int code) {
+		return Arrays.stream(PerformanceType.values()).filter(value -> value.getCategory() == code)
+			.findFirst()
+			.orElse(PerformanceType.NONE)
+			.name();
+	}
 
 }

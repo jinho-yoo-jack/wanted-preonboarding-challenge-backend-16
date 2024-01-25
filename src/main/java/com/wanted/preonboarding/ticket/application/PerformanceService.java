@@ -1,8 +1,5 @@
 package com.wanted.preonboarding.ticket.application;
 
-import java.awt.print.Pageable;
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -29,9 +26,9 @@ public class PerformanceService {
 		PageRequest pageable = PageRequest.of(page, 5);
 		Page<Performance> result = performanceRepository.findByIsReserve(status, pageable);
 
-		String msg = status.equals("enable")? "예매 가능한 공연" : "예매 불가능한 공연";
+		String msg = status.equals("enable") ? "예매 가능한 공연" : "예매 불가능한 공연";
 
-		if(result.isEmpty()) {
+		if (result.isEmpty()) {
 			return RsData.of("F-1", msg + "이 없습니다.");
 		}
 

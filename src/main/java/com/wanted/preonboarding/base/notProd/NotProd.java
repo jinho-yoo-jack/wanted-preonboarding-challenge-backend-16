@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.base.NotProd;
+package com.wanted.preonboarding.base.notProd;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,7 +23,8 @@ import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeat
 public class NotProd {
 	@Bean
 	CommandLineRunner initData(PerformanceRepository performanceRepository,
-		PerformanceSeatInfoRepository performanceSeatInfoRepository, TicketSeller ticketSeller, NotificationService notificationService) {
+		PerformanceSeatInfoRepository performanceSeatInfoRepository, TicketSeller ticketSeller,
+		NotificationService notificationService) {
 		return args -> {
 
 			List<Performance> performanceList = new ArrayList<>();
@@ -49,7 +50,7 @@ public class NotProd {
 				.build();
 			performanceList.add(performance2);
 
-			for(int i=3; i<=10; i++) {
+			for (int i = 3; i <= 10; i++) {
 				Performance performance3 = Performance.builder()
 					.name("영웅 조회 테스트용" + i)
 					.price(100_000)
@@ -153,7 +154,7 @@ public class NotProd {
 			}
 			performanceSeatInfoRepository.saveAll(performanceSeatInfos);
 			// 자리 모두 예약
-			for(int i=0; i<4; i++) {
+			for (int i = 0; i < 4; i++) {
 				ReserveInfo reserveInfo = ReserveInfo.builder()
 					.performanceId(performanceTest.getId())
 					.round(1)

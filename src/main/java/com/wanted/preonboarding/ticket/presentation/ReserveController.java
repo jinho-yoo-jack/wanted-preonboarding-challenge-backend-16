@@ -44,17 +44,6 @@ public class ReserveController {
 		return reserveResult;
 	}
 
-	/*
-		기능 2. 예약 조회
-	 */
-	@Data
-	public static class SearchRequest {
-		@NotBlank(message = "예약자 이름은 필수 항목입니다.")
-		private String name;
-		@NotBlank(message = "예약자 휴대폰 번호는 필수 항목입니다.")
-		private String phoneNumber;
-	}
-
 	@GetMapping("")
 	public RsData search(@ModelAttribute @Valid SearchRequest searchRequest, BindingResult bindingResult) {
 		// 요청 객체에서 입력하지 않은 부분이 있다면 메세지를 담아서 RsData 객체 바로 리턴
@@ -71,6 +60,32 @@ public class ReserveController {
 		return rsData;
 	}
 
+	@DeleteMapping("")
+	public RsData cancleTicket(@RequestBody @Valid CancleRequest cancleRequest, BindingResult bindingResult) {
+		// 요청 객체에서 입력하지 않은 부분이 있다면 메세지를 담아서 RsData 객체 바로 리턴
+		if (bindingResult.hasErrors()) {
+			List<String> errorMessages = bindingResult.getAllErrors()
+				.stream()
+				.map(error -> error.getDefaultMessage())
+				.collect(Collectors.toList());
+			return RsData.of("F-1", errorMessages.get(0));
+		}
+		RsData reserveResult = reservationService.cancle(cancleRequest.getId(), cancleRequest.getName(),
+			cancleRequest.getPhoneNumber());
+		return reserveResult;
+	}
+
+	/*
+		기능 2. 예약 조회
+	 */
+	@Data
+	public static class SearchRequest {
+		@NotBlank(message = "예약자 이름은 필수 항목입니다.")
+		private String name;
+		@NotBlank(message = "예약자 휴대폰 번호는 필수 항목입니다.")
+		private String phoneNumber;
+	}
+
 	/*
 		예약 티켓 취소
 	 */
@@ -84,18 +99,5 @@ public class ReserveController {
 		private String name;
 		@NotBlank(message = "예약자 휴대폰 번호는 필수 항목입니다.")
 		private String phoneNumber;
-	}
-	@DeleteMapping("")
-	public RsData cancleTicket(@RequestBody @Valid CancleRequest cancleRequest, BindingResult bindingResult) {
-		// 요청 객체에서 입력하지 않은 부분이 있다면 메세지를 담아서 RsData 객체 바로 리턴
-		if (bindingResult.hasErrors()) {
-			List<String> errorMessages = bindingResult.getAllErrors()
-				.stream()
-				.map(error -> error.getDefaultMessage())
-				.collect(Collectors.toList());
-			return RsData.of("F-1", errorMessages.get(0));
-		}
-		RsData reserveResult = reservationService.cancle(cancleRequest.getId(), cancleRequest.getName(), cancleRequest.getPhoneNumber());
-		return reserveResult;
 	}
 }

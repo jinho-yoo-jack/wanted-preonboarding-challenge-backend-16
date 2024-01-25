@@ -1,11 +1,11 @@
 package com.wanted.preonboarding.ticket.domain.eventListener;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wanted.preonboarding.base.event.EventCancleTicket;
 import com.wanted.preonboarding.ticket.application.NotificationService;
-import org.springframework.context.event.EventListener;
-import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;

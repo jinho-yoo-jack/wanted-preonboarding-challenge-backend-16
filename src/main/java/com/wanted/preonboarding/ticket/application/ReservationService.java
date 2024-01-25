@@ -95,8 +95,6 @@ public class ReservationService {
 	private boolean checkReservation(Reservation reservation, String name, String phoneNumber) {
 		if (!reservation.getName().equals(name))
 			return false;
-		if (!reservation.getPhoneNumber().equals(phoneNumber))
-			return false;
-		return true;
+		return reservation.getPhoneNumber().equals(phoneNumber);
 	}
 }

@@ -3,9 +3,6 @@ package com.wanted.preonboarding.ticket.application;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import javax.swing.plaf.nimbus.NimbusStyle;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +35,7 @@ public class NotificationService {
 	public RsData create(RequestNotification requestNotification) {
 		Performance performance = performanceRepository.findById(requestNotification.getPerformanceId()).get();
 
-		if(performance == null) {
+		if (performance == null) {
 			return RsData.of("F-1", "존재하지 않는 공연입니다.");
 		}
 
@@ -60,17 +57,18 @@ public class NotificationService {
 	public void whenCancleTicketEvent(Performance performance, PerformanceSeatInfo performanceSeatInfo) throws
 		MessagingException {
 		List<Notification> performanceNotificationList = notificationRepository.findByPerformance(performance);
-		if(performanceNotificationList.isEmpty()) {
-			return ;
+		if (performanceNotificationList.isEmpty()) {
+			return;
 		}
 		// 수신자 설정
 		List<String> receivers = new ArrayList<>();
-		for(Notification notification : performanceNotificationList) {
+		for (Notification notification : performanceNotificationList) {
 			receivers.add(notification.getEmail());
 		}
 
 		String message = genMsg(performance, performanceSeatInfo);
-		emailService.sendEmail(receivers, performance.getName() + " - " + performance.getRound() + "회차 공석 발생 알림", message);
+		emailService.sendEmail(receivers, performance.getName() + " - " + performance.getRound() + "회차 공석 발생 알림",
+			message);
 	}
 
 	/*

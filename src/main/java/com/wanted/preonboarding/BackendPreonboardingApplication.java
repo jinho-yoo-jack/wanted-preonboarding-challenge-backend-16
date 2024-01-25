@@ -10,8 +10,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync // 비동기 기능 활성화
 public class BackendPreonboardingApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BackendPreonboardingApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(BackendPreonboardingApplication.class, args);
+	}
 
 }

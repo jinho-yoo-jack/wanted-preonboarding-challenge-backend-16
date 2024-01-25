@@ -24,24 +24,6 @@ import lombok.RequiredArgsConstructor;
 public class PerformanceController {
 	private final PerformanceService performanceService;
 
-	@Data
-	@Builder
-	public static class ResponseShow {
-		private String name;
-		private int round;
-		private LocalDateTime startDate;
-		private String status;
-
-		public static ResponseShow of(Performance performance) {
-			return ResponseShow.builder()
-				.name(performance.getName())
-				.round(performance.getRound())
-				.startDate(performance.getStart_date())
-				.status(performance.getIsReserve())
-				.build();
-		}
-	}
-
 	/*
    		기능 3. 공연 및 전시 정보 조회(목록, 상세 조회)
  	*/
@@ -58,9 +40,6 @@ public class PerformanceController {
 		return reserveResult;
 
 	}
-	/*
-		DTO 변환 메서드
-	 */
 
 	private RsData transDTO(RsData reserveResult) {
 		Page<Performance> list = (Page<Performance>)reserveResult.getData();
@@ -70,6 +49,27 @@ public class PerformanceController {
 		}
 		reserveResult.setData(result);
 		return reserveResult;
+	}
+	/*
+		DTO 변환 메서드
+	 */
+
+	@Data
+	@Builder
+	public static class ResponseShow {
+		private String name;
+		private int round;
+		private LocalDateTime startDate;
+		private String status;
+
+		public static ResponseShow of(Performance performance) {
+			return ResponseShow.builder()
+				.name(performance.getName())
+				.round(performance.getRound())
+				.startDate(performance.getStart_date())
+				.status(performance.getIsReserve())
+				.build();
+		}
 	}
 
 }
