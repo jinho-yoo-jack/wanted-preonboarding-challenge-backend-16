@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticketing.aop;
 
+import com.wanted.preonboarding.ticketing.aop.advice.exception.DefaultException;
 import com.wanted.preonboarding.ticketing.aop.advice.exception.NotEnoughBalanceException;
 import com.wanted.preonboarding.ticketing.aop.advice.exception.ReservationNotFoundException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
@@ -31,6 +32,14 @@ public class ReservationControllerAdvice {
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ErrorResponse> handleEntityNotFoundException() {
         ErrorCode errorCode = ErrorCode.REQUEST_HAS_NULL;
+        ErrorResponse errorResponse = ErrorResponse.from(errorCode);
+
+        return new ResponseEntity<>(errorResponse, errorCode.toHttpStatus());
+    }
+
+    @ExceptionHandler(DefaultException.class)
+    public ResponseEntity<ErrorResponse> handleNotEnoughBalanceException(DefaultException e) {
+        ErrorCode errorCode = e.getErrorCode();
         ErrorResponse errorResponse = ErrorResponse.from(errorCode);
 
         return new ResponseEntity<>(errorResponse, errorCode.toHttpStatus());
