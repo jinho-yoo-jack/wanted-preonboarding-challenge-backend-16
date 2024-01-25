@@ -13,7 +13,6 @@ public class ReservationExceptionHandler {
     public ResponseHandler<Object> reservationAlreadyExists() {
         return ResponseHandler.builder()
                 .statusCode(HttpStatus.BAD_REQUEST)
-                .data(ReservationAlreadyExists.class)
                 .message(ReservationAlreadyExists.getExceptionMessage())
                 .build();
     }
