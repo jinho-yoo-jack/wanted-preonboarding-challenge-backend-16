@@ -80,13 +80,6 @@ public class ReservationService {
     }
 
     @Transactional
-    public CreateAlarmResponse createAlarm(CreateAlarmRequest createAlarmRequest) {
-        Performance performance = performanceRepository.getReferenceById(createAlarmRequest.getPerformanceId());
-
-        return alarmService.createAlarm(createAlarmRequest, performance);
-    }
-
-    @Transactional
     public List<CancelReservationResponse> cancelReservation(CancelReservationRequest cancelReservationRequest) {
         deleteReservation(cancelReservationRequest);
         PerformanceSeatInfo performanceSeatInfo = changeSeatInfo(cancelReservationRequest);

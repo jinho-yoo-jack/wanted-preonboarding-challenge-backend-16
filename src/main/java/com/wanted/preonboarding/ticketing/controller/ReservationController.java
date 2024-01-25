@@ -33,17 +33,6 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.readReservation(reservationRequest, pageable));
     }
 
-    @GetMapping("/performance")
-    public ResponseEntity<Page<ReadPerformanceResponse>> readPerformance(@RequestParam String isReserve,
-                                                                          @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(reservationService.readPerformance(isReserve, pageable));
-    }
-
-    @PostMapping("/alarm")
-    public ResponseEntity<CreateAlarmResponse> createAlarm(@RequestBody CreateAlarmRequest createAlarmRequest) {
-        return ResponseEntity.ok(reservationService.createAlarm(createAlarmRequest));
-    }
-
     @DeleteMapping("/cancel")
     public ResponseEntity<List<CancelReservationResponse>> cancel(@RequestBody CancelReservationRequest cancelReservationRequest) {
         return ResponseEntity.ok(reservationService.cancelReservation(cancelReservationRequest));

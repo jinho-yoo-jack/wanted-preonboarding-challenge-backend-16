@@ -7,6 +7,7 @@ import com.wanted.preonboarding.ticketing.domain.entity.Alarm;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.repository.AlarmRepository;
+import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AlarmService {
     private final AlarmRepository alarmRepository;
+    private final PerformanceRepository performanceRepository;
 
-    public CreateAlarmResponse createAlarm(CreateAlarmRequest createAlarmRequest, Performance performance) {
+    public CreateAlarmResponse createAlarm(CreateAlarmRequest createAlarmRequest) {
+        Performance performance = performanceRepository.getReferenceById(createAlarmRequest.getPerformanceId());
         Alarm alarm = saveAlarm(createAlarmRequest, performance);
 
         return alarm.toCreateAlarmResponse();

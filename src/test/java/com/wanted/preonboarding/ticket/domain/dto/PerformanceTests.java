@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
+import com.wanted.preonboarding.ticketing.domain.dto.PerformanceType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
