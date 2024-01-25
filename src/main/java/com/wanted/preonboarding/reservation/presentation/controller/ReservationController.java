@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ReservationController {
 
+    private static final String DELETE_MESSAGE = "예약이 삭제되었습니다.";
+
     private final ReservationService reservationService;
 
     @PostMapping("/")
@@ -29,6 +31,14 @@ public class ReservationController {
         return ResponseHandler.builder()
                 .statusCode(HttpStatus.OK)
                 .data(reservationService.findReservationsByUserInfo(UserInfo.of(name, phoneNumber)))
+                .build();
+    }
+
+    @DeleteMapping("/cancel")
+    public ResponseHandler<Object> cancelReservation(@Param("id") int reservationId) {
+        return ResponseHandler.builder()
+                .statusCode(HttpStatus.NO_CONTENT)
+                .message(DELETE_MESSAGE)
                 .build();
     }
 }
