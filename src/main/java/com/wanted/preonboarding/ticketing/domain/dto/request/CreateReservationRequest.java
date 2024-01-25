@@ -3,6 +3,7 @@ package com.wanted.preonboarding.ticketing.domain.dto.request;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.Reservation;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,19 +18,19 @@ public class CreateReservationRequest {
     private String reservationName;
     @NotBlank
     private String phoneNumber;
-    @NotBlank
+    @NotNull
     private int balance;
     @NotBlank
     private UUID performanceId;
     @NotBlank
     private Long seatId;
-    @NotBlank
+    @NotNull
     private int round;
-    @NotBlank
+    @NotNull
     private int gate;
     @NotBlank
     private String line;
-    @NotBlank
+    @NotNull
     private int seat;
     @NotBlank
     private String reservationStatus;
