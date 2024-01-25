@@ -32,8 +32,4 @@ public class CreateReservationRequest {
                 .seat(seat)
                 .build();
     }
-
-    public int calculateChange(Performance performance) {
-        return performance.calculateChange(this.balance);
-    }
 }

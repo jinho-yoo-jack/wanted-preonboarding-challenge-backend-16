@@ -45,10 +45,6 @@ public class Performance extends Time {
     @Comment("예약 가능 여부")
     private String isReserve;
 
-    public int calculateChange(int balance) {
-        return balance - this.price;
-    }
-
     public ReadPerformanceResponse toReadPerformanceResponse() {
         return ReadPerformanceResponse.builder()
                 .performanceName(this.name)
