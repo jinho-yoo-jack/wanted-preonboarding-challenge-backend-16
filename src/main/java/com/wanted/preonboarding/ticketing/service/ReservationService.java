@@ -32,16 +32,12 @@ public class ReservationService {
 
     @Transactional
     public CreateReservationResponse createReservation(CreateReservationRequest createReservationRequest) {
-        Performance performance = findPerformanceName(createReservationRequest);
+        Performance performance = performanceRepository.getReferenceById(createReservationRequest.getPerformanceId());
         Reservation reservation = reserveTicket(createReservationRequest, performance);
         int changes = createReservationRequest.calculateChange(performance);
         reserveSeat(createReservationRequest);
 
         return reservation.toCreateReservationResponse(performance, changes);
-    }
-
-    private Performance findPerformanceName(CreateReservationRequest createReservationRequest) {
-        return performanceRepository.getReferenceById(createReservationRequest.getPerformanceId());
     }
 
     private void reserveSeat(CreateReservationRequest createReservationRequest) {
