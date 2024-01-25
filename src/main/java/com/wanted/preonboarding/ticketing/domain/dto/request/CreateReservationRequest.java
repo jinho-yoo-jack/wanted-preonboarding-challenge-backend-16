@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticketing.domain.dto.request;
 
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.Reservation;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,12 +10,12 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@Builder
 public class CreateReservationRequest {
     private String reservationName;
     private String phoneNumber;
     private int balance;
     private UUID performanceId;
-    private Long seatId;
     private int round;
     private int gate;
     private String line;
