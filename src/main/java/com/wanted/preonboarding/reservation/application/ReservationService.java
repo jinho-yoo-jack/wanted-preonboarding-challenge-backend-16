@@ -2,7 +2,7 @@ package com.wanted.preonboarding.reservation.application;
 
 import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
-import com.wanted.preonboarding.performance.domain.repository.PerformanceRepository;
+import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
 import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;

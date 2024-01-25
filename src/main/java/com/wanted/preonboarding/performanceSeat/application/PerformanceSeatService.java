@@ -1,9 +1,8 @@
 package com.wanted.preonboarding.performanceSeat.application;
 
-import com.wanted.preonboarding.common.model.ReservableEntity;
 import com.wanted.preonboarding.performanceSeat.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.performanceSeat.domain.event.SeatSoldOutEvent;
-import com.wanted.preonboarding.performanceSeat.domain.repository.PerformanceSeatInfoRepository;
+import com.wanted.preonboarding.performanceSeat.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.performance.application.service;
 
 import com.wanted.preonboarding.performance.domain.entity.Performance;
-import com.wanted.preonboarding.performance.domain.repository.PerformanceRepository;
+import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
 import com.wanted.preonboarding.performanceSeat.domain.event.SeatSoldOutEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

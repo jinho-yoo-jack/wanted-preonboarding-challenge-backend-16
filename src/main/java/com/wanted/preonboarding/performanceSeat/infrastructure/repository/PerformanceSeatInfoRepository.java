@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.performanceSeat.domain.repository;
+package com.wanted.preonboarding.performanceSeat.infrastructure.repository;
 
 import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
