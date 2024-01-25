@@ -1,5 +1,7 @@
 package com.wanted.preonboarding.ticketing.service;
 
+import com.wanted.preonboarding.ticketing.aop.advice.exception.ReservationNotFoundException;
+import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CancelReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
@@ -107,7 +109,8 @@ public class ReservationService {
     }
 
     private void deleteReservation(CancelReservationRequest cancelReservationRequest) {
-        Reservation reservation = reservationRepository.getReferenceById(cancelReservationRequest.getReservationId());
+        Reservation reservation = reservationRepository.findById(cancelReservationRequest.getReservationId())
+                .orElseThrow(() -> new ReservationNotFoundException(ErrorCode.RESERVATION_NOT_FOUND));
         reservationRepository.delete(reservation);
     }
 }

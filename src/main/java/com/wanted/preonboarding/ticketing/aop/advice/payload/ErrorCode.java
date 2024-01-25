@@ -7,7 +7,8 @@ import java.time.LocalDateTime;
 
 @Getter
 public enum ErrorCode {
-    NOT_ENOUGH_BALANCE(400, "C001", "결제 금액이 부족합니다.");
+    NOT_ENOUGH_BALANCE(400, "C001", "결제 금액이 부족합니다."),
+    RESERVATION_NOT_FOUND(500, "C002", "취소할 예약이 존재하지 않습니다.");
 
     private final int status;
     private final String code;
