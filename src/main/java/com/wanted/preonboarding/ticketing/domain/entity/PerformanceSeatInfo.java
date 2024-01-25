@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
+import com.wanted.preonboarding.ticketing.domain.dto.email.EmailPerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CancelReservationResponse;
 import jakarta.persistence.*;
 import lombok.*;
@@ -61,6 +62,15 @@ public class PerformanceSeatInfo extends Time {
         return CancelReservationResponse.builder()
                 .seatId(this.id)
                 .isReserve(this.isReserve)
+                .build();
+    }
+
+    public EmailPerformanceSeatInfo from() {
+        return EmailPerformanceSeatInfo.builder()
+                .id(this.id)
+                .gate(this.gate)
+                .line(this.line)
+                .seat(this.seat)
                 .build();
     }
 }

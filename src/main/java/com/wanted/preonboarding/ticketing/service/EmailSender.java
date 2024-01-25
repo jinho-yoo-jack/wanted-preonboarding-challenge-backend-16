@@ -1,46 +1,51 @@
 package com.wanted.preonboarding.ticketing.service;
 
-import com.wanted.preonboarding.ticketing.domain.entity.Performance;
+import com.wanted.preonboarding.ticketing.domain.dto.email.EmailPerformance;
+import com.wanted.preonboarding.ticketing.domain.dto.email.EmailPerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 @Service
 @RequiredArgsConstructor
 public class EmailSender {
     private final JavaMailSender javaMailSender;
+    private final SpringTemplateEngine templateEngine;
 
     public void sendPerformanceInfo(String email, PerformanceSeatInfo performanceSeatInfo) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        EmailPerformance emailPerformance = performanceSeatInfo.getPerformance().from();
+        EmailPerformanceSeatInfo emailPerformanceSeatInfo = performanceSeatInfo.from();
 
-        mailMessage.setTo(email);
-        mailMessage.setSubject(performanceSeatInfo.getPerformance().getName() + " 예약 알림");
-        mailMessage.setText(writeBody(performanceSeatInfo));
-
-        javaMailSender.send(mailMessage);
+        sendEmail(email, emailPerformance, emailPerformanceSeatInfo);
     }
 
-    private String writeBody(PerformanceSeatInfo performanceSeatInfo) {
-        Performance performance = performanceSeatInfo.getPerformance();
+    private void sendEmail(String email, EmailPerformance emailPerformance, EmailPerformanceSeatInfo emailPerformanceSeatInfo) {
+        MimeMessage mailMessage = javaMailSender.createMimeMessage();
 
-        return String.format("안녕하세요, 공연 예약 알림입니다.\n\n" +
-                        "공연 ID: %s\n" +
-                        "공연명: %s\n" +
-                        "회차: %d\n" +
-                        "시작 일시: %s\n" +
-                        "예매 가능한 좌석 정보 : \n" +
-                        "- 좌석 ID : %s\n" +
-                        "- 입장 게이트 : %d\n" +
-                        "- %s열 %s행\n\n 감사합니다.",
-                performance.getId(),
-                performance.getName(),
-                performance.getRound(),
-                performance.getStartDate(),
-                performanceSeatInfo.getId(),
-                performanceSeatInfo.getGate(),
-                performanceSeatInfo.getSeat(),
-                performanceSeatInfo.getLine());
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mailMessage, true);
+            helper.setTo(email);
+            helper.setSubject(emailPerformance.getName() + " 예약 알림");
+            helper.setText(writeBody(emailPerformance, emailPerformanceSeatInfo), true);
+
+            javaMailSender.send(mailMessage);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Failed to send email", e);
+        }
+    }
+
+    private String writeBody(EmailPerformance emailPerformance, EmailPerformanceSeatInfo emailPerformanceSeatInfo) {
+        Context context = new Context();
+
+        context.setVariable("performance", emailPerformance);
+        context.setVariable("performanceSeatInfo", emailPerformanceSeatInfo);
+
+        return templateEngine.process("email", context);
     }
 }

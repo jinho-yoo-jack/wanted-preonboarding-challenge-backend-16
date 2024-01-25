@@ -9,7 +9,10 @@ import com.wanted.preonboarding.ticketing.repository.AlarmRepository;
 import com.wanted.preonboarding.ticketing.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticketing.service.EmailSender;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -23,6 +26,8 @@ public class CancelReservationEventListener {
     private final EmailSender emailSender;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Async
     public void handleCancelEvent(CancelReservationEvent cancelReservationEvent) {
         PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository
                 .findById(cancelReservationEvent.getPerformanceSeatInfoId())
@@ -34,6 +39,6 @@ public class CancelReservationEventListener {
             emailSender.sendPerformanceInfo(alarm.getEmail(), performanceSeatInfo);
         }
 
-        alarmRepository.deleteAll(alarms);
+        alarmRepository.deleteAllInBatch(alarms);
     }
 }

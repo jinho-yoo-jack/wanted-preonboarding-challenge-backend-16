@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
 import com.wanted.preonboarding.ticketing.domain.dto.PerformanceType;
+import com.wanted.preonboarding.ticketing.domain.dto.email.EmailPerformance;
 import com.wanted.preonboarding.ticketing.domain.dto.response.ReadPerformanceResponse;
 import jakarta.persistence.*;
 import lombok.*;
@@ -57,5 +58,14 @@ public class Performance extends Time {
 
     public boolean isAffordable(int balance) {
         return this.price <= balance;
+    }
+
+    public EmailPerformance from() {
+        return EmailPerformance.builder()
+                .id(this.id)
+                .name(this.name)
+                .round(this.round)
+                .startDate(this.startDate)
+                .build();
     }
 }
