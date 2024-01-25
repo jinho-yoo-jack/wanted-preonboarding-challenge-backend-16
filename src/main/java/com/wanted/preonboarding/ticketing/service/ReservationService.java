@@ -70,13 +70,6 @@ public class ReservationService {
         return reservations.map(Reservation::toReadReservationResponse);
     }
 
-    @Transactional(readOnly = true)
-    public Page<ReadPerformanceResponse> readPerformance(String isReserve, Pageable pageable) {
-        Page<Performance> performances = performanceRepository.findByIsReserve(isReserve, pageable);
-
-        return performances.map(Performance::toReadPerformanceResponse);
-    }
-
     @Transactional
     public CreateAlarmResponse createAlarm(CreateAlarmRequest createAlarmRequest) {
         Performance performance = performanceRepository.getReferenceById(createAlarmRequest.getPerformanceId());

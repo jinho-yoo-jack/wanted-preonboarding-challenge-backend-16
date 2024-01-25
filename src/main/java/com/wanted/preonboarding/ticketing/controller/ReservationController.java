@@ -5,6 +5,7 @@ import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.ReadReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.*;
+import com.wanted.preonboarding.ticketing.service.PerformanceService;
 import com.wanted.preonboarding.ticketing.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequestMapping("/reservation")
 public class ReservationController {
     private final ReservationService reservationService;
+    private final PerformanceService performanceService;
 
     @PostMapping
     public ResponseEntity<CreateReservationResponse> create(@RequestBody CreateReservationRequest createReservationRequest) {
@@ -36,7 +38,7 @@ public class ReservationController {
     @GetMapping("/performance")
     public ResponseEntity<Page<ReadPerformanceResponse>> readPerformance(@RequestParam String isReserve,
                                                                           @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(reservationService.readPerformance(isReserve, pageable));
+        return ResponseEntity.ok(performanceService.readPerformance(isReserve, pageable));
     }
 
     @PostMapping("/alarm")
