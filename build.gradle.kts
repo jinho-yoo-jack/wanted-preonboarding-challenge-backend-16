@@ -27,7 +27,8 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.mysql:mysql-connector-j:8.0.33")
-    testRuntimeOnly ("com.h2database:h2")
+    testRuntimeOnly ("com.h2database:h2") // test용 DB
+    implementation ("org.springframework.boot:spring-boot-starter-mail") // email-sender
     annotationProcessor("org.projectlombok:lombok")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

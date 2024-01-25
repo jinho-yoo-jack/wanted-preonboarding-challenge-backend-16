@@ -3,9 +3,11 @@ package com.wanted.preonboarding.ticket.domain.dto;
 import java.util.UUID;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class RequestNotification {
 	@NotBlank(message = "알림 설장자의 이름은 필수 항목입니다.")
 	private String name;

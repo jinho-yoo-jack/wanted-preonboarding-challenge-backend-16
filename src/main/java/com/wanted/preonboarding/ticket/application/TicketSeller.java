@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wanted.preonboarding.base.rsData.RsData;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveResult;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
@@ -74,7 +73,7 @@ public class TicketSeller {
 			if (ticketingRsData.isSuccess()) {
 				reserveInfo.setAmount((Long)ticketingRsData.getData());
 				// 예매 처리하고 상태 변경
-				reservationRepository.save(Reservation.of(reserveInfo, performance, seat.getGate()));
+				reservationRepository.save(Reservation.of(reserveInfo, performance, seat));
 				seat.updateIsReserve("disable");
 				ReserveResult reserveResult = ReserveResult.builder()
 					.round(reserveInfo.getRound())
@@ -82,6 +81,7 @@ public class TicketSeller {
 					.performanceId(performance.getId())
 					.line(seat.getLine())
 					.gate(seat.getGate())
+					.seat(seat.getSeat())
 					.reservationName(reserveInfo.getReservationName())
 					.reservationPhoneNumber(reserveInfo.getReservationPhoneNumber())
 					.build();
@@ -91,7 +91,7 @@ public class TicketSeller {
 					performance.getId(), "enable");
 
 				// 자리 예매 후 빈 좌석이 없다면 상태 변경
-				if(performanceSeats.isEmpty()) {
+				if (performanceSeats.isEmpty()) {
 					performance.updateIsReserve("disable");
 				}
 			}

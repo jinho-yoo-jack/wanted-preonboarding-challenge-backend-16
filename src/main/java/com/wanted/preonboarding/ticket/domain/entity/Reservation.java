@@ -35,16 +35,17 @@ public class Reservation {
     private String line;
     private int seat;
 
-    @ManyToOne
+    @OneToOne
     private PerformanceSeatInfo performanceSeatInfo;
 
-    public static Reservation of(ReserveInfo info, Performance performance, int gate) {
+    public static Reservation of(ReserveInfo info, Performance performance, PerformanceSeatInfo seatInfo) {
         return Reservation.builder()
             .performance(performance)
             .name(info.getReservationName())
             .phoneNumber(info.getReservationPhoneNumber())
             .round(info.getRound())
-            .gate(gate)
+            .gate(seatInfo.getGate())
+            .performanceSeatInfo(seatInfo)
             .line(info.getLine())
             .seat(info.getSeat())
             .build();
