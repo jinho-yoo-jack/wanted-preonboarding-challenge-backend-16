@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class PerformanceService {
     private final PerformanceRepository performanceRepository;
 
-    public Page<ReadPerformanceResponse> readPerformance(String isReserve, Pageable pageable) {
+    public Page<ReadPerformanceResponse> read(String isReserve, Pageable pageable) {
         Page<Performance> performances = performanceRepository.findByIsReserve(isReserve, pageable);
 
         return performances.map(Performance::toReadPerformanceResponse);

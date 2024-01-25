@@ -25,6 +25,6 @@ public class PerformanceController {
     @GetMapping
     public ResponseEntity<Page<ReadPerformanceResponse>> readPerformance(@RequestParam @NotBlank String isReserve,
                                                                          @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(performanceService.readPerformance(isReserve, pageable));
+        return ResponseEntity.ok(performanceService.read(isReserve, pageable));
     }
 }
