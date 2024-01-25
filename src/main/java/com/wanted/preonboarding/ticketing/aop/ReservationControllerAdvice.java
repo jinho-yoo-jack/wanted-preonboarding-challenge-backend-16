@@ -27,4 +27,12 @@ public class ReservationControllerAdvice {
 
         return new ResponseEntity<>(errorResponse, errorCode.toHttpStatus());
     }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(NullPointerException e) {
+        ErrorCode errorCode = ErrorCode.REQUEST_HAS_NULL;
+        ErrorResponse errorResponse = ErrorResponse.from(errorCode);
+
+        return new ResponseEntity<>(errorResponse, errorCode.toHttpStatus());
+    }
 }
