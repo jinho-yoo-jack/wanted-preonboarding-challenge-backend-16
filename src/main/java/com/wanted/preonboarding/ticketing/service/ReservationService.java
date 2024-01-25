@@ -3,10 +3,11 @@ package com.wanted.preonboarding.ticketing.service;
 import com.wanted.preonboarding.ticketing.aop.advice.exception.ReservationNotFoundException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CancelReservationRequest;
-import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.ReadReservationRequest;
-import com.wanted.preonboarding.ticketing.domain.dto.response.*;
+import com.wanted.preonboarding.ticketing.domain.dto.response.CancelReservationResponse;
+import com.wanted.preonboarding.ticketing.domain.dto.response.CreateReservationResponse;
+import com.wanted.preonboarding.ticketing.domain.dto.response.ReadReservationResponse;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.domain.entity.Reservation;
@@ -29,7 +30,6 @@ public class ReservationService {
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
 
     private final AlarmService alarmService;
-    private final PerformanceService performanceService;
     private final ReservationValidator reservationValidator;
 
     @Transactional
@@ -72,11 +72,6 @@ public class ReservationService {
                 , pageable);
 
         return reservationValidator.validateReservations(reservations);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<ReadPerformanceResponse> readPerformance(String isReserve, Pageable pageable) {
-        return performanceService.readPerformance(isReserve, pageable);
     }
 
     @Transactional
