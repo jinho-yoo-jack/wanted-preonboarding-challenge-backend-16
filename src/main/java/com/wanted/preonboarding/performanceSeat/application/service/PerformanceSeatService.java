@@ -6,12 +6,12 @@ import com.wanted.preonboarding.performanceSeat.domain.entity.PerformanceSeatInf
 import com.wanted.preonboarding.performanceSeat.domain.event.SeatSoldOutEvent;
 import com.wanted.preonboarding.performanceSeat.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +23,8 @@ public class PerformanceSeatService {
     private final ApplicationEventPublisher eventPublisher;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
 
-    @EventListener(SeatReservedEvent.class)
     @Transactional
+    @EventListener(SeatReservedEvent.class)
     public void reserveSeat(final SeatReservedEvent seatReservedEvent) {
         PerformanceSeatInfo performanceSeatInfo = findSeatBySeatReservedEvent(seatReservedEvent);
 

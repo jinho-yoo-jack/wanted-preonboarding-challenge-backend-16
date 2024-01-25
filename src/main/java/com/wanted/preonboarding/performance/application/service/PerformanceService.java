@@ -4,11 +4,11 @@ import com.wanted.preonboarding.performance.application.exception.PerformanceNot
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
 import com.wanted.preonboarding.performanceSeat.domain.event.SeatSoldOutEvent;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
