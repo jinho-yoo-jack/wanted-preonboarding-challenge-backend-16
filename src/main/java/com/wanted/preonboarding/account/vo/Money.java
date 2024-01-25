@@ -49,6 +49,10 @@ public class Money {
         amount = amount.subtract(withdrawMoney);
     }
 
+    public void multiply(BigDecimal rate) {
+        amount = amount.multiply(rate);
+    }
+
     public void add(BigDecimal depositMoney) {
         amount = amount.add(depositMoney);
     }
