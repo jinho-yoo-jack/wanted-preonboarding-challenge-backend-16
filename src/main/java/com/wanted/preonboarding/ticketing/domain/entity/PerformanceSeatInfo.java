@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
+import com.wanted.preonboarding.ticketing.domain.dto.response.CancelReservationResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -54,5 +55,12 @@ public class PerformanceSeatInfo extends Time {
         if (this.isReserve.equals(IMPOSSIBLE)) {
             this.isReserve = POSSIBLE;
         }
+    }
+
+    public CancelReservationResponse toCancelReservationResponse() {
+        return CancelReservationResponse.builder()
+                .seatId(this.id)
+                .isReserve(this.isReserve)
+                .build();
     }
 }

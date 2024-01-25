@@ -13,16 +13,16 @@ import com.wanted.preonboarding.ticketing.domain.dto.response.ReadReservationRes
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.domain.entity.Reservation;
+import com.wanted.preonboarding.ticketing.event.CancelReservationEvent;
 import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticketing.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticketing.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,8 +31,9 @@ public class ReservationService {
     private final PerformanceRepository performanceRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
 
-    private final AlarmService alarmService;
     private final ReservationValidator reservationValidator;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public CreateReservationResponse createReservation(CreateReservationRequest createReservationRequest) {
@@ -78,11 +79,12 @@ public class ReservationService {
     }
 
     @Transactional
-    public List<CancelReservationResponse> cancelReservation(CancelReservationRequest cancelReservationRequest) {
-        deleteReservation(cancelReservationRequest);
+    public CancelReservationResponse cancelReservation(CancelReservationRequest cancelReservationRequest) {
         PerformanceSeatInfo performanceSeatInfo = changeSeatInfo(cancelReservationRequest);
+        deleteReservation(cancelReservationRequest);
+        eventPublisher.publishEvent(new CancelReservationEvent(performanceSeatInfo.getId()));
 
-        return alarmService.sendAlarm(performanceSeatInfo);
+        return performanceSeatInfo.toCancelReservationResponse();
     }
 
     private PerformanceSeatInfo changeSeatInfo(CancelReservationRequest cancelReservationRequest) {

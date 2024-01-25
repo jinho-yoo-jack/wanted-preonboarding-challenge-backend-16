@@ -35,7 +35,7 @@ public class ReservationController {
     }
 
     @DeleteMapping("/cancel")
-    public ResponseEntity<List<CancelReservationResponse>> cancel(@RequestBody CancelReservationRequest cancelReservationRequest) {
+    public ResponseEntity<CancelReservationResponse> cancel(@RequestBody CancelReservationRequest cancelReservationRequest) {
         return ResponseEntity.ok(reservationService.cancelReservation(cancelReservationRequest));
     }
 }

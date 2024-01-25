@@ -130,7 +130,7 @@ class ReservationServiceTest {
                 .build();
 
         // when
-        List<CancelReservationResponse> cancelReservationResponses = reservationService.cancelReservation(cancelReservationRequest);
+        CancelReservationResponse cancelReservationResponses = reservationService.cancelReservation(cancelReservationRequest);
 
         // then
         assertThat(reservationRepository.existsById(reservation.getId())).isFalse();
