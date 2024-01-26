@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.user.domain.entity;
 
+import com.wanted.preonboarding.user.domain.dto.SignUpInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +16,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -47,7 +50,9 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class UserInfo {
+@DynamicInsert
+@DynamicUpdate
+public class User {
     @Id
     @GeneratedValue(generator = "uuid") // 생성한 uuid Generator을 사용
     @GenericGenerator(name = "uuid", strategy = "uuid2")    // UUIDGenerator를 이용하는 Generator 생성, 이름은 uuid
@@ -64,10 +69,22 @@ public class UserInfo {
     private String phoneNumber;
     @Column(nullable = false)
     private Date birthday;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDateTime createdAt;
     @OneToMany(mappedBy = "userInfo")
     private List<PaymentCard> paymentCards;
     @OneToMany(mappedBy = "userInfo")
     private List<PaymentPoint> paymentPoints;
+
+    public static User of(SignUpInfo info){
+        return User.builder()
+            .name(info.getName())
+            .id(info.getId())
+            .password(info.getPassword())
+            .email(info.getEmail())
+            .phoneNumber(info.getPhoneNumber())
+            .birthday(info.getBirthday())
+            .build();
+
+    }
 }
