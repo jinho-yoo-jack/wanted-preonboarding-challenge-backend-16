@@ -7,9 +7,11 @@ import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.UUID;
 
+@Getter
 public class ReservationResponse {
 
     private final int round;

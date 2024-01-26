@@ -24,14 +24,8 @@ public class Reservation extends DefaultEntity {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "performance_id")
+    @JoinColumn(name = "performance_id")
     private Performance performance;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false, name = "phone_number")
-    private String phoneNumber;
 
     @Embedded
     private UserInfo userInfo;

@@ -6,13 +6,17 @@ import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
 import com.wanted.preonboarding.performanceSeat.domain.event.EnablePerformanceReservationEvent;
 import com.wanted.preonboarding.performanceSeat.domain.event.SeatSoldOutEvent;
+import com.wanted.preonboarding.reservation.domain.event.WaitToReserveEvent;
+import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +24,7 @@ import java.util.List;
 public class PerformanceService {
 
     private final PerformanceRepository performanceRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @EventListener(SeatSoldOutEvent.class)
     @Transactional
@@ -36,6 +41,13 @@ public class PerformanceService {
     public void updatePerformanceEnabled(final EnablePerformanceReservationEvent enablePerformanceReservationEvent) {
         Performance performance = enablePerformanceReservationEvent.getPerformance();
         performance.enableReservation();
+    }
+
+    @Transactional
+    public void addWaitingReservation(final UserInfo userInfo , final UUID performanceId) {
+        Performance performance = performanceRepository.findById(performanceId)
+                .orElseThrow(PerformanceNotFoundException::new);
+        eventPublisher.publishEvent(WaitToReserveEvent.of(userInfo, performance));
     }
 
     @Transactional(readOnly = true)
