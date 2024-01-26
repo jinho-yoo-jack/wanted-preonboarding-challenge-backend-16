@@ -1,5 +1,8 @@
 package com.wanted.preonboarding.reservation.infrastructure.externalServices;
 
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.reservation.domain.event.CheckWaitingEvent;
@@ -40,8 +43,10 @@ public class ReservationAlarm {
     @EventListener(ReservationCanceledEvent.class)
     public void sendMessageToWaiting(final ReservationCanceledEvent reservationCanceledEvent) {
         waitingMap.get(reservationCanceledEvent.getPerformance())
-                .stream()
-                .forEach(() -> {}); // 전송 로직 추가
+                .forEach((userInfo) -> {
+                    String message = createVacantSeatMessage(reservationCanceledEvent);
+                    sendNotification(userInfo.getPhoneNumber(), message);
+                });
     }
 
     private boolean containsPerformance(final Performance performance) {
@@ -59,10 +64,18 @@ public class ReservationAlarm {
     }
 
     private void sendNotification(final String phoneNumber, final String message) {
-
+        Twilio.init("username", "password");
+        String receivingNumber = "+082" + phoneNumber;
+        Message.creator(
+                new PhoneNumber(receivingNumber),
+                new PhoneNumber("받은 번호"),
+                message)
+                .create();
     }
 
-    private String createVacantSeatMessage(final Performance performance, final SeatInfo seatInfo) {
+    private String createVacantSeatMessage(final ReservationCanceledEvent event) {
+        Performance performance = event.getPerformance();
+        SeatInfo seatInfo = event.getSeatInfo();
         return "예약 대기한 공연에 빈 좌석이 나와 안내드립니다."
                 + "\n공연ID : " + performance.getId()
                 + "\n공연명 : " + performance.getName()
