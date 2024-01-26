@@ -1,12 +1,14 @@
 package com.wanted.preonboarding.ticket.domain.performance;
 
 import com.wanted.preonboarding.ticket.domain.BaseTimeEntity;
+import com.wanted.preonboarding.ticket.domain.performance.model.PerformanceType;
+import com.wanted.preonboarding.ticket.domain.performance.model.PerformanceTypeConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -36,7 +38,8 @@ public class Performance extends BaseTimeEntity {
     private int round;
 
     @Column(nullable = false)
-    private int type;
+    @Convert(converter = PerformanceTypeConverter.class)
+    private PerformanceType type;
 
     @Column(nullable = false)
     private LocalDateTime start_date;
@@ -45,7 +48,7 @@ public class Performance extends BaseTimeEntity {
     private String isReserve;
 
     @Builder
-    public Performance(String name, int price, int round, int type, LocalDateTime start_date, String isReserve) {
+    public Performance(String name, int price, int round, PerformanceType type, LocalDateTime start_date, String isReserve) {
         this.name = name;
         this.price = price;
         this.round = round;
