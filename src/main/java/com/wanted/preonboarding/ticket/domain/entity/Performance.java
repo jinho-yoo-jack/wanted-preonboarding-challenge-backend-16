@@ -32,7 +32,7 @@ public class Performance {
     private int type;
     @Column(nullable = false)
     private Date start_date;
-    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
+    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar(255) default 'disable'")
     private String isReserve;
 
 }

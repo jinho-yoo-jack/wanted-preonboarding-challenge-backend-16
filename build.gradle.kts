@@ -38,11 +38,6 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.bootJar {
-    enabled = true
-    layered
-}
-
 tasks.bootBuildImage {
     imageName = "wanted/preonboarding-backend"
 }
