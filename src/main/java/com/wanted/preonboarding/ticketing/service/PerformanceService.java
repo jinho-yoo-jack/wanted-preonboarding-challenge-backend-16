@@ -3,14 +3,16 @@ package com.wanted.preonboarding.ticketing.service;
 import com.wanted.preonboarding.ticketing.aop.advice.exception.DefaultException;
 import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundPerformanceException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
-import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.ReadPerformanceResponse;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +31,8 @@ public class PerformanceService {
         return performances.map(Performance::toReadPerformanceResponse);
     }
 
-    public Performance findPerformance(CreateReservationRequest createReservationRequest) {
-        return performanceRepository.findById(createReservationRequest.getPerformanceId())
+    public Performance findPerformance(@NotNull UUID performanceId) {
+        return performanceRepository.findById(performanceId)
                 .orElseThrow(() -> new NotFoundPerformanceException(ErrorCode.NOT_FOUND_PERFORMANCE));
     }
 }

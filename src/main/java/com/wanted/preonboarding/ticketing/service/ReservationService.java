@@ -1,6 +1,5 @@
 package com.wanted.preonboarding.ticketing.service;
 
-import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundPerformanceSeatInfoException;
 import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundReservationException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CancelReservationRequest;
@@ -13,7 +12,6 @@ import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.domain.entity.Reservation;
 import com.wanted.preonboarding.ticketing.event.CancelReservationEvent;
-import com.wanted.preonboarding.ticketing.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticketing.repository.ReservationRepository;
 import com.wanted.preonboarding.ticketing.service.discount.DiscountService;
 import lombok.RequiredArgsConstructor;
@@ -27,17 +25,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ReservationService {
     private final ReservationRepository reservationRepository;
-    private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
 
     private final ReservationValidator reservationValidator;
     private final ApplicationEventPublisher eventPublisher;
 
     private final DiscountService discountService;
     private final PerformanceService performanceService;
+    private final PerformanceSeatInfoService performanceSeatInfoService;
 
     @Transactional
     public CreateReservationResponse createReservation(CreateReservationRequest createReservationRequest) {
-        Performance performance = performanceService.findPerformance(createReservationRequest);
+        Performance performance = performanceService.findPerformance(createReservationRequest.getPerformanceId());
         Reservation reservation = reserveTicket(createReservationRequest, performance);
         int discountMoney = discountService.calculateDiscount(performance);
         reserveSeat(createReservationRequest);
@@ -46,10 +44,8 @@ public class ReservationService {
     }
 
     private void reserveSeat(CreateReservationRequest createReservationRequest) {
-        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository
-                .findById(createReservationRequest.getSeatId())
-                .orElseThrow(() -> new NotFoundPerformanceSeatInfoException(ErrorCode.NOT_FOUND_PERFORMANCE_SEAT_INFO));
-
+        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoService
+                .findSeatInfo(createReservationRequest.getSeatId());
         performanceSeatInfo.updateReservationStatus(createReservationRequest.getReservationStatus());
     }
 
@@ -85,10 +81,8 @@ public class ReservationService {
     }
 
     private PerformanceSeatInfo changeSeatInfo(CancelReservationRequest cancelReservationRequest) {
-        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository
-                .findById(cancelReservationRequest.getReservationSeatId())
-                .orElseThrow(() -> new NotFoundPerformanceSeatInfoException(ErrorCode.NOT_FOUND_PERFORMANCE_SEAT_INFO));
-
+        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoService
+                .findSeatInfo(cancelReservationRequest.getReservationSeatId());
         performanceSeatInfo.updateCancelStatus();
 
         return performanceSeatInfo;
