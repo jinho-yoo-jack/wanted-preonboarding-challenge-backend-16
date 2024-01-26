@@ -42,6 +42,9 @@ dependencies {
 
     // twilio : SMS를 이용한 알람에 사용
     implementation("com.twilio.sdk:twilio:9.15.1")
+
+    // validation
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 }
 
 tasks.withType<Test> {
