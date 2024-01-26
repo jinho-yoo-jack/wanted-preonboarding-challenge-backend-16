@@ -2,6 +2,7 @@ package com.wanted.preonboarding.performanceSeat.presentation.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.performanceSeat.application.service.PerformanceSeatService;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ public class PerformanceSeatController {
     private final PerformanceSeatService performanceSeatService;
 
     @GetMapping("/")
-    public ResponseHandler<Object> findReservableSeatByPerformanceId(@RequestParam UUID performanceId) {
+    public ResponseHandler<Object> findReservableSeatByPerformanceId(@RequestParam @NotBlank UUID performanceId) {
         return ResponseHandler.builder()
                 .statusCode(HttpStatus.OK)
                 .data(performanceSeatService.findReservableSeats(performanceId))

@@ -3,6 +3,8 @@ package com.wanted.preonboarding.performance.presentation.controller;
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.performance.application.service.PerformanceService;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +19,8 @@ public class PerformanceController {
     private final PerformanceService performanceService;
 
     @PostMapping("/await")
-    public ResponseHandler<Object> awaitPerformanceReservation(@RequestBody UserInfo userInfo, @RequestParam UUID performanceId) {
+    public ResponseHandler<Object> awaitPerformanceReservation(@RequestBody @Valid UserInfo userInfo,
+                                                               @RequestParam @NotBlank  UUID performanceId) {
         performanceService.addWaitingReservation(userInfo, performanceId);
         return ResponseHandler.builder()
                 .statusCode(HttpStatus.CREATED)
@@ -25,7 +28,7 @@ public class PerformanceController {
     }
 
     @GetMapping("")
-    public ResponseHandler<Object> findAllPerformanceByReserveState(@RequestParam String isReserve) {
+    public ResponseHandler<Object> findAllPerformanceByReserveState(@RequestParam @NotBlank String isReserve) {
         return ResponseHandler.builder()
                 .statusCode(HttpStatus.OK)
                 .data(performanceService.findPerformancesInReserveState(isReserve))
