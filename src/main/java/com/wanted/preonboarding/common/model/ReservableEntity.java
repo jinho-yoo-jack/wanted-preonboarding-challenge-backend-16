@@ -8,22 +8,25 @@ import lombok.Getter;
 @Getter
 public class ReservableEntity extends DefaultEntity {
 
+    private static final String ENABLE = "enable";
+    private static final String DISABLE = "enable";
+
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String reserveState;
 
     public boolean isReserved() {
-        return this.reserveState.equals("disable");
+        return this.reserveState.equals(DISABLE);
     }
 
     public boolean canReserve() {
-        return this.reserveState.equals("enable");
+        return this.reserveState.equals(ENABLE);
     }
 
     public void disableReservation() {
-        this.reserveState = "disable";
+        this.reserveState = DISABLE;
     }
 
     public void enableReservation() {
-        this.reserveState = "enable";
+        this.reserveState = ENABLE;
     }
 }
