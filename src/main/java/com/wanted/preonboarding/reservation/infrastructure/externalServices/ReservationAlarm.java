@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.reservation.infrastructure.externalServices;
 
+import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.reservation.domain.event.CheckWaitingEvent;
 import com.wanted.preonboarding.reservation.domain.event.ReservationCanceledEvent;
@@ -55,5 +56,18 @@ public class ReservationAlarm {
 
     private void addNewUserInfo(final WaitToReserveEvent waiting) {
         waitingMap.get(waiting.getPerformance()).add(waiting.getUserInfo());
+    }
+
+    private void sendNotification(final String phoneNumber, final String message) {
+
+    }
+
+    private String createVacantSeatMessage(final Performance performance, final SeatInfo seatInfo) {
+        return "예약 대기한 공연에 빈 좌석이 나와 안내드립니다."
+                + "\n공연ID : " + performance.getId()
+                + "\n공연명 : " + performance.getName()
+                + "\n회차 : " + performance.getRound()
+                + "\n시작일시 : " + performance.getStartDate().toString()
+                + "\n좌석 정보 : " + seatInfo.toString();
     }
 }

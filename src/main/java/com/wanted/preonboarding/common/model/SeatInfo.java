@@ -30,4 +30,9 @@ public class SeatInfo {
                 .gate(reservationRequest.getGate())
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return this.gate + " 게이트 " + this.line + this.seat;
+    }
 }
