@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.performanceSeat.application.service;
 
+import com.wanted.preonboarding.common.model.PerformanceId;
 import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performanceSeat.application.exception.PerformanceSeatAlreadyReserved;
 import com.wanted.preonboarding.performanceSeat.application.exception.PerformanceSeatInfoNotFound;
@@ -42,7 +43,7 @@ public class PerformanceSeatService {
 
         if(!performanceSeatInfoRepository.existsByReserveStateAndPerformanceId(
                 RESERVABLE,
-                seatReservedEvent.getPerformanceId())) {
+                PerformanceId.of(seatReservedEvent.getPerformanceId()))) {
             eventPublisher.publishEvent(SeatSoldOutEvent.of(seatReservedEvent.getPerformanceId()));
         }
     }
@@ -53,12 +54,12 @@ public class PerformanceSeatService {
         PerformanceSeatInfo performanceSeatInfo =
                 findSeatByReservationCanceledEvent(reservationCanceledEvent);
         performanceSeatInfo.enableReservation();
-        eventPublisher.publishEvent(EnablePerformanceReservationEvent.of(reservationCanceledEvent.getPerformance()));
+        eventPublisher.publishEvent(EnablePerformanceReservationEvent.of(reservationCanceledEvent.getPerformanceId()));
     }
 
     @Transactional(readOnly = true)
     public List<PerformanceSeatResponse> findReservableSeats(final UUID performanceId) {
-        return performanceSeatInfoRepository.findAllByPerformanceId(performanceId)
+        return performanceSeatInfoRepository.findAllByPerformanceId(PerformanceId.of(performanceId))
                 .stream()
                 .filter(PerformanceSeatInfo::canReserve)
                 .map(PerformanceSeatResponse::from).toList();
@@ -74,14 +75,14 @@ public class PerformanceSeatService {
     private PerformanceSeatInfo findSeatByReservationCanceledEvent(final ReservationCanceledEvent reservationCanceledEvent) {
         return findSeatBySeatInfoAndPerformanceId(
                 reservationCanceledEvent.getSeatInfo(),
-                reservationCanceledEvent.getPerformanceId()
+                reservationCanceledEvent.getPerformanceIdValue()
         );
     }
 
     private PerformanceSeatInfo findSeatBySeatInfoAndPerformanceId(final SeatInfo seatInfo, final UUID performanceId) {
         return performanceSeatInfoRepository
                 .findBySeatInfoAndPerformanceId(seatInfo,
-                        performanceId)
+                        PerformanceId.of(performanceId))
                 .orElseThrow(PerformanceSeatInfoNotFound::new);
     }
 }

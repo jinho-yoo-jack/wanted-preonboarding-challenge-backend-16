@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.reservation.domain.event;
 
+import com.wanted.preonboarding.common.model.PerformanceId;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
@@ -13,12 +14,12 @@ import lombok.Getter;
 public class CheckWaitingEvent {
 
     UserInfo userInfo;
-    Performance performance;
+    PerformanceId performanceId;
 
     public static CheckWaitingEvent from(final Reservation reservation) {
         return CheckWaitingEvent.builder()
                 .userInfo(reservation.getUserInfo())
-                .performance(reservation.getPerformance())
+                .performanceId(reservation.getPerformanceId())
                 .build();
     }
 }

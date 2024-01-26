@@ -1,12 +1,18 @@
 package com.wanted.preonboarding.performanceSeat.domain.event;
 
-import com.wanted.preonboarding.performance.domain.entity.Performance;
+import com.wanted.preonboarding.common.model.PerformanceId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.UUID;
 
 @AllArgsConstructor(staticName = "of")
 @Getter
 public class EnablePerformanceReservationEvent {
 
-    private final Performance performance;
+    private final PerformanceId performanceId;
+
+    public UUID getPerformanceIdValue() {
+        return this.getPerformanceIdValue();
+    }
 }

@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.performance.domain.entity;
 
+import com.wanted.preonboarding.common.model.PerformanceId;
 import com.wanted.preonboarding.common.model.ReservableEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -38,4 +39,8 @@ public class Performance extends ReservableEntity {
 
     @Column(nullable = false, name = "start_date")
     private Date startDate;
+
+    public boolean equalsId(PerformanceId performanceId) {
+        return this.id.equals(performanceId.getValue());
+    }
 }

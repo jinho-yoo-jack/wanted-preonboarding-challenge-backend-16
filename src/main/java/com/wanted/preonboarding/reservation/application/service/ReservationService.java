@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.reservation.application.service;
 
+import com.wanted.preonboarding.common.model.PerformanceId;
 import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performance.application.exception.PerformanceNotFoundException;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
@@ -13,6 +14,7 @@ import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import com.wanted.preonboarding.reservation.domain.event.CheckWaitingEvent;
 import com.wanted.preonboarding.reservation.domain.event.ReservationCanceledEvent;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;
+import com.wanted.preonboarding.reservation.domain.event.ValidatePerformanceEvent;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import com.wanted.preonboarding.reservation.infrastructure.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,22 +31,21 @@ import java.util.List;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final PerformanceRepository performanceRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public ReservationResponse reservePerformance(final ReservationRequest reservationRequest) {
-        Performance performance = performanceRepository.findById(reservationRequest.getPerformanceId())
-                .orElseThrow(PerformanceNotFoundException::new);
-        Reservation reservation = Reservation.from(reservationRequest, performance);
+        eventPublisher.publishEvent(ValidatePerformanceEvent.of(reservationRequest.getPerformanceId()));
+        Reservation reservation = Reservation.from(reservationRequest);
         SeatInfo seatInfo = reservation.getSeatInfo();
 
-        validateReservationExistence(performance, seatInfo);
+        validateReservationExistence(reservation.getPerformanceId(), seatInfo);
         eventPublisher.publishEvent(SeatReservedEvent.of(seatInfo, reservationRequest.getPerformanceId()));
-        reservationRepository.save(reservation);
+        reservation = reservationRepository.save(reservation);
         eventPublisher.publishEvent(CheckWaitingEvent.from(reservation));
 
-        return ReservationResponse.from(performance, reservation);
+        return reservationRepository.findReservationResponseById(reservation.getId())
+                .orElseThrow(ReservationNotFound::new);
     }
 
     @Transactional(readOnly = true)
@@ -60,15 +61,15 @@ public class ReservationService {
 
     @Transactional
     public void cancelReservation(final int reservationId) {
-        Reservation reservation = reservationRepository.findReservationById(reservationId)
+        Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(ReservationNotFound::new);
 
-        eventPublisher.publishEvent(ReservationCanceledEvent.of(reservation.getSeatInfo(), reservation.getPerformance()));
+        eventPublisher.publishEvent(ReservationCanceledEvent.of(reservation.getSeatInfo(), reservation.getPerformanceId()));
         reservationRepository.delete(reservation);
     }
 
-    private void validateReservationExistence(final Performance performance, final SeatInfo seatInfo) {
-        if(reservationRepository.existsByPerformanceAndSeatInfo(performance, seatInfo)) {
+    private void validateReservationExistence(final PerformanceId performanceId, final SeatInfo seatInfo) {
+        if(reservationRepository.existsByPerformanceIdAndSeatInfo(performanceId, seatInfo)) {
             throw new ReservationAlreadyExists();
         }
     }

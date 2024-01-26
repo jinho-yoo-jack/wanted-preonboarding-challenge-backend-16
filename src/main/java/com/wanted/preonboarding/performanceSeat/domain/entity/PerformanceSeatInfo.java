@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.performanceSeat.domain.entity;
 
+import com.wanted.preonboarding.common.model.PerformanceId;
 import com.wanted.preonboarding.common.model.ReservableEntity;
 import com.wanted.preonboarding.common.model.SeatInfo;
 import jakarta.persistence.*;
@@ -22,9 +23,13 @@ public class PerformanceSeatInfo extends ReservableEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
-    private UUID performanceId;
+    @Embedded
+    private PerformanceId performanceId;
 
     @Embedded
     private SeatInfo seatInfo;
+
+    public UUID getPerformanceId() {
+        return this.performanceId.getValue();
+    }
 }

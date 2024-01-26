@@ -6,6 +6,7 @@ import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
 import com.wanted.preonboarding.performanceSeat.domain.event.EnablePerformanceReservationEvent;
 import com.wanted.preonboarding.performanceSeat.domain.event.SeatSoldOutEvent;
+import com.wanted.preonboarding.reservation.domain.event.ValidatePerformanceEvent;
 import com.wanted.preonboarding.reservation.domain.event.WaitToReserveEvent;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +31,7 @@ public class PerformanceService {
     @Transactional
     public void updatePerformanceDisabled(final SeatSoldOutEvent seatSoldOutEvent) {
         // 공연의 예약 가능 여부 확인 및 설정
-        Performance performance = performanceRepository.findById(seatSoldOutEvent.getPerformanceId())
-                .orElseThrow(PerformanceNotFoundException::new);
+        Performance performance = getPerformance(seatSoldOutEvent.getPerformanceId());
 
         performance.disableReservation();
     }
@@ -39,22 +39,32 @@ public class PerformanceService {
     @EventListener(EnablePerformanceReservationEvent.class)
     @Transactional
     public void updatePerformanceEnabled(final EnablePerformanceReservationEvent enablePerformanceReservationEvent) {
-        Performance performance = enablePerformanceReservationEvent.getPerformance();
+        UUID performanceIdValue = enablePerformanceReservationEvent.getPerformanceIdValue();
+        Performance performance = getPerformance(performanceIdValue);
         performance.enableReservation();
     }
 
     @Transactional
     public void addWaitingReservation(final UserInfo userInfo , final UUID performanceId) {
-        Performance performance = performanceRepository.findById(performanceId)
-                .orElseThrow(PerformanceNotFoundException::new);
+        Performance performance = getPerformance(performanceId);
         eventPublisher.publishEvent(WaitToReserveEvent.of(userInfo, performance));
     }
 
     @Transactional(readOnly = true)
-    public List<PerformanceResponse> findPerformancesInReserveState(String isReserve) {
+    public List<PerformanceResponse> findPerformancesInReserveState(final String isReserve) {
         return performanceRepository.findAllByReserveState(isReserve)
                 .stream()
                 .map(PerformanceResponse::from)
                 .toList();
+    }
+
+    @EventListener(ValidatePerformanceEvent.class)
+    public void validatePerformanceExistence(final ValidatePerformanceEvent validatePerformanceEvent) {
+        getPerformance(validatePerformanceEvent.getPerformanceId());
+    }
+
+    private Performance getPerformance(final UUID performanceId) {
+        return performanceRepository.findById(performanceId)
+                .orElseThrow(PerformanceNotFoundException::new);
     }
 }

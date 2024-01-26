@@ -1,11 +1,8 @@
 package com.wanted.preonboarding.reservation.infrastructure.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.wanted.preonboarding.performance.domain.entity.QPerformance;
 import com.wanted.preonboarding.reservation.application.dto.QReservationResponse;
 import com.wanted.preonboarding.reservation.application.dto.ReservationResponse;
-import com.wanted.preonboarding.reservation.domain.entity.QReservation;
-import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import jakarta.persistence.EntityManager;
 
@@ -32,18 +29,26 @@ public class ReservationCustomRepositoryImpl implements ReservationCustomReposit
                     reservation.seatInfo,
                     reservation.userInfo))
                 .from(reservation)
-                .leftJoin(reservation.performance, performance)
+                .leftJoin(performance)
+                .on(performance.id.eq(reservation.performanceId.value))
                 .where(reservation.userInfo.eq(userInfo))
                 .stream().toList();
     }
 
     @Override
-    public Optional<Reservation> findReservationById(int reservationId) {
+    public Optional<ReservationResponse> findReservationResponseById(int reservationId) {
         return Optional.ofNullable(
-                query.selectFrom(reservation)
-                .leftJoin(reservation.performance, performance)
-                .where(reservation.id.eq(reservationId))
-                .fetchFirst()
+                query.select(new QReservationResponse(
+                                performance.round,
+                                performance.name,
+                                performance.id,
+                                reservation.seatInfo,
+                                reservation.userInfo))
+                        .from(reservation)
+                        .leftJoin(performance)
+                        .on(performance.id.eq(reservation.performanceId.value))
+                    .where(reservation.id.eq(reservationId))
+                    .fetchFirst()
         );
     }
 }

@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.reservation.domain.entity;
 
 import com.wanted.preonboarding.common.model.DefaultEntity;
+import com.wanted.preonboarding.common.model.PerformanceId;
 import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
@@ -23,9 +24,8 @@ public class Reservation extends DefaultEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "performance_id")
-    private Performance performance;
+    @Embedded
+    private PerformanceId performanceId;
 
     @Embedded
     private UserInfo userInfo;
@@ -33,9 +33,9 @@ public class Reservation extends DefaultEntity {
     @Embedded
     private SeatInfo seatInfo;
 
-    public static Reservation from(final ReservationRequest reservationRequest, final Performance performance) {
+    public static Reservation from(final ReservationRequest reservationRequest) {
         return Reservation.builder()
-                .performance(performance)
+                .performanceId(PerformanceId.of(reservationRequest.getPerformanceId()))
                 .seatInfo(SeatInfo.from(reservationRequest))
                 .userInfo(UserInfo.of(reservationRequest.getName(), reservationRequest.getPhoneNumber()))
                 .build();
