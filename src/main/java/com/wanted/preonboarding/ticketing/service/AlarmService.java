@@ -1,13 +1,10 @@
 package com.wanted.preonboarding.ticketing.service;
 
-import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundPerformanceException;
-import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CreateAlarmResponse;
 import com.wanted.preonboarding.ticketing.domain.entity.Alarm;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.repository.AlarmRepository;
-import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AlarmService {
     private final AlarmRepository alarmRepository;
-    private final PerformanceRepository performanceRepository;
+
+    private final PerformanceService performanceService;
 
     @Transactional
     public CreateAlarmResponse createAlarm(CreateAlarmRequest createAlarmRequest) {
-        Performance performance = performanceRepository.findById(createAlarmRequest.getPerformanceId())
-                .orElseThrow(() -> new NotFoundPerformanceException(ErrorCode.NOT_FOUND_PERFORMANCE));
+        Performance performance = performanceService.findPerformance(createAlarmRequest.getPerformanceId());
         Alarm alarm = saveAlarm(createAlarmRequest, performance);
 
         return alarm.toCreateAlarmResponse();
