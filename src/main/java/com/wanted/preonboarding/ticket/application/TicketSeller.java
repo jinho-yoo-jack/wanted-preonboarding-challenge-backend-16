@@ -42,7 +42,7 @@ public class TicketSeller {
             int price = info.getPrice();
             reserveInfo.setAmount(reserveInfo.getAmount() - price);
             // 2. 예매 진행
-            reservationRepository.save(Reservation.of(reserveInfo));
+            reservationRepository.save(Reservation.of(reserveInfo, info));
             return true;
 
         } else {
