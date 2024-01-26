@@ -2,9 +2,6 @@ package com.wanted.preonboarding.reservation.application.service;
 
 import com.wanted.preonboarding.common.model.PerformanceId;
 import com.wanted.preonboarding.common.model.SeatInfo;
-import com.wanted.preonboarding.performance.application.exception.PerformanceNotFoundException;
-import com.wanted.preonboarding.performance.domain.entity.Performance;
-import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
 import com.wanted.preonboarding.reservation.application.dto.ReservationResponse;
 import com.wanted.preonboarding.reservation.application.exception.NotReservedYet;
 import com.wanted.preonboarding.reservation.application.exception.ReservationAlreadyExists;
@@ -14,7 +11,7 @@ import com.wanted.preonboarding.reservation.domain.entity.Reservation;
 import com.wanted.preonboarding.reservation.domain.event.CheckWaitingEvent;
 import com.wanted.preonboarding.reservation.domain.event.ReservationCanceledEvent;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;
-import com.wanted.preonboarding.reservation.domain.event.ValidatePerformanceEvent;
+import com.wanted.preonboarding.reservation.domain.event.ValidateReservationRequestEvent;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import com.wanted.preonboarding.reservation.infrastructure.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +32,7 @@ public class ReservationService {
 
     @Transactional
     public ReservationResponse reservePerformance(final ReservationRequest reservationRequest) {
-        eventPublisher.publishEvent(ValidatePerformanceEvent.of(reservationRequest.getPerformanceId()));
+        eventPublisher.publishEvent(ValidateReservationRequestEvent.from(reservationRequest));
         Reservation reservation = Reservation.from(reservationRequest);
         SeatInfo seatInfo = reservation.getSeatInfo();
 

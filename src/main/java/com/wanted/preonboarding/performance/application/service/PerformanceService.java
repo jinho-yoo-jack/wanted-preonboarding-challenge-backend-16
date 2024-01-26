@@ -6,7 +6,7 @@ import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
 import com.wanted.preonboarding.performanceSeat.domain.event.EnablePerformanceReservationEvent;
 import com.wanted.preonboarding.performanceSeat.domain.event.SeatSoldOutEvent;
-import com.wanted.preonboarding.reservation.domain.event.ValidatePerformanceEvent;
+import com.wanted.preonboarding.reservation.domain.event.ValidateReservationRequestEvent;
 import com.wanted.preonboarding.reservation.domain.event.WaitToReserveEvent;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import lombok.RequiredArgsConstructor;
@@ -58,9 +58,9 @@ public class PerformanceService {
                 .toList();
     }
 
-    @EventListener(ValidatePerformanceEvent.class)
-    public void validatePerformanceExistence(final ValidatePerformanceEvent validatePerformanceEvent) {
-        getPerformance(validatePerformanceEvent.getPerformanceId());
+    @EventListener(ValidateReservationRequestEvent.class)
+    public void validatePerformanceExistence(final ValidateReservationRequestEvent validateReservationRequestEvent) {
+        getPerformance(validateReservationRequestEvent.getPerformanceId());
     }
 
     private Performance getPerformance(final UUID performanceId) {

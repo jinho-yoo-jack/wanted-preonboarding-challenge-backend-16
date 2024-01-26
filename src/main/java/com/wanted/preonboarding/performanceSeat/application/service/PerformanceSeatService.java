@@ -11,6 +11,7 @@ import com.wanted.preonboarding.performanceSeat.domain.event.SeatSoldOutEvent;
 import com.wanted.preonboarding.performanceSeat.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.reservation.domain.event.ReservationCanceledEvent;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;
+import com.wanted.preonboarding.reservation.domain.event.ValidateReservationRequestEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -55,6 +56,15 @@ public class PerformanceSeatService {
                 findSeatByReservationCanceledEvent(reservationCanceledEvent);
         performanceSeatInfo.enableReservation();
         eventPublisher.publishEvent(EnablePerformanceReservationEvent.of(reservationCanceledEvent.getPerformanceId()));
+    }
+
+    @Transactional
+    @EventListener(ValidateReservationRequestEvent.class)
+    public void validateReservationRequest(final ValidateReservationRequestEvent validateReservationRequestEvent) {
+        findSeatBySeatInfoAndPerformanceId(
+                validateReservationRequestEvent.getSeatInfo(),
+                validateReservationRequestEvent.getPerformanceId()
+        );
     }
 
     @Transactional(readOnly = true)
