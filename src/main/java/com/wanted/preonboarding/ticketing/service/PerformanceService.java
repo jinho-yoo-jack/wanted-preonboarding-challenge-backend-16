@@ -1,7 +1,9 @@
 package com.wanted.preonboarding.ticketing.service;
 
 import com.wanted.preonboarding.ticketing.aop.advice.exception.DefaultException;
+import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundPerformanceException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
+import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.ReadPerformanceResponse;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
@@ -25,5 +27,10 @@ public class PerformanceService {
         Page<Performance> performances = performanceRepository.findByIsReserve(isReserve, pageable);
 
         return performances.map(Performance::toReadPerformanceResponse);
+    }
+
+    public Performance findPerformance(CreateReservationRequest createReservationRequest) {
+        return performanceRepository.findById(createReservationRequest.getPerformanceId())
+                .orElseThrow(() -> new NotFoundPerformanceException(ErrorCode.NOT_FOUND_PERFORMANCE));
     }
 }
