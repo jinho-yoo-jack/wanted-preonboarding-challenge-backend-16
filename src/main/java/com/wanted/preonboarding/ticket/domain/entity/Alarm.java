@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -14,20 +15,21 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PerformanceSeatInfo {
+public class Alarm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(columnDefinition = "BINARY(16)", nullable = false, name = "user_id")
+    private UUID userId;
     @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
     private UUID performanceId;
-    @Column(nullable = false)
-    private Integer round;
-    @Column(nullable = false)
-    private Integer gate;
-    @Column(nullable = false)
-    private Character line;
-    @Column(nullable = false)
-    private Integer seat;
-    @Column(columnDefinition = "varchar(255) default 'disable'", nullable = false, name = "is_reserve")
-    private String isReserve;
+    @Column(nullable = false, name = "created_at")
+    private Timestamp createdAt;
+
+    public static Alarm of(Alarm info) {
+        return Alarm.builder()
+                .userId(info.getUserId())
+                .performanceId(info.getPerformanceId())
+                .build();
+    }
 }

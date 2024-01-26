@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -17,7 +15,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Performance {
+public class User {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -25,15 +23,13 @@ public class Performance {
     private UUID id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
-    private Integer price;
-    @Column(nullable = false)
-    private Integer round;
-    @Column(nullable = false)
-    private Integer type;
-    @Column(nullable = false, name = "start_date")
-    private Timestamp startDate;
-    @Column(columnDefinition = "varchar(255) default 'disable'", nullable = false, name = "is_reserve")
-    private String isReserve;
+    @Column(nullable = false, name = "phone_number")
+    private String phoneNumber;
 
+    public static User of(User info) {
+        return User.builder()
+                .name(info.getName())
+                .phoneNumber(info.getPhoneNumber())
+                .build();
+    }
 }

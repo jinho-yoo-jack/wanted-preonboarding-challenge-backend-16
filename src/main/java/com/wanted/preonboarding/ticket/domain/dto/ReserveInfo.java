@@ -13,8 +13,7 @@ import java.util.UUID;
 public class ReserveInfo {
     // 공연 및 전시 정보 + 예약자 정보
     private UUID performanceId;
-    private String reservationName;
-    private String reservationPhoneNumber;
+    private UserInfo userInfo;
     private String reservationStatus; // 예약; 취소;
     private long amount;
     private int round;

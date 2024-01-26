@@ -1,17 +1,12 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Entity
@@ -20,7 +15,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reservation {
+public class CanceledReservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -38,16 +33,6 @@ public class Reservation {
     private Integer seat;
     @Column(nullable = false, name = "created_at")
     private Timestamp createdAt;
-
-    public static Reservation of(ReserveInfo info) {
-        return Reservation.builder()
-                .performanceId(info.getPerformanceId())
-                .userId(info.getUserInfo().getUserId())
-                .round(info.getRound())
-                .gate(1)
-                .line(info.getLine())
-                .seat(info.getSeat())
-                .build();
-    }
-
+    @Column(nullable = false, name = "canceled_at")
+    private Timestamp canceledAt;
 }
