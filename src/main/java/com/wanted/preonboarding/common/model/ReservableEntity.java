@@ -15,6 +15,10 @@ public class ReservableEntity extends DefaultEntity {
         return this.reserveState.equals("disable");
     }
 
+    public boolean canReserve() {
+        return this.reserveState.equals("enable");
+    }
+
     public void disableReservation() {
         this.reserveState = "disable";
     }

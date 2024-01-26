@@ -27,7 +27,7 @@ public class ReservationController {
     }
 
     @GetMapping("/")
-    public ResponseHandler<Object> findReservations(@Param("name") String name, @Param("phone") String phoneNumber) {
+    public ResponseHandler<Object> findReservations(@RequestParam String name, @RequestParam String phoneNumber) {
         return ResponseHandler.builder()
                 .statusCode(HttpStatus.OK)
                 .data(reservationService.findReservationsByUserInfo(UserInfo.of(name, phoneNumber)))
@@ -35,7 +35,8 @@ public class ReservationController {
     }
 
     @DeleteMapping("/cancel")
-    public ResponseHandler<Object> cancelReservation(@Param("id") int reservationId) {
+    public ResponseHandler<Object> cancelReservation(@RequestParam int reservationId) {
+        reservationService.cancelReservation(reservationId);
         return ResponseHandler.builder()
                 .statusCode(HttpStatus.NO_CONTENT)
                 .message(DELETE_MESSAGE)
