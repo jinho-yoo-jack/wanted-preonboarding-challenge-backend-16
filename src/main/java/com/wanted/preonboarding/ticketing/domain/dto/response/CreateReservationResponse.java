@@ -14,6 +14,7 @@ public class CreateReservationResponse {
     private int gate;
     private String line;
     private int seat;
+    private int discountMoney;
     private String reservationName;
     private String phoneNumber;
 }

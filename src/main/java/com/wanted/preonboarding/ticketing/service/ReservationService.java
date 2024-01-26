@@ -17,6 +17,7 @@ import com.wanted.preonboarding.ticketing.event.CancelReservationEvent;
 import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticketing.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticketing.repository.ReservationRepository;
+import com.wanted.preonboarding.ticketing.service.discount.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -32,33 +33,36 @@ public class ReservationService {
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
 
     private final ReservationValidator reservationValidator;
-
     private final ApplicationEventPublisher eventPublisher;
+
+    private final DiscountService discountService;
 
     @Transactional
     public CreateReservationResponse createReservation(CreateReservationRequest createReservationRequest) {
         Performance performance = findPerformance(createReservationRequest);
         Reservation reservation = reserveTicket(createReservationRequest, performance);
+        int discountMoney = discountService.calculateDiscount(performance);
         reserveSeat(createReservationRequest);
 
-        return reservation.toCreateReservationResponse(performance);
+        return reservation.toCreateReservationResponse(performance, discountMoney);
     }
 
     private Performance findPerformance(CreateReservationRequest createReservationRequest) {
-        Performance performance = performanceRepository.findById(createReservationRequest.getPerformanceId())
+        return performanceRepository.findById(createReservationRequest.getPerformanceId())
                 .orElseThrow(() -> new NotFoundPerformanceException(ErrorCode.NOT_FOUND_PERFORMANCE));
-        reservationValidator.validateBalance(createReservationRequest, performance);
-
-        return performance;
     }
 
     private void reserveSeat(CreateReservationRequest createReservationRequest) {
-        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.getReferenceById(createReservationRequest.getSeatId());
+        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository
+                .findById(createReservationRequest.getSeatId())
+                .orElseThrow(() -> new NotFoundPerformanceSeatInfoException(ErrorCode.NOT_FOUND_PERFORMANCE_SEAT_INFO));
+
         performanceSeatInfo.updateReservationStatus(createReservationRequest.getReservationStatus());
     }
 
     private Reservation reserveTicket(CreateReservationRequest createReservationRequest, Performance performance) {
         Reservation reservation = Reservation.from(createReservationRequest, performance);
+        reservationValidator.validateBalance(createReservationRequest, performance);
 
         return reservationRepository.save(reservation);
     }

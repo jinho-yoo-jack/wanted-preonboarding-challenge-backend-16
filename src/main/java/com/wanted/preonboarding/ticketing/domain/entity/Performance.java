@@ -68,4 +68,12 @@ public class Performance extends Time {
                 .startDate(this.startDate)
                 .build();
     }
+
+    public boolean isAfter(LocalDateTime oneWeekLater) {
+        return this.startDate.isAfter(oneWeekLater);
+    }
+
+    public int discountEarlyBird(int discountPercent) {
+        return this.price - (this.price * discountPercent / 100);
+    }
 }

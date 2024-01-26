@@ -53,7 +53,7 @@ public class Reservation extends Time {
         return createReservationRequest.fromTicket(performance);
     }
 
-    public CreateReservationResponse toCreateReservationResponse(Performance performance) {
+    public CreateReservationResponse toCreateReservationResponse(Performance performance, int discountMoney) {
         return CreateReservationResponse.builder()
                 .performanceId(this.performance.getId())
                 .performanceName(performance.getName())
@@ -61,6 +61,7 @@ public class Reservation extends Time {
                 .gate(this.gate)
                 .line(this.line)
                 .seat(this.seat)
+                .discountMoney(discountMoney)
                 .reservationName(this.name)
                 .phoneNumber(this.phoneNumber)
                 .build();
