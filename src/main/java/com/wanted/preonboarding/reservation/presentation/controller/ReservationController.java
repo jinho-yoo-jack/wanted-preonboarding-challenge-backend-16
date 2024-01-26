@@ -6,6 +6,8 @@ import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +39,7 @@ public class ReservationController {
     }
 
     @DeleteMapping("/cancel")
-    public ResponseHandler<Object> cancelReservation(@RequestParam @NotBlank int reservationId) {
+    public ResponseHandler<Object> cancelReservation(@RequestParam @Positive @NotNull int reservationId) {
         reservationService.cancelReservation(reservationId);
         return ResponseHandler.builder()
                 .statusCode(HttpStatus.NO_CONTENT)
