@@ -13,7 +13,5 @@ public interface PerformanceSeatInfoRepository extends JpaRepository<Performance
 
     Optional<PerformanceSeatInfo> findBySeatInfoAndPerformanceId(final SeatInfo seatInfo, final UUID performanceId);
 
-    List<PerformanceSeatInfo> findAllByPerformanceId(final UUID performanceId);
-
-    boolean existsByIsReserveAndPerformanceId(final String isReserved, final UUID performanceId);
+    boolean existsByReserveStateAndPerformanceId(final String reserveState, final UUID performanceId);
 }

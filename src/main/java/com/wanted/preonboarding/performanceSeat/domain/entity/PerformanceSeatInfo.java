@@ -27,11 +27,4 @@ public class PerformanceSeatInfo extends ReservableEntity {
 
     @Embedded
     private SeatInfo seatInfo;
-
-    @Column(name = "is_reserve")
-    private String isReserve;
-
-    public boolean canReserve() {
-        return this.isReserve.equals("enable");
-    }
 }

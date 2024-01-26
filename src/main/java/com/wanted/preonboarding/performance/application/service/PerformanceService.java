@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.performance.application.service;
 
+import com.wanted.preonboarding.performance.application.dto.PerformanceResponse;
 import com.wanted.preonboarding.performance.application.exception.PerformanceNotFoundException;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
@@ -10,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +36,13 @@ public class PerformanceService {
     public void updatePerformanceEnabled(final EnablePerformanceReservationEvent enablePerformanceReservationEvent) {
         Performance performance = enablePerformanceReservationEvent.getPerformance();
         performance.enableReservation();
+    }
+
+    @Transactional(readOnly = true)
+    public List<PerformanceResponse> findPerformancesInReserveState(String isReserve) {
+        return performanceRepository.findAllByReserveState(isReserve)
+                .stream()
+                .map(PerformanceResponse::from)
+                .toList();
     }
 }

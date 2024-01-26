@@ -38,7 +38,7 @@ public class PerformanceSeatService {
         }
         performanceSeatInfo.disableReservation();
 
-        if(!performanceSeatInfoRepository.existsByIsReserveAndPerformanceId(
+        if(!performanceSeatInfoRepository.existsByReserveStateAndPerformanceId(
                 RESERVABLE,
                 seatReservedEvent.getPerformanceId())) {
             eventPublisher.publishEvent(SeatSoldOutEvent.of(seatReservedEvent.getPerformanceId()));
