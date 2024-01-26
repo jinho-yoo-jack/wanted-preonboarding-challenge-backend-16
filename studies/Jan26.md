@@ -9,11 +9,10 @@
     - 즉, 좌석 정보 전체를 순회해 데이터를 가져오는 것이 아닌 Reservation객체의 SeatInfo를 가져오면 될 것 같다는 생각이 든다. 
 - 어떻게 대기자를 저장할 것인가?
   - 예약 대기자 저장 방식
-    - AwaitingReservation이라는 테이블에 예약 대기자들을 저장하자.
-      - 저장정보는?
-        - UserInfo, PerformanceId
-      - 요청 방식은?
-        - api를 추가 구현하자
+    - Map을 이용해 저장할 계획이다. 
+      - `Map<PerformanceInfo, List<UserInfo>>`로 데이터를 담는다
+        - PerformanceId, PerformanceName, Round가 지속적으로 같이 붙어다녀, 캡슐화를 시키는 것이 효율적이라 판단했다. 
+      - 이벤트로 `SeatInfo, Performance`를 담아서 온다면, `List<UserInfo>`의 전화번호에 PerformanceInfo, SeatInfo를 보내줄 수 있다고 생각한다.
 - 어떻게 동작시킬까?
   - 예약 취소시 이벤트로 동작시킨다.
     - 예약 취소 비즈니스 로직에 Reservation, 그리고 그 속에 SeatInfo가 존재한다. 
