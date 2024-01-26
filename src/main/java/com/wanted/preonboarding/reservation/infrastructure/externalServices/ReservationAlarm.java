@@ -49,9 +49,10 @@ public class ReservationAlarm {
                         .filter(performance -> performance.equalsId(event.getPerformanceId()))
                         .toList();
         if(filteredList.size() != FILTERED_LENGTH) return;
-        if(!waitingMap.get(filteredList.get(FILTERED_INDEX)).contains(event.getUserInfo())) return;
+        if(!containsUserInfo(event, filteredList.get(FILTERED_INDEX))) return;
         waitingMap.get(filteredList.get(FILTERED_INDEX)).remove(event.getUserInfo());
     }
+
 
     @EventListener(ReservationCanceledEvent.class)
     public void sendMessageToWaiting(final ReservationCanceledEvent reservationCanceledEvent) {
@@ -100,5 +101,9 @@ public class ReservationAlarm {
                 + ROUND + performance.getRound()
                 + START_DATE + performance.getStartDate().toString()
                 + SEAT_INFO + seatInfo.toString();
+    }
+
+    private boolean containsUserInfo(CheckWaitingEvent event, Performance performance) {
+        return waitingMap.get(performance).contains(event.getUserInfo());
     }
 }
