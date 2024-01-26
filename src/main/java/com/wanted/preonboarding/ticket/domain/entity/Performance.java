@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -34,13 +35,13 @@ public class Performance extends BaseEntity {
     private int type;
 
     @Column(nullable = false, name = "start_date")
-    private Date startDate;
+    private LocalDateTime startDate;
 
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;
 
     @Builder
-    private Performance(UUID id, String name, int price, int round, int type, Date startDate, String isReserve) {
+    private Performance(UUID id, String name, int price, int round, int type, LocalDateTime startDate, String isReserve) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -51,7 +52,7 @@ public class Performance extends BaseEntity {
     }
 
     public static Performance of(UUID id, String name, int price, int round, int type,
-                                 Date startDate, String isReserve) {
+                                 LocalDateTime startDate, String isReserve) {
         return Performance.builder()
                 .id(id)
                 .name(name)
