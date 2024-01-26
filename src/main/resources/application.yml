@@ -1,7 +1,7 @@
-server:
-  port: 8016
-
 spring:
+  profiles:
+    default: default
+
   datasource:
     url: jdbc:mysql://localhost:13306/wanted
     username: wanted
@@ -11,14 +11,23 @@ spring:
   # JPA 설정
   jpa:
     hibernate:
-      ddl-auto: none        # DB 초기화 전략 (none, create, create-drop, update, validate)
+      ddl-auto: none       # DB 초기화 전략 (none, create, create-drop, update, validate)
+
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         auto_quote_keyword: false
         globally_quoted_identifiers: false
         format_sql: true     # 쿼리 로그 포맷 (정렬)
-        show_sql: true       # 쿼리 로그 출력
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:/initdb/create_schema.sql
+      data-locations: classpath:/initdb/insert_test_data.sql
+
+server:
+  port: 8016
 
 logging:
   level:
@@ -27,3 +36,27 @@ logging:
         type:
           descriptor:
             sql: trace
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    url: jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+  sql:
+    init:
+      mode: none

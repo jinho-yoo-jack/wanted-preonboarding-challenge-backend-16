@@ -1,4 +1,9 @@
 -- schema.sql
+DROP TABLE IF EXISTS performance;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS performance_seat_info;
+DROP TABLE IF EXISTS accounts;
+
 CREATE TABLE IF NOT EXISTS `performance`
 (
     `id`         BINARY(16) default (uuid_to_bin(uuid())) NOT NULL COMMENT '공연/전시 ID',

@@ -1,0 +1,3 @@
+### 공연 조회
+GET http://localhost:8016/api/v1/performances/123e4567-e89b-12d3-a456-426614174000
+Content-Type: application/json
