@@ -34,7 +34,7 @@ public class TicketSeller {
      */
     public boolean reserve(ReserveInfo reserveInfo) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceInfo().getPerformanceId());
-        Performance info = performanceRepository.findById(reserveInfo.getPerformanceInfo().getPerformanceId())
+        Performance info = performanceRepository.findById(null)
             .orElseThrow(EntityNotFoundException::new);
         String enableReserve = info.getReserveStatus().name();
         if (enableReserve.equalsIgnoreCase("enable")) {

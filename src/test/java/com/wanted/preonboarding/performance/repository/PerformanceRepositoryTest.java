@@ -50,7 +50,7 @@ public class PerformanceRepositoryTest {
     @Test
     public void givenUUID_whenSearchingPerformance_thenReturnsPerformance() {
         //given
-        UUID uuid = createPerformance().getId();
+        Long uuid = createPerformance().getId();
         //when
         Optional<Performance> performance = performanceRepository.findById(uuid);
         //then
@@ -82,7 +82,7 @@ public class PerformanceRepositoryTest {
     @Test
     public void givenUUID_whenDeleteAndSearchPerformance_thenEmptyOptional() {
         //given
-        UUID uuid = createPerformance().getId();
+        Long uuid = createPerformance().getId();
         //when
         performanceRepository.deleteById(uuid);
         Optional<Performance> performance = performanceRepository.findById(uuid);

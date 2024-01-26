@@ -48,15 +48,15 @@ public class PerformanceServiceTest {
     @Test
     public void givenUUID_whenSearchPerformance_thenReturnsPerformanceInfo() {
         //given
-        UUID uuid = UUID.randomUUID();
-        PerformanceInfo testData = createNewPerformanceInfo(uuid);
-        given(performanceRepository.findById(any(UUID.class))).willReturn(Optional.of(testData.toEntity()));
+        Long id = 0L;
+        PerformanceInfo testData = createNewPerformanceInfo(id);
+        given(performanceRepository.findById(any(Long.class))).willReturn(Optional.of(testData.toEntity()));
         //when
-        PerformanceInfo performanceInfo = performanceService.getPerformanceById(uuid);
+        PerformanceInfo performanceInfo = performanceService.getPerformanceById(id);
         //then
-        then(performanceRepository).should().findById(any(UUID.class));
+        then(performanceRepository).should().findById(any(Long.class));
         assertThat(performanceInfo).isNotNull();
-        assertThat(performanceInfo.getPerformanceId()).isEqualTo(uuid);
+        assertThat(performanceInfo.getPerformanceId()).isEqualTo(id);
     }
 
     @DisplayName("performanceInfo를 저장하면 PerformanceInfo가 반환된다.")
@@ -73,36 +73,36 @@ public class PerformanceServiceTest {
         assertThat(performanceInfo.getPerformanceId()).isEqualTo(testData.getPerformanceId());
     }
 
-    @DisplayName("performanceInfo와 uuid를 입력받아 수정하면 performanceInfo가 반환된다.")
+    @DisplayName("performanceInfo와 id를 입력받아 수정하면 performanceInfo가 반환된다.")
     @Test
     public void givenPerformanceInfoAndUUID_whenUpdatePerformance_thenReturnsPerformanceInfo() {
         //given
-        UUID uuid = UUID.randomUUID();
-        PerformanceInfo testData = createNewPerformanceInfo(uuid);
+        Long id = 3L;
+        PerformanceInfo testData = createNewPerformanceInfo(id);
         PerformanceInfo updateData = createNewPerformanceInfo(null);
-        given(performanceRepository.getReferenceById(any(UUID.class))).willReturn(testData.toEntity());
+        given(performanceRepository.getReferenceById(any(Long.class))).willReturn(testData.toEntity());
         //when
-        PerformanceInfo performanceInfo = performanceService.updatePerformance(uuid,updateData);
+        PerformanceInfo performanceInfo = performanceService.updatePerformance(id,updateData);
         //then
-        then(performanceRepository).should().getReferenceById(any(UUID.class));
+        then(performanceRepository).should().getReferenceById(any(Long.class));
         assertThat(performanceInfo).isNotNull();
-        assertThat(performanceInfo.getPerformanceId()).isEqualTo(uuid);
+        assertThat(performanceInfo.getPerformanceId()).isEqualTo(id);
     }
 
     @Test
-    @DisplayName("UUID로 performance를 삭제한다.")
+    @DisplayName("ID로 performance를 삭제한다.")
     public void given_when_then() {
         //given
-        UUID uuid = UUID.randomUUID();
+        Long id = 0L;
         //when
-        performanceService.deletePerformance(uuid);
+        performanceService.deletePerformance(id);
         //then
-        then(performanceRepository).should().deleteById(any(UUID.class));
+        then(performanceRepository).should().deleteById(any(Long.class));
     }
 
-    private PerformanceInfo createNewPerformanceInfo(UUID uuid) {
+    private PerformanceInfo createNewPerformanceInfo(Long id) {
         return PerformanceInfo.builder()
-                .performanceId(uuid)
+                .performanceId(id)
                 .price(30000)
                 .round(4)
                 .performanceType(PerformanceType.EXHIBITION)

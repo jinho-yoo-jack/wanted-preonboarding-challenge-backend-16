@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Getter
 public class PerformanceResponse {
-    private UUID performanceId;
+    private Long performanceId;
     private String performanceName;
     private Integer price;
     private Integer round;

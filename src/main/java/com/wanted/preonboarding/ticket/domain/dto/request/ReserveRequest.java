@@ -12,7 +12,7 @@ public class ReserveRequest {
     private String name; //고객 이름
     private String phoneNumber; //휴대 전화
     private Integer amount; //결제 가능한 금액
-    private String performanceId; // 공연 & 전시회 아이디
+    private Long performanceId; // 공연 & 전시회 아이디
     private Integer round; // 회차
     private Character line; //라인
     private Integer seat; //좌석 정보
@@ -20,7 +20,7 @@ public class ReserveRequest {
     public ReserveInfo toDto() {
         return ReserveInfo.builder()
                 .performanceInfo(PerformanceInfo.builder()
-                        .performanceId(UUID.fromString(performanceId))
+                        .performanceId(performanceId)
                         .build())
                 .reservationName(name)
                 .reservationPhoneNumber(phoneNumber)

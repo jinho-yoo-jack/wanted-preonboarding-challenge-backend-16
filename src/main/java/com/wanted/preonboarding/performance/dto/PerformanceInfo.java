@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class PerformanceInfo {
-    private UUID performanceId;
+    private Long performanceId;
     private String performanceName;
     private Integer price;
     private Integer round;

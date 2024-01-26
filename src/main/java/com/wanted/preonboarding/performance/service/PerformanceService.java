@@ -45,7 +45,7 @@ public class PerformanceService {
      * @return The PerformanceInfo object with the specified ID.
      */
     @Transactional(readOnly = true)
-    public PerformanceInfo getPerformanceById(UUID performanceId) {
+    public PerformanceInfo getPerformanceById(Long performanceId) {
         return PerformanceInfo.of(performanceRepository.findById(performanceId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_ENTITY)));
     }
@@ -68,7 +68,7 @@ public class PerformanceService {
      * @return The updated PerformanceInfo object.
      * @throws EntityNotFoundException If the performance with the given ID does not exist.
      */
-    public PerformanceInfo updatePerformance(UUID performanceId, PerformanceInfo performanceInfo) throws EntityNotFoundException {
+    public PerformanceInfo updatePerformance(Long performanceId, PerformanceInfo performanceInfo) throws EntityNotFoundException {
         try {
             Performance performance = performanceRepository.getReferenceById(performanceId);
             performance.update(performanceInfo);
@@ -84,7 +84,7 @@ public class PerformanceService {
      *
      * @param performanceId The ID of the performance to delete.
      */
-    public void deletePerformance(UUID performanceId) {
+    public void deletePerformance(Long performanceId) {
         performanceRepository.deleteById(performanceId);
     }
 

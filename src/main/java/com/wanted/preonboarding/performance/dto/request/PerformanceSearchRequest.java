@@ -12,7 +12,7 @@ public class PerformanceSearchRequest {
 
     public PerformanceSearchParam toDto() {
         return PerformanceSearchParam.builder()
-                .reserveStatus(ReserveStatus.valueOf(reserveStatus))
+                .reserveStatus(ReserveStatus.valueOf(reserveStatus != null ? reserveStatus : "ENABLE"))
                 .build();
     }
 }
