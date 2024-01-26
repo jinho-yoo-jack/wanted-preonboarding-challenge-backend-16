@@ -5,7 +5,7 @@ import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "of")
 @Getter
 public class WaitToReserveEvent {
 
