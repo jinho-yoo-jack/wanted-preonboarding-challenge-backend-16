@@ -19,19 +19,19 @@ public class CreateReservationRequest {
     @NotBlank
     private String phoneNumber;
     @NotNull
-    private int balance;
+    private Integer balance;
     @NotNull
     private UUID performanceId;
     @NotNull
     private Long seatId;
     @NotNull
-    private int round;
+    private Integer round;
     @NotNull
-    private int gate;
+    private Integer gate;
     @NotBlank
     private String line;
     @NotNull
-    private int seat;
+    private Integer seat;
     @NotBlank
     private String reservationStatus;
 
