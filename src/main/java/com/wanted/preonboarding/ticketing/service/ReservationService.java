@@ -37,7 +37,7 @@ public class ReservationService {
     public CreateReservationResponse createReservation(CreateReservationRequest createReservationRequest) {
         Performance performance = performanceService.findPerformance(createReservationRequest.getPerformanceId());
         Reservation reservation = reserveTicket(createReservationRequest, performance);
-        int discountMoney = discountService.calculateDiscount(performance);
+        int discountMoney = discountService.calculateMaximumDiscount(performance);
         reserveSeat(createReservationRequest);
 
         return reservation.toCreateReservationResponse(performance, discountMoney);

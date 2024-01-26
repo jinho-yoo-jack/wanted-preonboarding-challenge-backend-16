@@ -11,7 +11,7 @@ import java.util.List;
 public class DiscountService {
     private final List<DiscountPolicy> discountPolicies;
 
-    public int calculateDiscount(Performance performance) {
+    public int calculateMaximumDiscount(Performance performance) {
         int maxDiscount = 0;
 
         for (DiscountPolicy discountPolicy : discountPolicies) {
