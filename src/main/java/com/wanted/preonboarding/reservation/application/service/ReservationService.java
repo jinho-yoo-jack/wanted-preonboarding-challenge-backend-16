@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public ReservationResponse reservePerformance(final ReservationRequest reservationRequest) {
         eventPublisher.publishEvent(ValidateReservationRequestEvent.from(reservationRequest));
         Reservation reservation = Reservation.from(reservationRequest);
@@ -56,7 +57,7 @@ public class ReservationService {
         return responses;
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public void cancelReservation(final int reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(ReservationNotFound::new);
