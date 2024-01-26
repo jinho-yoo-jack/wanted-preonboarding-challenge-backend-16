@@ -84,4 +84,12 @@ public class ControllerAdvice {
 
         return new ResponseEntity<>(errorResponse, errorCode.toHttpStatus());
     }
+
+    @ExceptionHandler(SoldOutException.class)
+    public ResponseEntity<ErrorResponse> handleSoldOutException(SoldOutException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorResponse errorResponse = ErrorResponse.from(errorCode);
+
+        return new ResponseEntity<>(errorResponse, errorCode.toHttpStatus());
+    }
 }

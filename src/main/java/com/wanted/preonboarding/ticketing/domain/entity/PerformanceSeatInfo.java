@@ -1,5 +1,7 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
+import com.wanted.preonboarding.ticketing.aop.advice.exception.SoldOutException;
+import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
 import com.wanted.preonboarding.ticketing.domain.dto.email.EmailPerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CancelReservationResponse;
 import jakarta.persistence.*;
@@ -47,9 +49,10 @@ public class PerformanceSeatInfo extends Time {
     private String isReserve;
 
     public void updateReservationStatus(String requestStatus) {
-        if (!this.isReserve.equals(requestStatus)) {
-            this.isReserve = requestStatus;
+        if (this.isReserve.equals(requestStatus)) {
+            throw new SoldOutException(ErrorCode.SOLD_OUT_TICKET);
         }
+        this.isReserve = requestStatus;
     }
 
     public void updateCancelStatus() {
