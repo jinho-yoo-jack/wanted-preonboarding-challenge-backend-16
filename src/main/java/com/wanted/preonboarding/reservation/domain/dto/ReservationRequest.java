@@ -1,6 +1,8 @@
 package com.wanted.preonboarding.reservation.domain.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,15 +26,18 @@ public class ReservationRequest {
     @NotBlank
     private long account;
 
-    @NotBlank
+    @NotNull
+    @Positive
     private int round;
 
-    @NotBlank
+    @NotNull
+    @Positive
     private int gate;
 
-    @NotBlank
+    @NotNull
     private char line;
 
-    @NotBlank
+    @NotNull
+    @Positive
     private int seat;
 }
