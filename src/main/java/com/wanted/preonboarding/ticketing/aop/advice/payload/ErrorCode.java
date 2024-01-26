@@ -13,7 +13,8 @@ public enum ErrorCode {
     NOT_FOUND_RESERVATIONS(500, "C004", "예약 정보가 없습니다."),
     NOT_FOUND_PERFORMANCE(500,"C005" , "공연 정보가 존재하지 않습니다."),
     NOT_FOUND_PERFORMANCE_SEAT_INFO(500, "C006", "좌석 정보가 존재하지 않습니다."),
-    NOT_VALIDATED_PARAM(400, "C007", "파라미터가 유효하지 않습니다.");
+    NOT_VALIDATED_PARAM(400, "C007", "파라미터가 유효하지 않습니다."),
+    FAILED_SEND_EMAIL(500, "C008", "이메일을 보내는데 실패하였습니다.");
 
     private final int status;
     private final String code;
