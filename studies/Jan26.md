@@ -20,3 +20,7 @@
     - AlarmSender에서 AwaitingReservation을 Performance.getId()를 통해서 조회한다. 
     - 조회한 AwaitingReservation.getUserInfo().getPhone()을 통해 전화번호를 받아온다. 
     - 받아온 전화번호들에 Twilio를 통해 메시지를 전송시킨다. 
+  - 예약 진행시 추가 고려사항
+    - 이벤트로 대기자를 삭제해야 한다.
+    - Performance와 UserInfo를 이벤트에 담아 보낸다.
+    - 만약 대기자중에 존재한다면 해당 노드를 삭제해준다. 
