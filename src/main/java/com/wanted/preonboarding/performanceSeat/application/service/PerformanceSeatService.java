@@ -3,6 +3,7 @@ package com.wanted.preonboarding.performanceSeat.application.service;
 import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performanceSeat.application.exception.PerformanceSeatAlreadyReserved;
 import com.wanted.preonboarding.performanceSeat.application.exception.PerformanceSeatInfoNotFound;
+import com.wanted.preonboarding.performanceSeat.domain.dto.PerformanceSeatResponse;
 import com.wanted.preonboarding.performanceSeat.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.performanceSeat.domain.event.EnablePerformanceReservationEvent;
 import com.wanted.preonboarding.performanceSeat.domain.event.SeatSoldOutEvent;
@@ -16,6 +17,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -52,6 +54,14 @@ public class PerformanceSeatService {
                 findSeatByReservationCanceledEvent(reservationCanceledEvent);
         performanceSeatInfo.enableReservation();
         eventPublisher.publishEvent(EnablePerformanceReservationEvent.of(reservationCanceledEvent.getPerformance()));
+    }
+
+    @Transactional(readOnly = true)
+    public List<PerformanceSeatResponse> findReservableSeats(final UUID performanceId) {
+        return performanceSeatInfoRepository.findAllByPerformanceId(performanceId)
+                .stream()
+                .filter(PerformanceSeatInfo::canReserve)
+                .map(PerformanceSeatResponse::from).toList();
     }
 
     private PerformanceSeatInfo findSeatBySeatReservedEvent(final SeatReservedEvent seatReservedEvent) {
