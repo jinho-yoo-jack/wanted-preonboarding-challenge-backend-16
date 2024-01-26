@@ -10,6 +10,7 @@ import com.wanted.preonboarding.reservation.application.exception.ReservationAlr
 import com.wanted.preonboarding.reservation.application.exception.ReservationNotFound;
 import com.wanted.preonboarding.reservation.domain.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.domain.entity.Reservation;
+import com.wanted.preonboarding.reservation.domain.event.CheckWaitingEvent;
 import com.wanted.preonboarding.reservation.domain.event.ReservationCanceledEvent;
 import com.wanted.preonboarding.reservation.domain.event.SeatReservedEvent;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
@@ -41,6 +42,7 @@ public class ReservationService {
         validateReservationExistence(performance, seatInfo);
         eventPublisher.publishEvent(SeatReservedEvent.of(seatInfo, reservationRequest.getPerformanceId()));
         reservationRepository.save(reservation);
+        eventPublisher.publishEvent(CheckWaitingEvent.from(reservation));
 
         return ReservationResponse.from(performance, reservation);
     }
