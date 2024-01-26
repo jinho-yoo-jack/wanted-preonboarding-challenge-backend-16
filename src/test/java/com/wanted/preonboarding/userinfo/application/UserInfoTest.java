@@ -1,10 +1,9 @@
 package com.wanted.preonboarding.userinfo.application;
 
-import com.wanted.preonboarding.user.domain.entity.Payment;
 import com.wanted.preonboarding.user.domain.entity.PaymentCard;
-import com.wanted.preonboarding.user.domain.entity.UserInfo;
+import com.wanted.preonboarding.user.domain.entity.User;
 import com.wanted.preonboarding.user.infrastructure.PaymentRepository;
-import com.wanted.preonboarding.user.infrastructure.UserInfoRepository;
+import com.wanted.preonboarding.user.infrastructure.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.sql.Date;
@@ -21,14 +20,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class UserInfoTest {
 
     @Autowired
-    private UserInfoRepository userInfoRepository;
+    private UserRepository userInfoRepository;
 
     @Autowired
     private PaymentRepository paymentRepository;
     @Test
     public void userSaveTest(){
 
-        UserInfo user = UserInfo.builder()
+        User user = User.builder()
             .name("testName")
             .id("test1111")
             .password("1111")
@@ -41,11 +40,19 @@ public class UserInfoTest {
     }
 
     @Test
+    public void findByIdTest(){
+        User user = userInfoRepository.findById("avangard111").orElseThrow(
+            () -> new EntityNotFoundException("존재하지 안흔ㄴ 회원")
+        );
+        System.out.println("user name: " + user.getName());
+    }
+
+    @Test
     public void paymentCardSaveTest(){
         PaymentCard payment = PaymentCard.builder()
                             .id(1L)
                             .userInfo(
-                                UserInfo.builder()
+                                User.builder()
                                     .userUuid(UUID.fromString("0bfde5b5-1850-41c9-b6d7-87242c003390"))
                                     .build())
                             .balanceAmount(100000L)
@@ -60,7 +67,7 @@ public class UserInfoTest {
     @Test
     @Transactional
     public void selectPaymentCardTest(){
-        UserInfo user = userInfoRepository.findById(UUID.fromString("8282d75a-bc5d-11ee-8f0f-0242ac150002")).orElseThrow(() -> new EntityNotFoundException("엔티티 없음"));
+        User user = userInfoRepository.findById(UUID.fromString("8282d75a-bc5d-11ee-8f0f-0242ac150002")).orElseThrow(() -> new EntityNotFoundException("엔티티 없음"));
         System.out.println("name: " + user.getName());
         System.out.println("paymentCards: " + user.getPaymentCards());
     }

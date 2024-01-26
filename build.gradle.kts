@@ -28,9 +28,12 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.mysql:mysql-connector-j:8.0.33")
     annotationProcessor("org.projectlombok:lombok")
+    implementation("org.springframework.boot:spring-boot-starter-security")  // 스프링 시큐리티 의존성 추가
+    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6") // thymeleaf 스프링 시큐리티 라이브러리 의존성 추가
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.vintage:junit-vintage-engine") {
         exclude("org.hamcrest", "hamcrest-core")
+    testImplementation("org.springframework.security:spring-security-test") // 스프링 시큐리티 테스트 라이브러리 의존성 추가
     }
 }
 
