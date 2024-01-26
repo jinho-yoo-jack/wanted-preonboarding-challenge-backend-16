@@ -31,7 +31,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ReservationResponse reservePerformance(final ReservationRequest reservationRequest) {
         eventPublisher.publishEvent(ValidateReservationRequestEvent.from(reservationRequest));
         Reservation reservation = Reservation.from(reservationRequest);
@@ -57,7 +57,7 @@ public class ReservationService {
         return responses;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void cancelReservation(final int reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(ReservationNotFound::new);
