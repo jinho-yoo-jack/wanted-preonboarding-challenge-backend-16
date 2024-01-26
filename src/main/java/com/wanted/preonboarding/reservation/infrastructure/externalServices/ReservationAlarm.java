@@ -1,6 +1,8 @@
 package com.wanted.preonboarding.reservation.infrastructure.externalServices;
 
 import com.wanted.preonboarding.performance.domain.entity.Performance;
+import com.wanted.preonboarding.reservation.domain.event.CheckWaitingEvent;
+import com.wanted.preonboarding.reservation.domain.event.ReservationCanceledEvent;
 import com.wanted.preonboarding.reservation.domain.event.WaitToReserveEvent;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +26,14 @@ public class ReservationAlarm {
             addNewUserInfo(waiting);
             return;
         }
-
         addNewWaitingData(waiting);
+    }
+
+    @EventListener(CheckWaitingEvent.class)
+    public void deleteWaitingIfExist(final CheckWaitingEvent event) {
+        if(!waitingMap.containsKey(event.getPerformance())) return;
+        if(!waitingMap.get(event.getPerformance()).contains(event.getUserInfo())) return;
+        waitingMap.get(event.getPerformance()).remove(event.getUserInfo());
     }
 
     private boolean containsPerformance(final Performance performance) {

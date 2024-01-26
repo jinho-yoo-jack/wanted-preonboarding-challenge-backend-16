@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.reservation.domain.event;
 
-import com.wanted.preonboarding.common.model.SeatInfo;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
+import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,6 +9,6 @@ import lombok.Getter;
 @Getter
 public class CheckWaitingEvent {
 
-    SeatInfo seatInfo;
+    UserInfo userInfo;
     Performance performance;
 }
