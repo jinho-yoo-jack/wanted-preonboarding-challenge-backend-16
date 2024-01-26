@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,8 +28,7 @@ public class PerformanceService {
     private final PerformanceRepository performanceRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    @EventListener(SeatSoldOutEvent.class)
-    @Transactional
+    @TransactionalEventListener(SeatSoldOutEvent.class)
     public void updatePerformanceDisabled(final SeatSoldOutEvent seatSoldOutEvent) {
         // 공연의 예약 가능 여부 확인 및 설정
         Performance performance = getPerformance(seatSoldOutEvent.getPerformanceId());
@@ -36,8 +36,7 @@ public class PerformanceService {
         performance.disableReservation();
     }
 
-    @EventListener(EnablePerformanceReservationEvent.class)
-    @Transactional
+    @TransactionalEventListener(EnablePerformanceReservationEvent.class)
     public void updatePerformanceEnabled(final EnablePerformanceReservationEvent enablePerformanceReservationEvent) {
         UUID performanceIdValue = enablePerformanceReservationEvent.getPerformanceIdValue();
         Performance performance = getPerformance(performanceIdValue);
@@ -58,7 +57,7 @@ public class PerformanceService {
                 .toList();
     }
 
-    @EventListener(ValidateReservationRequestEvent.class)
+    @TransactionalEventListener(ValidateReservationRequestEvent.class)
     public void validatePerformanceExistence(final ValidateReservationRequestEvent validateReservationRequestEvent) {
         getPerformance(validateReservationRequestEvent.getPerformanceId());
     }

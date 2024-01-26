@@ -18,6 +18,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,8 +33,7 @@ public class PerformanceSeatService {
     private final ApplicationEventPublisher eventPublisher;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
 
-    @Transactional
-    @EventListener(SeatReservedEvent.class)
+    @TransactionalEventListener(SeatReservedEvent.class)
     public void reserveSeat(final SeatReservedEvent seatReservedEvent) {
         PerformanceSeatInfo performanceSeatInfo = findSeatBySeatReservedEvent(seatReservedEvent);
 
@@ -49,8 +49,7 @@ public class PerformanceSeatService {
         }
     }
 
-    @Transactional
-    @EventListener(ReservationCanceledEvent.class)
+    @TransactionalEventListener(ReservationCanceledEvent.class)
     public void enableSeatReservation(final ReservationCanceledEvent reservationCanceledEvent) {
         PerformanceSeatInfo performanceSeatInfo =
                 findSeatByReservationCanceledEvent(reservationCanceledEvent);
@@ -58,8 +57,7 @@ public class PerformanceSeatService {
         eventPublisher.publishEvent(EnablePerformanceReservationEvent.of(reservationCanceledEvent.getPerformanceId()));
     }
 
-    @Transactional
-    @EventListener(ValidateReservationRequestEvent.class)
+    @TransactionalEventListener(ValidateReservationRequestEvent.class)
     public void validateReservationRequest(final ValidateReservationRequestEvent validateReservationRequestEvent) {
         findSeatBySeatInfoAndPerformanceId(
                 validateReservationRequestEvent.getSeatInfo(),
