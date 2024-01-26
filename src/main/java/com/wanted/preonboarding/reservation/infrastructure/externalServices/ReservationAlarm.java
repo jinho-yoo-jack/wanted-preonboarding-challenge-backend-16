@@ -9,6 +9,7 @@ import com.wanted.preonboarding.reservation.domain.event.CheckWaitingEvent;
 import com.wanted.preonboarding.reservation.domain.event.ReservationCanceledEvent;
 import com.wanted.preonboarding.reservation.domain.event.WaitToReserveEvent;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
+import com.wanted.preonboarding.reservation.infrastructure.configuration.TwilioProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ReservationAlarm {
 
+    private static final String START = "예약 대기한 공연에 빈 좌석이 나와 안내드립니다.";
+    private static final String PERFORMANCE_ID = "\n공연ID : ";
+    private static final String PERFORMANCE_NAME = "\n공연명 : ";
+    private static final String ROUND = "\n회차 : ";
+    private static final String START_DATE = "\n시작일시 : ";
+    private static final String SEAT_INFO = "\n좌석 정보 : ";
+    private static final String KOREA_LOCALE = "+082";
     private static final Map<Performance, List<UserInfo>> waitingMap = new HashMap<>();
+
+    private final TwilioProperties twilioProperties;
 
     @EventListener(WaitToReserveEvent.class)
     public void addWaitingUser(final WaitToReserveEvent waiting) {
@@ -64,11 +74,11 @@ public class ReservationAlarm {
     }
 
     private void sendNotification(final String phoneNumber, final String message) {
-        Twilio.init("username", "password");
-        String receivingNumber = "+082" + phoneNumber;
+        Twilio.init(twilioProperties.getUsername(), twilioProperties.getPassword());
+        String receivingNumber = KOREA_LOCALE + phoneNumber;
         Message.creator(
                 new PhoneNumber(receivingNumber),
-                new PhoneNumber("받은 번호"),
+                new PhoneNumber(twilioProperties.getPhone()),
                 message)
                 .create();
     }
@@ -76,11 +86,11 @@ public class ReservationAlarm {
     private String createVacantSeatMessage(final ReservationCanceledEvent event) {
         Performance performance = event.getPerformance();
         SeatInfo seatInfo = event.getSeatInfo();
-        return "예약 대기한 공연에 빈 좌석이 나와 안내드립니다."
-                + "\n공연ID : " + performance.getId()
-                + "\n공연명 : " + performance.getName()
-                + "\n회차 : " + performance.getRound()
-                + "\n시작일시 : " + performance.getStartDate().toString()
-                + "\n좌석 정보 : " + seatInfo.toString();
+        return START
+                + PERFORMANCE_ID + performance.getId()
+                + PERFORMANCE_NAME + performance.getName()
+                + ROUND + performance.getRound()
+                + START_DATE + performance.getStartDate().toString()
+                + SEAT_INFO + seatInfo.toString();
     }
 }
