@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Performance {
+public class Performance extends BaseEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")
