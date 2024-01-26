@@ -36,6 +36,13 @@ public class ReservationAlarm {
         waitingMap.get(event.getPerformance()).remove(event.getUserInfo());
     }
 
+    @EventListener(ReservationCanceledEvent.class)
+    public void sendMessageToWaiting(final ReservationCanceledEvent reservationCanceledEvent) {
+        waitingMap.get(reservationCanceledEvent.getPerformance())
+                .stream()
+                .forEach(() -> {}); // 전송 로직 추가
+    }
+
     private boolean containsPerformance(final Performance performance) {
         return waitingMap.containsKey(performance);
     }
