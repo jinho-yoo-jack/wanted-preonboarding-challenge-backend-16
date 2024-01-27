@@ -15,7 +15,6 @@ import com.wanted.preonboarding.reservation.domain.event.ValidateReservationRequ
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -42,9 +41,7 @@ public class PerformanceSeatService {
         }
         performanceSeatInfo.disableReservation();
 
-        if(!performanceSeatInfoRepository.existsByReserveStateAndPerformanceId(
-                RESERVABLE,
-                PerformanceId.of(seatReservedEvent.getPerformanceId()))) {
+        if(isPerformanceSeatSoldOut(seatReservedEvent)) {
             eventPublisher.publishEvent(SeatSoldOutEvent.of(seatReservedEvent.getPerformanceId()));
         }
     }
@@ -92,5 +89,11 @@ public class PerformanceSeatService {
                 .findBySeatInfoAndPerformanceId(seatInfo,
                         PerformanceId.of(performanceId))
                 .orElseThrow(PerformanceSeatInfoNotFound::new);
+    }
+
+    private boolean isPerformanceSeatSoldOut(SeatReservedEvent seatReservedEvent) {
+        return !performanceSeatInfoRepository.existsByReserveStateAndPerformanceId(
+                RESERVABLE,
+                PerformanceId.of(seatReservedEvent.getPerformanceId()));
     }
 }
