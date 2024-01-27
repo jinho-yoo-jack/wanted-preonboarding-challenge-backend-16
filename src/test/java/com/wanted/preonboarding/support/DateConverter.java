@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.support;
+package com.wanted.preonboarding.support;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
