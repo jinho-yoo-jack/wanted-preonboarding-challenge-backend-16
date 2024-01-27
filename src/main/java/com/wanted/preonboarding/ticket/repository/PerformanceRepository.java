@@ -10,6 +10,4 @@ import com.wanted.preonboarding.ticket.domain.entity.Performance;
 public interface PerformanceRepository extends JpaRepository<Performance, UUID> {
 
     Optional<Performance> findById(UUID id);
-
-    Performance findByName(String name);
 }
