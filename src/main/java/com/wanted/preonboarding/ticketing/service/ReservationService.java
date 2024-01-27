@@ -21,6 +21,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
@@ -32,6 +34,7 @@ public class ReservationService {
     private final DiscountService discountService;
     private final PerformanceService performanceService;
     private final PerformanceSeatInfoService performanceSeatInfoService;
+    private final AlarmService alarmService;
 
     @Transactional
     public CreateReservationResponse createReservation(CreateReservationRequest createReservationRequest) {
@@ -75,9 +78,14 @@ public class ReservationService {
     public CancelReservationResponse cancelReservation(CancelReservationRequest cancelReservationRequest) {
         PerformanceSeatInfo performanceSeatInfo = changeSeatInfo(cancelReservationRequest);
         deleteReservation(cancelReservationRequest);
-        eventPublisher.publishEvent(new CancelReservationEvent(performanceSeatInfo.getId()));
+        List<String> emails = deleteAlarm(performanceSeatInfo.getPerformance());
+        eventPublisher.publishEvent(new CancelReservationEvent(emails, performanceSeatInfo.getId()));
 
         return performanceSeatInfo.toCancelReservationResponse();
+    }
+
+    private List<String> deleteAlarm(Performance performance) {
+        return alarmService.deleteAlarmByPerformance(performance);
     }
 
     private PerformanceSeatInfo changeSeatInfo(CancelReservationRequest cancelReservationRequest) {

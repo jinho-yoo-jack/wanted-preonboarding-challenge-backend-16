@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 
+import java.util.List;
+
 @Entity
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -42,5 +44,9 @@ public class Alarm extends Time {
                 .phoneNumber(this.phoneNumber)
                 .startedTime(this.getCreatedAt())
                 .build();
+    }
+
+    public void addEmail(List<String> alarmEmails) {
+        alarmEmails.add(this.email);
     }
 }

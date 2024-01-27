@@ -1,12 +1,6 @@
 package com.wanted.preonboarding.ticketing.event;
 
-import lombok.Getter;
+import java.util.List;
 
-@Getter
-public class CancelReservationEvent {
-    private final Long performanceSeatInfoId;
-
-    public CancelReservationEvent(Long performanceSeatInfoId) {
-        this.performanceSeatInfoId = performanceSeatInfoId;
-    }
+public record CancelReservationEvent(List<String> emails, Long performanceSeatInfoId) {
 }

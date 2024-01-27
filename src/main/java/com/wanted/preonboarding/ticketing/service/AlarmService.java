@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class AlarmService {
@@ -28,5 +32,16 @@ public class AlarmService {
         Alarm alarm = createAlarmRequest.from(performance);
 
         return alarmRepository.save(alarm);
+    }
+
+    public List<String> deleteAlarmByPerformance(Performance performance) {
+        List<Alarm> alarms = alarmRepository.findAllByPerformance(performance);
+        List<String> alarmEmails = alarms.stream()
+                .map(Alarm::getEmail)
+                .collect(Collectors.toList());
+
+        alarmRepository.deleteAllInBatch(alarms);
+
+        return alarmEmails;
     }
 }
