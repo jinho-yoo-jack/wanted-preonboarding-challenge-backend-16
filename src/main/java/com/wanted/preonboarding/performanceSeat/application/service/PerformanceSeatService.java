@@ -35,12 +35,8 @@ public class PerformanceSeatService {
     @TransactionalEventListener(SeatReservedEvent.class)
     public void reserveSeat(final SeatReservedEvent seatReservedEvent) {
         PerformanceSeatInfo performanceSeatInfo = findSeatBySeatReservedEvent(seatReservedEvent);
-
-        if(performanceSeatInfo.isReserved()) {
-            throw new PerformanceSeatAlreadyReserved();
-        }
+        validateSeatReserveState(performanceSeatInfo);
         performanceSeatInfo.disableReservation();
-
         if(isPerformanceSeatSoldOut(seatReservedEvent)) {
             eventPublisher.publishEvent(SeatSoldOutEvent.of(seatReservedEvent.getPerformanceId()));
         }
@@ -95,5 +91,11 @@ public class PerformanceSeatService {
         return !performanceSeatInfoRepository.existsByReserveStateAndPerformanceId(
                 RESERVABLE,
                 PerformanceId.of(seatReservedEvent.getPerformanceId()));
+    }
+
+    private void validateSeatReserveState(PerformanceSeatInfo performanceSeatInfo) {
+        if(performanceSeatInfo.isReserved()) {
+            throw new PerformanceSeatAlreadyReserved();
+        }
     }
 }
