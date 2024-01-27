@@ -62,16 +62,15 @@ public class ReservationService {
     @Transactional(readOnly = true)
     public Page<ReadReservationResponse> readReservations(ReadReservationRequest reservationRequest, Pageable pageable) {
         Page<Reservation> reservations = findAllReservation(reservationRequest, pageable);
+        reservationValidator.validateReservations(reservations);
 
         return reservations.map(Reservation::toReadReservationResponse);
     }
 
     private Page<Reservation> findAllReservation(ReadReservationRequest reservationRequest, Pageable pageable) {
-        Page<Reservation> reservations = reservationRepository.findByPhoneNumberAndName(reservationRequest.getPhoneNumber()
+        return reservationRepository.findByPhoneNumberAndName(reservationRequest.getPhoneNumber()
                 , reservationRequest.getReservationName()
                 , pageable);
-
-        return reservationValidator.validateReservations(reservations);
     }
 
     @Transactional(rollbackFor = Exception.class)

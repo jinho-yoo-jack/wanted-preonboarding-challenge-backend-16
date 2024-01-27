@@ -17,11 +17,9 @@ public class ReservationValidator {
         }
     }
 
-    public Page<Reservation> validateReservations(Page<Reservation> reservations) {
+    public void validateReservations(Page<Reservation> reservations) {
         if (reservations.isEmpty()) {
             throw new NotFoundReservationsException(ErrorCode.NOT_FOUND_RESERVATIONS);
         }
-
-        return reservations;
     }
 }
