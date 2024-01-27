@@ -1,6 +1,5 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
-import com.wanted.preonboarding.ticketing.domain.dto.PerformanceType;
 import com.wanted.preonboarding.ticketing.domain.dto.email.EmailPerformance;
 import com.wanted.preonboarding.ticketing.domain.dto.response.ReadPerformanceResponse;
 import jakarta.persistence.*;

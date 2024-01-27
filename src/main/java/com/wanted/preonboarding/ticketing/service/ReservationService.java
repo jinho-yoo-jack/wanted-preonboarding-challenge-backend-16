@@ -74,7 +74,7 @@ public class ReservationService {
         return reservationValidator.validateReservations(reservations);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public CancelReservationResponse cancelReservation(CancelReservationRequest cancelReservationRequest) {
         PerformanceSeatInfo performanceSeatInfo = changeSeatInfo(cancelReservationRequest);
         deleteReservation(cancelReservationRequest);

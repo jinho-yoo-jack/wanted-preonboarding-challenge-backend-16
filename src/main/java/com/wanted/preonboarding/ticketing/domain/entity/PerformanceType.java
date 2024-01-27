@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticketing.domain.dto;
+package com.wanted.preonboarding.ticketing.domain.entity;
 
 import lombok.Getter;
 
