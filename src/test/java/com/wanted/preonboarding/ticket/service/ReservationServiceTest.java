@@ -228,7 +228,7 @@ class ReservationServiceTest {
         final String name = "홍길동";
         given(reservationRepository.findAllByName(eq(name)))
                 .willReturn(List.of(Reservation.builder()
-                        .id(1)
+                        .id(1L)
                         .name(name)
                         .phoneNumber("010-1234-5678")
                         .performance(performance)
