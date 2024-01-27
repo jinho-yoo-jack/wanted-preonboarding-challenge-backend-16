@@ -5,12 +5,14 @@ import static com.wanted.preonboarding.ticket.exception.ExceptionMessage.NOT_FOU
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -28,7 +30,9 @@ import com.wanted.preonboarding.ticket.domain.entity.ReservationStatus;
 import com.wanted.preonboarding.ticket.exception.EntityNotFound;
 import com.wanted.preonboarding.ticket.exception.InsufficientPaymentException;
 import com.wanted.preonboarding.ticket.service.ReservationService;
+import com.wanted.preonboarding.ticket.service.dto.request.ReservationCheckRequestDto;
 import com.wanted.preonboarding.ticket.service.dto.request.ReservationRequestDto;
+import com.wanted.preonboarding.ticket.service.dto.response.ReservationCheckResponseDto;
 import com.wanted.preonboarding.ticket.service.dto.response.ReservationResponseDto;
 
 @WebMvcTest(controllers = ReservationController.class)
@@ -178,6 +182,33 @@ class ReservationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    void 예약_조회() throws Exception {
+        // given
+        given(reservationService.check(any()))
+                .willReturn(List.of(ReservationCheckResponseDto.builder()
+                        .reservationName("홍길동")
+                        .reservationPhoneNumber("010-1234-5678")
+                        .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
+                        .performanceName("공연 이름")
+                        .round(1)
+                        .line('A')
+                        .seat(1)
+                        .build()));
+
+        // when
+        // then
+        final ReservationCheckRequestDto request = ReservationCheckRequestDto.builder()
+                .reservationName("홍길동")
+                .reservationPhoneNumber("010-1234-5678")
+                .build();
+        mockMvc.perform(get("/reserve")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 }
