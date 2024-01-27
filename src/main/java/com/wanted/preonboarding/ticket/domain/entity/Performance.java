@@ -51,6 +51,14 @@ public class Performance extends BaseEntity {
         this.isReserve = isReserve;
     }
 
+    public boolean isPossibleReserve() {
+        if (isReserve.equals("able")) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static Performance of(UUID id, String name, int price, int round, int type,
                                  LocalDateTime startDate, String isReserve) {
         return Performance.builder()
