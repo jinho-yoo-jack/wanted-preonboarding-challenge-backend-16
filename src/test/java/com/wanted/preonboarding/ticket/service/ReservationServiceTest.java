@@ -6,9 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyChar;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,8 +24,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.wanted.preonboarding.ticket.service.dto.request.ReservationCheckRequestDto;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
+import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.entity.ReservationStatus;
 import com.wanted.preonboarding.ticket.exception.EntityNotFound;
 import com.wanted.preonboarding.ticket.exception.InsufficientPaymentException;
@@ -32,6 +36,7 @@ import com.wanted.preonboarding.ticket.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.repository.ReservationRepository;
 import com.wanted.preonboarding.ticket.service.dto.request.ReservationRequestDto;
+import com.wanted.preonboarding.ticket.service.dto.response.ReservationCheckResponseDto;
 import com.wanted.preonboarding.ticket.service.dto.response.ReservationResponseDto;
 
 @ExtendWith(MockitoExtension.class)
@@ -215,6 +220,32 @@ class ReservationServiceTest {
 
         assertThatThrownBy(() -> reservationService.reserve(requestDto))
                 .isInstanceOf(InsufficientPaymentException.class);
+    }
+
+    @Test
+    void 예약_조회() {
+        // given
+        final String name = "홍길동";
+        given(reservationRepository.findAllByName(eq(name)))
+                .willReturn(List.of(Reservation.builder()
+                        .id(1)
+                        .name(name)
+                        .phoneNumber("010-1234-5678")
+                        .performance(performance)
+                        .round(1)
+                        .line('B')
+                        .seat(1)
+                        .build()));
+
+        final ReservationCheckRequestDto request = ReservationCheckRequestDto.builder()
+                .reservationName(name)
+                .build();
+
+        // when
+        final List<ReservationCheckResponseDto> responses = reservationService.check(request);
+
+        // then
+        assertThat(responses).hasSize(1);
     }
 
     private Performance createPerformance() {
