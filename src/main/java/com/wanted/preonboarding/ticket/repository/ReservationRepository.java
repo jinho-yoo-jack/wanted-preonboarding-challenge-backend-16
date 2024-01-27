@@ -8,5 +8,5 @@ import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
 
-    List<Reservation> findAllByName(final String name);
+    List<Reservation> findAllByNameAndPhoneNumber(final String name, final String phoneNumber);
 }

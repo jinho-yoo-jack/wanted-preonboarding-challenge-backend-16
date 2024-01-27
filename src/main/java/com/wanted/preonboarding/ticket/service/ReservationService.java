@@ -62,7 +62,8 @@ public class ReservationService {
     @Transactional(readOnly = true)
     public List<ReservationCheckResponseDto> check(final ReservationCheckRequestDto requestDto) {
         log.info("==================== Reservation Check Start ====================");
-        final List<Reservation> reservations = reservationRepository.findAllByName(requestDto.reservationName());
+        final List<Reservation> reservations = reservationRepository.findAllByNameAndPhoneNumber(
+                requestDto.reservationName(), requestDto.reservationPhoneNumber());
         return reservations.stream()
                 .map(ReservationCheckResponseDto::of)
                 .toList();

@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyChar;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
 import java.time.LocalDateTime;
@@ -24,7 +23,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.wanted.preonboarding.ticket.service.dto.request.ReservationCheckRequestDto;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
@@ -35,6 +33,7 @@ import com.wanted.preonboarding.ticket.exception.PerformanceSeatReserveValidatio
 import com.wanted.preonboarding.ticket.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.repository.ReservationRepository;
+import com.wanted.preonboarding.ticket.service.dto.request.ReservationCheckRequestDto;
 import com.wanted.preonboarding.ticket.service.dto.request.ReservationRequestDto;
 import com.wanted.preonboarding.ticket.service.dto.response.ReservationCheckResponseDto;
 import com.wanted.preonboarding.ticket.service.dto.response.ReservationResponseDto;
@@ -226,7 +225,7 @@ class ReservationServiceTest {
     void 예약_조회() {
         // given
         final String name = "홍길동";
-        given(reservationRepository.findAllByName(eq(name)))
+        given(reservationRepository.findAllByNameAndPhoneNumber(any(), any()))
                 .willReturn(List.of(Reservation.builder()
                         .id(1L)
                         .name(name)
@@ -239,6 +238,7 @@ class ReservationServiceTest {
 
         final ReservationCheckRequestDto request = ReservationCheckRequestDto.builder()
                 .reservationName(name)
+                .reservationPhoneNumber("010-1234-5678")
                 .build();
 
         // when
