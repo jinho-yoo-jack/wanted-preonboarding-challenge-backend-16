@@ -4,11 +4,15 @@ import static com.wanted.preonboarding.ticket.exception.ExceptionMessage.NOT_FOU
 import static com.wanted.preonboarding.ticket.exception.ExceptionMessage.NOT_FOUND_SEAT_INFO;
 import static com.wanted.preonboarding.ticket.exception.ExceptionMessage.PAYMENT_FAILED;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.wanted.preonboarding.ticket.service.dto.request.ReservationCheckRequestDto;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
+import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.entity.ReservationStatus;
 import com.wanted.preonboarding.ticket.exception.EntityNotFound;
 import com.wanted.preonboarding.ticket.exception.InsufficientPaymentException;
@@ -16,6 +20,7 @@ import com.wanted.preonboarding.ticket.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.repository.ReservationRepository;
 import com.wanted.preonboarding.ticket.service.dto.request.ReservationRequestDto;
+import com.wanted.preonboarding.ticket.service.dto.response.ReservationCheckResponseDto;
 import com.wanted.preonboarding.ticket.service.dto.response.ReservationResponseDto;
 
 import lombok.RequiredArgsConstructor;
@@ -52,6 +57,15 @@ public class ReservationService {
                 .line(requestDto.line())
                 .seat(requestDto.seat())
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReservationCheckResponseDto> check(final ReservationCheckRequestDto requestDto) {
+        log.info("==================== Reservation Check Start ====================");
+        final List<Reservation> reservations = reservationRepository.findAllByName(requestDto.reservationName());
+        return reservations.stream()
+                .map(ReservationCheckResponseDto::of)
+                .toList();
     }
 
     private PerformanceSeatInfo getReserveSeatInfo(final ReservationRequestDto requestDto) {
