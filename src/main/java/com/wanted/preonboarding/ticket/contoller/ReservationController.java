@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.service.dto.request;
+package com.wanted.preonboarding.ticket.contoller;
 
 import java.util.List;
 
@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.contoller.ReservationCheckRequestDto;
+import com.wanted.preonboarding.ticket.service.dto.request.ReservationCheckRequestDto;
 import com.wanted.preonboarding.ticket.service.ReservationService;
+import com.wanted.preonboarding.ticket.service.dto.request.ReservationRequestDto;
 import com.wanted.preonboarding.ticket.service.dto.response.ReservationCheckResponseDto;
 import com.wanted.preonboarding.ticket.service.dto.response.ReservationResponseDto;
 
