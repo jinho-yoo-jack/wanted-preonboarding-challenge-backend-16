@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.account.domain.vo;
 
+import com.wanted.preonboarding.account.domain.exception.NotEnoughMoneyException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -15,7 +16,8 @@ import java.util.Objects;
 @Embeddable
 public class Money {
 
-    private static final String NEGATIVE_MESSAGE_FORMAT = "금액 [%f]는 돈으로 만들 수 없습니다.";
+    public static final String NEGATIVE_MESSAGE_FORMAT = "금액 [%f]는 돈으로 만들 수 없습니다.";
+    public static final String NOT_ENOUGH_MESSAGE_FORMAT = "현재 금액 [%f]가 부족합니다.";
 
     @Column(nullable = false, name = "amount")
     private BigDecimal amount;
@@ -43,7 +45,7 @@ public class Money {
 
     public void subtract(BigDecimal withdrawMoney) {
         if (isWithdrawResultNegative(withdrawMoney)) {
-            throw new IllegalStateException();
+            throw new NotEnoughMoneyException(String.format(NOT_ENOUGH_MESSAGE_FORMAT, amount));
         }
 
         amount = amount.subtract(withdrawMoney);

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Builder
 public record ErrorResponse(
-        int status,
+        int statusCode,
 
         String message,
 
@@ -19,7 +19,7 @@ public record ErrorResponse(
         List<ValidationError> errors,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-        LocalDateTime serverDateTime
+        LocalDateTime serverTime
 ) {
 
     public static ErrorResponse from(
@@ -27,9 +27,9 @@ public record ErrorResponse(
             final Exception exception
     ) {
         return ErrorResponse.builder()
-                .status(statusCode)
+                .statusCode(statusCode)
                 .message(exception.getMessage())
-                .serverDateTime(LocalDateTime.now())
+                .serverTime(LocalDateTime.now())
                 .build();
     }
 
@@ -37,10 +37,10 @@ public record ErrorResponse(
             final BindException e
     ) {
         return ErrorResponse.builder()
-                .status(400)
+                .statusCode(400)
                 .message(e.getMessage())
                 .errors(ValidationError.of(e.getBindingResult().getFieldErrors()))
-                .serverDateTime(LocalDateTime.now())
+                .serverTime(LocalDateTime.now())
                 .build();
     }
 

@@ -1,11 +1,12 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.account.domain.vo.Money;
 import com.wanted.preonboarding.core.domain.support.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -15,6 +16,9 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Performance extends BaseEntity {
+
+    public final static String ENABLE = "enable";
+    public final static String DISABLE = "disable";
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -51,14 +55,6 @@ public class Performance extends BaseEntity {
         this.isReserve = isReserve;
     }
 
-    public boolean isPossibleReserve() {
-        if (isReserve.equals("able")) {
-            return true;
-        }
-
-        return false;
-    }
-
     public static Performance of(UUID id, String name, int price, int round, int type,
                                  LocalDateTime startDate, String isReserve) {
         return Performance.builder()
@@ -70,5 +66,13 @@ public class Performance extends BaseEntity {
                 .startDate(startDate)
                 .isReserve(isReserve)
                 .build();
+    }
+
+    public boolean isPossibleReserve() {
+        return isReserve.equals(ENABLE);
+    }
+
+    public Money getPrice() {
+        return Money.createMoney(BigDecimal.valueOf(price));
     }
 }

@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table
+@Table(name = "accounts")
 @Entity
 public class Account extends BaseEntity {
 

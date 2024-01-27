@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.UUID;
@@ -13,6 +14,9 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PerformanceSeatInfo {
+
+    public static final String ENABLE = "enable";
+    public static final String DISABLE = "disable";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +39,24 @@ public class PerformanceSeatInfo {
 
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'enable'")
     private String isReserve;
+
+    @Builder
+    private PerformanceSeatInfo(Long id, UUID performanceId, int round, int gate, char line, int seat, String isReserve) {
+        this.id = id;
+        this.performanceId = performanceId;
+        this.round = round;
+        this.gate = gate;
+        this.line = line;
+        this.seat = seat;
+        this.isReserve = isReserve;
+    }
+
+    public boolean isPossibleReserve() {
+        if (isReserve.equals(ENABLE)) {
+            this.isReserve = DISABLE;
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.UUID;
@@ -40,6 +41,18 @@ public class Reservation {
         this.gate = gate;
         this.line = line;
         this.seat = seat;
+    }
+
+    public static Reservation createReservation(User user, PerformanceSeatInfo performanceSeatInfo) {
+        return Reservation.builder()
+                .performanceId(performanceSeatInfo.getPerformanceId())
+                .name(user.getName())
+                .phoneNumber(user.getPhoneNumber())
+                .round(performanceSeatInfo.getRound())
+                .gate(performanceSeatInfo.getGate())
+                .line(performanceSeatInfo.getLine())
+                .seat(performanceSeatInfo.getSeat())
+                .build();
     }
 
 }

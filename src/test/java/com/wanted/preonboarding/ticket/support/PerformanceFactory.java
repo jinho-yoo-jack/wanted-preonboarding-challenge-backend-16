@@ -22,4 +22,16 @@ public final class PerformanceFactory {
                 .isReserve("able")
                 .build();
     }
+
+    public static Performance changeReservationState(Performance performance, String isReserved) {
+        return Performance.builder()
+                .id(performance.getId())
+                .name(performance.getName())
+                .price(performance.getPrice().getAmount().intValue())
+                .type(performance.getType())
+                .round(performance.getRound())
+                .startDate(performance.getStartDate())
+                .isReserve(isReserved)
+                .build();
+    }
 }

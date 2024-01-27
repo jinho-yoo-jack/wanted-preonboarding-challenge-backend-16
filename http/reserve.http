@@ -1,0 +1,8 @@
+### 공연 예약
+POST http://localhost:8016/api/v1/reserves
+Content-Type: application/json
+
+{
+  "userId": "1",
+  "performanceSeatInfoId": "1"
+}

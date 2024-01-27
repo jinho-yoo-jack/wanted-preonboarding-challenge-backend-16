@@ -6,15 +6,15 @@ DROP TABLE IF EXISTS accounts;
 
 CREATE TABLE IF NOT EXISTS `performance`
 (
-    `id`         BINARY(16) default (uuid_to_bin(uuid())) NOT NULL COMMENT '공연/전시 ID',
-    `name`       varchar(255)                             NOT NULL COMMENT '공연/전시 이름',
+    `id`         BINARY(16) DEFAULT RANDOM_UUID()         NOT NULL COMMENT '공연/전시 ID',
+    `name`       VARCHAR(255)                             NOT NULL COMMENT '공연/전시 이름',
     `price`      INT                                      NOT NULL COMMENT '가격',
     `round`      INT                                      NOT NULL COMMENT '회차',
     `type`       INT                                      NOT NULL COMMENT 'NONE, CONCERT, EXHIBITION',
     `start_date` datetime                                 NOT NULL COMMENT '공연 일시',
-    `is_reserve` varchar(255)                             NOT NULL DEFAULT 'disable',
-    `created_at` DATETIME   DEFAULT NOW()                 NOT NULL,
-    `updated_at` DATETIME   DEFAULT NOW()                 NOT NUll,
+    `is_reserve` VARCHAR(255)                             NOT NULL DEFAULT 'disable',
+    `created_at` DATETIME    DEFAULT NOW()                 NOT NULL,
+    `updated_at` DATETIME    DEFAULT NOW()                 NOT NUll,
     PRIMARY KEY (id),
     UNIQUE KEY (id, round)
 );
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `performance_seat_info`
 CREATE TABLE IF NOT EXISTS `reservation`
 (
     `id`             INT(10)                NOT NULL AUTO_INCREMENT,
-    `performance_id` BINARY(16)             NOT NULL COMMENT '공연전시ID',
+    `performance_id` VARCHAR(36)            NOT NULL COMMENT '공연전시ID',
     `name`           varchar(255)           NOT NULL COMMENT '예약자명',
     `phone_number`   varchar(255)           NOT NULL COMMENT '예약자 휴대전화 번호',
     `round`          INT                    NOT NULL COMMENT '회차(FK)',
