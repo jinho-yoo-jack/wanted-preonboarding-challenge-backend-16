@@ -6,24 +6,23 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceType;
 import com.wanted.preonboarding.ticket.domain.entity.ReservationStatus;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@RepositoryTest
 class PerformanceSeatInfoRepositoryTest {
 
-    @Autowired
-    private PerformanceSeatInfoRepository performanceSeatInfoRepository;
+    private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
+    private final PerformanceRepository performanceRepository;
 
-    @Autowired
-    private PerformanceRepository performanceRepository;
+    public PerformanceSeatInfoRepositoryTest(final PerformanceSeatInfoRepository performanceSeatInfoRepository,
+                                             final PerformanceRepository performanceRepository) {
+        this.performanceSeatInfoRepository = performanceSeatInfoRepository;
+        this.performanceRepository = performanceRepository;
+    }
 
     @Test
     void 공연_아이디와_좌석_정보의_값으로_좌석_정보_조회() {

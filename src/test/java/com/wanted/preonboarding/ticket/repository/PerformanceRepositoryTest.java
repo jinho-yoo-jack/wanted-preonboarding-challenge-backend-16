@@ -6,20 +6,19 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceType;
 import com.wanted.preonboarding.ticket.domain.entity.ReservationStatus;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@RepositoryTest
 class PerformanceRepositoryTest {
 
-    @Autowired
-    private PerformanceRepository performanceRepository;
+    private final PerformanceRepository performanceRepository;
+
+    public PerformanceRepositoryTest(final PerformanceRepository performanceRepository) {
+        this.performanceRepository = performanceRepository;
+    }
 
     @Test
     void 아이디로_공연_조회() {

@@ -9,26 +9,25 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceType;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.entity.ReservationStatus;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@RepositoryTest
 class ReservationRepositoryTest {
 
-    @Autowired
-    private ReservationRepository reservationRepository;
+    private static Performance performance;
 
-    @Autowired
-    private PerformanceRepository performanceRepository;
+    private final ReservationRepository reservationRepository;
+    private final PerformanceRepository performanceRepository;
 
-    private Performance performance;
+    public ReservationRepositoryTest(final ReservationRepository reservationRepository,
+                                     final PerformanceRepository performanceRepository) {
+        this.reservationRepository = reservationRepository;
+        this.performanceRepository = performanceRepository;
+    }
 
     @BeforeEach
     void setUp() {
