@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.application.strategy;
 
-import com.wanted.preonboarding.account.vo.Money;
+import com.wanted.preonboarding.account.domain.vo.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;

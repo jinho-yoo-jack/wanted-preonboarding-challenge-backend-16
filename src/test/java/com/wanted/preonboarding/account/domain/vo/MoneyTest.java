@@ -1,6 +1,7 @@
-package com.wanted.preonboarding.account.vo;
+package com.wanted.preonboarding.account.domain.vo;
 
 
+import com.wanted.preonboarding.account.domain.vo.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

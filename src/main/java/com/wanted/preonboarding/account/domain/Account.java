@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.account.domain;
 
-import com.wanted.preonboarding.account.vo.Money;
+import com.wanted.preonboarding.account.domain.vo.Money;
 import com.wanted.preonboarding.core.domain.support.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
