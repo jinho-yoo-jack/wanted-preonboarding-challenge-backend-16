@@ -13,8 +13,8 @@ import lombok.Getter;
 @Builder
 public class CheckWaitingEvent {
 
-    UserInfo userInfo;
-    PerformanceId performanceId;
+    private final UserInfo userInfo;
+    private final PerformanceId performanceId;
 
     public static CheckWaitingEvent from(final Reservation reservation) {
         return CheckWaitingEvent.builder()

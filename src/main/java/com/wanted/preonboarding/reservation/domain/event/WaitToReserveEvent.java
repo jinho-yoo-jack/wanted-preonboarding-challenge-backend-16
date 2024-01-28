@@ -9,6 +9,6 @@ import lombok.Getter;
 @Getter
 public class WaitToReserveEvent {
 
-    UserInfo userInfo;
-    Performance performance;
+    private final UserInfo userInfo;
+    private final Performance performance;
 }
