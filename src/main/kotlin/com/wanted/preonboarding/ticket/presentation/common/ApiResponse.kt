@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.presentation.common
 
-open class ApiResponse<T>(
+class ApiResponse<T>(
     val result: ResultType,
     val data: T? = null,
     val error: Any? = null,
