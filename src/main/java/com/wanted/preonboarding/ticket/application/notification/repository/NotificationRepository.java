@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.application.repository;
+package com.wanted.preonboarding.ticket.application.notification.repository;
 
 import com.wanted.preonboarding.ticket.domain.entity.Notification;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;

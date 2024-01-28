@@ -1,11 +1,13 @@
-package com.wanted.preonboarding.ticket.application.service;
+package com.wanted.preonboarding.ticket.application.notification.service;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
+import com.wanted.preonboarding.ticket.application.common.service.MailService;
 import com.wanted.preonboarding.ticket.application.event.ReservationCancelledEvent;
 import com.wanted.preonboarding.ticket.application.exception.EntityNotFoundException;
-import com.wanted.preonboarding.ticket.application.repository.NotificationRepository;
-import com.wanted.preonboarding.ticket.application.repository.PerformanceRepository;
-import com.wanted.preonboarding.ticket.domain.dto.RequestNotification;
+import com.wanted.preonboarding.ticket.application.notification.repository.NotificationRepository;
+import com.wanted.preonboarding.ticket.application.performance.repository.PerformanceRepository;
+import com.wanted.preonboarding.ticket.domain.dto.request.RequestNotification;
+import com.wanted.preonboarding.ticket.domain.dto.request.SendNotification;
 import com.wanted.preonboarding.ticket.domain.entity.Notification;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
@@ -33,6 +35,7 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final PerformanceRepository performanceRepository;
+    private final MailService mailService;
 
     @Transactional
     public ResponseEntity<ResponseHandler<Void>> setNotification(
@@ -56,19 +59,8 @@ public class NotificationService {
         Performance performance = reservation.getPerformanceSeatInfo().getPerformance();
         List<Notification> notificationList = notificationRepository.findAllByPerformance(performance);
 
-        notificationList.forEach(notification -> {
-                sendNotification(notification, reservation);
-                notification.markAsSent();
-        });
-    }
-
-    private void sendNotification(Notification notification, Reservation reservation) {
-        log.info("[알림 발송] {} 공연/전시의 {} 회차 {}열 {} 예약이 취소되었습니다. - 알림 수신자 이메일: {}",
-                notification.getPerformance().getName(),
-                notification.getRound(),
-                reservation.getLine(),
-                reservation.getSeat(),
-                notification.getEmail());
+        notificationList.forEach(Notification::markAsSent);
+        mailService.sendNotificationMail(SendNotification.of(notificationList, reservation));
     }
 
 }
