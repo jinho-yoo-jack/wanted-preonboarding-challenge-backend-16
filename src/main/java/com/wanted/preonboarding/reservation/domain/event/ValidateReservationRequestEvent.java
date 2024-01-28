@@ -14,11 +14,13 @@ import java.util.UUID;
 public class ValidateReservationRequestEvent {
 
     private final UUID performanceId;
+    private final long account;
     private final SeatInfo seatInfo;
 
     public static ValidateReservationRequestEvent from(ReservationRequest reservationRequest) {
         return ValidateReservationRequestEvent.builder()
                 .performanceId(reservationRequest.getPerformanceId())
+                .account(reservationRequest.getAccount())
                 .seatInfo(SeatInfo.from(reservationRequest))
                 .build();
     }

@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.performance.application.service;
 
 import com.wanted.preonboarding.performance.application.dto.PerformanceResponse;
+import com.wanted.preonboarding.performance.application.exception.AccountNotAffordable;
 import com.wanted.preonboarding.performance.application.exception.PerformanceNotFoundException;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
@@ -59,7 +60,11 @@ public class PerformanceService {
 
     @TransactionalEventListener(value = ValidateReservationRequestEvent.class)
     public void validatePerformanceExistence(final ValidateReservationRequestEvent validateReservationRequestEvent) {
-        getPerformance(validateReservationRequestEvent.getPerformanceId());
+        Performance performance = getPerformance(validateReservationRequestEvent.getPerformanceId());
+
+        if(!performance.isAccountAffordable(validateReservationRequestEvent.getAccount())) {
+            throw new AccountNotAffordable();
+        }
     }
 
     private Performance getPerformance(final UUID performanceId) {
