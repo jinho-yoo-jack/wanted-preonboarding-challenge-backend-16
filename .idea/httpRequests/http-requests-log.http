@@ -1,3 +1,93 @@
+POST http://localhost:8016/api/v1/reserves/1/cancel
+Content-Type: application/json
+Content-Length: 19
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": "1"
+}
+
+<> 2024-01-28T230314.200.json
+
+###
+
+POST http://localhost:8016/api/v1/performances/123e4567-e89b-12d3-a456-426614174000/await
+Content-Type: application/json
+Content-Length: 17
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": 1
+}
+
+<> 2024-01-28T230311.200.json
+
+###
+
+POST http://localhost:8016/api/v1/reserves/1/cancel
+Content-Type: application/json
+Content-Length: 19
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": "1"
+}
+
+<> 2024-01-28T230244.400.json
+
+###
+
+POST http://localhost:8016/api/v1/performances/123e4567-e89b-12d3-a456-426614174000/await
+Content-Type: application/json
+Content-Length: 17
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": 1
+}
+
+<> 2024-01-28T230219.200.json
+
+###
+
+POST http://localhost:8016/api/v1/reserves/1/cancel
+Content-Type: application/json
+Content-Length: 19
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": "1"
+}
+
+<> 2024-01-28T225840.400.json
+
+###
+
+POST http://localhost:8016/api/v1/performances/123e4567-e89b-12d3-a456-426614174000/await
+Content-Type: application/json
+Content-Length: 17
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": 1
+}
+
+<> 2024-01-28T225836.200.json
+
+###
+
 GET http://localhost:8016/api/v1/reserves?reservationName=원티드&reservationPhoneNumber=010-1112-2223
 Content-Type: application/json
 Connection: Keep-Alive

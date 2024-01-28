@@ -13,3 +13,11 @@ Content-Type: application/json
 ### 공연 목록 조회(기본)
 GET http://localhost:8016/api/v1/performances
 Content-Type: application/json
+
+### 공연 알림 예약
+POST http://localhost:8016/api/v1/performances/123e4567-e89b-12d3-a456-426614174000/await
+Content-Type: application/json
+
+{
+  "userId": 1
+}

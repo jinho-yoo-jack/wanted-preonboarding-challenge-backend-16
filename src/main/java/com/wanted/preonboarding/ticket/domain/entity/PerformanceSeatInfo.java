@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.application.exception.NotReservedStateException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -17,6 +18,7 @@ public class PerformanceSeatInfo {
 
     public static final String ENABLE = "enable";
     public static final String DISABLE = "disable";
+    public static final String NOT_RESERVED_MESSAGE_FORMAT = "고유 번호 [%d] 좌석은 예약 된 상태가 아닙니다.";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,5 +60,13 @@ public class PerformanceSeatInfo {
         }
 
         return false;
+    }
+
+    public void cancel() {
+        if (isReserve.equals(ENABLE)) {
+            throw new NotReservedStateException(String.format(NOT_RESERVED_MESSAGE_FORMAT, id));
+        }
+
+        isReserve = ENABLE;
     }
 }

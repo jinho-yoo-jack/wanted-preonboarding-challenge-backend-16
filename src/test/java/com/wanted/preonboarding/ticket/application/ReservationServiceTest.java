@@ -9,6 +9,10 @@ import com.wanted.preonboarding.ticket.application.dto.request.CreateReserveServ
 import com.wanted.preonboarding.ticket.application.dto.request.FindReserveServiceRequest;
 import com.wanted.preonboarding.ticket.application.dto.response.ReserveResponse;
 import com.wanted.preonboarding.ticket.application.exception.AlreadyReservedStateException;
+import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
+import com.wanted.preonboarding.ticket.domain.entity.Reservation;
+import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
+import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import com.wanted.preonboarding.ticket.support.ReservationRequestFactory;
 import com.wanted.preonboarding.user.User;
 import com.wanted.preonboarding.user.infrastructure.UserRepository;
@@ -40,6 +44,12 @@ class ReservationServiceTest {
 
     @Autowired
     private ReservationService reservationService;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
+
+    @Autowired
+    private PerformanceSeatInfoRepository performanceSeatInfoRepository;
 
     private User user;
 
@@ -133,6 +143,25 @@ class ReservationServiceTest {
 
         // then
         assertThat(reserve.size()).isEqualTo(2);
+    }
+
+    @DisplayName("예약한 좌석을 취소 할 수 있다.")
+    @Test
+    void cancelReservation() {
+        // given
+        Long reservationId = 1L;
+        Long userId = 1L;
+
+        Reservation reservation = reservationRepository.findById(reservationId).get();
+
+        // when
+        reservationService.cancel(reservationId, userId);
+
+        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findBySeatInfo(reservation.getPerformanceId(), reservation.getRound(),
+                reservation.getLine(), reservation.getGate(), reservation.getSeat()).get();
+
+        // then
+        assertThat(performanceSeatInfo.getIsReserve()).isEqualTo(PerformanceSeatInfo.ENABLE);
     }
 
     @AfterEach

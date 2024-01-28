@@ -6,6 +6,8 @@ import com.wanted.preonboarding.account.domain.vo.Money;
 import com.wanted.preonboarding.ticket.application.dto.request.CreateReserveServiceRequest;
 import com.wanted.preonboarding.ticket.application.dto.request.FindReserveServiceRequest;
 import com.wanted.preonboarding.ticket.application.dto.response.ReserveResponse;
+import com.wanted.preonboarding.ticket.application.event.AlarmEventPublisher;
+import com.wanted.preonboarding.ticket.application.event.dto.AlarmInfo;
 import com.wanted.preonboarding.ticket.application.mapper.PerformanceReader;
 import com.wanted.preonboarding.ticket.application.mapper.PerformanceSeatInfoReader;
 import com.wanted.preonboarding.ticket.application.mapper.ReservationReader;
@@ -40,6 +42,7 @@ public class ReservationService {
     private final DiscountPolicy discountPolicy;
 
     private final PaymentEventPublisher paymentEventPublisher;
+    private final AlarmEventPublisher alarmEventPublisher;
 
     @Transactional
     public ReserveResponse reserve(CreateReserveServiceRequest request) {
@@ -72,5 +75,15 @@ public class ReservationService {
                 .stream()
                 .map(ReserveResponse::from)
                 .toList();
+    }
+
+    @Transactional
+    public void cancel(Long reservationId, Long userId) {
+        Reservation reservation = reservationReader.findById(reservationId);
+        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoReader.findBySeatInfo(reservation.getPerformanceId(),
+                reservation.getRound(), reservation.getLine(), reservation.getGate(), reservation.getSeat());
+
+        performanceSeatInfo.cancel();
+        alarmEventPublisher.publishAlarm(AlarmInfo.of(userId, reservation));
     }
 }

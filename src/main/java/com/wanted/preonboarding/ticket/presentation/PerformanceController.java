@@ -44,7 +44,7 @@ public class PerformanceController {
 
     @PostMapping("/{performanceId}/await")
     public ResponseEntity<ApiResponse<String>> await(@PathVariable UUID performanceId,
-                                                   @RequestBody @Validated AwaitRequest request
+                                                     @RequestBody @Validated AwaitRequest request
     ) {
         performanceService.await(performanceId, request.userId());
         return ResponseEntity.ok(ApiResponse.ok(String.format(AWAIT_MESSAGE_FORMAT, performanceId)));

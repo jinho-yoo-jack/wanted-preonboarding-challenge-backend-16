@@ -7,6 +7,7 @@ import com.wanted.preonboarding.ticket.application.dto.request.FindReserveServic
 import com.wanted.preonboarding.ticket.application.dto.response.ReserveResponse;
 import com.wanted.preonboarding.ticket.application.exception.AlreadyReservedStateException;
 import com.wanted.preonboarding.ticket.application.validator.ReservationValidator;
+import com.wanted.preonboarding.ticket.presentation.dto.request.CancelReservationRequest;
 import com.wanted.preonboarding.ticket.presentation.dto.request.CreateReserveInfoRequest;
 import com.wanted.preonboarding.ticket.presentation.dto.request.FindReserveInfoRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -122,11 +124,6 @@ class ReserveControllerTest {
         String reservationPhoneNumber = "010-0000-1111";
         String performanceId = UUID.randomUUID().toString();
 
-        FindReserveInfoRequest request = FindReserveInfoRequest.builder()
-                .reservationName(reservationName)
-                .reservationPhoneNumber(reservationPhoneNumber)
-                .build();
-
         ReserveResponse response1 = ReserveResponse.builder()
                 .performanceId(performanceId)
                 .performanceName("영웅")
@@ -175,6 +172,29 @@ class ReserveControllerTest {
                 .andExpect(jsonPath("$.data[1].seat").value(response.get(1).seat()))
                 .andExpect(jsonPath("$.data[1].reservationName").value(response.get(1).reservationName()))
                 .andExpect(jsonPath("$.data[1].reservationPhoneNumber").value(response.get(1).reservationPhoneNumber()))
+                .andExpect(jsonPath("$.serverTime").exists());
+    }
+
+    @DisplayName("등록되어 있는 예약을 취소 할 수 있다.")
+    @Test
+    void cancelReservation() throws Exception {
+        // given
+        Long reservationId = 1L;
+        Long userId = 1L;
+
+        CancelReservationRequest request = CancelReservationRequest.builder()
+                .userId(userId)
+                .build();
+
+        doNothing().when(reservationService).cancel(any(Long.class), any(Long.class));
+
+        // when & then
+        mockMvc.perform(post("/api/v1/reserves/{reservationId}/cancel", reservationId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(200))
                 .andExpect(jsonPath("$.serverTime").exists());
     }
 }
