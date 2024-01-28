@@ -1,28 +1,28 @@
 package com.wanted.preonboarding.ticket.infra.adapter
 
-import com.wanted.preonboarding.core.CursorResult
+import com.wanted.preonboarding.ticket.presentation.common.CursorResponse
 import com.wanted.preonboarding.core.exception.ApplicationException
 import com.wanted.preonboarding.ticket.application.ticket.PerformancePort
 import com.wanted.preonboarding.ticket.domain.Performance
 import com.wanted.preonboarding.ticket.domain.PerformanceId
-import com.wanted.preonboarding.ticket.infra.entity.PerformanceEntityJpaRepository
-import com.wanted.preonboarding.ticket.infra.entity.PerformanceSeatInfoEntityJpaRepository
+import com.wanted.preonboarding.ticket.infra.entity.PerformanceRepository
+import com.wanted.preonboarding.ticket.infra.entity.PerformanceSeatInfoRepository
 import com.wanted.preonboarding.ticket.infra.entity.ReservationEntity
-import com.wanted.preonboarding.ticket.infra.entity.ReservationEntityJpaRepository
+import com.wanted.preonboarding.ticket.infra.entity.ReservationRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
 @Repository
 class PerformanceAdapter(
-    private val performanceEntityJpaRepository: PerformanceEntityJpaRepository,
-    private val performanceSeatInfoEntityJpaRepository: PerformanceSeatInfoEntityJpaRepository,
-    private val reservationEntityJpaRepository: ReservationEntityJpaRepository,
+    private val performanceRepository: PerformanceRepository,
+    private val performanceSeatInfoRepository: PerformanceSeatInfoRepository,
+    private val reservationRepository: ReservationRepository,
 ) : PerformancePort {
     override fun findPerformance(id: PerformanceId): Performance? {
-        val performance = performanceEntityJpaRepository.findByIdOrNull(id.value) ?: return null
-        val performanceSeatInfo = performanceSeatInfoEntityJpaRepository.findByPerformanceId(id.value)
-        val reservation = reservationEntityJpaRepository.findByPerformanceId(id.value)
+        val performance = performanceRepository.findByIdOrNull(id.value) ?: return null
+        val performanceSeatInfo = performanceSeatInfoRepository.findByPerformanceId(id.value)
+        val reservation = reservationRepository.findByPerformanceId(id.value)
         return performance.toDomain(
             performanceSeatInfo.map { it.toDomain() },
             reservation.map { it.toDomain() },
@@ -30,7 +30,7 @@ class PerformanceAdapter(
     }
 
     override fun update(performance: Performance) {
-        val reservationEntities = reservationEntityJpaRepository.findByPerformanceId(performance.id.value)
+        val reservationEntities = reservationRepository.findByPerformanceId(performance.id.value)
         val toSaveReservations =
             performance.getReservations().filter { reservation ->
                 reservationEntities.none { it.id == reservation.id.value }
@@ -39,8 +39,8 @@ class PerformanceAdapter(
             reservationEntities.filter { reservation ->
                 performance.getReservations().none { it.id.value == reservation.id }
             }
-        reservationEntityJpaRepository.deleteAllInBatch(toDeleteReservations)
-        reservationEntityJpaRepository.saveAll(
+        reservationRepository.deleteAllInBatch(toDeleteReservations)
+        reservationRepository.saveAll(
             toSaveReservations.map {
                 ReservationEntity(
                     id = it.id.value,
@@ -56,7 +56,7 @@ class PerformanceAdapter(
         )
 
         val performanceSeatInfoEntities =
-            performanceSeatInfoEntityJpaRepository.findByPerformanceId(performance.id.value)
+            performanceSeatInfoRepository.findByPerformanceId(performance.id.value)
         performanceSeatInfoEntities.forEach { performanceSeatInfo ->
             performance.getPerformanceSeatInfos().find { it.id.value == performanceSeatInfo.id }?.let {
                 performanceSeatInfo.isReserve = it.isReserveAvailable()
@@ -68,18 +68,18 @@ class PerformanceAdapter(
         reserveAvailable: Boolean,
         cursor: PerformanceId?,
         size: Int,
-    ): CursorResult<Performance> {
+    ): CursorResponse<Performance> {
         val performances =
             if (cursor == null) {
-                performanceEntityJpaRepository.findByIsReserveOrderByCreatedAtDesc(
+                performanceRepository.findByIsReserveOrderByCreatedAtDesc(
                     reserveAvailable,
                     PageRequest.of(0, size + 1),
                 )
             } else {
                 val cursorEntity =
-                    performanceEntityJpaRepository.findByIdOrNull(cursor.value)
+                    performanceRepository.findByIdOrNull(cursor.value)
                         ?: throw ApplicationException.NotFoundException("존재하지 않는 공연입니다.")
-                performanceEntityJpaRepository.search(
+                performanceRepository.search(
                     reserveAvailable,
                     cursorEntity.id!!,
                     cursorEntity.createdAt!!,
@@ -87,11 +87,11 @@ class PerformanceAdapter(
                 )
             }
         val performanceSeatInfos =
-            performanceSeatInfoEntityJpaRepository.findAllByPerformanceIdIn(
+            performanceSeatInfoRepository.findAllByPerformanceIdIn(
                 performances.map { it.id!! },
             )
         val reservations =
-            reservationEntityJpaRepository.findAllByPerformanceIdIn(
+            reservationRepository.findAllByPerformanceIdIn(
                 performances.map { it.id!! },
             )
         val performanceList =
@@ -108,7 +108,7 @@ class PerformanceAdapter(
                 performanceList
             }
 
-        return CursorResult(
+        return CursorResponse(
             cursor = item.lastOrNull()?.id?.value,
             hasNext = performanceList.size > size,
             item = item,

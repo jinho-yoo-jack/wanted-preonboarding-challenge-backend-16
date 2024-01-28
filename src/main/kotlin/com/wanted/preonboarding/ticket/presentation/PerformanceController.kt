@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.presentation
 
-import com.wanted.preonboarding.core.CursorResult
+import com.wanted.preonboarding.ticket.presentation.common.CursorResponse
 import com.wanted.preonboarding.ticket.application.ticket.PerformanceService
 import com.wanted.preonboarding.ticket.domain.PerformanceId
 import com.wanted.preonboarding.ticket.presentation.common.ApiResponse
@@ -28,7 +28,7 @@ class PerformanceController(
         @RequestParam reserveAvailable: Boolean,
         @RequestParam size: Int,
         @RequestParam(required = false) cursor: UUID?,
-    ): ApiResponse<CursorResult<PerformanceResponse>> {
+    ): ApiResponse<CursorResponse<PerformanceResponse>> {
         val performances =
             performanceService.findAllPerformance(
                 reserveAvailable,
@@ -37,7 +37,7 @@ class PerformanceController(
             )
 
         return ApiResponse.success(
-            CursorResult(
+            CursorResponse(
                 cursor = performances.cursor,
                 hasNext = performances.hasNext,
                 item = performances.item.map { PerformanceResponse.from(it) },

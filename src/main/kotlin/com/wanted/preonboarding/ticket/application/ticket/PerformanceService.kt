@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.application.ticket
 
-import com.wanted.preonboarding.core.CursorResult
+import com.wanted.preonboarding.ticket.presentation.common.CursorResponse
 import com.wanted.preonboarding.core.exception.ApplicationException
 import com.wanted.preonboarding.ticket.domain.Performance
 import com.wanted.preonboarding.ticket.domain.PerformanceId
@@ -19,7 +19,7 @@ class PerformanceService(
         reserveAvailable: Boolean,
         size: Int = 10,
         cursor: PerformanceId? = null,
-    ): CursorResult<Performance> {
+    ): CursorResponse<Performance> {
         return performancePort.findAllPerformanceByReserveAvailable(reserveAvailable, cursor, size)
     }
 }

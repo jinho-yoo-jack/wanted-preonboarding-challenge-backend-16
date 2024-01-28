@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query
 import java.time.LocalDateTime
 import java.util.UUID
 
-interface PerformanceEntityJpaRepository : JpaRepository<PerformanceEntity, UUID> {
+interface PerformanceRepository : JpaRepository<PerformanceEntity, UUID> {
     fun findByIsReserveOrderByCreatedAtDesc(
         isReserve: Boolean,
         pageable: Pageable,

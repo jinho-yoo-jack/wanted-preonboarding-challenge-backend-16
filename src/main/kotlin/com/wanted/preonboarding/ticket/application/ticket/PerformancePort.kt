@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.application.ticket
 
-import com.wanted.preonboarding.core.CursorResult
+import com.wanted.preonboarding.ticket.presentation.common.CursorResponse
 import com.wanted.preonboarding.ticket.domain.Performance
 import com.wanted.preonboarding.ticket.domain.PerformanceId
 
@@ -13,5 +13,5 @@ interface PerformancePort {
         reserveAvailable: Boolean,
         cursor: PerformanceId?,
         size: Int,
-    ): CursorResult<Performance>
+    ): CursorResponse<Performance>
 }
