@@ -1,20 +1,25 @@
 package com.wanted.preonboarding.ticket.application.common.service;
 
+import com.wanted.preonboarding.ticket.application.aop.annotation.ExecutionTimer;
 import com.wanted.preonboarding.ticket.application.common.exception.ServiceFailedException;
 import com.wanted.preonboarding.ticket.domain.dto.request.SendNotification;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
 
 import static com.wanted.preonboarding.ticket.application.common.exception.ExceptionStatus.FAIL_TO_SEND_EMAIL;
 import static com.wanted.preonboarding.ticket.application.common.template.MailTemplate.RESERVATION_CANCELLED_TITLE;
 import static com.wanted.preonboarding.ticket.application.common.template.MailTemplate.createReservationCancelledContent;
 import static jakarta.mail.Message.RecipientType.TO;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MailService {
@@ -43,12 +48,17 @@ public class MailService {
         emailSender.send(message);
     }
 
-    @Async("asyncExecutor")
-    public void sendNotificationMail(SendNotification notification) {
-        String title = RESERVATION_CANCELLED_TITLE + TITLE_SEPARATOR + notification.getPerformanceName();
-        String content = createReservationCancelledContent(notification);
-        for (String email : notification.getEmailList()) {
-            sendMail(email, title, content);
+    @ExecutionTimer
+    public CompletableFuture<Boolean> sendNotificationMail(SendNotification notification) {
+        try {
+            String title = RESERVATION_CANCELLED_TITLE + TITLE_SEPARATOR + notification.getPerformanceName();
+            String content = createReservationCancelledContent(notification);
+            for (String email : notification.getEmailList()) {
+                sendMail(email, title, content);
+            }
+            return CompletableFuture.completedFuture(true);
+        } catch (Exception e) {
+            return CompletableFuture.completedFuture(false);
         }
     }
 }
