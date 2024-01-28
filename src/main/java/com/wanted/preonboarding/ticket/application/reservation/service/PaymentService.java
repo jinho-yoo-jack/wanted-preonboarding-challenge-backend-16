@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.application.reservation.service;
 
-import com.wanted.preonboarding.ticket.application.exception.PaymentFailedException;
+import com.wanted.preonboarding.ticket.application.common.exception.PaymentFailedException;
 import com.wanted.preonboarding.ticket.application.reservation.service.strategy.DiscountStrategy;
 import com.wanted.preonboarding.ticket.domain.dto.response.PaymentResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.wanted.preonboarding.ticket.application.exception.ExceptionStatus.PAYMENT_FAILED_INSUFFICIENT_BALANCE;
+import static com.wanted.preonboarding.ticket.application.common.exception.ExceptionStatus.PAYMENT_FAILED_INSUFFICIENT_BALANCE;
 
 @Slf4j
 @Service

@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.application.performance.service;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.application.exception.EntityNotFoundException;
+import com.wanted.preonboarding.ticket.application.common.exception.EntityNotFoundException;
 import com.wanted.preonboarding.ticket.application.performance.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceDetail;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceInfo;
@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
 
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.MESSAGE_SUCCESS;
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.createResponse;
-import static com.wanted.preonboarding.ticket.application.exception.ExceptionStatus.NOT_FOUND_INFO;
+import static com.wanted.preonboarding.ticket.application.common.exception.ExceptionStatus.NOT_FOUND_INFO;
 
 @Slf4j
 @Service

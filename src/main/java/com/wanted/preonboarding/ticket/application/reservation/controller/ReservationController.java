@@ -17,24 +17,24 @@ public class ReservationController {
 
     @GetMapping("/info")
     public ResponseEntity<ResponseHandler<ReservationResponse>> getReservationInfo(
-            final @RequestParam("name") String name,
-            final @RequestParam("phone_number") String phoneNumber
+            @RequestParam("name") final String name,
+            @RequestParam("phone_number") final String phoneNumber
     ) {
         return reservationService.getReservationInfo(name, phoneNumber);
     }
 
     @PostMapping("/process")
     public ResponseEntity<ResponseHandler<ReservationResponse>> processReservation(
-            final @RequestBody RequestReservation requestReservation
+            @RequestBody final RequestReservation requestReservation
     ) {
         return reservationService.processReservation(requestReservation);
     }
 
-    @DeleteMapping("/cancel/{id}")
+    @DeleteMapping("/cancel/{code}")
     public ResponseEntity<ResponseHandler<Void>> cancelReservation(
-            final @PathVariable int id
+            @PathVariable final String code
     ) {
-        return reservationService.cancelReservation(id);
+        return reservationService.cancelReservation(code);
     }
 
 

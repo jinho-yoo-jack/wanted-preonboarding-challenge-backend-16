@@ -1,6 +1,4 @@
-package com.wanted.preonboarding.ticket.application.exception;
-
-import java.awt.event.FocusEvent;
+package com.wanted.preonboarding.ticket.application.common.exception;
 
 public class ArgumentNotValidException extends ApiException {
     public ArgumentNotValidException(ExceptionStatus exceptionStatus) {

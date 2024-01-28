@@ -19,7 +19,7 @@ public class NotificationController {
 
     @PostMapping("/set")
     public ResponseEntity<ResponseHandler<Void>> setNotificaton(
-            final @RequestBody RequestNotification requestNotification
+            @RequestBody final RequestNotification requestNotification
     ) {
         return notificationService.setNotification(requestNotification);
     }

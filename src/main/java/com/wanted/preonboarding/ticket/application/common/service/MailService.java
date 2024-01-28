@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.application.common.service;
 
-import com.wanted.preonboarding.ticket.application.exception.ServiceFailedException;
+import com.wanted.preonboarding.ticket.application.common.exception.ServiceFailedException;
 import com.wanted.preonboarding.ticket.domain.dto.request.SendNotification;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import static com.wanted.preonboarding.ticket.application.common.template.MailTemplate.RESERVATION_CANCELLED_TITLE;
 import static com.wanted.preonboarding.ticket.application.common.template.MailTemplate.createReservationCancelledContent;
-import static com.wanted.preonboarding.ticket.application.exception.ExceptionStatus.FAIL_TO_SEND_EMAIL;
+import static com.wanted.preonboarding.ticket.application.common.exception.ExceptionStatus.FAIL_TO_SEND_EMAIL;
 import static jakarta.mail.Message.RecipientType.TO;
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.application.event;
+package com.wanted.preonboarding.ticket.application.reservation.event;
 
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import lombok.Getter;

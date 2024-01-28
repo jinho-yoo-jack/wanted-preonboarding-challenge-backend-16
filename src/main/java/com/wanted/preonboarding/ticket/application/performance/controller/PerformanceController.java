@@ -26,15 +26,15 @@ public class PerformanceController {
 
     @GetMapping("/detail/{id}/{round}")
     public ResponseEntity<ResponseHandler<PerformanceDetail>> getPerformanceInfoDetail(
-            final @PathVariable UUID id,
-            final @PathVariable int round
+            @PathVariable final UUID id,
+            @PathVariable final int round
     ) {
         return performanceService.getPerformanceInfoDetail(id, round);
     }
 
     @PostMapping("/register")
     public ResponseEntity<ResponseHandler<PerformanceDetail>> registerPerformance(
-            final @RequestBody RegisterPerformance request
+            @RequestBody final RegisterPerformance request
     ) {
         return performanceService.registerPerformance(request);
     }

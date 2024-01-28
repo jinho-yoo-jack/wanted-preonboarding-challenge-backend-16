@@ -1,10 +1,10 @@
 package com.wanted.preonboarding.ticket.application.reservation.service;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.application.event.ReservationCancelledEvent;
-import com.wanted.preonboarding.ticket.application.exception.ArgumentNotValidException;
-import com.wanted.preonboarding.ticket.application.exception.EntityNotFoundException;
-import com.wanted.preonboarding.ticket.application.exception.SeatNotAvailableException;
+import com.wanted.preonboarding.ticket.application.reservation.event.ReservationCancelledEvent;
+import com.wanted.preonboarding.ticket.application.common.exception.ArgumentNotValidException;
+import com.wanted.preonboarding.ticket.application.common.exception.EntityNotFoundException;
+import com.wanted.preonboarding.ticket.application.common.exception.SeatNotAvailableException;
 import com.wanted.preonboarding.ticket.application.performance.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.application.reservation.repository.ReservationRepository;
 import com.wanted.preonboarding.ticket.domain.dto.response.PaymentResponse;
@@ -26,7 +26,7 @@ import java.util.UUID;
 
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.MESSAGE_SUCCESS;
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.createResponse;
-import static com.wanted.preonboarding.ticket.application.exception.ExceptionStatus.*;
+import static com.wanted.preonboarding.ticket.application.common.exception.ExceptionStatus.*;
 import static com.wanted.preonboarding.ticket.application.common.util.CodeGenerator.generateRandomCode;
 import static com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability.AVAILABLE;
 import static com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability.OCCUPIED;
@@ -73,9 +73,9 @@ public class ReservationService {
     }
 
     @Transactional
-    public ResponseEntity<ResponseHandler<Void>> cancelReservation(int id) {
+    public ResponseEntity<ResponseHandler<Void>> cancelReservation(String code) {
         log.info("--- Cancel Reservation ---");
-        Reservation reservation = getReservationEntity(id);
+        Reservation reservation = getReservationEntity(code);
         PerformanceSeatInfo seatInfo = reservation.getPerformanceSeatInfo();
 
         processCancellation(reservation, seatInfo);
@@ -95,8 +95,8 @@ public class ReservationService {
                 .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
     }
 
-    private Reservation getReservationEntity(int id) {
-        return reservationRepository.findById(id)
+    private Reservation getReservationEntity(String code) {
+        return reservationRepository.findByCode(code)
                 .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
     }
 

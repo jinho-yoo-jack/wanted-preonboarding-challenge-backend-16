@@ -9,5 +9,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     Optional<Reservation> findByNameAndPhoneNumber(String name, String phoneNumber);
 
+    Optional<Reservation> findByCode(String code);
+
     boolean existsByCode(String code);
 }

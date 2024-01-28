@@ -2,8 +2,8 @@ package com.wanted.preonboarding.ticket.application.notification.service;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.common.service.MailService;
-import com.wanted.preonboarding.ticket.application.event.ReservationCancelledEvent;
-import com.wanted.preonboarding.ticket.application.exception.EntityNotFoundException;
+import com.wanted.preonboarding.ticket.application.reservation.event.ReservationCancelledEvent;
+import com.wanted.preonboarding.ticket.application.common.exception.EntityNotFoundException;
 import com.wanted.preonboarding.ticket.application.notification.repository.NotificationRepository;
 import com.wanted.preonboarding.ticket.application.performance.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.domain.dto.request.RequestNotification;
@@ -26,7 +26,7 @@ import java.util.UUID;
 
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.MESSAGE_SUCCESS;
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.createResponse;
-import static com.wanted.preonboarding.ticket.application.exception.ExceptionStatus.NOT_FOUND_INFO;
+import static com.wanted.preonboarding.ticket.application.common.exception.ExceptionStatus.NOT_FOUND_INFO;
 
 @Slf4j
 @Service

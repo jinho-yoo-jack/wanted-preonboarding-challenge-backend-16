@@ -1,8 +1,8 @@
-package com.wanted.preonboarding.ticket.application.exception.advice;
+package com.wanted.preonboarding.ticket.application.common.exception.advice;
 
 import com.wanted.preonboarding.core.domain.response.ErrorResponse;
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.application.exception.ApiException;
+import com.wanted.preonboarding.ticket.application.common.exception.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

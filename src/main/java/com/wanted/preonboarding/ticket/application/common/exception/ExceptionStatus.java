@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.application.exception;
+package com.wanted.preonboarding.ticket.application.common.exception;
 
 import lombok.Getter;
 
