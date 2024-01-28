@@ -36,7 +36,6 @@ import static com.wanted.preonboarding.ticket.domain.enums.ReservationAvailabili
 @RequiredArgsConstructor
 public class ReservationService {
     // 책임 : 예약 진행 및 취소, 예약 내역 조회
-
     public static final int RESERVATION_CODE_LENGTH = 6;
 
     private final PaymentService paymentService;
@@ -57,17 +56,16 @@ public class ReservationService {
         return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, ReservationResponse.of(reservation, performance));
     }
     @Transactional
-    public ResponseEntity<ResponseHandler<ReservationResponse>> processReservation(
+    public ResponseEntity<ResponseHandler<ReservationResponse>> proceedReservation(
             RequestReservation requestReservation
     ) {
-        log.info("--- Process Reservation ---");
+        log.info("--- Proceed Reservation ---");
         PerformanceSeatInfo seatInfo = getSeatInfoEntity(requestReservation);
         Performance performance = seatInfo.getPerformance();
         Reservation reservation = Reservation.of(requestReservation, seatInfo, createUniqueCode());
 
         checkSeatAvailability(seatInfo);
-        reservationRepository.save(reservation);
-        seatInfo.modifyReservationAvailability(OCCUPIED);
+        processReservation(reservation, seatInfo);
         PaymentResponse paymentResponse = paymentService.processPayment(reservation, requestReservation.balance());
         return createResponse(HttpStatus.CREATED, MESSAGE_SUCCESS, ReservationResponse.of(reservation, performance, paymentResponse));
     }
@@ -83,6 +81,11 @@ public class ReservationService {
     }
 
     // ========== PRIVATE METHODS ========== //
+
+    private void processReservation(Reservation reservation, PerformanceSeatInfo seatInfo) {
+        reservationRepository.save(reservation);
+        seatInfo.modifyReservationAvailability(OCCUPIED);
+    }
 
     private void processCancellation(Reservation reservation, PerformanceSeatInfo seatInfo) {
         reservationRepository.delete(reservation);

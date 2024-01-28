@@ -23,11 +23,11 @@ public class ReservationController {
         return reservationService.getReservationInfo(name, phoneNumber);
     }
 
-    @PostMapping("/process")
-    public ResponseEntity<ResponseHandler<ReservationResponse>> processReservation(
+    @PostMapping("/proceed")
+    public ResponseEntity<ResponseHandler<ReservationResponse>> proceedReservation(
             @RequestBody final RequestReservation requestReservation
     ) {
-        return reservationService.processReservation(requestReservation);
+        return reservationService.proceedReservation(requestReservation);
     }
 
     @DeleteMapping("/cancel/{code}")

@@ -1,11 +1,11 @@
 package com.wanted.preonboarding.ticket.application.notification.service;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.application.common.service.MailService;
-import com.wanted.preonboarding.ticket.application.reservation.event.ReservationCancelledEvent;
 import com.wanted.preonboarding.ticket.application.common.exception.EntityNotFoundException;
+import com.wanted.preonboarding.ticket.application.common.service.MailService;
 import com.wanted.preonboarding.ticket.application.notification.repository.NotificationRepository;
 import com.wanted.preonboarding.ticket.application.performance.repository.PerformanceRepository;
+import com.wanted.preonboarding.ticket.application.reservation.event.ReservationCancelledEvent;
 import com.wanted.preonboarding.ticket.domain.dto.request.RequestNotification;
 import com.wanted.preonboarding.ticket.domain.dto.request.SendNotification;
 import com.wanted.preonboarding.ticket.domain.entity.Notification;
@@ -60,7 +60,12 @@ public class NotificationService {
         List<Notification> notificationList = notificationRepository.findAllByPerformance(performance);
 
         notificationList.forEach(Notification::markAsSent);
-        mailService.sendNotificationMail(SendNotification.of(notificationList, reservation));
+        sendNotificationMail(notificationList, reservation);
+    }
+
+    private void sendNotificationMail(List<Notification> notificationList, Reservation reservation) {
+        SendNotification sendNotification = SendNotification.of(notificationList, reservation);
+        mailService.sendNotificationMail(sendNotification);
     }
 
 }
