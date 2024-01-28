@@ -1,6 +1,5 @@
 services:
   mysql:
-    user: 501:20
     image: mysql:8.0.33
     ports:
       - 13306:3306
@@ -13,3 +12,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: preonboarding
       MYSQL_DATABASE: wanted
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
+    environment:
+      MH_STORAGE: maildir
+      MH_MAILDIR_PATH: /tmp/maildir
