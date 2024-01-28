@@ -23,6 +23,18 @@ public final class PerformanceFactory {
                 .build();
     }
 
+    public static Performance create() {
+        return Performance.builder()
+                .id(UUID.randomUUID())
+                .name("영웅")
+                .price(10000)
+                .round(1)
+                .type(1)
+                .startDate(LocalDateTime.now())
+                .isReserve("able")
+                .build();
+    }
+
     public static Performance changeReservationState(Performance performance, String isReserved) {
         return Performance.builder()
                 .id(performance.getId())

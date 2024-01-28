@@ -1,6 +1,5 @@
 package com.wanted.preonboarding.ticket.application.mapper;
 
-import com.wanted.preonboarding.ticket.application.dto.response.PerformanceResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -8,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -23,5 +23,9 @@ public class PerformanceReader {
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ERROR_MESSAGE_FORMAT, performanceId)));
 
         return performance;
+    }
+
+    public List<Performance> findByIsReserve(String isReserve) {
+        return performanceRepository.findByIsReserve(isReserve);
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -61,25 +62,61 @@ class PerformanceControllerTest {
     @Test
     void findAvailablePerformances() throws Exception {
         // given
-        UUID performanceId = UUID.randomUUID();
-        Performance performance = PerformanceFactory.create(performanceId);
-        PerformanceResponse response = PerformanceResponse.from(performance);
+        Performance performance1 = PerformanceFactory.create();
+        performance1 = PerformanceFactory.changeReservationState(performance1, Performance.ENABLE);
+        PerformanceResponse response1 = PerformanceResponse.from(performance1);
 
-        given(performanceService.findOne(any(UUID.class)))
-                .willReturn(response);
+        Performance performance2 = PerformanceFactory.create();
+        performance2 = PerformanceFactory.changeReservationState(performance2, Performance.ENABLE);
+        PerformanceResponse response2 = PerformanceResponse.from(performance2);
+
+        given(performanceService.findPerformances(any(String.class)))
+                .willReturn(List.of(response1, response2));
 
         // when
-        mockMvc.perform(get("/api/v1/performances/{performanceId}", performanceId)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v1/performances")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .queryParam("isReserve", Performance.ENABLE))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(200))
                 .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data.performanceName").value(response.performanceName()))
-                .andExpect(jsonPath("$.data.round").value(response.round()))
-                .andExpect(jsonPath("$.data.performanceDate").value(
+                .andExpect(jsonPath("$.data[0].performanceName").value(response1.performanceName()))
+                .andExpect(jsonPath("$.data[0].round").value(response1.round()))
+                .andExpect(jsonPath("$.data[0].performanceDate").value(
+                        DateConverter.convertLocalDateTimeToString(response1.performanceDate())))
+                .andExpect(jsonPath("$.data[0].isReserve").value(response1.isReserve()))
+                .andExpect(jsonPath("$.data[1].performanceName").value(response2.performanceName()))
+                .andExpect(jsonPath("$.data[1].round").value(response2.round()))
+                .andExpect(jsonPath("$.data[1].performanceDate").value(
+                        DateConverter.convertLocalDateTimeToString(response2.performanceDate())))
+                .andExpect(jsonPath("$.data[1].isReserve").value(response2.isReserve()))
+                .andExpect(jsonPath("$.serverTime").exists());
+    }
+
+    @DisplayName("예약 불가능한 공연의 정보를 확인 할 수 있다.")
+    @Test
+    void findUnavailablePerformances() throws Exception {
+        // given
+        Performance performance = PerformanceFactory.create();
+        PerformanceResponse response = PerformanceResponse.from(performance);
+
+        given(performanceService.findPerformances(any(String.class)))
+                .willReturn(List.of(response));
+
+        // when
+        mockMvc.perform(get("/api/v1/performances")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .queryParam("isReserve", Performance.DISABLE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(200))
+                .andExpect(jsonPath("$.data").exists())
+                .andExpect(jsonPath("$.data[0].performanceName").value(response.performanceName()))
+                .andExpect(jsonPath("$.data[0].round").value(response.round()))
+                .andExpect(jsonPath("$.data[0].performanceDate").value(
                         DateConverter.convertLocalDateTimeToString(response.performanceDate())))
-                .andExpect(jsonPath("$.data.isReserve").value(response.isReserve()))
+                .andExpect(jsonPath("$.data[0].isReserve").value(response.isReserve()))
                 .andExpect(jsonPath("$.serverTime").exists());
     }
 }

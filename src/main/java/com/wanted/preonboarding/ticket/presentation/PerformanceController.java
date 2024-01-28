@@ -15,13 +15,17 @@ import java.util.UUID;
 @RestController
 public class PerformanceController {
 
+    private static final String FIND_PERFORMANCE_DEFAULT = "enable";
+
     private final PerformanceService performanceService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<PerformanceResponse>>> findAvailablePerformances(@RequestParam String isReserved) {
+    public ResponseEntity<ApiResponse<List<PerformanceResponse>>> findPerformances(
+            @RequestParam(defaultValue = FIND_PERFORMANCE_DEFAULT) String isReserve
+    ) {
         return ResponseEntity.ok(
                 ApiResponse.ok(
-                        performanceService.findAvailablePerformances(isReserved)
+                        performanceService.findPerformances(isReserve)
                 )
         );
     }
