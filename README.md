@@ -22,7 +22,7 @@
     - [X] 상세 조회 : GET /api/v1/performances/{performanceId}
     - Request Message: 예매 가능 여부
     - Response Message: 예매 가능한 공연 리스트(정보: 공연명, 회차, 시작 일시, 예매 가능 여부)
-  - [ ] 예약 가능 알림 서비스
+  - [X] 예약 가능 알림 서비스
     - [X] 예약 등록 : POST /api/v1/performances/{performanceId}/await
     - 특정 공연에 대해서 취소 건이 발생하는 경우, 알림 신청을 해놓은 고객에게 취소된 예약이 있다는 사실을 알리는 알림 서비스
     - Send Message: 공연ID, 공연명, 회차, 시작 일시 예매 가능한 좌석 정보
