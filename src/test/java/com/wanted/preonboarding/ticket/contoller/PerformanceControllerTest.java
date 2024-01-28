@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.ReservationStatus;
-import com.wanted.preonboarding.ticket.service.PerformanceCheckResponseDto;
+import com.wanted.preonboarding.ticket.service.dto.response.PerformanceCheckResponseDto;
 import com.wanted.preonboarding.ticket.service.PerformanceService;
 import com.wanted.preonboarding.ticket.service.dto.request.PerformanceCheckRequestDto;
 

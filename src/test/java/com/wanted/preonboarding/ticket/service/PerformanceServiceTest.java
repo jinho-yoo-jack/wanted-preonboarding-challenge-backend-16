@@ -20,6 +20,7 @@ import com.wanted.preonboarding.ticket.domain.entity.PerformanceType;
 import com.wanted.preonboarding.ticket.domain.entity.ReservationStatus;
 import com.wanted.preonboarding.ticket.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.service.dto.request.PerformanceCheckRequestDto;
+import com.wanted.preonboarding.ticket.service.dto.response.PerformanceCheckResponseDto;
 
 @ExtendWith(MockitoExtension.class)
 class PerformanceServiceTest {

@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.service.PerformanceCheckResponseDto;
 import com.wanted.preonboarding.ticket.service.PerformanceService;
 import com.wanted.preonboarding.ticket.service.dto.request.PerformanceCheckRequestDto;
+import com.wanted.preonboarding.ticket.service.dto.response.PerformanceCheckResponseDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
