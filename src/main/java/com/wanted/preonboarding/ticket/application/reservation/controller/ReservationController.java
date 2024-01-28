@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.application.reservation.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
+import com.wanted.preonboarding.ticket.application.aop.annotation.ExecutionTimer;
 import com.wanted.preonboarding.ticket.application.reservation.service.ReservationService;
 import com.wanted.preonboarding.ticket.domain.dto.request.RequestReservation;
 import com.wanted.preonboarding.ticket.domain.dto.response.ReservationResponse;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@ExecutionTimer
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/reservation")

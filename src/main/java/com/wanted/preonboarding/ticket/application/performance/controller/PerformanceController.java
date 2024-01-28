@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.application.performance.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
+import com.wanted.preonboarding.ticket.application.aop.annotation.ExecutionTimer;
 import com.wanted.preonboarding.ticket.application.performance.service.PerformanceService;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceDetail;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceInfo;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@ExecutionTimer
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/performance")
