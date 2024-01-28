@@ -4,21 +4,15 @@ import com.wanted.preonboarding.ticketing.domain.dto.Discount;
 import com.wanted.preonboarding.ticketing.domain.dto.DiscountInfo;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
-public class EarlyBirdDiscountPolicy implements DiscountPolicy {
-    private static final String DISCOUNT_POLICY_NAME = "Early Bird";
-    private static final int DISCOUNT_PERCENT = 10;
+public class SoliderPolicy implements DiscountPolicy {
+    private static final String DISCOUNT_POLICY_NAME = "Solider";
+    private static final int DISCOUNT_PERCENT = 15;
 
     @Override
     public Discount calculateDiscount(DiscountInfo discountInfo) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime oneWeekLater = now.plusWeeks(1);
-
-        if (discountInfo.isAfter(oneWeekLater)) {
+        if (discountInfo.getIsSolider()) {
             int discountMoney = discountInfo.calculateDiscountAmount(DISCOUNT_PERCENT);
-
             return Discount.from(discountMoney, DISCOUNT_POLICY_NAME);
         }
 

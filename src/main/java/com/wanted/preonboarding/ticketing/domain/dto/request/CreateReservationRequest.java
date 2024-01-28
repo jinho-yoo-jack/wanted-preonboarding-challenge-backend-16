@@ -34,6 +34,8 @@ public class CreateReservationRequest {
     private Integer seat;
     @NotBlank
     private String reservationStatus;
+    @NotNull
+    private Boolean isSolider;
 
     public Reservation fromTicket(Performance performance) {
         return Reservation.builder()

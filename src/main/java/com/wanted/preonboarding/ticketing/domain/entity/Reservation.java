@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
+import com.wanted.preonboarding.ticketing.domain.dto.Discount;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CreateReservationResponse;
 import com.wanted.preonboarding.ticketing.domain.dto.response.ReadReservationResponse;
@@ -53,7 +54,7 @@ public class Reservation extends Time {
         return createReservationRequest.fromTicket(performance);
     }
 
-    public CreateReservationResponse toCreateReservationResponse(Performance performance, int discountMoney) {
+    public CreateReservationResponse toCreateReservationResponse(Performance performance, Discount discount) {
         return CreateReservationResponse.builder()
                 .performanceId(this.performance.getId())
                 .performanceName(performance.getName())
@@ -61,7 +62,7 @@ public class Reservation extends Time {
                 .gate(this.gate)
                 .line(this.line)
                 .seat(this.seat)
-                .discountMoney(discountMoney)
+                .discount(discount)
                 .reservationName(this.name)
                 .phoneNumber(this.phoneNumber)
                 .build();

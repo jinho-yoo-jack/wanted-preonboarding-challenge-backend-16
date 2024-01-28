@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticketing.domain.dto.response;
 
+import com.wanted.preonboarding.ticketing.domain.dto.Discount;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,7 +15,7 @@ public class CreateReservationResponse {
     private int gate;
     private String line;
     private int seat;
-    private int discountMoney;
+    private Discount discount;
     private String reservationName;
     private String phoneNumber;
 }

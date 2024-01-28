@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticketing.service.discount;
 
-import com.wanted.preonboarding.ticketing.domain.entity.Performance;
+import com.wanted.preonboarding.ticketing.domain.dto.Discount;
+import com.wanted.preonboarding.ticketing.domain.dto.DiscountInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,13 +12,13 @@ import java.util.List;
 public class DiscountService {
     private final List<DiscountPolicy> discountPolicies;
 
-    public int calculateMaximumDiscount(Performance performance) {
-        int maxDiscount = 0;
+    public Discount calculateMaximumDiscount(DiscountInfo discountInfo) {
+        Discount maxDiscount = new Discount();
 
         for (DiscountPolicy discountPolicy : discountPolicies) {
-            int discount = discountPolicy.discount(performance);
+            Discount discount = discountPolicy.calculateDiscount(discountInfo);
 
-            if (maxDiscount < discount) {
+            if (maxDiscount.isHigherThan(discount)) {
                 maxDiscount = discount;
             }
         }

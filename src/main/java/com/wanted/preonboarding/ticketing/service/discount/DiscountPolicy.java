@@ -1,8 +1,9 @@
 package com.wanted.preonboarding.ticketing.service.discount;
 
-import com.wanted.preonboarding.ticketing.domain.entity.Performance;
+import com.wanted.preonboarding.ticketing.domain.dto.Discount;
+import com.wanted.preonboarding.ticketing.domain.dto.DiscountInfo;
 
 
 public interface DiscountPolicy {
-    int discount(Performance performance);
+    Discount calculateDiscount(DiscountInfo performance);
 }

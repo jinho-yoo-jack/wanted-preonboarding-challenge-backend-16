@@ -2,6 +2,8 @@ package com.wanted.preonboarding.ticketing.service;
 
 import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundReservationException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
+import com.wanted.preonboarding.ticketing.domain.dto.Discount;
+import com.wanted.preonboarding.ticketing.domain.dto.DiscountInfo;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CancelReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.request.ReadReservationRequest;
@@ -40,10 +42,10 @@ public class ReservationService {
     public CreateReservationResponse createReservation(CreateReservationRequest createReservationRequest) {
         Performance performance = performanceService.findPerformance(createReservationRequest.getPerformanceId());
         Reservation reservation = reserveTicket(createReservationRequest, performance);
-        int discountMoney = discountService.calculateMaximumDiscount(performance);
+        Discount discount = discountService.calculateMaximumDiscount(DiscountInfo.of(performance, createReservationRequest));
         reserveSeat(createReservationRequest);
 
-        return reservation.toCreateReservationResponse(performance, discountMoney);
+        return reservation.toCreateReservationResponse(performance, discount);
     }
 
     private void reserveSeat(CreateReservationRequest createReservationRequest) {
@@ -73,10 +75,10 @@ public class ReservationService {
                 , pageable);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional
     public CancelReservationResponse cancelReservation(CancelReservationRequest cancelReservationRequest) {
-        PerformanceSeatInfo performanceSeatInfo = changeSeatInfo(cancelReservationRequest);
         deleteReservation(cancelReservationRequest);
+        PerformanceSeatInfo performanceSeatInfo = changeSeatInfo(cancelReservationRequest);
         List<String> emails = deleteAlarm(performanceSeatInfo.getPerformance());
         eventPublisher.publishEvent(new CancelReservationEvent(emails, performanceSeatInfo.getId()));
 
