@@ -18,3 +18,18 @@ INSERT INTO `performance_seat_info` VALUES
                                          ,(6, (SELECT id FROM performance WHERE name = '공연 이름' limit 1), 1, 1, 'A', 2, 'enable', DEFAULT, DEFAULT)
                                          ,(7, (SELECT id FROM performance WHERE name = '공연 이름' limit 1), 1, 1, 'A', 3, 'disable', DEFAULT, DEFAULT)
                                          ,(8, (SELECT id FROM performance WHERE name = '공연 이름' limit 1), 1, 1, 'A', 4, 'disable', DEFAULT, DEFAULT);
+
+INSERT INTO `reservation` (`performance_id`, `name`, `phone_number`, `round`, `gate`, `line`, `seat`, `created_at`, `updated_at`)
+VALUES
+    (
+        (SELECT id FROM performance WHERE name = '레베카' LIMIT 1),
+        (SELECT name FROM users WHERE name = '원티드' LIMIT 1),
+        (SELECT phone_number FROM users WHERE name = '원티드' LIMIT 1),
+        1, 1, 'A', 3, DEFAULT, DEFAULT
+    ),
+    (
+        (SELECT id FROM performance WHERE name = '레베카' LIMIT 1),
+        (SELECT name FROM users WHERE name = '원티드' LIMIT 1),
+        (SELECT phone_number FROM users WHERE name = '원티드' LIMIT 1),
+        1, 1, 'A', 4, DEFAULT, DEFAULT
+    );

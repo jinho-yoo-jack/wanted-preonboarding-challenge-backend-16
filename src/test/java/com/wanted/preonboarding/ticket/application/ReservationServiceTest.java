@@ -6,11 +6,10 @@ import com.wanted.preonboarding.account.domain.vo.Money;
 import com.wanted.preonboarding.account.infrastructure.AccountRepository;
 import com.wanted.preonboarding.account.support.AccountFactory;
 import com.wanted.preonboarding.ticket.application.dto.request.CreateReserveServiceRequest;
-import com.wanted.preonboarding.ticket.application.dto.response.PerformanceResponse;
+import com.wanted.preonboarding.ticket.application.dto.request.FindReserveServiceRequest;
 import com.wanted.preonboarding.ticket.application.dto.response.ReserveResponse;
 import com.wanted.preonboarding.ticket.application.exception.AlreadyReservedStateException;
-import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
+import com.wanted.preonboarding.ticket.support.ReservationRequestFactory;
 import com.wanted.preonboarding.user.User;
 import com.wanted.preonboarding.user.infrastructure.UserRepository;
 import com.wanted.preonboarding.user.support.UserFactory;
@@ -23,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -120,6 +120,19 @@ class ReservationServiceTest {
         assertThatThrownBy(() -> reservationService.reserve(request))
                 .isInstanceOf(NotEnoughMoneyException.class)
                 .hasMessage(String.format(Money.NOT_ENOUGH_MESSAGE_FORMAT, 10000.0));
+    }
+
+    @DisplayName("예약한 좌석을 조회 할 수 있다.")
+    @Test
+    void findReservationClientNameAndPhoneNumber() {
+        // given
+        FindReserveServiceRequest request = ReservationRequestFactory.createFindRequest();
+
+        // when
+        List<ReserveResponse> reserve = reservationService.findReserve(request);
+
+        // then
+        assertThat(reserve.size()).isEqualTo(2);
     }
 
     @AfterEach

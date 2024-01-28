@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `performance_seat_info`
 CREATE TABLE IF NOT EXISTS `reservation`
 (
     `id`             INT(10)                NOT NULL AUTO_INCREMENT,
-    `performance_id` VARCHAR(36)            NOT NULL COMMENT '공연전시ID',
+    `performance_id` BINARY(16)             NOT NULL COMMENT '공연전시ID',
     `name`           varchar(255)           NOT NULL COMMENT '예약자명',
     `phone_number`   varchar(255)           NOT NULL COMMENT '예약자 휴대전화 번호',
     `round`          INT                    NOT NULL COMMENT '회차(FK)',

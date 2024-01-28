@@ -2,6 +2,7 @@
 DROP TABLE IF EXISTS performance;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS performance_seat_info;
+DROP TABLE IF EXISTS reservation;
 DROP TABLE IF EXISTS accounts;
 
 CREATE TABLE IF NOT EXISTS `performance`

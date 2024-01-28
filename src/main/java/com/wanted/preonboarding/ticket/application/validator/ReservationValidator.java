@@ -13,7 +13,7 @@ public class ReservationValidator {
     public static final String ALREADY_RESERVED_PERFORMANCE_MESSAGE_FORMAT =
             "[%s] 공연은 예약이 불가능 한 상태입니다.";
     public static final String ALREADY_RESERVED_SEAT_MESSAGE_FORMAT =
-            "[%s] 가 이미 예약되어 있는 상태여서 예약이 불가능합니다.";
+            "좌석 [%s] 가 이미 예약되어 있는 상태여서 예약이 불가능합니다.";
 
     public void validatePossibleReserve(Performance performance, PerformanceSeatInfo performanceSeatInfo) {
         if (!performance.isPossibleReserve()) {

@@ -1,3 +1,59 @@
+GET http://localhost:8016/api/v1/reserves?reservationName=원티드&reservationPhoneNumber=010-1112-2223
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-01-28T143702.200.json
+
+###
+
+GET http://localhost:8016/api/v1/reserves?reservationName=원티드&reservationPhoneNumber=010-1112-2223
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-01-28T143601.200.json
+
+###
+
+POST http://localhost:8016/api/v1/reserves
+Content-Type: application/json
+Content-Length: 51
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": "1",
+  "performanceSeatInfoId": "1"
+}
+
+<> 2024-01-28T143510.400.json
+
+###
+
+GET http://localhost:8016/api/v1/reserves?reservationName=원티드&reservationPhoneNumber=010-1112-2223
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-01-28T143504.200.json
+
+###
+
+GET http://localhost:8016/api/v1/reserves?reservationName=원티드&reservationPhoneNumber=010-1112-2223
+Content-Type: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-01-28T142558.200.json
+
+###
+
 GET http://localhost:8016/api/v1/performances
 Content-Type: application/json
 Connection: Keep-Alive

@@ -6,3 +6,7 @@ Content-Type: application/json
   "userId": "1",
   "performanceSeatInfoId": "1"
 }
+
+### 예약된 공연 조회
+GET http://localhost:8016/api/v1/reserves?reservationName=원티드&reservationPhoneNumber=010-1112-2223
+Content-Type: application/json
