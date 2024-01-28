@@ -32,6 +32,7 @@ public class ReserveController {
     public ResponseEntity<ApiResponse<ReserveResponse>> reserve(
             @RequestBody @Validated CreateReserveInfoRequest request
     ) {
+        // 단일 예약 조회 API가 존재한다면 location을 전달해주어야 하고 응답 코드는 201 이여야 함. /api/v1/reserves/{id}
 
         return ResponseEntity.ok(
                 ApiResponse.ok(reservationService.reserve(request.toService()))

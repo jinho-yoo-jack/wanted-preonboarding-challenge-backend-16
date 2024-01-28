@@ -1,9 +1,11 @@
 package com.wanted.preonboarding.ticket.presentation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wanted.preonboarding.ticket.application.PerformanceService;
 import com.wanted.preonboarding.ticket.application.dto.response.PerformanceResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.support.DateConverter;
+import com.wanted.preonboarding.ticket.presentation.dto.request.AwaitRequest;
 import com.wanted.preonboarding.ticket.support.PerformanceFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +20,10 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,6 +33,9 @@ class PerformanceControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private PerformanceService performanceService;
@@ -117,6 +125,30 @@ class PerformanceControllerTest {
                 .andExpect(jsonPath("$.data[0].performanceDate").value(
                         DateConverter.convertLocalDateTimeToString(response.performanceDate())))
                 .andExpect(jsonPath("$.data[0].isReserve").value(response.isReserve()))
+                .andExpect(jsonPath("$.serverTime").exists());
+    }
+
+    @DisplayName("취소시 공연의 알림을 받을 수 있도록 신청 할 수 있다.")
+    @Test
+    void submitAwait() throws Exception {
+        // given
+        UUID performanceId = UUID.randomUUID();
+        AwaitRequest request = AwaitRequest.builder()
+                .userId(1L)
+                .build();
+
+        doNothing().when(performanceService)
+                .await(any(UUID.class), any(Long.class));
+
+        // when
+        mockMvc.perform(post("/api/v1/performances/{performanceId}/await", performanceId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value(200))
+                .andExpect(jsonPath("$.data").exists())
+                .andExpect(jsonPath("$.data").value(String.format(PerformanceController.AWAIT_MESSAGE_FORMAT, performanceId)))
                 .andExpect(jsonPath("$.serverTime").exists());
     }
 }
