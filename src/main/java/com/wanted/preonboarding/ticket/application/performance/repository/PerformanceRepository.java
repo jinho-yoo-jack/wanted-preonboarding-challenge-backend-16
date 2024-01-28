@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.application.repository;
+package com.wanted.preonboarding.ticket.application.performance.repository;
 
 import com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;

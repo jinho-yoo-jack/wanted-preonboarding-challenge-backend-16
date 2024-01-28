@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain.dto;
+package com.wanted.preonboarding.ticket.domain.dto.response;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
@@ -7,13 +7,13 @@ import lombok.Value;
 
 import java.util.List;
 
-import static com.wanted.preonboarding.ticket.application.util.TimeFormatter.convertToReadableFormat;
+import static com.wanted.preonboarding.ticket.application.common.util.TimeFormatter.convertToReadableFormat;
 
 @Value
 @Builder
 public class ReservationResponse {
 
-    Integer id;
+    String code;
     String performanceName;
     Integer performanceRound;
     String performanceDate;
@@ -33,9 +33,12 @@ public class ReservationResponse {
 
     }
 
-    public static ReservationResponse of(Reservation reservation, Performance performance, PaymentResponse paymentResponse) {
+    public static ReservationResponse of(
+            Reservation reservation,
+            Performance performance,
+            PaymentResponse paymentResponse
+    ) {
         PaymentDetail paymentDetail = createPaymentDetail(reservation, paymentResponse);
-
         return createReservationResponse(reservation, performance, paymentDetail);
     }
 
@@ -43,9 +46,13 @@ public class ReservationResponse {
         return createReservationResponse(reservation, performance, null);
     }
 
-    private static ReservationResponse createReservationResponse(Reservation reservation, Performance performance, PaymentDetail paymentDetail) {
+    private static ReservationResponse createReservationResponse(
+            Reservation reservation,
+            Performance performance,
+            PaymentDetail paymentDetail
+    ) {
         ReservationResponse.ReservationResponseBuilder builder = ReservationResponse.builder()
-                .id(reservation.getId())
+                .code(reservation.getCode())
                 .performanceName(performance.getName())
                 .performanceRound(performance.getRound())
                 .performanceDate(convertToReadableFormat(performance.getStartDate()))

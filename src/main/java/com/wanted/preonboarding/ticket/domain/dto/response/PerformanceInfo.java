@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain.dto;
+package com.wanted.preonboarding.ticket.domain.dto.response;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.enums.PerformanceType;
@@ -7,7 +7,7 @@ import lombok.Value;
 
 import java.util.Arrays;
 
-import static com.wanted.preonboarding.ticket.application.util.TimeFormatter.convertToReadableFormat;
+import static com.wanted.preonboarding.ticket.application.common.util.TimeFormatter.convertToReadableFormat;
 
 @Value
 @Builder

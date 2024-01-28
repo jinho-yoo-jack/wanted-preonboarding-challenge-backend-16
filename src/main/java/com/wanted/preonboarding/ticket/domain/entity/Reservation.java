@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.RequestReservation;
+import com.wanted.preonboarding.ticket.domain.dto.request.RequestReservation;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -12,6 +12,7 @@ import org.hibernate.annotations.Comment;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "reservation", uniqueConstraints = {
+        @UniqueConstraint(name = "reservation_code_uk", columnNames = {"code"}),
         @UniqueConstraint(name = "reservation_uk", columnNames = {"round", "line", "seat"})
 })
 public class Reservation extends BaseEntity {
@@ -21,6 +22,10 @@ public class Reservation extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
+    @Comment("예약 코드")
+    @Column(name = "code", nullable = false, length = 6)
+    private String code;
 
     @Comment("공연 좌석 정보")
     @ManyToOne(fetch = FetchType.EAGER)
@@ -51,13 +56,14 @@ public class Reservation extends BaseEntity {
     @Column(name = "seat", nullable = false)
     private Integer seat;
 
-    public static Reservation of(RequestReservation requestReservation, PerformanceSeatInfo seatInfo) {
+    public static Reservation of(RequestReservation requestReservation, PerformanceSeatInfo seatInfo, String code) {
         return Reservation.builder()
                 .performanceSeatInfo(seatInfo)
+                .code(code)
                 .name(requestReservation.name())
                 .phoneNumber(requestReservation.phoneNumber())
                 .round(requestReservation.round())
-                .gate(1)
+                .gate(seatInfo.getGate())
                 .line(requestReservation.line())
                 .seat(requestReservation.seat())
                 .build();

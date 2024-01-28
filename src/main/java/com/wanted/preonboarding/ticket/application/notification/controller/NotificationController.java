@@ -1,8 +1,8 @@
-package com.wanted.preonboarding.ticket.application.controller;
+package com.wanted.preonboarding.ticket.application.notification.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.application.service.NotificationService;
-import com.wanted.preonboarding.ticket.domain.dto.RequestNotification;
+import com.wanted.preonboarding.ticket.application.notification.service.NotificationService;
+import com.wanted.preonboarding.ticket.domain.dto.request.RequestNotification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

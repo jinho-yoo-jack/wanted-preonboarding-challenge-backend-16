@@ -1,17 +1,16 @@
-package com.wanted.preonboarding.ticket.domain.dto;
+package com.wanted.preonboarding.ticket.domain.dto.response;
 
 import com.wanted.preonboarding.ticket.application.exception.EntityNotFoundException;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
-import com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability;
 import lombok.Builder;
 import lombok.Value;
 
 import java.util.List;
 
 import static com.wanted.preonboarding.ticket.application.exception.ExceptionStatus.NOT_FOUND_INFO;
-import static com.wanted.preonboarding.ticket.application.util.TimeFormatter.convertToReadableFormat;
-import static com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo.convertToName;
+import static com.wanted.preonboarding.ticket.application.common.util.TimeFormatter.convertToReadableFormat;
+import static com.wanted.preonboarding.ticket.domain.dto.response.PerformanceInfo.convertToName;
 import static com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability.AVAILABLE;
 import static com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability.valueOf;
 

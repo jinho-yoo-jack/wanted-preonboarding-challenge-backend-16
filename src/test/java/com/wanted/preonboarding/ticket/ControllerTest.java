@@ -2,8 +2,8 @@ package com.wanted.preonboarding.ticket;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wanted.preonboarding.ticket.domain.dto.RequestNotification;
-import com.wanted.preonboarding.ticket.domain.dto.RequestReservation;
+import com.wanted.preonboarding.ticket.domain.dto.request.RequestNotification;
+import com.wanted.preonboarding.ticket.domain.dto.request.RequestReservation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;

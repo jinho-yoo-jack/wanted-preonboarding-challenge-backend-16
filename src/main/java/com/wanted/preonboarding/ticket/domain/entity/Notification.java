@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.RequestNotification;
+import com.wanted.preonboarding.ticket.domain.dto.request.RequestNotification;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;

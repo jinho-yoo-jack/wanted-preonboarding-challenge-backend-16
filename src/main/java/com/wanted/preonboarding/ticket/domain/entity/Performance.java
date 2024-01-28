@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.RequestPerformance;
+import com.wanted.preonboarding.ticket.domain.dto.request.RegisterPerformance;
 import com.wanted.preonboarding.ticket.domain.enums.PerformanceType;
 import com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability;
 import jakarta.persistence.*;
@@ -60,14 +60,18 @@ public class Performance extends BaseEntity {
     @OneToMany(mappedBy = "performance", cascade = CascadeType.ALL)
     private List<PerformanceSeatInfo> performanceSeatInfoList = new ArrayList<>();
 
-    public static Performance of(RequestPerformance request) {
+    public static Performance of(RegisterPerformance request) {
         return Performance.builder()
                 .name(request.name())
                 .price(request.price())
                 .round(request.round())
+                .type(PerformanceType.valueOf(request.type()))
                 .startDate(LocalDateTime.parse(request.startDate()))
                 .isReserve(ReservationAvailability.DISABLED)
                 .build();
+    }
+    public void setPerformanceSeatInfoList(List<PerformanceSeatInfo> performanceSeatInfoList) {
+        this.performanceSeatInfoList = performanceSeatInfoList;
     }
 
 }

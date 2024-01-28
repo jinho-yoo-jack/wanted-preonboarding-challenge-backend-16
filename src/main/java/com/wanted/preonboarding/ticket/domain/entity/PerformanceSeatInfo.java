@@ -52,4 +52,15 @@ public class PerformanceSeatInfo extends BaseEntity {
         this.isReserve = reservationAvailability;
     }
 
+    public static PerformanceSeatInfo of(Performance performance, String line, Integer seat) {
+        return PerformanceSeatInfo.builder()
+                .performance(performance)
+                .round(performance.getRound())
+                .gate(1)
+                .line(line)
+                .seat(seat)
+                .isReserve(ReservationAvailability.AVAILABLE)
+                .build();
+    }
+
 }

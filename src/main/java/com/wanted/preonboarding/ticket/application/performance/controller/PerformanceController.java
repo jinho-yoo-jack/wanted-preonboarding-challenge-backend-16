@@ -1,15 +1,13 @@
-package com.wanted.preonboarding.ticket.application.controller;
+package com.wanted.preonboarding.ticket.application.performance.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.application.service.PerformanceService;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceDetail;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
+import com.wanted.preonboarding.ticket.application.performance.service.PerformanceService;
+import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceDetail;
+import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceInfo;
+import com.wanted.preonboarding.ticket.domain.dto.request.RegisterPerformance;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +30,13 @@ public class PerformanceController {
             final @PathVariable int round
     ) {
         return performanceService.getPerformanceInfoDetail(id, round);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<ResponseHandler<PerformanceDetail>> registerPerformance(
+            final @RequestBody RegisterPerformance request
+    ) {
+        return performanceService.registerPerformance(request);
     }
 
 

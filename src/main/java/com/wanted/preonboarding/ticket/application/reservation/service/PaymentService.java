@@ -1,8 +1,8 @@
-package com.wanted.preonboarding.ticket.application.service;
+package com.wanted.preonboarding.ticket.application.reservation.service;
 
 import com.wanted.preonboarding.ticket.application.exception.PaymentFailedException;
-import com.wanted.preonboarding.ticket.application.service.strategy.DiscountStrategy;
-import com.wanted.preonboarding.ticket.domain.dto.PaymentResponse;
+import com.wanted.preonboarding.ticket.application.reservation.service.strategy.DiscountStrategy;
+import com.wanted.preonboarding.ticket.domain.dto.response.PaymentResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import lombok.RequiredArgsConstructor;

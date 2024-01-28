@@ -1,15 +1,15 @@
-package com.wanted.preonboarding.ticket.application.service;
+package com.wanted.preonboarding.ticket.application.reservation.service;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.event.ReservationCancelledEvent;
 import com.wanted.preonboarding.ticket.application.exception.ArgumentNotValidException;
 import com.wanted.preonboarding.ticket.application.exception.EntityNotFoundException;
 import com.wanted.preonboarding.ticket.application.exception.SeatNotAvailableException;
-import com.wanted.preonboarding.ticket.application.repository.PerformanceSeatInfoRepository;
-import com.wanted.preonboarding.ticket.application.repository.ReservationRepository;
-import com.wanted.preonboarding.ticket.domain.dto.PaymentResponse;
-import com.wanted.preonboarding.ticket.domain.dto.RequestReservation;
-import com.wanted.preonboarding.ticket.domain.dto.ReservationResponse;
+import com.wanted.preonboarding.ticket.application.performance.repository.PerformanceSeatInfoRepository;
+import com.wanted.preonboarding.ticket.application.reservation.repository.ReservationRepository;
+import com.wanted.preonboarding.ticket.domain.dto.response.PaymentResponse;
+import com.wanted.preonboarding.ticket.domain.dto.request.RequestReservation;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
@@ -27,6 +27,7 @@ import java.util.UUID;
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.MESSAGE_SUCCESS;
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.createResponse;
 import static com.wanted.preonboarding.ticket.application.exception.ExceptionStatus.*;
+import static com.wanted.preonboarding.ticket.application.common.util.CodeGenerator.generateRandomCode;
 import static com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability.AVAILABLE;
 import static com.wanted.preonboarding.ticket.domain.enums.ReservationAvailability.OCCUPIED;
 
@@ -35,6 +36,9 @@ import static com.wanted.preonboarding.ticket.domain.enums.ReservationAvailabili
 @RequiredArgsConstructor
 public class ReservationService {
     // 책임 : 예약 진행 및 취소, 예약 내역 조회
+
+    public static final int RESERVATION_CODE_LENGTH = 6;
+
     private final PaymentService paymentService;
     private final ReservationRepository reservationRepository;
     private final PerformanceSeatInfoRepository seatInfoRepository;
@@ -59,10 +63,9 @@ public class ReservationService {
         log.info("--- Process Reservation ---");
         PerformanceSeatInfo seatInfo = getSeatInfoEntity(requestReservation);
         Performance performance = seatInfo.getPerformance();
-        Reservation reservation = Reservation.of(requestReservation, seatInfo);
+        Reservation reservation = Reservation.of(requestReservation, seatInfo, createUniqueCode());
 
         checkSeatAvailability(seatInfo);
-
         reservationRepository.save(reservation);
         seatInfo.modifyReservationAvailability(OCCUPIED);
         PaymentResponse paymentResponse = paymentService.processPayment(reservation, requestReservation.balance());
@@ -105,6 +108,15 @@ public class ReservationService {
 
         return seatInfoRepository.findByPerformanceIdAndRoundAndLineAndSeat(id, round, String.valueOf(line), seat)
                 .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
+    }
+
+    private String createUniqueCode() {
+        String code;
+        do {
+            code = generateRandomCode(RESERVATION_CODE_LENGTH);
+        } while (reservationRepository.existsByCode(code));
+
+        return code;
     }
 
     private void validateNameAndPhoneNumber(String name, String phone) {
