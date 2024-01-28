@@ -43,4 +43,8 @@ public class Performance extends ReservableEntity {
     public boolean equalsId(PerformanceId performanceId) {
         return this.id.equals(performanceId.getValue());
     }
+
+    public boolean isAccountAffordable(long account) {
+        return this.price <= account;
+    }
 }

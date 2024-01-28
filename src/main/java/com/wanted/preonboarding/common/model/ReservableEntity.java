@@ -9,7 +9,7 @@ import lombok.Getter;
 public class ReservableEntity extends DefaultEntity {
 
     private static final String ENABLE = "enable";
-    private static final String DISABLE = "enable";
+    private static final String DISABLE = "disable";
 
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String reserveState;
