@@ -10,10 +10,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import static com.wanted.preonboarding.ticket.application.common.exception.ExceptionStatus.FAIL_TO_SEND_EMAIL;
 import static com.wanted.preonboarding.ticket.application.common.template.MailTemplate.RESERVATION_CANCELLED_TITLE;
 import static com.wanted.preonboarding.ticket.application.common.template.MailTemplate.createReservationCancelledContent;
-import static com.wanted.preonboarding.ticket.application.common.exception.ExceptionStatus.FAIL_TO_SEND_EMAIL;
 import static jakarta.mail.Message.RecipientType.TO;
+
 @Service
 @RequiredArgsConstructor
 public class MailService {
@@ -42,7 +43,7 @@ public class MailService {
         emailSender.send(message);
     }
 
-    @Async
+    @Async("asyncExecutor")
     public void sendNotificationMail(SendNotification notification) {
         String title = RESERVATION_CANCELLED_TITLE + TITLE_SEPARATOR + notification.getPerformanceName();
         String content = createReservationCancelledContent(notification);
