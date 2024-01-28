@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.domain.exception.BadRequestException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,21 @@ public class PerformanceSeatInfo {
     @Embedded
     private SeatInfo seatInfo;
 
-    @Column(nullable = false)
+    @Column(name="is_reserve")
     @Convert(converter = EnableDisableConverter.class)
-    private Boolean isReserve;
+    private Boolean isReservable;
+
+    public boolean isSeatInfoEqual(SeatInfo seatInfo) {
+        return this.seatInfo.getRound().equals(seatInfo.getRound())
+                && this.seatInfo.getGate().equals(seatInfo.getGate())
+                && this.seatInfo.getLine().equals(seatInfo.getLine())
+                && this.seatInfo.getSeat().equals(seatInfo.getSeat());
+    }
+
+    public void reserveSeat(){
+        if(!isReservable){
+            throw new BadRequestException("예약할 수 없는 좌석입니다.");
+        }
+        isReservable = false;
+    }
 }

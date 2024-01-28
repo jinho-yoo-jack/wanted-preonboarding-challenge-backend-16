@@ -15,7 +15,7 @@ public class PerformanceResponse {
     private Integer round;
     private String type;
     private LocalDateTime startDate;
-    private Boolean isReserve;
+    private Boolean isReservable;
 
     public static PerformanceResponse of(Performance entity) {
         return PerformanceResponse.builder()
@@ -24,7 +24,7 @@ public class PerformanceResponse {
                 .round(entity.getRound())
                 .type(entity.getType().name())
                 .startDate(entity.getStartDate())
-                .isReserve(entity.getIsReserve())
+                .isReservable(entity.getIsReservable())
                 .build();
     }
 }
