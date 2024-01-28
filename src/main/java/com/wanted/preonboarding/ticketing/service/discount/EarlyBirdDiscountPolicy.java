@@ -22,6 +22,6 @@ public class EarlyBirdDiscountPolicy implements DiscountPolicy {
             return Discount.from(discountMoney, DISCOUNT_POLICY_NAME);
         }
 
-        return Discount.NoDiscount(DISCOUNT_POLICY_NAME);
+        return Discount.NoDiscount();
     }
 }

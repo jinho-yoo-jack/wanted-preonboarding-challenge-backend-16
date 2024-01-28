@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Discount {
     private static final int DISCOUNT_NONE = 0;
+    private static final String DISCOUNT_POLICY_NAME_NONE = "적용된 할인이 없습니다.";
 
     private String discountPolicyName;
     private int change;
@@ -21,15 +22,11 @@ public class Discount {
                 .build();
     }
 
-    public static Discount NoDiscount(String discountPolicyName) {
+    public static Discount NoDiscount() {
         return Discount.builder()
-                .discountPolicyName(discountPolicyName)
+                .discountPolicyName(DISCOUNT_POLICY_NAME_NONE)
                 .change(DISCOUNT_NONE)
                 .isApplied(false)
                 .build();
-    }
-
-    public boolean isHigherThan(Discount discount) {
-        return this.change < discount.change;
     }
 }

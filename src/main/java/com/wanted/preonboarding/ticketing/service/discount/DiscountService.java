@@ -5,6 +5,7 @@ import com.wanted.preonboarding.ticketing.domain.dto.DiscountInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -13,16 +14,9 @@ public class DiscountService {
     private final List<DiscountPolicy> discountPolicies;
 
     public Discount calculateMaximumDiscount(DiscountInfo discountInfo) {
-        Discount maxDiscount = new Discount();
-
-        for (DiscountPolicy discountPolicy : discountPolicies) {
-            Discount discount = discountPolicy.calculateDiscount(discountInfo);
-
-            if (maxDiscount.isHigherThan(discount)) {
-                maxDiscount = discount;
-            }
-        }
-
-        return maxDiscount;
+        return discountPolicies.stream()
+                .map(discountPolicy -> discountPolicy.calculateDiscount(discountInfo))
+                .max(Comparator.comparing(Discount::getChange))
+                .orElse(Discount.NoDiscount());
     }
 }
