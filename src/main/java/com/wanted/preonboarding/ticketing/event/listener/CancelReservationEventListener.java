@@ -35,10 +35,9 @@ public class CancelReservationEventListener {
     }
 
     private void sendAlarm(PerformanceSeatInfo performanceSeatInfo, List<AlarmInfo> alarmInfos) {
-        for (AlarmSender alarmSender : alarmSenders) {
-            for (AlarmInfo alarmInfo : alarmInfos) {
-                alarmSender.sendAlarm(alarmInfo, performanceSeatInfo);
-            }
-        }
+        alarmSenders.forEach(alarmSender ->
+                alarmInfos.forEach(alarmInfo ->
+                        alarmSender.sendAlarm(alarmInfo, performanceSeatInfo)
+                ));
     }
 }
