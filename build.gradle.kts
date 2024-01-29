@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.2.1"
     id("io.spring.dependency-management") version "1.1.4"
+	id("com.google.cloud.tools.jib") version "3.4.0"
 }
 
 group = "com.wanted"
@@ -27,6 +28,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.mysql:mysql-connector-j:8.0.33")
+	runtimeOnly("com.h2database:h2")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.vintage:junit-vintage-engine") {
@@ -45,4 +47,24 @@ tasks.bootJar {
 
 tasks.bootBuildImage {
     imageName = "wanted/preonboarding-backend"
+}
+//	이미지 레이어링으로 효율적인 빌드
+jib {
+    from.image = "openjdk:17-jdk-slim"
+	to.image = "wanted/preonboarding-backend"
+	container.ports = listOf("8016")
+}
+tasks.register("dockerComposeUp", Exec::class) {
+	commandLine("docker-compose", "up", "-d")
+}
+tasks.register("dockerComposeDown", Exec::class) {
+	commandLine("docker-compose", "down")
+}
+//	빌드와 실행을 분리
+tasks.register("start") {
+    dependsOn("jibDockerBuild")
+    finalizedBy("dockerComposeUp")
+}
+tasks.register("stop") {
+	finalizedBy("dockerComposeDown")
 }

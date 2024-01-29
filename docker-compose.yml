@@ -15,7 +15,6 @@ services:
       MYSQL_ROOT_PASSWORD: preonboarding
       MYSQL_DATABASE: wanted
   backend:
-    container_name: backend
-    build: .
-    ports: ["8016:8016"]
+    image: wanted/preonboarding-backend
+    ports: ["8017:8016"]
     depends_on: [mysql]
