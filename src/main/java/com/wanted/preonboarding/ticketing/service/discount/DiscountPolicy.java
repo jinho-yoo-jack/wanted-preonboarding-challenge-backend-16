@@ -5,5 +5,5 @@ import com.wanted.preonboarding.ticketing.domain.dto.DiscountInfo;
 
 
 public interface DiscountPolicy {
-    Discount calculateDiscount(DiscountInfo performance);
+    Discount calculateDiscount(DiscountInfo discountInfo);
 }
