@@ -21,7 +21,7 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseHandler<Object> reserve(@RequestBody @Valid ReservationRequest reservationRequest) {
         return ResponseHandler.builder()
                 .statusCode(HttpStatus.CREATED)
@@ -29,7 +29,7 @@ public class ReservationController {
                 .build();
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseHandler<Object> findReservations(@RequestParam @NotBlank String name,
                                                     @RequestParam @NotBlank String phoneNumber) {
         return ResponseHandler.builder()

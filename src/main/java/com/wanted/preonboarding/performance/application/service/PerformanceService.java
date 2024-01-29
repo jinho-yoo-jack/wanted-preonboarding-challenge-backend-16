@@ -3,7 +3,11 @@ package com.wanted.preonboarding.performance.application.service;
 import com.wanted.preonboarding.performance.application.dto.PerformanceResponse;
 import com.wanted.preonboarding.performance.application.exception.AccountNotAffordable;
 import com.wanted.preonboarding.performance.application.exception.PerformanceNotFoundException;
+import com.wanted.preonboarding.performance.domain.aggregate.DiscountPerformance;
+import com.wanted.preonboarding.performance.domain.dto.CreateDiscountRequest;
 import com.wanted.preonboarding.performance.domain.entity.Performance;
+import com.wanted.preonboarding.performance.domain.model.Discounts;
+import com.wanted.preonboarding.performance.infrasturcture.configuration.AdminProperties;
 import com.wanted.preonboarding.performance.infrasturcture.repository.PerformanceRepository;
 import com.wanted.preonboarding.performanceSeat.domain.event.EnablePerformanceReservationEvent;
 import com.wanted.preonboarding.performanceSeat.domain.event.SeatSoldOutEvent;
@@ -26,8 +30,11 @@ import java.util.UUID;
 @Slf4j
 public class PerformanceService {
 
+    private static final Discounts discounts = new Discounts();
+
     private final PerformanceRepository performanceRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final AdminProperties adminProperties;
 
     @TransactionalEventListener(SeatSoldOutEvent.class)
     public void updatePerformanceDisabled(final SeatSoldOutEvent seatSoldOutEvent) {
@@ -59,12 +66,20 @@ public class PerformanceService {
     }
 
     @TransactionalEventListener(value = ValidateReservationRequestEvent.class)
-    public void validatePerformanceExistence(final ValidateReservationRequestEvent validateReservationRequestEvent) {
+    public void validateReservationRequest(final ValidateReservationRequestEvent validateReservationRequestEvent) {
         Performance performance = getPerformance(validateReservationRequestEvent.getPerformanceId());
-
-        if(!performance.isAccountAffordable(validateReservationRequestEvent.getAccount())) {
+        DiscountPerformance discountPerformance = DiscountPerformance.of(discounts, performance);
+        if(discountPerformance.isAffordableByReservation(validateReservationRequestEvent.getAccount())) {
             throw new AccountNotAffordable();
         }
+    }
+
+    public void addDiscount(final CreateDiscountRequest createDiscountRequest, final String adminKey) {
+        if(adminKey.equals(adminProperties.getKey())) {
+            discounts.addDiscount(createDiscountRequest);
+        }
+
+        throw new Error("권한이 없습니다.");
     }
 
     private Performance getPerformance(final UUID performanceId) {

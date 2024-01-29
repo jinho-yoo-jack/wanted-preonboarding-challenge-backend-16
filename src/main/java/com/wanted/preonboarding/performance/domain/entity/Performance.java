@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table
+@Table(name = "performance")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

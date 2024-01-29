@@ -6,11 +6,13 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @AllArgsConstructor(staticName = "of")
 @Getter
 @Builder
 public class PerformanceResponse {
+    private final UUID performanceId;
 
     private final String performanceName;
 
@@ -22,6 +24,7 @@ public class PerformanceResponse {
 
     public static PerformanceResponse from(Performance performance) {
         return PerformanceResponse.builder()
+                .performanceId(performance.getId())
                 .performanceName(performance.getName())
                 .round(performance.getRound())
                 .startDate(performance.getStartDate())

@@ -19,8 +19,8 @@ public class PerformanceSeatController {
 
     private final PerformanceSeatService performanceSeatService;
 
-    @GetMapping("/")
-    public ResponseHandler<Object> findReservableSeatByPerformanceId(@RequestParam @NotBlank UUID performanceId) {
+    @GetMapping("")
+    public ResponseHandler<Object> findReservableSeatByPerformanceId(@RequestParam UUID performanceId) {
         return ResponseHandler.builder()
                 .statusCode(HttpStatus.OK)
                 .data(performanceSeatService.findReservableSeats(performanceId))
