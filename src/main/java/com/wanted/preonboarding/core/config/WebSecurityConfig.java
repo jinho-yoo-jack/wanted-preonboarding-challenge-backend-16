@@ -2,6 +2,7 @@ package com.wanted.preonboarding.core.config;
 
 import com.wanted.preonboarding.user.application.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,14 +37,14 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web -> web.ignoring()
-            .requestMatchers("/static/**")
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
         );  // static 경로에 대한 스프링 시큐리티 기능 비활성화
-    }
+    }//"/static/**",
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests((authorize) -> authorize
-            .requestMatchers("/", "/login", "signup").permitAll()    // 매개변수의 URL에 대한 엑세스 전부 허용으로 설정
+            .requestMatchers("/", "/login", "/signup", "/performance", "/query/**").permitAll()    // 매개변수의 URL에 대한 엑세스 전부 허용으로 설정
             .anyRequest().authenticated()   // 그 외 요청 경로는 인증된 상태에서만 접근할 수 있도록 설정
             )
             .formLogin(form -> form
