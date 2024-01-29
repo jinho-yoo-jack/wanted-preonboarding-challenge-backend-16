@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @DisplayName("관리자 공연 및 전시 등록 서비스 테스트")
-public class PerformanceAdminServiceTest extends ServiceTest {
+public class ShowingAdminServiceTest extends ServiceTest {
 	@Autowired
-	private PerformanceAdminService performanceAdminService;
+	private ShowingAdminService showingAdminService;
 
 	@Test
 	public void 관리자는_공연_전시_정보를_등록할_수_있다(){
 		PerformanceRequestFactory request = new PerformanceRequestFactory();
 		PerformanceRequest performanceRequest = request.create();
-		UUID register = performanceAdminService.register(performanceRequest);
+		UUID register = showingAdminService.register(performanceRequest);
 		assertThat(register).isNotNull();
 	}
 

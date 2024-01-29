@@ -7,14 +7,28 @@ import com.wanted.preonboarding.ticket.infrastructure.repository.ShowingReposito
 import com.wanted.preonboarding.ticket.infrastructure.repository.ShowroomRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@ActiveProfiles(profiles = "test")
-public class ServiceTest extends TestCleanUp{
+public class TestCleanUp {
+
+	@Autowired
+	private ReservationRepository reservationRepository;
+	@Autowired
+	private DiscountPolicyRepository discountPolicyRepository;
+	@Autowired
+	private PerformanceRepository performanceRepository;
+	@Autowired
+	private ShowroomRepository showroomRepository;
+	@Autowired
+	private ShowingRepository showingRepository;
+	@AfterEach
+	void tearDown() {
+		reservationRepository.deleteAll();
+		showingRepository.deleteAll();
+		showroomRepository.deleteAll();
+		performanceRepository.deleteAll();
+		discountPolicyRepository.deleteAll();
+	}
 
 }

@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @ActiveProfiles(profiles = "test")
-public class ApiTest {
+public class ApiTest extends TestCleanUp{
 
 	@LocalServerPort
 	private int port;

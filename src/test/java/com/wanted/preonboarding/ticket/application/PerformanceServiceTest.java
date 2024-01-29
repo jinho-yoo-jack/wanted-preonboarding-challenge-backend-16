@@ -5,9 +5,7 @@ import com.wanted.preonboarding.ticket.AssertCluster;
 import com.wanted.preonboarding.ticket.PerformanceRequestFactory;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceRequest;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceResponse;
-import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +18,16 @@ public class PerformanceServiceTest extends ServiceTest {
 	private PerformanceService performanceService;
 
 	@Autowired
-	private PerformanceAdminService performanceAdminService;
+	private ShowingAdminService showingAdminService;
 
-	@Autowired
-	private PerformanceRepository performanceRepository;
 
-	@BeforeEach
-	public void clear(){
-		performanceRepository.deleteAll();
-	}
 
 	@Test
 	public void 예약_가능한_공연_및_전시_정보_목록을_조회할_수_있다() {
 		//given
 		PerformanceRequestFactory request = new PerformanceRequestFactory();
 		PerformanceRequest performanceRequest = request.create();
-		performanceAdminService.register(performanceRequest);
+		showingAdminService.register(performanceRequest);
 
 		//when
 		List<PerformanceResponse> response = performanceService.getAllPerformanceInfoList(true);
@@ -50,7 +42,7 @@ public class PerformanceServiceTest extends ServiceTest {
 		PerformanceRequestFactory request = new PerformanceRequestFactory();
 		request.setReserve(false);
 		PerformanceRequest performanceRequest = request.create();
-		performanceAdminService.register(performanceRequest);
+		showingAdminService.register(performanceRequest);
 
 		//when
 		List<PerformanceResponse> response = performanceService.getAllPerformanceInfoList(false);
@@ -64,7 +56,7 @@ public class PerformanceServiceTest extends ServiceTest {
 		//given
 		PerformanceRequestFactory request = new PerformanceRequestFactory();
 		PerformanceRequest performanceRequest = request.create();
-		performanceAdminService.register(performanceRequest);
+		showingAdminService.register(performanceRequest);
 
 		//when
 		PerformanceResponse response = performanceService.getPerformanceInfoDetail(performanceRequest.name());

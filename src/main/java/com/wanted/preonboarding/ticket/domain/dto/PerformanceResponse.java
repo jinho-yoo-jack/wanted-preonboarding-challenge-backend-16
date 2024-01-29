@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
+import com.wanted.preonboarding.ticket.domain.entity.Showing;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -14,13 +15,14 @@ public record PerformanceResponse(
 
 ) {
 
-	public static PerformanceResponse of(Performance entity) {
+	public static PerformanceResponse of(Showing entity) {
+		Performance performance = entity.getPerformance();
 		return new PerformanceResponse(
 			entity.getId(),
-			entity.getName(),
-			entity.getType().toString(),
-			entity.getStart_date(),
-			entity.isReserve(),
+			performance.getName(),
+			performance.getType().toString(),
+			entity.getStartDate(),
+			entity.isReservationAvailable(),
 			entity.getRound()
 		);
 	}

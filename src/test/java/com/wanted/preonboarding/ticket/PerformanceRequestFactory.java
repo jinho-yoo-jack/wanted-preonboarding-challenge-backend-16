@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket;
 
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceRequest;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceType;
+import com.wanted.preonboarding.ticket.domain.entity.PerformanceType;
 import java.time.LocalDate;
 
 public class PerformanceRequestFactory {
