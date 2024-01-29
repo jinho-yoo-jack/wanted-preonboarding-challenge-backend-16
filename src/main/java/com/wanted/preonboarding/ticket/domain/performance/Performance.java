@@ -42,18 +42,18 @@ public class Performance extends BaseTimeEntity {
     private PerformanceType type;
 
     @Column(nullable = false)
-    private LocalDateTime start_date;
+    private LocalDateTime startDate;
 
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;
 
     @Builder
-    public Performance(String name, int price, int round, PerformanceType type, LocalDateTime start_date, String isReserve) {
+    public Performance(String name, int price, int round, PerformanceType type, LocalDateTime startDate, String isReserve) {
         this.name = name;
         this.price = price;
         this.round = round;
         this.type = type;
-        this.start_date = start_date;
+        this.startDate = startDate;
         this.isReserve = isReserve;
     }
 }
