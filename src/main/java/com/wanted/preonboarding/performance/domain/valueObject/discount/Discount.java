@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.performance.domain.interfaces.discount;
+package com.wanted.preonboarding.performance.domain.valueObject.discount;
 
 import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.performance.domain.interfaces.discount.strategy.calculator.DiscountCalculator;
@@ -6,7 +6,7 @@ import com.wanted.preonboarding.performance.domain.interfaces.discount.strategy.
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public abstract class Discount {
+public class Discount {
 
     private final DiscountValidator validator;
     private final DiscountCalculator calculator;
