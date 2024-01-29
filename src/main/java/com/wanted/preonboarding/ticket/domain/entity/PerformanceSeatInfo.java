@@ -20,7 +20,7 @@ public class PerformanceSeatInfo extends BaseEntity {
     @Comment("공연/전시 좌석 정보 ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Comment("공연/전시 ID")
     @ManyToOne(fetch = FetchType.LAZY)

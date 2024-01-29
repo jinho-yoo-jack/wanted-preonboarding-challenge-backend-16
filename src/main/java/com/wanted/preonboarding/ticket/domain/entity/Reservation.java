@@ -21,7 +21,7 @@ public class Reservation extends BaseEntity {
     @Comment("예약 정보 ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Comment("예약 코드")
     @Column(name = "code", nullable = false, length = 6)
