@@ -33,6 +33,14 @@ public class ReservationResponse {
 
     }
 
+    /**
+     * 예약 진행 후 성공 시, 예약 정보를 반환하기 위한 응답 객체 생성<br>
+     * <i>예약 진행 시에는 결제 정보를 포함해서 반환</i>
+     * @param reservation 예약 정보
+     * @param performance 공연 정보
+     * @param paymentResponse 결제 정보
+     * @return 예약 내역
+     */
     public static ReservationResponse of(
             Reservation reservation,
             Performance performance,
@@ -42,6 +50,12 @@ public class ReservationResponse {
         return createReservationResponse(reservation, performance, paymentDetail);
     }
 
+    /**
+     * 예약 조회 시, 예약 정보를 반환하기 위한 응답 객체 생성<br>
+     * @param reservation 예약 정보
+     * @param performance 공연 정보
+     * @return 예약 내역
+     */
     public static ReservationResponse of(Reservation reservation, Performance performance) {
         return createReservationResponse(reservation, performance, null);
     }
