@@ -13,7 +13,7 @@ import java.util.List;
 public interface AlarmRepository extends JpaRepository<Alarm, Long> {
     List<Alarm> findAllByPerformance(Performance performance);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("delete from Alarm a where a in :alarms")
     void deleteAllInBatch(List<Alarm> alarms);
 }
