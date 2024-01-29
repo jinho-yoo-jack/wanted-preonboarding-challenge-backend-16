@@ -3,6 +3,7 @@ package com.wanted.preonboarding.ticket.application;
 import com.wanted.preonboarding.ticket.application.dto.ReservationCreateParam;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
+import com.wanted.preonboarding.ticket.domain.entity.UserInfo;
 import com.wanted.preonboarding.ticket.domain.exception.NotFoundException;
 import com.wanted.preonboarding.ticket.domain.exception.PaymentException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
@@ -22,7 +23,7 @@ public class ReservationService {
     private final PerformanceRepository performanceRepository;
 
     public List<Reservation> getReservations(String userName, String userPhoneNumber) {
-        return reservationRepository.findAllByUserInfoNameAndUserInfoPhoneNumber(userName, userPhoneNumber);
+        return reservationRepository.findAllByUserInfo(UserInfo.builder().name(userName).phoneNumber(userPhoneNumber).build());
     }
 
     public Reservation reserve(ReservationCreateParam param) {
