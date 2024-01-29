@@ -2,15 +2,11 @@ package com.wanted.preonboarding.util;
 
 import java.math.BigDecimal;
 
-public final class BigDecimalUtils {
+public interface BigDecimalUtils {
 
-    private static final String MESSAGE_FORMAT = "[%s] 금액 변환에 실패하였습니다.";
+    String MESSAGE_FORMAT = "[%s] 금액 변환에 실패하였습니다.";
 
-    private BigDecimalUtils() {
-
-    }
-
-    public static BigDecimal convertToBigDecimal(String value) {
+    static BigDecimal convertToBigDecimal(String value) {
         try {
             return new BigDecimal(value);
         } catch (NumberFormatException e) {

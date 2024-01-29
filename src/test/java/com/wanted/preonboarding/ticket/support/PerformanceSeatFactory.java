@@ -4,13 +4,9 @@ import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 
 import java.util.UUID;
 
-public final class PerformanceSeatFactory {
+public interface PerformanceSeatFactory {
 
-    private PerformanceSeatFactory() {
-
-    }
-
-    public static PerformanceSeatInfo create() {
+    static PerformanceSeatInfo create() {
         return PerformanceSeatInfo.builder()
                 .performanceId(UUID.randomUUID())
                 .seat(1)
@@ -21,9 +17,7 @@ public final class PerformanceSeatFactory {
                 .build();
     }
 
-    public static PerformanceSeatInfo changeReservationStatus(PerformanceSeatInfo performanceSeatInfo,
-                                                              String isReserve)
-    {
+    static PerformanceSeatInfo changeReservationStatus(PerformanceSeatInfo performanceSeatInfo, String isReserve) {
         return PerformanceSeatInfo.builder()
                 .performanceId(performanceSeatInfo.getPerformanceId())
                 .seat(performanceSeatInfo.getSeat())

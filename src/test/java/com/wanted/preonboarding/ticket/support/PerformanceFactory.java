@@ -5,13 +5,9 @@ import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public final class PerformanceFactory {
+public interface PerformanceFactory {
 
-    private PerformanceFactory() {
-
-    }
-
-    public static Performance create(UUID performanceId) {
+    static Performance create(UUID performanceId) {
         return Performance.builder()
                 .id(performanceId)
                 .name("영웅")
@@ -23,7 +19,7 @@ public final class PerformanceFactory {
                 .build();
     }
 
-    public static Performance create() {
+    static Performance create() {
         return Performance.builder()
                 .id(UUID.randomUUID())
                 .name("영웅")
@@ -35,7 +31,7 @@ public final class PerformanceFactory {
                 .build();
     }
 
-    public static Performance changeReservationState(Performance performance, String isReserved) {
+    static Performance changeReservationState(Performance performance, String isReserved) {
         return Performance.builder()
                 .id(performance.getId())
                 .name(performance.getName())
