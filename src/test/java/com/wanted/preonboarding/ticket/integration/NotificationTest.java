@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 import static com.wanted.preonboarding.ticket.TestHelper.convertToJSONString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Rollback
 @SpringBootTest

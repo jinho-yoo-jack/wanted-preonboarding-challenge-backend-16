@@ -36,10 +36,11 @@ class ReservationTest {
     Stream<DynamicTest> dynamicTestForReservation() throws Exception {
         // Given
         UUID id = UUID.fromString("2e1347ac-b556-11ee-9508-0242ac130002");
+        UUID invalidId = UUID.fromString("ffb02517-67fc-4ab8-adb8-a1b521d525ad");
         RequestReservation caseA = new RequestReservation("홍길동", "010-1234-1234", 300000, id, 1, 'A', 1);
         RequestReservation caseB = new RequestReservation("홍길동", "010-1234-1234", 30000, id, 1, 'A', 2);
         RequestReservation caseC = new RequestReservation("홍길동", "010-1234-1234", 300000, id, 1, 'B', 3);
-
+        RequestReservation caseD = new RequestReservation("홍길동", "010-1234-1234", 300000, invalidId, 1, 'A', 1);
         // When & Then
         String endPoint = "/api/v1/reservation/proceed";
         return Stream.of(
@@ -68,6 +69,13 @@ class ReservationTest {
                         post(endPoint)
                                 .contentType("application/json")
                                 .content(convertToJSONString(caseC)),
+                        status().is4xxClientError(),
+                        content().contentType("application/json"),
+                        jsonPath("$.data").isEmpty()),
+                executeTest("예약 실패 - 예약 불가능한 공연",
+                        post(endPoint)
+                                .contentType("application/json")
+                                .content(convertToJSONString(caseD)),
                         status().is4xxClientError(),
                         content().contentType("application/json"),
                         jsonPath("$.data").isEmpty())
