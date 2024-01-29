@@ -2,10 +2,11 @@ package com.wanted.preonboarding.ticketing.event.listener;
 
 import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundPerformanceSeatInfoException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
+import com.wanted.preonboarding.ticketing.domain.dto.AlarmInfo;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.event.CancelReservationEvent;
 import com.wanted.preonboarding.ticketing.repository.PerformanceSeatInfoRepository;
-import com.wanted.preonboarding.ticketing.service.EmailSender;
+import com.wanted.preonboarding.ticketing.service.alarm.AlarmSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CancelReservationEventListener {
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
-    private final EmailSender emailSender;
+    private final List<AlarmSender> alarmSenders;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
@@ -30,12 +31,14 @@ public class CancelReservationEventListener {
                 .findById(cancelReservationEvent.performanceSeatInfoId())
                 .orElseThrow(() -> new NotFoundPerformanceSeatInfoException(ErrorCode.NOT_FOUND_PERFORMANCE_SEAT_INFO));
 
-        sendAlarm(performanceSeatInfo, cancelReservationEvent.emails());
+        sendAlarm(performanceSeatInfo, cancelReservationEvent.alarmInfos());
     }
 
-    private void sendAlarm(PerformanceSeatInfo performanceSeatInfo, List<String> emails) {
-        for (String email : emails) {
-            emailSender.sendPerformanceInfo(email, performanceSeatInfo);
+    private void sendAlarm(PerformanceSeatInfo performanceSeatInfo, List<AlarmInfo> alarmInfos) {
+        for (AlarmSender alarmSender : alarmSenders) {
+            for (AlarmInfo alarmInfo : alarmInfos) {
+                alarmSender.sendAlarm(alarmInfo, performanceSeatInfo);
+            }
         }
     }
 }

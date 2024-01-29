@@ -12,6 +12,7 @@ import com.wanted.preonboarding.ticketing.domain.entity.Reservation;
 import com.wanted.preonboarding.ticketing.repository.AlarmRepository;
 import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticketing.repository.ReservationRepository;
+import com.wanted.preonboarding.ticketing.service.alarm.AlarmService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

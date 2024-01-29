@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticketing.service;
 
 import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundReservationException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
+import com.wanted.preonboarding.ticketing.domain.dto.AlarmInfo;
 import com.wanted.preonboarding.ticketing.domain.dto.Discount;
 import com.wanted.preonboarding.ticketing.domain.dto.DiscountInfo;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CancelReservationRequest;
@@ -15,6 +16,7 @@ import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.domain.entity.Reservation;
 import com.wanted.preonboarding.ticketing.event.CancelReservationEvent;
 import com.wanted.preonboarding.ticketing.repository.ReservationRepository;
+import com.wanted.preonboarding.ticketing.service.alarm.AlarmService;
 import com.wanted.preonboarding.ticketing.service.discount.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -79,14 +81,10 @@ public class ReservationService {
     public CancelReservationResponse cancelReservation(CancelReservationRequest cancelReservationRequest) {
         deleteReservation(cancelReservationRequest);
         PerformanceSeatInfo performanceSeatInfo = changeSeatInfo(cancelReservationRequest);
-        List<String> emails = deleteAlarm(performanceSeatInfo.getPerformance());
-        eventPublisher.publishEvent(new CancelReservationEvent(emails, performanceSeatInfo.getId()));
+        List<AlarmInfo> alarmInfos = alarmService.deleteAndRetrieveAlarmInfo(performanceSeatInfo);
+        eventPublisher.publishEvent(new CancelReservationEvent(alarmInfos, performanceSeatInfo.getId()));
 
         return performanceSeatInfo.toCancelReservationResponse();
-    }
-
-    private List<String> deleteAlarm(Performance performance) {
-        return alarmService.deleteAlarmByPerformance(performance);
     }
 
     private PerformanceSeatInfo changeSeatInfo(CancelReservationRequest cancelReservationRequest) {

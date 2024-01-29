@@ -2,7 +2,7 @@ package com.wanted.preonboarding.ticketing.controller;
 
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CreateAlarmResponse;
-import com.wanted.preonboarding.ticketing.service.AlarmService;
+import com.wanted.preonboarding.ticketing.service.alarm.AlarmService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

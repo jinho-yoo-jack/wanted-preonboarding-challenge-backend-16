@@ -1,10 +1,13 @@
-package com.wanted.preonboarding.ticketing.service;
+package com.wanted.preonboarding.ticketing.service.alarm;
 
+import com.wanted.preonboarding.ticketing.domain.dto.AlarmInfo;
 import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
 import com.wanted.preonboarding.ticketing.domain.dto.response.CreateAlarmResponse;
 import com.wanted.preonboarding.ticketing.domain.entity.Alarm;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
+import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.repository.AlarmRepository;
+import com.wanted.preonboarding.ticketing.service.PerformanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,14 +36,14 @@ public class AlarmService {
         return alarmRepository.save(alarm);
     }
 
-    public List<String> deleteAlarmByPerformance(Performance performance) {
-        List<Alarm> alarms = alarmRepository.findAllByPerformance(performance);
-        List<String> alarmEmails = alarms.stream()
-                .map(Alarm::getEmail)
+    public List<AlarmInfo> deleteAndRetrieveAlarmInfo(PerformanceSeatInfo performanceSeatInfo) {
+        List<Alarm> alarms = alarmRepository.findAllByPerformance(performanceSeatInfo.getPerformance());
+        List<AlarmInfo> alarmInfos = alarms.stream()
+                .map(Alarm::toAlarmInfo)
                 .collect(Collectors.toList());
 
         alarmRepository.deleteAllInBatch(alarms);
 
-        return alarmEmails;
+        return alarmInfos;
     }
 }
