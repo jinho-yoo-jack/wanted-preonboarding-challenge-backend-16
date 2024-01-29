@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.ticket.AssertCluster;
 import com.wanted.preonboarding.ticket.PerformanceRequestFactory;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceRequest;
@@ -10,17 +11,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+
 @DisplayName("공연 및 전시 조회 서비스 테스트")
-public class TicketSellerTest {
+public class PerformanceServiceTest extends ServiceTest {
 
 	@Autowired
-	private TicketSeller ticketSeller;
+	private PerformanceService performanceService;
 
 	@Autowired
 	private PerformanceAdminService performanceAdminService;
@@ -41,7 +38,7 @@ public class TicketSellerTest {
 		performanceAdminService.register(performanceRequest);
 
 		//when
-		List<PerformanceResponse> response = ticketSeller.getAllPerformanceInfoList(true);
+		List<PerformanceResponse> response = performanceService.getAllPerformanceInfoList(true);
 
 		//then
 		AssertCluster.performanceAssert(performanceRequest, response.get(0));
@@ -56,7 +53,7 @@ public class TicketSellerTest {
 		performanceAdminService.register(performanceRequest);
 
 		//when
-		List<PerformanceResponse> response = ticketSeller.getAllPerformanceInfoList(false);
+		List<PerformanceResponse> response = performanceService.getAllPerformanceInfoList(false);
 
 		//then
 		AssertCluster.performanceAssert(performanceRequest, response.get(0));
@@ -70,7 +67,7 @@ public class TicketSellerTest {
 		performanceAdminService.register(performanceRequest);
 
 		//when
-		PerformanceResponse response = ticketSeller.getPerformanceInfoDetail(performanceRequest.name());
+		PerformanceResponse response = performanceService.getPerformanceInfoDetail(performanceRequest.name());
 
 		//then
 		AssertCluster.performanceAssert(performanceRequest, response);

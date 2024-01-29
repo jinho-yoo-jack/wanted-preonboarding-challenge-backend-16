@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class TicketSeller {
+public class PerformanceService {
     private final PerformanceRepository performanceRepository;
     private final ReservationRepository reservationRepository;
     private long totalAmount = 0L;

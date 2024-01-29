@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.application.TicketSeller;
+import com.wanted.preonboarding.ticket.application.PerformanceService;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class QueryController {
-    private final TicketSeller ticketSeller;
+    private final PerformanceService performanceService;
 
     @GetMapping("/all/performance")
     public ResponseEntity<ResponseHandler<List<PerformanceResponse>>> getAllPerformanceInfoList(
@@ -29,7 +29,7 @@ public class QueryController {
             .body(ResponseHandler.<List<PerformanceResponse>>builder()
                 .message("Success")
                 .statusCode(HttpStatus.OK)
-                .data(ticketSeller.getAllPerformanceInfoList(isReserve))
+                .data(performanceService.getAllPerformanceInfoList(isReserve))
                 .build()
             );
     }
@@ -43,7 +43,7 @@ public class QueryController {
             .body(ResponseHandler.<PerformanceResponse>builder()
                 .message("Success")
                 .statusCode(HttpStatus.OK)
-                .data(ticketSeller.getPerformanceInfoDetail(name))
+                .data(performanceService.getPerformanceInfoDetail(name))
                 .build()
             );
     }
