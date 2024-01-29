@@ -1,13 +1,14 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceType;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
 import java.util.UUID;
 
 @Entity
@@ -28,11 +29,14 @@ public class Performance {
     private int price;
     @Column(nullable = false)
     private int round;
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private int type;
+    private PerformanceType type;
     @Column(nullable = false)
-    private Date start_date;
-    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
-    private String isReserve;
+    private LocalDate start_date;
+    @Column(nullable = false, name = "is_reserve")
+    private boolean reserve;
+
 
 }
