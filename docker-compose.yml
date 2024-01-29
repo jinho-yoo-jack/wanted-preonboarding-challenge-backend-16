@@ -7,6 +7,7 @@ services:
     command:
       - '--character-set-server=utf8mb4'
       - '--collation-server=utf8mb4_unicode_ci'
+      - '--skip-character-set-client-handshake' # Mysql character_set_xxx 인코딩 utf8mb4 로 변경하기 위해 추가
     env_file:
       - .env  # 보안을 위해 MySql 설정 로컬 파일로 분리  ./.env  # 보안을 위해 MySql 설정 로컬 파일로 분리
     environment:
