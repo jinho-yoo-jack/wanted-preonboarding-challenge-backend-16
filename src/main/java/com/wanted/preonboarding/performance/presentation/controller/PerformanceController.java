@@ -2,8 +2,8 @@ package com.wanted.preonboarding.performance.presentation.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.performance.application.service.PerformanceService;
+import com.wanted.preonboarding.performance.domain.dto.CreateDiscountRequest;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +27,19 @@ public class PerformanceController {
     }
 
     @GetMapping("")
-    public ResponseHandler<Object> findAllPerformanceByReserveState(@RequestParam @NotBlank String isReserve) {
+    public ResponseHandler<Object> findAllPerformanceByReserveState(@RequestParam String isReserve) {
         return ResponseHandler.builder()
                 .statusCode(HttpStatus.OK)
                 .data(performanceService.findPerformancesInReserveState(isReserve))
+                .build();
+    }
+
+    @PostMapping("/discount")
+    public ResponseHandler<Object> addDiscount(@RequestParam String adminKey, @RequestBody CreateDiscountRequest request) {
+        performanceService.addDiscount(new CreateDiscountRequest(), adminKey);
+        return ResponseHandler.builder()
+                .statusCode(HttpStatus.CREATED)
+                .message("DISCOUNT CREATED")
                 .build();
     }
 }
