@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.application.reservation.service;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
+import com.wanted.preonboarding.ticket.application.common.exception.ServiceFailedException;
 import com.wanted.preonboarding.ticket.application.reservation.event.ReservationCancelledEvent;
 import com.wanted.preonboarding.ticket.application.common.exception.ArgumentNotValidException;
 import com.wanted.preonboarding.ticket.application.common.exception.EntityNotFoundException;
@@ -64,6 +65,7 @@ public class ReservationService {
         Performance performance = seatInfo.getPerformance();
         Reservation reservation = Reservation.of(requestReservation, seatInfo, createUniqueCode());
 
+        checkPerformanceAvailability(performance);
         checkSeatAvailability(seatInfo);
         processReservation(reservation, seatInfo);
         PaymentResponse paymentResponse = paymentService.processPayment(reservation, requestReservation.balance());
@@ -128,6 +130,12 @@ public class ReservationService {
 
         if (!name.matches(nameRegex) || !phone.matches(phoneRegex)) {
             throw new ArgumentNotValidException(ARGUMENT_NOT_VALID);
+        }
+    }
+
+    private void checkPerformanceAvailability(Performance performance) {
+        if (performance.getIsReserve().equals(ReservationAvailability.DISABLED)) {
+            throw new ServiceFailedException(PERFORMANCE_DISABLED);
         }
     }
 
