@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -42,7 +43,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests((authorize) -> authorize
-            .requestMatchers("/**", "/login", "signup").permitAll()    // 매개변수의 URL에 대한 엑세스 전부 허용으로 설정
+            .requestMatchers("/", "/login", "signup").permitAll()    // 매개변수의 URL에 대한 엑세스 전부 허용으로 설정
             .anyRequest().authenticated()   // 그 외 요청 경로는 인증된 상태에서만 접근할 수 있도록 설정
             )
             .formLogin(form -> form
@@ -52,7 +53,8 @@ public class WebSecurityConfig {
 //                .failureUrl("/logian")
             )    // 폼 로그인 형식 로그인 설정
             .logout(logout -> logout
-                .logoutUrl("/logout")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
             );   // 로그아웃 설정
