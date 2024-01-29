@@ -1,17 +1,16 @@
 package com.wanted.preonboarding.ticket.application;
 
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceResponse;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @Slf4j
@@ -21,23 +20,23 @@ public class TicketSeller {
     private final ReservationRepository reservationRepository;
     private long totalAmount = 0L;
 
-    public List<PerformanceInfo> getAllPerformanceInfoList() {
-        return performanceRepository.findByIsReserve("enable")
+    public List<PerformanceResponse> getAllPerformanceInfoList(boolean isReserve) {
+        return performanceRepository.findByReserve(isReserve)
             .stream()
-            .map(PerformanceInfo::of)
+            .map(PerformanceResponse::of)
             .toList();
     }
 
-    public PerformanceInfo getPerformanceInfoDetail(String name) {
-        return PerformanceInfo.of(performanceRepository.findByName(name));
+    public PerformanceResponse getPerformanceInfoDetail(String name) {
+        return PerformanceResponse.of(performanceRepository.findByName(name));
     }
 
     public boolean reserve(ReserveInfo reserveInfo) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
         Performance info = performanceRepository.findById(reserveInfo.getPerformanceId())
             .orElseThrow(EntityNotFoundException::new);
-        String enableReserve = info.getIsReserve();
-        if (enableReserve.equalsIgnoreCase("enable")) {
+        boolean enableReserve = info.isReserve();
+        if (enableReserve) {
             // 1. 결제
             int price = info.getPrice();
             reserveInfo.setAmount(reserveInfo.getAmount() - price);
