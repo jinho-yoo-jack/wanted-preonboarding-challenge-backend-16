@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-class PerformanceAdminServiceTest {
+public class PerformanceAdminServiceTest {
 	@Autowired
 	private PerformanceAdminService performanceAdminService;
 
