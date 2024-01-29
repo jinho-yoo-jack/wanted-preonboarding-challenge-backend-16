@@ -3,7 +3,7 @@ package com.wanted.preonboarding.performance.domain.valueObject.discount.strateg
 import com.wanted.preonboarding.performance.domain.interfaces.discount.strategy.calculator.DiscountCalculator;
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class PercentDiscountCalculator implements DiscountCalculator {
 
     private final float percent;

@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 
 import java.util.UUID;
 
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class DistinctDiscountValidator implements DiscountValidator {
 
     private final UUID performanceId;

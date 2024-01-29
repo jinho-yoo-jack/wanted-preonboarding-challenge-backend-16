@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 
 import java.util.Date;
 
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class ReserveDateDiscountValidator implements DiscountValidator {
 
     private final Date startDate;
