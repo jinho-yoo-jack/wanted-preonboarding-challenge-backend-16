@@ -9,6 +9,156 @@ Accept-Encoding: br,deflate,gzip,x-gzip
   "userId": "1"
 }
 
+<> 2024-01-29T152936.200.json
+
+###
+
+POST http://localhost:8016/api/v1/performances/123e4567-e89b-12d3-a456-426614174000/await
+Content-Type: application/json
+Content-Length: 17
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": 1
+}
+
+<> 2024-01-29T152933.200.json
+
+###
+
+POST http://localhost:8016/api/v1/reserves/1/cancel
+Content-Type: application/json
+Content-Length: 19
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": "1"
+}
+
+<> 2024-01-29T152805.200.json
+
+###
+
+POST http://localhost:8016/api/v1/performances/123e4567-e89b-12d3-a456-426614174000/await
+Content-Type: application/json
+Content-Length: 17
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": 1
+}
+
+<> 2024-01-29T152802.200.json
+
+###
+
+POST http://localhost:8016/api/v1/reserves/1/cancel
+Content-Type: application/json
+Content-Length: 19
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": "1"
+}
+
+<> 2024-01-29T152722.200.json
+
+###
+
+POST http://localhost:8016/api/v1/performances/123e4567-e89b-12d3-a456-426614174000/await
+Content-Type: application/json
+Content-Length: 17
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": 1
+}
+
+<> 2024-01-29T152718.200.json
+
+###
+
+POST http://localhost:8016/api/v1/reserves/1/cancel
+Content-Type: application/json
+Content-Length: 19
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": "1"
+}
+
+<> 2024-01-29T135350.200.json
+
+###
+
+POST http://localhost:8016/api/v1/performances/123e4567-e89b-12d3-a456-426614174000/await
+Content-Type: application/json
+Content-Length: 17
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": 1
+}
+
+<> 2024-01-29T135345.200.json
+
+###
+
+POST http://localhost:8016/api/v1/reserves/1/cancel
+Content-Type: application/json
+Content-Length: 19
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": "1"
+}
+
+<> 2024-01-29T135258.200.json
+
+###
+
+POST http://localhost:8016/api/v1/performances/123e4567-e89b-12d3-a456-426614174000/await
+Content-Type: application/json
+Content-Length: 17
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": 1
+}
+
+<> 2024-01-29T135249.200.json
+
+###
+
+POST http://localhost:8016/api/v1/reserves/1/cancel
+Content-Type: application/json
+Content-Length: 19
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "userId": "1"
+}
+
 <> 2024-01-28T230314.200.json
 
 ###

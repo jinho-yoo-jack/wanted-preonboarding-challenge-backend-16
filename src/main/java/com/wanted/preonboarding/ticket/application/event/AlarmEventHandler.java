@@ -7,8 +7,6 @@ import com.wanted.preonboarding.ticket.application.interfaces.AlarmSender;
 import com.wanted.preonboarding.ticket.application.mapper.PerformanceReader;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.infrastructure.repository.AwaitRepository;
-import com.wanted.preonboarding.user.User;
-import com.wanted.preonboarding.user.application.mapper.UserReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
