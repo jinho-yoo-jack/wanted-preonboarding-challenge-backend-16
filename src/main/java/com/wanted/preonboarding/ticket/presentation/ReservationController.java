@@ -27,7 +27,7 @@ public class ReservationController {
                 .body(ResponseHandler.<List<ReservationResponse>>builder()
                         .statusCode(HttpStatus.OK)
                         .message("Success")
-                        .data(reservationService.getReservations(request.getName(), request.getPhoneNumber()).stream()
+                        .data(reservationService.getReservations(request.getUserName(), request.getUserPhoneNumber()).stream()
                                 .map(ReservationResponse::of)
                                 .collect(Collectors.toList()))
                         .build()

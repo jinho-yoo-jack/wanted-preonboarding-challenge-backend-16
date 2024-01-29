@@ -15,8 +15,8 @@ public class ReservationResponse {
     private Integer gate;
     private String line;
     private Integer seat;
-    private String reservationName;
-    private String reservationPhoneNumber;
+    private String userName;
+    private String userPhoneNumber;
 
     public static ReservationResponse of(Reservation entity) {
         return ReservationResponse.builder()
@@ -26,8 +26,8 @@ public class ReservationResponse {
                 .gate(entity.getSeatInfo().getGate())
                 .line(entity.getSeatInfo().getLine())
                 .seat(entity.getSeatInfo().getSeat())
-                .reservationName(entity.getUserInfo().getName())
-                .reservationPhoneNumber(entity.getUserInfo().getPhoneNumber())
+                .userName(entity.getUserInfo().getName())
+                .userPhoneNumber(entity.getUserInfo().getPhoneNumber())
                 .build();
     }
 }

@@ -9,8 +9,8 @@ import java.util.UUID;
 
 @Getter
 public class ReservationCreateRequest {
-    private String reservationName;
-    private String reservationPhoneNumber;
+    private String userName;
+    private String userPhoneNumber;
     private Long amount;
     private UUID performanceId;
     private Integer round;
@@ -21,8 +21,8 @@ public class ReservationCreateRequest {
     public ReservationCreateParam toDto(){
         return ReservationCreateParam.builder()
                 .userInfo(UserInfo.builder()
-                        .name(reservationName)
-                        .phoneNumber(reservationPhoneNumber)
+                        .name(userName)
+                        .phoneNumber(userPhoneNumber)
                         .build())
                 .amount(amount)
                 .performanceId(performanceId)
