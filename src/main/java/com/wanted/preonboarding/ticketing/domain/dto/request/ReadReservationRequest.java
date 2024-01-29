@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @Builder
 public class ReadReservationRequest {
-    @NotBlank
+    @NotBlank(message = "예약자명은 필수 입력 사항입니다")
     private final String reservationName;
-    @NotBlank
+    @NotBlank(message = "핸드폰 번호는 필수 입력 사항입니다")
     private final String phoneNumber;
 }

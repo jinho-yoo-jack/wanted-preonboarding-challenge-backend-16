@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticketing.domain.dto.request;
 
 import com.wanted.preonboarding.ticketing.domain.entity.Alarm;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -14,13 +15,13 @@ import java.util.UUID;
 @Setter
 @Builder
 public class CreateAlarmRequest {
-    @NotNull
+    @NotNull(message = "공연ID은 필수 입력 사항입니다.")
     private final UUID performanceId;
-    @NotBlank
+    @NotBlank(message = "고객 이름은 필수 입력 사항입니다.")
     private final String customerName;
-    @NotBlank
+    @NotBlank(message = "핸드폰 번호는 필수 입력 사항입니다.")
     private final String phoneNumber;
-    @NotBlank
+    @Email(message = "정확한 이메일 정보를 입력해주세요.")
     private final String email;
 
     public Alarm from(Performance performance) {

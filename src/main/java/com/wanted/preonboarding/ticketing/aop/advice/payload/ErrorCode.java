@@ -19,7 +19,7 @@ public enum ErrorCode {
 
     private final int status;
     private final String code;
-    private final String message;
+    private String message;
 
     ErrorCode(int status, String code, String message) {
         this.status = status;
@@ -38,5 +38,9 @@ public enum ErrorCode {
 
     public HttpStatusCode toHttpStatus() {
         return HttpStatusCode.valueOf(this.status);
+    }
+
+    public void changeMessage(String fieldMessage) {
+        this.message = fieldMessage;
     }
 }

@@ -23,7 +23,9 @@ public class PerformanceController {
     private final PerformanceService performanceService;
 
     @GetMapping
-    public ResponseEntity<Page<ReadPerformanceResponse>> readPerformance(@RequestParam @NotBlank String isReserve,
+    public ResponseEntity<Page<ReadPerformanceResponse>> readPerformance(@RequestParam
+                                                                             @NotBlank(message = "예약 여부는 필수 입력 사항입니다")
+                                                                             String isReserve,
                                                                          @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(performanceService.read(isReserve, pageable));
     }

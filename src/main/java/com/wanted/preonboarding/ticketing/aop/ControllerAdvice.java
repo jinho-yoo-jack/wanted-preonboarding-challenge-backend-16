@@ -5,10 +5,14 @@ import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice(annotations = RestController.class)
 public class ControllerAdvice {
@@ -78,10 +82,17 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException() {
-        ErrorCode errorCode = ErrorCode.NOT_VALIDATED_PARAM;
-        ErrorResponse errorResponse = ErrorResponse.from(errorCode);
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
 
+        String errorMessage = fieldErrors.stream()
+                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+
+        ErrorCode errorCode = ErrorCode.NOT_VALIDATED_PARAM;
+        errorCode.changeMessage(errorMessage);
+
+        ErrorResponse errorResponse = errorCode.toErrorResponse();
         return new ResponseEntity<>(errorResponse, errorCode.toHttpStatus());
     }
 

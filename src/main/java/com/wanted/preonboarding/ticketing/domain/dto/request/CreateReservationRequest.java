@@ -14,28 +14,39 @@ import java.util.UUID;
 @Setter
 @Builder
 public class CreateReservationRequest {
-    @NotBlank
+    @NotBlank(message = "예약자 이름은 필수 입력 사항입니다")
     private String reservationName;
-    @NotBlank
+
+    @NotBlank(message = "전화번호는 필수 입력 사항입니다")
     private String phoneNumber;
-    @NotNull
+
+    @NotNull(message = "잔액은 필수 입력 사항입니다")
     private Integer balance;
-    @NotNull
+
+    @NotNull(message = "공연 ID는 필수 입력 사항입니다")
     private UUID performanceId;
-    @NotNull
+
+    @NotNull(message = "좌석 ID는 필수 입력 사항입니다")
     private Long seatId;
-    @NotNull
+
+    @NotNull(message = "라운드는 필수 입력 사항입니다")
     private Integer round;
-    @NotNull
+
+    @NotNull(message = "게이트는 필수 입력 사항입니다.")
     private Integer gate;
-    @NotBlank
+
+    @NotBlank(message = "라인은 필수 입력 사항입니다")
     private String line;
-    @NotNull
+
+    @NotNull(message = "좌석 번호는 필수 입력 사항입니다")
     private Integer seat;
-    @NotBlank
+
+    @NotBlank(message = "예약 상태는 필수 입력 사항입니다")
     private String reservationStatus;
-    @NotNull
+
+    @NotNull(message = "군인 여부는 필수 입력 사항입니다")
     private Boolean isSolider;
+
 
     public Reservation fromTicket(Performance performance) {
         return Reservation.builder()
