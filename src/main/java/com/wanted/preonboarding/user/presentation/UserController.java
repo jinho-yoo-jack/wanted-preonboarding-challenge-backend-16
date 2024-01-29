@@ -1,13 +1,16 @@
 package com.wanted.preonboarding.user.presentation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.wanted.preonboarding.core.config.UserAuth;
 import com.wanted.preonboarding.user.application.UserInfoService;
 import com.wanted.preonboarding.user.domain.dto.SignUpInfo;
+import com.wanted.preonboarding.user.domain.dto.UserInfo;
 import java.security.Principal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,10 +47,17 @@ public class UserController {
         return "redirect:/";
     }
 
-    @ResponseBody
     @GetMapping("/user")
-    public String user(@AuthenticationPrincipal UserAuth userAuth){
+    public String user(@AuthenticationPrincipal UserAuth userAuth, Model model){
         log.info("UserAuth.getUserName={}", userAuth.getUsername());
-        return "테스트";
+        try {
+            UserInfo info = userInfoService.getUserInfo(userAuth.getUsername());
+            model.addAttribute("info", info);
+        }
+        catch(JsonProcessingException e){
+
+        }
+
+        return "userinfo/userInfo";
     }   //custom principal 객체 사용 시 @AuthenticationPrincipal UserAuth userAuth와 같이 어노테이션 붙이기
 }
