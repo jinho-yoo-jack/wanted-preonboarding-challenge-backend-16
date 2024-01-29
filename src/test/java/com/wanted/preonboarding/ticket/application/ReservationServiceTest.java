@@ -3,8 +3,10 @@ package com.wanted.preonboarding.ticket.application;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.wanted.preonboarding.ServiceTest;
+import com.wanted.preonboarding.ticket.AssertCluster;
 import com.wanted.preonboarding.ticket.ReservationRequestFactory;
 import com.wanted.preonboarding.ticket.ShowingRequestFactory;
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceRequest;
 import com.wanted.preonboarding.ticket.domain.dto.ReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.ReservationResponse;
 import java.util.UUID;
@@ -25,7 +27,8 @@ public class ReservationServiceTest extends ServiceTest {
 	public void 공연을_예약_할_수_있다(){
 
 		ShowingRequestFactory factory = new ShowingRequestFactory();
-		UUID performanceId = showingAdminService.register(factory.create());
+		PerformanceRequest showingRequest = factory.create();
+		UUID performanceId = showingAdminService.register(showingRequest);
 
 		//given
 		ReservationRequest reservationRequest = new ReservationRequestFactory().create(performanceId);
@@ -34,6 +37,8 @@ public class ReservationServiceTest extends ServiceTest {
 		ReservationResponse reserve = reservationService.reserve(reservationRequest);
 
 		//then
-		assertThat(reserve.id()).isNotNull();
+		AssertCluster.reservationAssert(showingRequest, reservationRequest, reserve);
 	}
+
+
 }
