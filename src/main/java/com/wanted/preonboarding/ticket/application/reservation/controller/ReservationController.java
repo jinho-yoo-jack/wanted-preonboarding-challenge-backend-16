@@ -17,12 +17,11 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
-    @GetMapping("/info")
+    @GetMapping("/info/{code}")
     public ResponseEntity<ResponseHandler<ReservationResponse>> getReservationInfo(
-            @RequestParam("name") final String name,
-            @RequestParam("phone_number") final String phoneNumber
+            @PathVariable final String code
     ) {
-        return reservationService.getReservationInfo(name, phoneNumber);
+        return reservationService.getReservationInfo(code);
     }
 
     @PostMapping("/proceed")

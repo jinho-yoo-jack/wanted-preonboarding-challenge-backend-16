@@ -44,14 +44,10 @@ public class ReservationService {
     private final PerformanceSeatInfoRepository seatInfoRepository;
     private final ApplicationEventPublisher eventPublisher;
     @Transactional(readOnly = true)
-    public ResponseEntity<ResponseHandler<ReservationResponse>> getReservationInfo(
-            String name,
-            String phoneNumber
-    ) {
+    public ResponseEntity<ResponseHandler<ReservationResponse>> getReservationInfo(String code) {
         log.info("--- Get Reservation Info ---");
-        validateNameAndPhoneNumber(name, phoneNumber);
 
-        Reservation reservation = getReservationEntity(name, phoneNumber);
+        Reservation reservation = getReservationEntity(code);
         Performance performance = reservation.getPerformanceSeatInfo().getPerformance();
 
         return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, ReservationResponse.of(reservation, performance));
@@ -93,11 +89,6 @@ public class ReservationService {
         reservationRepository.delete(reservation);
         seatInfo.modifyReservationAvailability(AVAILABLE);
         eventPublisher.publishEvent(new ReservationCancelledEvent(this, reservation));
-    }
-
-    private Reservation getReservationEntity(String name, String phoneNumber) {
-        return reservationRepository.findByNameAndPhoneNumber(name, phoneNumber)
-                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
     }
 
     private Reservation getReservationEntity(String code) {
