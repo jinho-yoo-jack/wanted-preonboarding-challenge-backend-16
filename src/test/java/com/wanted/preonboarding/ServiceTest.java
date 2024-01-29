@@ -8,6 +8,6 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @ActiveProfiles(profiles = "test")
-public class ServiceTest {
+public class ServiceTest extends TestCleanUp{
 
 }

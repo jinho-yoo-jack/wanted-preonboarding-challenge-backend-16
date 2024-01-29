@@ -1,27 +1,23 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceType;
+import com.wanted.preonboarding.ticket.domain.DiscountPolicy;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import java.time.LocalDate;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
-@Table
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Performance {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -32,16 +28,32 @@ public class Performance {
     private String name;
     @Column(nullable = false)
     private int price;
-    @Column(nullable = false)
-    private int round;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PerformanceType type;
-    @Column(nullable = false)
-    private LocalDate start_date;
-    @Column(nullable = false, name = "is_reserve")
-    private boolean reserve;
+
+    @ManyToOne
+    @JoinColumn(name = "discount_policy_id")
+    private DiscountPolicy discountPolicy;
+
+    public Performance(String name, int price, PerformanceType type,
+        DiscountPolicy discountPolicy) {
+        this.name = name;
+        this.price = price;
+        this.type = type;
+        this.discountPolicy = discountPolicy;
+    }
+
+    public static Performance create(String name, int price, PerformanceType type,
+        DiscountPolicy discountPolicy){
+        return new Performance(name, price, type, discountPolicy);
+    }
+
+    public int calculateFee() {
+        int discountAmount = discountPolicy.getDiscountAmount(price);
+        return this.price - discountAmount;
+    }
 
 
 }

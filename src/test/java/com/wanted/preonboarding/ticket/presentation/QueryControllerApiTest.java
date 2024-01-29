@@ -3,16 +3,14 @@ package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.ApiTest;
 import com.wanted.preonboarding.ticket.AssertCluster;
-import com.wanted.preonboarding.ticket.PerformanceRequestFactory;
-import com.wanted.preonboarding.ticket.application.PerformanceAdminService;
+import com.wanted.preonboarding.ticket.ShowingRequestFactory;
+import com.wanted.preonboarding.ticket.application.ShowingAdminService;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceRequest;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceResponse;
-import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +21,14 @@ import org.springframework.http.MediaType;
 public class QueryControllerApiTest extends ApiTest {
 
 	@Autowired
-	private PerformanceAdminService performanceAdminService;
-
-	@Autowired
-	private PerformanceRepository performanceRepository;
-
-	@AfterEach
-	void tearDown() {
-		performanceRepository.deleteAll();
-	}
+	private ShowingAdminService showingAdminService;
 
 	@Test
 	public void 공연_및_전시_정보_목록_조회_API(){
 		//given
-		PerformanceRequestFactory request = new PerformanceRequestFactory();
+		ShowingRequestFactory request = new ShowingRequestFactory();
 		PerformanceRequest performanceRequest = request.create();
-		performanceAdminService.register(performanceRequest);
+		showingAdminService.register(performanceRequest);
 
 		//when
 		ExtractableResponse<Response> result = RestAssured.given().log().all()
@@ -60,9 +50,9 @@ public class QueryControllerApiTest extends ApiTest {
 	@Test
 	public void 공연_및_전시_정보_상세_조회_API(){
 		//given
-		PerformanceRequestFactory request = new PerformanceRequestFactory();
+		ShowingRequestFactory request = new ShowingRequestFactory();
 		PerformanceRequest performanceRequest = request.create();
-		performanceAdminService.register(performanceRequest);
+		showingAdminService.register(performanceRequest);
 
 		//when
 		ExtractableResponse<Response> result = RestAssured.given().log().all()
