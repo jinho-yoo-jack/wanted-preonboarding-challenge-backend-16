@@ -25,7 +25,7 @@ public record ReservationResponse(
 			performance.getName(),
 			performanceSeatInfo.getSeat(),
 			performanceSeatInfo.getLine(),
-			performance.getId(),
+			performanceReservation.getId(),
 			performanceReservation.getName(),
 			performanceReservation.getPhoneNumber()
 		);

@@ -8,8 +8,10 @@ import com.wanted.preonboarding.performance.ReservationRequestFactory;
 import com.wanted.preonboarding.performance.domain.creator.ShowingCreator;
 import com.wanted.preonboarding.performance.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("도메인: 공연 및 전시 상영 - PerformanceShowing")
 public class PerformanceShowingTest {
 
 	private final ShowingCreator showingCreator = new ShowingCreator();

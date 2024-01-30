@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-@DisplayName("쿼리 controller API 테스트")
+@DisplayName("API: QueryController")
 public class QueryControllerApiTest extends ApiTest {
 
 	@Autowired

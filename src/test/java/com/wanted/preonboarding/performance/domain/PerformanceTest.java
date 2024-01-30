@@ -7,7 +7,7 @@ import com.wanted.preonboarding.performance.domain.discount_policy.PercentDiscou
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("Performance 테스트")
+@DisplayName("도메인: 공연 및 전시 - Performance")
 public class PerformanceTest {
 
 	@Test

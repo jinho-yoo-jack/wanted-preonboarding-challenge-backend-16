@@ -2,13 +2,18 @@ package com.wanted.preonboarding.performance.domain;
 
 import com.wanted.preonboarding.core.exception.ReservationSoldOutException;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,13 +30,19 @@ public class PerformanceShowing {
 	@Column(columnDefinition = "BINARY(16)")
 	private UUID id;
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "performenc_id",nullable = false)
 	private Performance performance;
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "showroom_id", nullable = false)
 	private PerformanceShowroom performanceShowroom;
+
+	@OneToMany(mappedBy = "performanceShowing",orphanRemoval = true)
+	private List<PerformanceReservation> reservationList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "showing",cascade = CascadeType.ALL,orphanRemoval = true)
+	private List<PerformanceShowingObserver> observers;
 
 	@Column(nullable = false)
 	private int round;
@@ -60,11 +71,14 @@ public class PerformanceShowing {
 		if(!reservationAvailable)
 			throw new ReservationSoldOutException();
 		int fee = performance.calculateFee();
-		return PerformanceReservation.of(this,request,fee);
-
+		return PerformanceReservation.of(this, request, fee);
 	}
 
 	public void soldOut() {
 		this.reservationAvailable = false;
+	}
+
+	public void addReservation(PerformanceReservation reservation) {
+		this.reservationList.add(reservation);
 	}
 }

@@ -15,7 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@DisplayName("공연 및 전사 - 목록조회 - 유효성 테스트")
+@DisplayName("유효성: 공연 및 전시 - 목록조회")
 public class QueryControllerTest extends ControllerTest {
 
 	@Autowired

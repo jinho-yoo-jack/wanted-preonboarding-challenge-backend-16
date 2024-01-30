@@ -2,8 +2,10 @@ package com.wanted.preonboarding.performance.domain.discount_policy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("할인 정책 - 퍼센트")
 class PercentDiscountPolicyTest {
 
 	@Test

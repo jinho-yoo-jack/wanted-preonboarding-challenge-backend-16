@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class ReservationRequestFactory {
 
-	public ReservationRequest create(UUID performanceId) {
-		return new ReservationRequest(performanceId, "예약자이름", "01012345678", 20000, 3, 'c', 3);
+	public ReservationRequest create(UUID showingId) {
+		return new ReservationRequest(showingId, "예약자이름", "01012345678", 20000, 3, 'c', 3);
 	}
 }

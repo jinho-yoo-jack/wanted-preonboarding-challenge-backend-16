@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
-@DisplayName("공연 예약 API 테스트")
+@DisplayName("API: ReserveController")
 public class ReserveControllerApiTest extends ApiTest {
 
 	@Autowired

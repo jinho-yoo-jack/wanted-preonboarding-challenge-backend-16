@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-@DisplayName("공연 및 전시 조회 서비스 테스트")
+@DisplayName("서비스: 공연 및 전시 - PerformanceService")
 public class PerformanceServiceTest extends ServiceTest {
 
 	@Autowired
