@@ -1,17 +1,21 @@
 package com.wanted.preonboarding.ticket.application.performance.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.application.aop.annotation.ExecutionTimer;
+import com.wanted.preonboarding.ticket.application.annotation.ExecutionTimer;
 import com.wanted.preonboarding.ticket.application.performance.service.PerformanceService;
+import com.wanted.preonboarding.ticket.domain.dto.request.RegisterPerformance;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceDetail;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceInfo;
-import com.wanted.preonboarding.ticket.domain.dto.request.RegisterPerformance;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+
+import static com.wanted.preonboarding.core.domain.response.ResponseHandler.MESSAGE_SUCCESS;
+import static com.wanted.preonboarding.core.domain.response.ResponseHandler.createResponse;
 
 @ExecutionTimer
 @RestController
@@ -23,23 +27,25 @@ public class PerformanceController {
 
     @GetMapping("/list")
     public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
-        return performanceService.getAllPerformanceInfoList();
+        List<PerformanceInfo> response = performanceService.getAllPerformanceInfoList();
+        return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, response);
     }
 
-    @GetMapping("/detail/{id}/{round}")
+    @GetMapping("/{performance_id}/detail")
     public ResponseEntity<ResponseHandler<PerformanceDetail>> getPerformanceInfoDetail(
-            @PathVariable final UUID id,
-            @PathVariable final int round
+            @PathVariable("performance_id") final UUID id,
+            @RequestParam final int round
     ) {
-        return performanceService.getPerformanceInfoDetail(id, round);
+        PerformanceDetail response = performanceService.getPerformanceInfoDetail(id, round);
+        return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, response);
     }
 
     @PostMapping("/register")
     public ResponseEntity<ResponseHandler<PerformanceDetail>> registerPerformance(
             @RequestBody final RegisterPerformance request
     ) {
-        return performanceService.registerPerformance(request);
+        PerformanceDetail response = performanceService.registerPerformance(request);
+        return createResponse(HttpStatus.CREATED, MESSAGE_SUCCESS, response);
     }
-
 
 }

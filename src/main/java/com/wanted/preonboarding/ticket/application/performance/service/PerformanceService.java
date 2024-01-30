@@ -35,29 +35,28 @@ public class PerformanceService {
     private final PerformanceSeatInfoRepository seatInfoRepository;
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
+    public List<PerformanceInfo> getAllPerformanceInfoList() {
         log.info("--- Get All Performance Info List ---");
-        List<PerformanceInfo> performanceInfoList = getAllAvailalePerformances();
-        return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, performanceInfoList);
+        return getAllAvailalePerformances();
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ResponseHandler<PerformanceDetail>> getPerformanceInfoDetail(UUID id, int round) {
+    public PerformanceDetail getPerformanceInfoDetail(UUID id, int round) {
         log.info("--- Get Performance Info Detail ---");
         Performance performance = getPerformanceEntity(id, round);
         List<PerformanceSeatInfo> seatInfoList = performance.getPerformanceSeatInfoList();
-        return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, PerformanceDetail.of(seatInfoList));
+        return PerformanceDetail.of(seatInfoList);
     }
 
     @Transactional
-    public ResponseEntity<ResponseHandler<PerformanceDetail>> registerPerformance(RegisterPerformance request) {
+    public PerformanceDetail registerPerformance(RegisterPerformance request) {
         log.info("--- Register Performance ---");
         Performance performance = Performance.of(request);
         List<PerformanceSeatInfo> seatInfoList = registerSeatInfo(performance, request);
 
         performance.setPerformanceSeatInfoList(seatInfoList);
         performanceRepository.save(performance);
-        return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, PerformanceDetail.of(seatInfoList));
+        return PerformanceDetail.of(seatInfoList);
     }
 
     public Performance getPerformanceEntity(UUID id, int round) {

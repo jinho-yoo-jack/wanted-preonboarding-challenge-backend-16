@@ -39,7 +39,7 @@ public class NotificationService {
     private final MailService mailService;
 
     @Transactional
-    public ResponseEntity<ResponseHandler<Void>> setNotification(
+    public void setNotification(
             RequestNotification requestNotification
     ) {
         log.info("--- Set Notification ---");
@@ -48,7 +48,6 @@ public class NotificationService {
         Performance performance = performanceService.getPerformanceEntity(id, round);
 
         notificationRepository.save(Notification.of(requestNotification, performance));
-        return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, null);
     }
 
     @ExecutionTimer

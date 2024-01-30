@@ -46,16 +46,16 @@ public class ReservationService {
     private final PaymentService paymentService;
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ResponseHandler<ReservationResponse>> getReservationInfo(String code) {
+    public ReservationResponse getReservationInfo(String code) {
         log.info("--- Get Reservation Info ---");
 
         Reservation reservation = getReservationEntity(code);
         Performance performance = reservation.getPerformanceSeatInfo().getPerformance();
 
-        return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, ReservationResponse.of(reservation, performance));
+        return ReservationResponse.of(reservation, performance);
     }
     @Transactional
-    public ResponseEntity<ResponseHandler<ReservationResponse>> proceedReservation(
+    public ReservationResponse proceedReservation(
             RequestReservation requestReservation
     ) {
         log.info("--- Proceed Reservation ---");
@@ -67,17 +67,15 @@ public class ReservationService {
         checkSeatAvailability(seatInfo);
         processReservation(reservation, seatInfo);
         PaymentResponse paymentResponse = paymentService.processPayment(reservation, requestReservation.balance());
-        return createResponse(HttpStatus.CREATED, MESSAGE_SUCCESS, ReservationResponse.of(reservation, performance, paymentResponse));
+        return ReservationResponse.of(reservation, performance, paymentResponse);
     }
 
     @Transactional
-    public ResponseEntity<ResponseHandler<Void>> cancelReservation(String code) {
+    public void cancelReservation(String code) {
         log.info("--- Cancel Reservation ---");
         Reservation reservation = getReservationEntity(code);
         PerformanceSeatInfo seatInfo = reservation.getPerformanceSeatInfo();
-
         processCancellation(reservation, seatInfo);
-        return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, null);
     }
 
     // ========== PRIVATE METHODS ========== //
