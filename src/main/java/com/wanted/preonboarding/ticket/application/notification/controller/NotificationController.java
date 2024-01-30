@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.application.notification.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.application.aop.annotation.ExecutionTimer;
+import com.wanted.preonboarding.ticket.application.annotation.ExecutionTimer;
 import com.wanted.preonboarding.ticket.application.notification.service.NotificationService;
 import com.wanted.preonboarding.ticket.domain.dto.request.RequestNotification;
 import lombok.RequiredArgsConstructor;

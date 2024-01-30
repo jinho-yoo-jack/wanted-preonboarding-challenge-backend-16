@@ -17,7 +17,7 @@ public class BackendPreonboardingApplication {
 
     @PostConstruct
     public void setTimeZone() {
-        TimeZone.setDefault(java.util.TimeZone.getTimeZone("Asia/Seoul"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
     }
 
 }

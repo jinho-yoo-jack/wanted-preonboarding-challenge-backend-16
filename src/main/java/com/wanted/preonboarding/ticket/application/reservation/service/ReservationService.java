@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.application.reservation.service;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.common.exception.ServiceFailedException;
+import com.wanted.preonboarding.ticket.application.performance.service.PerformanceService;
 import com.wanted.preonboarding.ticket.application.reservation.event.ReservationCancelledEvent;
 import com.wanted.preonboarding.ticket.application.common.exception.ArgumentNotValidException;
 import com.wanted.preonboarding.ticket.application.common.exception.EntityNotFoundException;
@@ -39,10 +40,11 @@ public class ReservationService {
     // 책임 : 예약 진행 및 취소, 예약 내역 조회
     public static final int RESERVATION_CODE_LENGTH = 6;
 
-    private final PaymentService paymentService;
     private final ReservationRepository reservationRepository;
-    private final PerformanceSeatInfoRepository seatInfoRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final PerformanceService performanceService;
+    private final PaymentService paymentService;
+
     @Transactional(readOnly = true)
     public ResponseEntity<ResponseHandler<ReservationResponse>> getReservationInfo(String code) {
         log.info("--- Get Reservation Info ---");
@@ -57,7 +59,7 @@ public class ReservationService {
             RequestReservation requestReservation
     ) {
         log.info("--- Proceed Reservation ---");
-        PerformanceSeatInfo seatInfo = getSeatInfoEntity(requestReservation);
+        PerformanceSeatInfo seatInfo = performanceService.getSeatInfoEntity(requestReservation);
         Performance performance = seatInfo.getPerformance();
         Reservation reservation = Reservation.of(requestReservation, seatInfo, createUniqueCode());
 
@@ -96,16 +98,6 @@ public class ReservationService {
                 .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
     }
 
-    private PerformanceSeatInfo getSeatInfoEntity(RequestReservation requestReservation) {
-        UUID id = requestReservation.performanceId();
-        Integer round = requestReservation.round();
-        Character line = requestReservation.line();
-        Integer seat = requestReservation.seat();
-
-        return seatInfoRepository.findByPerformanceIdAndRoundAndLineAndSeat(id, round, String.valueOf(line), seat)
-                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
-    }
-
     private String createUniqueCode() {
         String code;
         do {
@@ -113,15 +105,6 @@ public class ReservationService {
         } while (reservationRepository.existsByCode(code));
 
         return code;
-    }
-
-    private void validateNameAndPhoneNumber(String name, String phone) {
-        String nameRegex = "^[가-힣]{2,4}$";
-        String phoneRegex = "^01(?:0|1|[6-9])-?(?:\\d{3}|\\d{4})-?\\d{4}$";
-
-        if (!name.matches(nameRegex) || !phone.matches(phoneRegex)) {
-            throw new ArgumentNotValidException(ARGUMENT_NOT_VALID);
-        }
     }
 
     private void checkPerformanceAvailability(Performance performance) {
