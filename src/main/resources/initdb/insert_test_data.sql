@@ -1,11 +1,28 @@
-INSERT INTO `performance` (name, price, round, type, start_date, is_reserve)
-VALUES ('레베카', 100000, 1, 0, '2024-01-20 19:30:00', 'disable');
+INSERT INTO `performance` (name, price, round, type, start_date, is_reserve) VALUES
+('레베카', 100000, 1, 0, '2024-01-20 19:30:00', 'disable'),
+('영웅', 100000, 1, 1, '2024-02-27 17:30:00', 'enable'),
+('영웅', 100000, 2, 1, '2024-02-27 19:30:00', 'enable'),
+('캣츠', 100000, 1, 1, '2024-01-29 19:30:00', 'disable'),
+('노트르담의 곱추', 100000, 1, 1, '2024-01-21 19:30:00', 'disable'),
+('레 미제라블', 100000, 1, 1, '2024-02-22 19:30:00', 'enable');
+
 
 INSERT INTO performance_seat_info VALUES
- (DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 1, 'enable', DEFAULT, DEFAULT)
-,(DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 2, 'enable', DEFAULT, DEFAULT)
-,(DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 3, 'enable', DEFAULT, DEFAULT)
-,(DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 4, 'enable', DEFAULT, DEFAULT);
+(DEFAULT, (SELECT id FROM performance WHERE name = '레베카' limit 1), 1, 1, 'A', 1, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '레베카' limit 1), 1, 1, 'A', 2, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '레베카' limit 1), 1, 1, 'A', 3, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '레베카' limit 1), 1, 1, 'A', 4, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '영웅' AND round = 1 limit 1), 1, 1, 'A', 1, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '영웅' AND round = 1 limit 1), 1, 1, 'A', 2, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '영웅' AND round = 1 limit 1), 1, 1, 'A', 3, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '영웅' AND round = 1 limit 1), 1, 1, 'A', 4, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '영웅' AND round = 2 limit 1), 2, 1, 'B', 2, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '영웅' AND round = 2 limit 1), 2, 1, 'B', 3, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '영웅' AND round = 2 limit 1), 2, 1, 'B', 4, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '레 미제라블' AND round = 1 limit 1), 1, 1, 'A', 1, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '레 미제라블' AND round = 1 limit 1), 1, 1, 'A', 2, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '레 미제라블' AND round = 1 limit 1), 1, 1, 'A', 3, 'enable', DEFAULT, DEFAULT),
+(DEFAULT, (SELECT id FROM performance WHERE name = '레 미제라블' AND round = 1 limit 1), 1, 1, 'A', 4, 'enable', DEFAULT, DEFAULT);
 
 INSERT INTO user_info VALUES
 (DEFAULT, 'TEST1', 'TEST1111', 'TEST1@TEST1.COM', '1111', '010-3232-1111', '2000-01-01 00:03:00', DEFAULT),
