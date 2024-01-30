@@ -10,18 +10,17 @@ import java.util.List;
 
 import static com.wanted.preonboarding.ticket.application.common.util.TimeFormatter.convertToReadableFormat;
 
-@Value
 @Builder
-public class SendNotification {
+public record SendNotification(
 
-    String performanceId;
-    String performanceName;
-    Integer round;
-    String startDate;
-    Character line;
-    Integer seat;
-    List<String> emailList;
-
+        String performanceId,
+        String performanceName,
+        Integer round,
+        String startDate,
+        Character line,
+        Integer seat,
+        List<String> emailList
+) {
     public static SendNotification of(List<Notification> notificationList, Reservation reservation) {
         Notification notification = notificationList.get(0);
         Performance performance = notification.getPerformance();
@@ -36,3 +35,4 @@ public class SendNotification {
                 .build();
     }
 }
+

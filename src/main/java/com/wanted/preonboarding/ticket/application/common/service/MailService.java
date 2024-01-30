@@ -54,9 +54,9 @@ public class MailService {
     @ExecutionTimer
     public CompletableFuture<Boolean> sendNotificationMail(SendNotification notification) {
         try {
-            String title = RESERVATION_CANCELLED_TITLE + TITLE_SEPARATOR + notification.getPerformanceName();
+            String title = RESERVATION_CANCELLED_TITLE + TITLE_SEPARATOR + notification.performanceName();
             String content = createReservationCancelledContent(notification);
-            for (String email : notification.getEmailList()) {
+            for (String email : notification.emailList()) {
                 sendMail(email, title, content);
             }
             return CompletableFuture.completedFuture(true);

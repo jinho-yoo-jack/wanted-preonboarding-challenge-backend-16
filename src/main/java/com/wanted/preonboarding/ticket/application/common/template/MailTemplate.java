@@ -35,9 +35,9 @@ public class MailTemplate {
                                                 th("취소 좌석 정보")
                                         ),
                                         tr(
-                                                td(notification.getPerformanceName() + " (" + notification.getPerformanceId() + ")"),
-                                                td(notification.getRound() + "회차" + " (" + notification.getStartDate() + ")"),
-                                                td(notification.getLine() + "열 " + notification.getSeat())
+                                                td(notification.performanceName() + " (" + notification.performanceId() + ")"),
+                                                td(notification.round() + "회차" + " (" + notification.startDate() + ")"),
+                                                td(notification.line() + "열 " + notification.seat())
                                         )
                                 ),
                                 p("취소 좌석에 대한 예매는 선착순이오니, 예매를 원하시는 경우 원티드 티켓 홈페이지에서 예매를 진행해주세요."),
