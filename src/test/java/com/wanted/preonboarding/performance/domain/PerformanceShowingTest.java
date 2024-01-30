@@ -3,6 +3,7 @@ package com.wanted.preonboarding.performance.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.wanted.preonboarding.core.exception.ReservationSoldOutException;
 import com.wanted.preonboarding.performance.ReservationRequestFactory;
 import com.wanted.preonboarding.performance.domain.creator.ShowingCreator;
 import com.wanted.preonboarding.performance.domain.vo.ReservationStatus;
@@ -44,6 +45,6 @@ public class PerformanceShowingTest {
 		//when //then
 		assertThatThrownBy(()->{
 			PerformanceReservation reservation = showing.reserve(reservationRequest);
-		}).hasMessageContaining("매진된 상품 입니다.");
+		}).isInstanceOf(ReservationSoldOutException.class).hasMessageContaining("매진된 상품 입니다.");
 	}
 }
