@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public record ReservationRequest(
 	// 공연 및 전시 정보 + 예약자 정보
-	UUID performanceId,
+	UUID showingId,
 	String reservationName,
 	String reservationPhoneNumber,
 	long amount,

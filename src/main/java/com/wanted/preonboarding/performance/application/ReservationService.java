@@ -23,8 +23,8 @@ public class ReservationService {
 
 
 	public ReservationResponse reserve(ReservationRequest request) {
-		log.info("ReservationRequest ID => {}", request.performanceId());
-		PerformanceShowing performanceShowing = showingRepository.findById(request.performanceId())
+		log.info("ReservationRequest ID => {}", request.showingId());
+		PerformanceShowing performanceShowing = showingRepository.findById(request.showingId())
 			.orElseThrow(EntityNotFoundException::new);
 
 		PerformanceReservation performanceReservation = performanceShowing.reserve(request);
