@@ -1,7 +1,12 @@
 package com.wanted.preonboarding.ticket.domain.performance;
 
+import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.RESERVED;
+
 import com.wanted.preonboarding.ticket.domain.BaseTimeEntity;
+import com.wanted.preonboarding.ticket.domain.performance.model.ReserveState;
+import com.wanted.preonboarding.ticket.domain.performance.model.ReserveStateConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,12 +43,21 @@ public class PerformanceSeatInfo extends BaseTimeEntity {
     @Column(nullable = false)
     private int seat;
 
+    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
+    @Convert(converter = ReserveStateConverter.class)
+    private ReserveState isReserved;
+
     @Builder
-    public PerformanceSeatInfo(UUID performanceId, int round, int gate, String line, int seat) {
+    public PerformanceSeatInfo(UUID performanceId, int round, int gate, String line, int seat, ReserveState isReserved) {
         this.performanceId = performanceId;
         this.round = round;
         this.gate = gate;
         this.line = line;
         this.seat = seat;
+        this.isReserved = isReserved;
+    }
+
+    public void reserve() {
+        this.isReserved = RESERVED;
     }
 }

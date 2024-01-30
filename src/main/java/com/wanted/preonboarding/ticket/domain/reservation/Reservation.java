@@ -34,11 +34,11 @@ public class Reservation extends BaseTimeEntity {
     @Column(nullable = false)
     private int round;
     private int gate;
-    private char line;
+    private String line;
     private int seat;
 
     @Builder
-    public Reservation(UUID performanceId, String name, String phoneNumber, int round, int gate, char line, int seat) {
+    public Reservation(UUID performanceId, String name, String phoneNumber, int round, int gate, String line, int seat) {
         this.performanceId = performanceId;
         this.name = name;
         this.phoneNumber = phoneNumber;
