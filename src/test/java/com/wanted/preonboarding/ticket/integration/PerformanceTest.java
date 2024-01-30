@@ -25,7 +25,6 @@ class PerformanceTest {
     @Autowired
     private TestHelper testHelper;
 
-
     @TestFactory
     @Transactional
     @DisplayName(("공연/전시 정보 목록 & 상세 조회 테스트"))
@@ -40,8 +39,8 @@ class PerformanceTest {
         // When & Then
         return Stream.of(
                 createPerformanceTest("공연/전시 정보 목록 조회 성공", "/api/v1/performance/list", status().isOk()),
-                createPerformanceTest("공연/전시 정보 상세 조회 성공", "/api/v1/performance/detail/" + successCase, status().isOk()),
-                createPerformanceTest("공연/전시 정보 상세 조회 실패 - 존재하지 않는 회차", "/api/v1/performance/detail/" + failCase, status().is4xxClientError())
+                createPerformanceTest("공연/전시 정보 상세 조회 성공", "/api/v1/performance/" + successCase + "/detail", status().isOk()),
+                createPerformanceTest("공연/전시 정보 상세 조회 실패 - 존재하지 않는 회차", "/api/v1/performance/" + failCase + "/detail", status().isBadRequest())
         );
     }
 

@@ -88,32 +88,23 @@ class ReservationTest {
     @DisplayName("예약 조회 기능 테스트")
     Stream<DynamicTest> dynamicTestForReservationInfo() {
         // Given
-        String[] successCase = {"홍길동", "010-1234-1234"};
-        String[] failCaseA = {"김철수", "010-1234-1234"};
-        String[] failCaseB = {"Peter", "1234"};
+        String successCase = "6SMYHX";
+        String failCase = "AAA111";
 
         // When & Then
-        String endPoint = "/api/v1/reservation/info";
+        String endPoint = "/api/v1/reservation/detail/";
         return Stream.of(
                 executeTest("예약 조회 성공",
-                        get(endPoint)
-                                .param("name", successCase[0])
-                                .param("phone_number", successCase[1]),
+                        get(endPoint + successCase),
                         status().isOk(),
                         content().contentType("application/json"),
                         jsonPath("$.data").isNotEmpty()),
-                executeTest("예약 조회 실패 - 존재하지 않는 예약자",
-                        get(endPoint)
-                                .param("name", failCaseA[0])
-                                .param("phone_number", failCaseA[1]),
-                        status().is4xxClientError()),
-                executeTest("예약 조회 실패 - 잘못된 요청",
-                        get(endPoint)
-                                .param("name", failCaseB[0])
-                                .param("phone_number", failCaseB[1]),
-                        status().is4xxClientError())
+                executeTest("예약 조회 실패 - 존재하지 않는 예약",
+                        get(endPoint + failCase),
+                        status().is4xxClientError(),
+                        content().contentType("application/json"),
+                        jsonPath("$.data").isEmpty())
         );
-
     }
 
     @TestFactory
@@ -121,7 +112,7 @@ class ReservationTest {
     @DisplayName("예약 취소 기능 테스트")
     Stream<DynamicTest> dynamicTestForReservationCancel() {
         // Given
-        String successCase = "N6Y9DJ";
+        String successCase = "6SMYHX";
         String failCase = "AAA111";
 
         // When & Then
