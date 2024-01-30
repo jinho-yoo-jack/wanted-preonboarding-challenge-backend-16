@@ -18,11 +18,11 @@ public record ReservationInfo(
     int seat,
     String name,
     String phone,
-    int price
+    int paymentAmount
 
 ) {
 
-    public static ReservationInfo of(Reservation reservation, PerformanceSeatInfo performanceSeatInfo, String performanceName) {
+    public static ReservationInfo of(Reservation reservation, PerformanceSeatInfo performanceSeatInfo, String performanceName, int paymentAmount) {
         return ReservationInfo.builder()
             .performanceName(performanceName)
             .performanceRound(performanceSeatInfo.getRound())
@@ -31,6 +31,7 @@ public record ReservationInfo(
             .seat(performanceSeatInfo.getSeat())
             .name(reservation.getName())
             .phone(reservation.getPhoneNumber())
+            .paymentAmount(paymentAmount)
             .build();
     }
 }

@@ -11,6 +11,7 @@ import com.wanted.preonboarding.ticket.domain.performance.Performance;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceRepository;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.performance.model.PerformanceType;
+import com.wanted.preonboarding.ticket.domain.reservation.ReservationRepository;
 import com.wanted.preonboarding.ticket.dto.request.reservation.ReservationRequest;
 import com.wanted.preonboarding.ticket.dto.response.reservation.ReservationInfo;
 import com.wanted.preonboarding.ticket.exception.argument.InvalidArgumentException;
@@ -42,12 +43,19 @@ class ReserveServiceImplTest {
     @Autowired
     PerformanceRepository performanceRepository;
 
+    @Autowired
+    ReservationRepository reservationRepository;
+
     String performanceId;
 
     @BeforeEach
     void setUp() {
         List<Performance> all = performanceRepository.findAll();
         performanceId = all.get(0).getId().toString();
+
+        performanceRepository.deleteAllInBatch();
+        discountRepository.deleteAllInBatch();
+        reservationRepository.deleteAllInBatch();
     }
 
     @DisplayName("예약에 성공한다.")
@@ -87,7 +95,7 @@ class ReserveServiceImplTest {
             .performanceId(performanceId)
             .round(1)
             .line("A")
-            .seat(4)
+            .seat(5)
             .build();
         LocalDateTime requestTime = LocalDateTime.of(2024, 1, 30, 12, 00);
 
@@ -196,7 +204,7 @@ class ReserveServiceImplTest {
 
             // then
             assertThat(reservationInfo).isNotNull();
-            assertThat(reservationInfo.price()).isEqualTo(90_000);
+            assertThat(reservationInfo.paymentAmount()).isEqualTo(90_000);
         }
 
         @DisplayName("여러개의 할인 로직이 적용될 수 있다")
@@ -237,7 +245,7 @@ class ReserveServiceImplTest {
 
             // then
             assertThat(reservationInfo).isNotNull();
-            assertThat(reservationInfo.price()).isEqualTo(85_000);
+            assertThat(reservationInfo.paymentAmount()).isEqualTo(85_000);
         }
 
         @DisplayName("잔고가 공연 가격보다 작지만 할인된 금액으로 예약할 수 있는 경우 예약에 성공한다")

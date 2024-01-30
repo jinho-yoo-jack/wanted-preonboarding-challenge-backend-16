@@ -47,7 +47,7 @@ public class ReserveServiceImpl implements ReserveService {
         reservationRepository.save(reservation);
 
         seatInfo.reserve();
-        return ReservationInfo.of(reservation, seatInfo, performance.getName());
+        return ReservationInfo.of(reservation, seatInfo, performance.getName(), discountedPrice);
     }
 
     private Reservation createReservation(final PerformanceSeatInfo seatInfo, final String name, final String phoneNumber) {
