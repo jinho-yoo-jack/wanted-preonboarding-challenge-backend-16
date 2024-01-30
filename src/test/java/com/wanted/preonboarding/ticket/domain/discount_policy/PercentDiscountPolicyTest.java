@@ -1,10 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.discount_policy;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
-import com.wanted.preonboarding.ticket.domain.Performance;
-import com.wanted.preonboarding.ticket.domain.PerformanceCreator;
 import org.junit.jupiter.api.Test;
 
 class PercentDiscountPolicyTest {
@@ -15,17 +12,12 @@ class PercentDiscountPolicyTest {
 		int price = 20000;
 		int discountPercent = 10;
 		PercentDiscountPolicy discountPolicy = new PercentDiscountPolicy(discountPercent);
-		PerformanceCreator performanceCreator = new PerformanceCreator();
-		performanceCreator.setPrice(price);
-		performanceCreator.setDiscountPolicy(discountPolicy);
-
-		Performance performance = performanceCreator.getPerformance();
 
 		//when
-		int fee = performance.calculateFee();
+		int discountFee = discountPolicy.getDiscountAmount(price);
 
 		//then
-		assertThat(fee).isEqualTo(price - (price * discountPercent / 100));
+		assertThat(discountFee).isEqualTo(price * discountPercent / 100);
 	}
 
 }

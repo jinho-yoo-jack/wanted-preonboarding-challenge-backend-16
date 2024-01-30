@@ -1,7 +1,5 @@
 package com.wanted.preonboarding.ticket.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.ticket.AssertCluster;
 import com.wanted.preonboarding.ticket.ReservationRequestFactory;

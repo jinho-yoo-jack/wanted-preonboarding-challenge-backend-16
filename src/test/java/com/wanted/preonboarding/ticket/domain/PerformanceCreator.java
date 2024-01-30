@@ -23,4 +23,12 @@ public class PerformanceCreator {
 		DiscountPolicy discountPolicy) {
 		this.discountPolicy = discountPolicy;
 	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public DiscountPolicy getDiscountPolicy() {
+		return discountPolicy;
+	}
 }
