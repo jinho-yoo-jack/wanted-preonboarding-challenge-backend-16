@@ -17,8 +17,10 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -55,14 +57,13 @@ import org.hibernate.annotations.DynamicUpdate;
 @Builder
 @DynamicInsert  // insert시 지정하지 않은 값에 대하여 db default값이 적용되도록 하기 위함
 @DynamicUpdate
+@NoArgsConstructor
+@AllArgsConstructor
 public class PerformanceSeatInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;  // 좌석정보 ID (PK)
-//    @Column(name = "performance_id", nullable = false, columnDefinition = "BINARY(16)")
-//    private UUID performanceId;  // 공연전시ID
-//    @Column(nullable = false)
-//    private int round;   // 회차(FK)
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(name = "performance_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)),
@@ -90,4 +91,5 @@ not-null property references a null or transient value
 @DynamicInsert 지정했고 columnDefinition 속성 지정했음에도 저러면 nullable = true 줘버리기
 
 @ForeignKey(ConstraintMode.NO_CONSTRAINT) -> DB에서 FK 안 주는 대신 어플리케이션 레벨에서 연관관게를 맺음
+좌석은 가로로 A~F, 세로로 1~15
  */

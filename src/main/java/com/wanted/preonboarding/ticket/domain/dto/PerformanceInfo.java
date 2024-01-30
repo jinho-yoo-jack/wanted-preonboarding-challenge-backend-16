@@ -14,6 +14,7 @@ public class PerformanceInfo {
     private UUID performanceId;
     private String performanceName;
     private String performanceType;
+    private int performanceRound;
     private LocalDate startDate;
     private String isReserve;
 
@@ -22,6 +23,7 @@ public class PerformanceInfo {
             .performanceId(entity.getId())
             .performanceName(entity.getName())
             .performanceType(convertCodeToName(entity.getType()))
+            .performanceRound(entity.getRound())
             .startDate(entity.getStart_date().toLocalDate())
             .isReserve(entity.getIsReserve())
             .build();
