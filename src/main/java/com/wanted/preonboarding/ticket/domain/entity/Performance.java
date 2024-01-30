@@ -46,7 +46,7 @@ public class Performance {
     @Column(nullable = false)
     private int type;   // 공연 타입 ('NONE, CONCERT, EXHIBITION')
     @Column(nullable = false)
-    private Date start_date;    // 공연 일시
+    private LocalDateTime start_date;    // 공연 일시
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;   // 예약 여부
     @Column(nullable = false, columnDefinition = "DATETIME DEFAULT NOW()")
