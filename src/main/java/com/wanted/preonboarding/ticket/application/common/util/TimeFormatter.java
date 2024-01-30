@@ -3,7 +3,7 @@ package com.wanted.preonboarding.ticket.application.common.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class TimeFormatter {
+public final class TimeFormatter {
 
     private TimeFormatter() {
         throw new IllegalStateException("유틸리티 클래스는 인스턴스화할 수 없습니다.");

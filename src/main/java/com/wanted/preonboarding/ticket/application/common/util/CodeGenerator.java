@@ -8,7 +8,7 @@ import java.util.Random;
  * <p>
  * 인증 코드 생성, 임시 비밀번호 생성 등에 사용할 수 있습니다.
  */
-public class CodeGenerator {
+public final class CodeGenerator {
 
     private static final String CHARACTERS_FOR_CODE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final Random random = new SecureRandom();
