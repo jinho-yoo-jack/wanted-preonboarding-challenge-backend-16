@@ -44,7 +44,7 @@ public class Performance extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDateTime startDate;
 
-    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
+    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'enable'")
     private String isReserve;
 
     @Builder
