@@ -20,6 +20,7 @@ public class PerformanceShowroom {
 	@Column(columnDefinition = "BINARY(16)")
 	private UUID id;
 
+	@Column(nullable = false)
 	private int gate;
 
 	private PerformanceShowroom(int gate) {

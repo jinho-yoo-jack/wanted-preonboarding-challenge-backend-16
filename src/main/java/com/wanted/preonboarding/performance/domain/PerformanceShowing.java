@@ -25,11 +25,11 @@ public class PerformanceShowing {
 	private UUID id;
 
 	@OneToOne
-	@JoinColumn(name = "performenc_id")
+	@JoinColumn(name = "performenc_id",nullable = false)
 	private Performance performance;
 
 	@OneToOne
-	@JoinColumn(name = "showroom_id")
+	@JoinColumn(name = "showroom_id", nullable = false)
 	private PerformanceShowroom performanceShowroom;
 
 	@Column(nullable = false)

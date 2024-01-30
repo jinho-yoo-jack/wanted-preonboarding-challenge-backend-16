@@ -40,6 +40,7 @@ public class PerformanceReservation {
 	@Embedded
 	private PerformanceSeatInfo performanceSeatInfo;
 
+	@Column(nullable = false)
 	private int fee;
 
 	private PerformanceReservation(PerformanceShowing performanceShowing, String name, String phoneNumber,
