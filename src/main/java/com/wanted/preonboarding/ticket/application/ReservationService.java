@@ -1,11 +1,13 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.ticket.application.dto.ReservationCancelParam;
 import com.wanted.preonboarding.ticket.application.dto.ReservationCreateParam;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.entity.UserInfo;
 import com.wanted.preonboarding.ticket.domain.exception.NotFoundException;
 import com.wanted.preonboarding.ticket.domain.exception.PaymentException;
+import com.wanted.preonboarding.ticket.domain.exception.ForbiddenException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +49,18 @@ public class ReservationService {
         reservationRepository.save(reservation);
 
         return reservation;
+    }
+
+    public void cancel(ReservationCancelParam param) {
+        Reservation reservation = reservationRepository.findById(param.getReservationId()).orElseThrow(() -> new NotFoundException("예약이 존재하지 않습니다."));
+
+        if(!reservation.compareUserInfo(param.getUserInfo())){
+            throw new ForbiddenException("예약 취소 권한이 없습니다.");
+        }
+        reservationRepository.delete(reservation);
+
+        Performance performance = performanceRepository.findById(reservation.getPerformanceId()).orElseThrow(() -> new NotFoundException("공연이 존재하지 않습니다."));
+        performance.cancelSeat(reservation.getSeatInfo());
+        performanceRepository.save(performance);
     }
 }

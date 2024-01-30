@@ -4,6 +4,7 @@ import com.wanted.preonboarding.core.domain.response.ErrorResponseHandler;
 import com.wanted.preonboarding.ticket.domain.exception.BadRequestException;
 import com.wanted.preonboarding.ticket.domain.exception.NotFoundException;
 import com.wanted.preonboarding.ticket.domain.exception.PaymentException;
+import com.wanted.preonboarding.ticket.domain.exception.ForbiddenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -47,4 +48,18 @@ public class ControllerExceptionHandler {
                         .build()
                 );
     }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorResponseHandler> handleForbiddenException(ForbiddenException e) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(ErrorResponseHandler.builder()
+                        .statusCode(HttpStatus.FORBIDDEN)
+                        .code("FORBIDDEN")
+                        .message(e.getMessage())
+                        .build()
+                );
+    }
+
+
 }

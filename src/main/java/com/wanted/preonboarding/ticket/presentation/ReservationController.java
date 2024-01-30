@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.ReservationService;
+import com.wanted.preonboarding.ticket.presentation.dto.ReservationCancelRequest;
 import com.wanted.preonboarding.ticket.presentation.dto.ReservationCreateRequest;
 import com.wanted.preonboarding.ticket.presentation.dto.ReservationRequest;
 import com.wanted.preonboarding.ticket.presentation.dto.ReservationResponse;
@@ -44,5 +45,11 @@ public class ReservationController {
                         .data(ReservationResponse.of(reservationService.reserve(request.toDto())))
                         .build()
                 );
+    }
+
+    @PostMapping("/cancel")
+    public ResponseEntity<Void> cancel(@RequestBody ReservationCancelRequest request) {
+        reservationService.cancel(request.toDto());
+        return ResponseEntity.noContent().build();
     }
 }

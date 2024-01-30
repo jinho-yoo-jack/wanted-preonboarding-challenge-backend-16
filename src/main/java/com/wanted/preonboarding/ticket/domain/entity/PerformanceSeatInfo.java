@@ -45,4 +45,8 @@ public class PerformanceSeatInfo {
         }
         isReservable = false;
     }
+
+    public void cancelSeat() {
+        isReservable = true;
+    }
 }

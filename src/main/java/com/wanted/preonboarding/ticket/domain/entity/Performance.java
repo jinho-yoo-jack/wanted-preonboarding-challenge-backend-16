@@ -57,4 +57,7 @@ public class Performance extends BaseEntity {
                 .orElseThrow(() -> new NotFoundException("좌석이 존재하지 않습니다."));
     }
 
+    public void cancelSeat(SeatInfo seatInfo) {
+        getSeat(seatInfo).cancelSeat();
+    }
 }

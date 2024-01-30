@@ -30,4 +30,9 @@ public class Reservation {
 
     @Embedded
     private SeatInfo seatInfo;
+
+    public boolean compareUserInfo(UserInfo userInfo) {
+        return this.userInfo.getName().equals(userInfo.getName())
+                && this.userInfo.getPhoneNumber().equals(userInfo.getPhoneNumber());
+    }
 }
