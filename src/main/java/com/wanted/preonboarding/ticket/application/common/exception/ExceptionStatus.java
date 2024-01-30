@@ -13,7 +13,7 @@ public enum ExceptionStatus {
     NOT_FOUND_INFO(404, "해당 정보를 찾을 수 없습니다."),
 
     SEAT_ALREADY_OCCUPIED(409, "이미 예약된 좌석입니다."),
-
+    FAIL_TO_CONSTRUCT_EMAIL(500, "이메일 생성/구성에 실패했습니다."),
     FAIL_TO_SEND_EMAIL(500, "이메일 전송에 실패했습니다.");
 
     private final Integer statusCode;

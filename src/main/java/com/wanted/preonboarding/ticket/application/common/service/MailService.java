@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.application.common.service;
 
-import com.wanted.preonboarding.ticket.application.aop.annotation.ExecutionTimer;
+import com.wanted.preonboarding.ticket.application.annotation.ExecutionTimer;
 import com.wanted.preonboarding.ticket.application.common.exception.ServiceFailedException;
 import com.wanted.preonboarding.ticket.domain.dto.request.SendNotification;
 import jakarta.mail.MessagingException;
@@ -8,11 +8,13 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
 
+import static com.wanted.preonboarding.ticket.application.common.exception.ExceptionStatus.FAIL_TO_CONSTRUCT_EMAIL;
 import static com.wanted.preonboarding.ticket.application.common.exception.ExceptionStatus.FAIL_TO_SEND_EMAIL;
 import static com.wanted.preonboarding.ticket.application.common.template.MailTemplate.RESERVATION_CANCELLED_TITLE;
 import static com.wanted.preonboarding.ticket.application.common.template.MailTemplate.createReservationCancelledContent;
@@ -41,10 +43,12 @@ public class MailService {
             message.addRecipient(TO, new InternetAddress(recipient));
             message.setSubject(subject, ENCODING_CHARSET);
             message.setText(content, ENCODING_CHARSET, MAILER_SUBTYPE);
+            emailSender.send(message);
         } catch (MessagingException e) {
+            throw new ServiceFailedException(FAIL_TO_CONSTRUCT_EMAIL);
+        } catch (MailException e) {
             throw new ServiceFailedException(FAIL_TO_SEND_EMAIL);
         }
-        emailSender.send(message);
     }
 
     @ExecutionTimer
