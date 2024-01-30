@@ -58,7 +58,7 @@ class ReserveServiceImplTest {
             .name("KAI")
             .phone("01012345678")
             .age(30)
-            .costAmount(10000)
+            .costAmount(100_000)
             .performanceId(performanceId)
             .round(1)
             .line("A")
@@ -93,7 +93,7 @@ class ReserveServiceImplTest {
 
         // when & then
         assertThatThrownBy(() -> reserveService.reserve(requestAlreadyExistSeat, requestTime))
-                .isInstanceOf(InvalidArgumentException.class);
+                .isInstanceOf(BadRequestException.class);
     }
 
     @DisplayName("존재하지 않는 좌석이라면 예약에 실패한다")

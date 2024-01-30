@@ -18,6 +18,6 @@ public class DefaultDiscountManager implements DiscountManager {
 
     @Override
     public double applyDiscount(PaymentInfo paymentInfo) {
-        return 0;
+        return paymentInfo.price();
     }
 }

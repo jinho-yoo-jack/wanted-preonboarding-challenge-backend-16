@@ -22,11 +22,11 @@ public record ReservationInfo(
 
 ) {
 
-    public static ReservationInfo of(Reservation reservation, Performance performance, PerformanceSeatInfo performanceSeatInfo) {
+    public static ReservationInfo of(Reservation reservation, PerformanceSeatInfo performanceSeatInfo, String performanceName) {
         return ReservationInfo.builder()
-            .performanceName(performance.getName())
-            .performanceRound(performance.getRound())
-            .performanceId(performance.getId().toString())
+            .performanceName(performanceName)
+            .performanceRound(performanceSeatInfo.getRound())
+            .performanceId(performanceSeatInfo.getPerformanceId().toString())
             .line(performanceSeatInfo.getLine())
             .seat(performanceSeatInfo.getSeat())
             .name(reservation.getName())
