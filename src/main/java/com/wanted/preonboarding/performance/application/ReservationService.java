@@ -9,7 +9,9 @@ import com.wanted.preonboarding.performance.infrastructure.repository.ShowingRep
 import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationResponse;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -58,19 +60,27 @@ public class ReservationService {
 
 	}
 
-	public ReservationResponse getReservation(UUID reservationId) {
-		PerformanceReservation reservation =
-			reservationRepository.findByIdAndReservationStatus(reservationId, ReservationStatus.RESERVE)
-			.orElseThrow(EntityNotFoundException::new);
-		return ReservationResponse.of(reservation);
+	public List<ReservationResponse> getReservation(String userName, String phoneNumber) {
+		List<PerformanceReservation> reservation =
+			reservationRepository.findByNameAndPhoneNumber(userName, phoneNumber);
+
+		if (reservation.isEmpty()) {
+			throw new EntityNotFoundException();
+		}
+
+		return reservation.stream()
+			.map(ReservationResponse::of)
+			.collect(Collectors.toList());
 	}
 
+
 	private void paymentGatewayStub(int refundAmount) {
-		log.info("refundAmount : {} 환불 성공",refundAmount);
+		log.info("refundAmount : {} 환불 성공", refundAmount);
 	}
 
 
 	private void paymentGatewayStub(PerformanceReservation performanceReservation) {
 		log.info("결제 성공");
 	}
+
 }
