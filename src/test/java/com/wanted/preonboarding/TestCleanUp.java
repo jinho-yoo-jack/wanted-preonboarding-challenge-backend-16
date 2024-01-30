@@ -1,10 +1,10 @@
 package com.wanted.preonboarding;
 
-import com.wanted.preonboarding.ticket.infrastructure.repository.DiscountPolicyRepository;
-import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
-import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
-import com.wanted.preonboarding.ticket.infrastructure.repository.ShowingRepository;
-import com.wanted.preonboarding.ticket.infrastructure.repository.ShowroomRepository;
+import com.wanted.preonboarding.performance.infrastructure.repository.DiscountPolicyRepository;
+import com.wanted.preonboarding.performance.infrastructure.repository.PerformanceRepository;
+import com.wanted.preonboarding.performance.infrastructure.repository.ReservationRepository;
+import com.wanted.preonboarding.performance.infrastructure.repository.ShowingRepository;
+import com.wanted.preonboarding.performance.infrastructure.repository.ShowroomRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
