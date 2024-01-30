@@ -41,7 +41,7 @@ public class Reservation {
             .name(info.getReservationName())
             .phoneNumber(info.getReservationPhoneNumber())
             .round(info.getRound())
-            .gate(1)
+            .gate(info.getGate())
             .line(info.getLine())
             .seat(info.getSeat())
             .build();

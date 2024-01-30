@@ -12,7 +12,7 @@ import java.util.UUID;
 @Builder
 public class PerformanceInfo {
     private UUID performanceId;
-    private String performanceName;
+    private String performanceName; // 공연명
     private String performanceType;
     private Date startDate;
     private String isReserve;
