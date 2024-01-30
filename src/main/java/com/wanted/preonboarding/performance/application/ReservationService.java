@@ -28,14 +28,11 @@ public class ReservationService {
 			.orElseThrow(EntityNotFoundException::new);
 
 		PerformanceReservation performanceReservation = performanceShowing.reserve(request);
+		// 1. 결제
+		paymentGatewayStub(performanceReservation);
 
-		if (performanceShowing.isReservationAvailable()) {
-			// 1. 결제
-			paymentGatewayStub(performanceReservation);
-
-			// 2. 예매 진행
-			reservationRepository.save(performanceReservation);
-		}
+		// 2. 예매 진행
+		reservationRepository.save(performanceReservation);
 		return ReservationResponse.of(performanceReservation);
 	}
 

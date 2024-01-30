@@ -2,7 +2,7 @@ package com.wanted.preonboarding.performance.application;
 
 import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.performance.AssertCluster;
-import com.wanted.preonboarding.performance.ShowingRequestFactory;
+import com.wanted.preonboarding.performance.PerformanceRequestFactory;
 import com.wanted.preonboarding.performance.presentation.dto.PerformanceRequest;
 import com.wanted.preonboarding.performance.presentation.dto.PerformanceResponse;
 import java.util.List;
@@ -25,7 +25,7 @@ public class PerformanceServiceTest extends ServiceTest {
 	@Test
 	public void 예약_가능한_공연_및_전시_정보_목록을_조회할_수_있다() {
 		//given
-		ShowingRequestFactory request = new ShowingRequestFactory();
+		PerformanceRequestFactory request = new PerformanceRequestFactory();
 		PerformanceRequest performanceRequest = request.create();
 		showingAdminService.register(performanceRequest);
 
@@ -39,7 +39,7 @@ public class PerformanceServiceTest extends ServiceTest {
 	@Test
 	public void 예약_불가능한_공연_및_전시_정보_목록을_조회할_수_있다() {
 		//given
-		ShowingRequestFactory request = new ShowingRequestFactory();
+		PerformanceRequestFactory request = new PerformanceRequestFactory();
 		request.setReserve(false);
 		PerformanceRequest performanceRequest = request.create();
 		showingAdminService.register(performanceRequest);
@@ -54,7 +54,7 @@ public class PerformanceServiceTest extends ServiceTest {
 	@Test
 	public void 공연_및_전시_정보_상세를_조회할_수_있다() {
 		//given
-		ShowingRequestFactory request = new ShowingRequestFactory();
+		PerformanceRequestFactory request = new PerformanceRequestFactory();
 		PerformanceRequest performanceRequest = request.create();
 		showingAdminService.register(performanceRequest);
 

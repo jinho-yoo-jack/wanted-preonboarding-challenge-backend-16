@@ -2,6 +2,7 @@ package com.wanted.preonboarding.performance.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.wanted.preonboarding.performance.domain.creator.PerformanceCreator;
 import com.wanted.preonboarding.performance.domain.discount_policy.PercentDiscountPolicy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

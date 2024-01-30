@@ -57,4 +57,7 @@ public class Performance {
     }
 
 
+    public void changePrice(int price) {
+        this.price = price;
+    }
 }

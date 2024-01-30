@@ -3,7 +3,7 @@ package com.wanted.preonboarding.performance.presentation;
 
 import com.wanted.preonboarding.ApiTest;
 import com.wanted.preonboarding.performance.AssertCluster;
-import com.wanted.preonboarding.performance.ShowingRequestFactory;
+import com.wanted.preonboarding.performance.PerformanceRequestFactory;
 import com.wanted.preonboarding.performance.application.ShowingAdminService;
 import com.wanted.preonboarding.performance.presentation.dto.PerformanceRequest;
 import com.wanted.preonboarding.performance.presentation.dto.PerformanceResponse;
@@ -26,7 +26,7 @@ public class QueryControllerApiTest extends ApiTest {
 	@Test
 	public void 공연_및_전시_정보_목록_조회_API(){
 		//given
-		ShowingRequestFactory request = new ShowingRequestFactory();
+		PerformanceRequestFactory request = new PerformanceRequestFactory();
 		PerformanceRequest performanceRequest = request.create();
 		showingAdminService.register(performanceRequest);
 
@@ -50,7 +50,7 @@ public class QueryControllerApiTest extends ApiTest {
 	@Test
 	public void 공연_및_전시_정보_상세_조회_API(){
 		//given
-		ShowingRequestFactory request = new ShowingRequestFactory();
+		PerformanceRequestFactory request = new PerformanceRequestFactory();
 		PerformanceRequest performanceRequest = request.create();
 		showingAdminService.register(performanceRequest);
 

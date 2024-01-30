@@ -1,5 +1,6 @@
-package com.wanted.preonboarding.performance.domain;
+package com.wanted.preonboarding.performance.domain.creator;
 
+import com.wanted.preonboarding.performance.domain.Performance;
 import com.wanted.preonboarding.performance.domain.discount_policy.DiscountPolicy;
 import com.wanted.preonboarding.performance.domain.discount_policy.NoneDiscountPolicy;
 import com.wanted.preonboarding.performance.domain.vo.PerformanceType;
@@ -7,7 +8,7 @@ import com.wanted.preonboarding.performance.domain.vo.PerformanceType;
 public class PerformanceCreator {
 	private int price = 20000;
 	private DiscountPolicy discountPolicy = new NoneDiscountPolicy();
-	public  Performance getPerformance() {
+	public Performance getPerformance() {
 		return new Performance(
 			"아무개",
 			price,

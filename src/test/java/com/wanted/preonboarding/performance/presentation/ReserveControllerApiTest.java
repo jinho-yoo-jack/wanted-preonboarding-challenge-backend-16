@@ -3,7 +3,7 @@ package com.wanted.preonboarding.performance.presentation;
 import com.wanted.preonboarding.ApiTest;
 import com.wanted.preonboarding.performance.AssertCluster;
 import com.wanted.preonboarding.performance.ReservationRequestFactory;
-import com.wanted.preonboarding.performance.ShowingRequestFactory;
+import com.wanted.preonboarding.performance.PerformanceRequestFactory;
 import com.wanted.preonboarding.performance.application.ShowingAdminService;
 import com.wanted.preonboarding.performance.presentation.dto.PerformanceRequest;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
@@ -27,7 +27,7 @@ public class ReserveControllerApiTest extends ApiTest {
 	public void 공연_예약_API(){
 
 		//given
-		PerformanceRequest performanceRequest = new ShowingRequestFactory().create();
+		PerformanceRequest performanceRequest = new PerformanceRequestFactory().create();
 		UUID showingId = showingAdminService.register(performanceRequest);
 		ReservationRequestFactory requestFactory = new ReservationRequestFactory();
 		ReservationRequest request = requestFactory.create(showingId);

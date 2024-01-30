@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.performance.domain;
 
+import com.wanted.preonboarding.core.exception.ReservationSoldOutException;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -56,7 +57,14 @@ public class PerformanceShowing {
 
 
 	public PerformanceReservation reserve(ReservationRequest request) {
+		if(!reservationAvailable)
+			throw new ReservationSoldOutException();
 		int fee = performance.calculateFee();
 		return PerformanceReservation.of(this,request,fee);
+
+	}
+
+	public void soldOut() {
+		this.reservationAvailable = false;
 	}
 }

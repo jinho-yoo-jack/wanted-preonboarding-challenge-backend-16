@@ -3,7 +3,7 @@ package com.wanted.preonboarding.performance.application;
 import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.performance.AssertCluster;
 import com.wanted.preonboarding.performance.ReservationRequestFactory;
-import com.wanted.preonboarding.performance.ShowingRequestFactory;
+import com.wanted.preonboarding.performance.PerformanceRequestFactory;
 import com.wanted.preonboarding.performance.presentation.dto.PerformanceRequest;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationResponse;
@@ -24,7 +24,7 @@ public class PerformanceReservationServiceTest extends ServiceTest {
 	@Test
 	public void 공연을_예약_할_수_있다(){
 
-		ShowingRequestFactory factory = new ShowingRequestFactory();
+		PerformanceRequestFactory factory = new PerformanceRequestFactory();
 		PerformanceRequest showingRequest = factory.create();
 		UUID performanceId = showingAdminService.register(showingRequest);
 

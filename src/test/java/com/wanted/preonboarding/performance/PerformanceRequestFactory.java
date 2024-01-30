@@ -4,7 +4,7 @@ import com.wanted.preonboarding.performance.domain.vo.PerformanceType;
 import com.wanted.preonboarding.performance.presentation.dto.PerformanceRequest;
 import java.time.LocalDate;
 
-public class ShowingRequestFactory {
+public class PerformanceRequestFactory {
 
 	private String name = "공연이름";
 	private int price = 100000;

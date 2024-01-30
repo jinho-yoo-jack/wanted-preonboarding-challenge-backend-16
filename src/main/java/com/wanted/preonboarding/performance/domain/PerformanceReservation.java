@@ -35,7 +35,7 @@ public class PerformanceReservation {
 	private PerformanceShowing performanceShowing;
 
 	@Enumerated(EnumType.STRING)
-	ReservationStatus reservationStatus; // 예약; 취소
+	private ReservationStatus reservationStatus; // 예약; 취소
 
 	@Embedded
 	private PerformanceSeatInfo performanceSeatInfo;

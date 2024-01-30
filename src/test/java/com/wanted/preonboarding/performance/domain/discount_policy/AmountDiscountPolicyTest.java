@@ -2,6 +2,7 @@ package com.wanted.preonboarding.performance.domain.discount_policy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.wanted.preonboarding.performance.domain.discount_policy.AmountDiscountPolicy;
 import org.junit.jupiter.api.Test;
 
 class AmountDiscountPolicyTest {
