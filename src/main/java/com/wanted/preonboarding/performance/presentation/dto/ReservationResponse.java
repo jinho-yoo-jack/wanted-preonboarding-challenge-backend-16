@@ -1,9 +1,9 @@
 package com.wanted.preonboarding.performance.presentation.dto;
 
 import com.wanted.preonboarding.performance.domain.Performance;
-import com.wanted.preonboarding.performance.domain.vo.PerformanceSeatInfo;
 import com.wanted.preonboarding.performance.domain.PerformanceReservation;
 import com.wanted.preonboarding.performance.domain.PerformanceShowing;
+import com.wanted.preonboarding.performance.domain.vo.PerformanceSeatInfo;
 import java.util.UUID;
 
 //(회차, 공연명, 좌석정보, 공연ID) + 예매자 정보(이름, 연락처)

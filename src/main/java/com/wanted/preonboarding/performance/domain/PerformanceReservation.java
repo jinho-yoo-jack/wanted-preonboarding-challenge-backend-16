@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.performance.domain;
 
-import com.wanted.preonboarding.performance.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.performance.domain.vo.PerformanceSeatInfo;
+import com.wanted.preonboarding.performance.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;

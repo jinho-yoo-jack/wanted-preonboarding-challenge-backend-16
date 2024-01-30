@@ -2,8 +2,8 @@ package com.wanted.preonboarding.performance.application;
 
 import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.performance.AssertCluster;
-import com.wanted.preonboarding.performance.ReservationRequestFactory;
 import com.wanted.preonboarding.performance.PerformanceRequestFactory;
+import com.wanted.preonboarding.performance.ReservationRequestFactory;
 import com.wanted.preonboarding.performance.presentation.dto.PerformanceRequest;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationResponse;
