@@ -16,4 +16,8 @@ public enum PerformanceType {
     PerformanceType(int category) {
         this.category = category;
     }
+
+    public boolean isSameCategory(PerformanceType type) {
+        return this.category == type.category;
+    }
 }

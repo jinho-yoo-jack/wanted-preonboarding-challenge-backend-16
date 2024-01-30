@@ -33,7 +33,7 @@ public class PerformanceInfo {
 
     public static String convertToName(PerformanceType type) {
         return Arrays.stream(PerformanceType.values())
-                .filter(t -> t.getCategory() == type.getCategory())
+                .filter(t -> t.isSameCategory(type))
                 .findFirst()
                 .orElse(PerformanceType.NONE)
                 .name();
