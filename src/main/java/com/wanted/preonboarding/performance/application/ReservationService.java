@@ -3,7 +3,6 @@ package com.wanted.preonboarding.performance.application;
 import com.wanted.preonboarding.performance.domain.PerformanceReservation;
 import com.wanted.preonboarding.performance.domain.PerformanceShowing;
 import com.wanted.preonboarding.performance.domain.event.EventPublisher;
-import com.wanted.preonboarding.performance.domain.event.ReservationCancelEvent;
 import com.wanted.preonboarding.performance.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.performance.infrastructure.repository.ReservationRepository;
 import com.wanted.preonboarding.performance.infrastructure.repository.ShowingRepository;

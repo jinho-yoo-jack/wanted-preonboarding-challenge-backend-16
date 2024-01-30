@@ -4,7 +4,6 @@ import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.performance.PerformanceRequestFactory;
 import com.wanted.preonboarding.performance.ReservationRequestFactory;
 import com.wanted.preonboarding.performance.application.PerformanceCancelEventService;
-import com.wanted.preonboarding.performance.application.PerformanceService;
 import com.wanted.preonboarding.performance.application.ReservationService;
 import com.wanted.preonboarding.performance.application.ShowingAdminService;
 import com.wanted.preonboarding.performance.presentation.dto.PerformanceRequest;
