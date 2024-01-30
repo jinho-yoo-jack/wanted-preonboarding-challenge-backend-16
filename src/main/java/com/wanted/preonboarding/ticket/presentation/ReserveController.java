@@ -1,10 +1,7 @@
 package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.ticket.application.TicketSeller;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
-import com.wanted.preonboarding.ticket.domain.dto.ReserveSystemDto;
-import com.wanted.preonboarding.ticket.domain.dto.ResponseDto;
+import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.global.exception.InvalidInputException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +35,7 @@ public class ReserveController {
 
     @PostMapping("/")
     public ResponseEntity<ResponseDto> reservation(@RequestBody ReserveInfo info) {
+        log.info("ReserveController reservation");
         System.out.println("reservation");
         ResponseDto responseDto = new ResponseDto();
         try {
@@ -45,9 +43,9 @@ public class ReserveController {
             PerformanceInfo performanceInfoDetail = ticketSeller.getPerformanceInfoDetail(info.getReservationName());
             responseDto.setResponse("success");
             responseDto.setMessage("예약을 성공적으로 완료했습니다.");
+            ResponseReserveQueryDto reserveResponseQueryDto = getResponseQueryDto(reserveInfo, performanceInfoDetail);
             responseDto.setData(ReserveSystemDto.builder()
-                    .performanceInfo(performanceInfoDetail)
-                    .reserveInfo(reserveInfo)
+                    .responseQueryDto(reserveResponseQueryDto)
                     .build());
             return ResponseEntity.ok(responseDto);
         } catch (InvalidInputException e) {
@@ -62,6 +60,22 @@ public class ReserveController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
         }
     }
+
+    private static ResponseReserveQueryDto getResponseQueryDto(ReserveInfo reserveInfo, PerformanceInfo performanceInfoDetail) {
+        ResponseReserveQueryDto reserveResponseQueryDto = ResponseReserveQueryDto
+                .builder()
+                .performanceId(reserveInfo.getPerformanceId())
+                .round(reserveInfo.getRound())
+                .performanceName(performanceInfoDetail.getPerformanceName())
+                .gate(reserveInfo.getGate())
+                .line(reserveInfo.getLine())
+                .seat(reserveInfo.getSeat())
+                .reservationName(reserveInfo.getReservationName())
+                .reservationPhoneNumber(reserveInfo.getReservationPhoneNumber())
+                .build();
+        return reserveResponseQueryDto;
+    }
+
 
     private ReserveInfo reserve(ReserveInfo info) {
         ReserveInfo reserveInfo = ReserveInfo.builder()

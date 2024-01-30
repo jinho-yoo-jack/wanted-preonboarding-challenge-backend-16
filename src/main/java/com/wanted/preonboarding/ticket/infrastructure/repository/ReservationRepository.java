@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
-    Reservation findByNameAndPhoneNumber(String name, String phoneNumber);
+    Optional<Reservation> findByNameAndPhoneNumber(String name, String phoneNumber);
 
     @Query("select r from Reservation r where r.performanceId =:id")
     Reservation findByUUID(UUID id);

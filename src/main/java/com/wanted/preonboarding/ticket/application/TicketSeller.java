@@ -2,12 +2,14 @@ package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.dto.ResponseReserveQueryDto;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.global.exception.InvalidInputException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.wanted.preonboarding.ticket.domain.dto.RequestReserveQueryDto;
+import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -63,6 +65,26 @@ public class TicketSeller {
         } else {
             return false;
         }
+    }
+
+    public ResponseReserveQueryDto getReserveInfoDetail(RequestReserveQueryDto dto) {
+        Optional<Reservation> optionalReservation = reservationRepository.findByNameAndPhoneNumber(dto.getReservationName(), dto.getReservationPhoneNumber());
+
+        if(!optionalReservation.isPresent()) {
+            throw new InvalidInputException("예약 고객 정보가 없습니다.");
+        }
+
+        ResponseReserveQueryDto responseQueryDto = ResponseReserveQueryDto.of(optionalReservation.get());
+        Reservation reservation = optionalReservation.get();
+        Optional<Performance> optionalPerformance = performanceRepository.findById(reservation.getPerformanceId());
+        if(!optionalPerformance.isPresent()) {
+            throw new IllegalArgumentException("예약한 공연 정보가 없습니다.");
+        }
+        String performanceName = optionalPerformance.get().getName();
+
+        responseQueryDto.setPerformanceName(performanceName);
+
+        return responseQueryDto;
     }
 
 }
