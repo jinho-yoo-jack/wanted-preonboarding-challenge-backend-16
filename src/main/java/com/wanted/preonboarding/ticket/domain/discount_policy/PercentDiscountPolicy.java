@@ -7,11 +7,15 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 @PrimaryKeyJoinColumn(name = "id")
 public class PercentDiscountPolicy extends DiscountPolicy {
 
-	double percent;
+	private double percent;
+
+	public PercentDiscountPolicy(double percent) {
+		this.percent = percent;
+	}
 
 	@Override
 	public int getDiscountAmount(int price) {
 
-		return (int) (price * percent);
+		return (int) (price * percent/100);
 	}
 }

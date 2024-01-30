@@ -4,12 +4,15 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 
-@Entity
 @DiscriminatorValue(value="amount")
 @PrimaryKeyJoinColumn(name = "id")
 public class AmountDiscountPolicy extends DiscountPolicy{
 
-	int amount;
+	private int amount;
+
+	public AmountDiscountPolicy(int amount) {
+		this.amount = amount;
+	}
 
 	@Override
 	public int getDiscountAmount(int price) {

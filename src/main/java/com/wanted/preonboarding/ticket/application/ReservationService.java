@@ -27,7 +27,6 @@ public class ReservationService {
 		Showing showing = showingRepository.findById(request.performanceId())
 			.orElseThrow(EntityNotFoundException::new);
 
-
 		Reservation reservation = showing.reserve(request);
 
 		if (showing.isReservationAvailable()) {
