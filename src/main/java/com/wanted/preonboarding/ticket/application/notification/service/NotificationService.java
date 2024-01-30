@@ -1,11 +1,10 @@
 package com.wanted.preonboarding.ticket.application.notification.service;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.application.aop.annotation.ExecutionTimer;
-import com.wanted.preonboarding.ticket.application.common.exception.EntityNotFoundException;
+import com.wanted.preonboarding.ticket.application.annotation.ExecutionTimer;
 import com.wanted.preonboarding.ticket.application.common.service.MailService;
 import com.wanted.preonboarding.ticket.application.notification.repository.NotificationRepository;
-import com.wanted.preonboarding.ticket.application.performance.repository.PerformanceRepository;
+import com.wanted.preonboarding.ticket.application.performance.service.PerformanceService;
 import com.wanted.preonboarding.ticket.application.reservation.event.ReservationCancelledEvent;
 import com.wanted.preonboarding.ticket.domain.dto.request.RequestNotification;
 import com.wanted.preonboarding.ticket.domain.dto.request.SendNotification;
@@ -29,7 +28,6 @@ import java.util.concurrent.CompletableFuture;
 
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.MESSAGE_SUCCESS;
 import static com.wanted.preonboarding.core.domain.response.ResponseHandler.createResponse;
-import static com.wanted.preonboarding.ticket.application.common.exception.ExceptionStatus.NOT_FOUND_INFO;
 
 @Slf4j
 @Service
@@ -37,7 +35,7 @@ import static com.wanted.preonboarding.ticket.application.common.exception.Excep
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
-    private final PerformanceRepository performanceRepository;
+    private final PerformanceService performanceService;
     private final MailService mailService;
 
     @Transactional
@@ -47,8 +45,7 @@ public class NotificationService {
         log.info("--- Set Notification ---");
         UUID id = requestNotification.performanceId();
         int round = requestNotification.round();
-        Performance performance = performanceRepository.findByIdAndRound(id, round)
-                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
+        Performance performance = performanceService.getPerformanceEntity(id, round);
 
         notificationRepository.save(Notification.of(requestNotification, performance));
         return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, null);
@@ -79,10 +76,11 @@ public class NotificationService {
     }
 
     private void markAsSentIfMailSentSuccess(List<Notification> notificationList, CompletableFuture<Boolean> result) {
-        boolean isSuccess = result.join();
-        if (isSuccess) {
-            notificationList.forEach(Notification::markAsSent);
-        }
+        result.thenAccept(isSuccess -> {
+            if (Boolean.TRUE.equals(isSuccess)) {
+                notificationList.forEach(Notification::markAsSent);
+            }
+        });
     }
 
 }

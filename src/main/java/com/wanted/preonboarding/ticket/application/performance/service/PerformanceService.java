@@ -3,6 +3,8 @@ package com.wanted.preonboarding.ticket.application.performance.service;
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.common.exception.EntityNotFoundException;
 import com.wanted.preonboarding.ticket.application.performance.repository.PerformanceRepository;
+import com.wanted.preonboarding.ticket.application.performance.repository.PerformanceSeatInfoRepository;
+import com.wanted.preonboarding.ticket.domain.dto.request.RequestReservation;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceDetail;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.request.RegisterPerformance;
@@ -30,6 +32,7 @@ import static com.wanted.preonboarding.ticket.application.common.exception.Excep
 public class PerformanceService {
     // 책임 : 공연 및 전시 정보 조회(목록, 상세 조회), 좌석 정보 조회
     private final PerformanceRepository performanceRepository;
+    private final PerformanceSeatInfoRepository seatInfoRepository;
 
     @Transactional(readOnly = true)
     public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
@@ -57,11 +60,22 @@ public class PerformanceService {
         return createResponse(HttpStatus.OK, MESSAGE_SUCCESS, PerformanceDetail.of(seatInfoList));
     }
 
-    // ========== PRIVATE METHODS ========== //
-    private Performance getPerformanceEntity(UUID id, int round) {
+    public Performance getPerformanceEntity(UUID id, int round) {
         return performanceRepository.findByIdAndRound(id, round)
                 .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
     }
+
+    public PerformanceSeatInfo getSeatInfoEntity(RequestReservation requestReservation) {
+        UUID id = requestReservation.performanceId();
+        Integer round = requestReservation.round();
+        Character line = requestReservation.line();
+        Integer seat = requestReservation.seat();
+
+        return seatInfoRepository.findByPerformanceIdAndRoundAndLineAndSeat(id, round, String.valueOf(line), seat)
+                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_INFO));
+    }
+
+    // ========== PRIVATE METHODS ========== //
 
     private List<PerformanceInfo> getAllAvailalePerformances() {
         return performanceRepository.findAllByIsReserve(ReservationAvailability.AVAILABLE)
