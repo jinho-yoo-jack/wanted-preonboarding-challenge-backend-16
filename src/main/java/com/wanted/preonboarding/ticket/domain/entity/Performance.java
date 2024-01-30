@@ -13,6 +13,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * {@code Performance} 클래스는 티켓 시스템의 "공연" Entity입니다.
+ * JPA를 통해 'performance' 테이블과 매핑됩니다.
+ */
 @Entity
 @Table
 @Getter

@@ -13,7 +13,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
+/**
+ * {@code Reservation} 클래스는 티켓 시스템의 "예약" Entity입니다.
+ * JPA를 통해 'reservation' 테이블과 매핑됩니다.
+ */
 @Entity
 @Table
 @Getter
@@ -36,6 +39,12 @@ public class Reservation {
   private char line;
   private int seat;
 
+  /**
+   * {@link ReserveInfo}를 받아 {@link Reservation} 객체를 생성합니다.
+   *
+   * @param info 예약의 정보를 포함하는 {@link ReserveInfo} 객체.
+   * @return 생성된 {@link Reservation}
+   */
   public static Reservation of(ReserveInfo info) {
     return Reservation.builder()
         .performanceId(info.getPerformanceId())
