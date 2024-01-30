@@ -9,10 +9,12 @@ import com.wanted.preonboarding.ticket.domain.discount.DiscountRepository;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 @Configuration
 public class DiscountBeanConfig {
 
+    @DependsOn({"performanceDiscountPolicy", "elderDiscountPolicy"})
     @Bean
     public DiscountManager discountManager(DiscountRepository discountRepository) {
         List<DiscountPolicy> discountPolicies = List.of(

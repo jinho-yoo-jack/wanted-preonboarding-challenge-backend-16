@@ -6,6 +6,5 @@ import com.wanted.preonboarding.ticket.dto.request.discount.DiscountInfo;
 * 할인 정책
 * */
 public interface DiscountPolicy {
-    boolean isDiscountSubject(DiscountInfo discountInfo);
-    double getDiscountAmount(double origin);
+    double getDiscountAmount(DiscountInfo discountInfo, int originPrice);
 }
