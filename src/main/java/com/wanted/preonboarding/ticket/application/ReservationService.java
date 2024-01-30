@@ -1,9 +1,9 @@
 package com.wanted.preonboarding.ticket.application;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReservationRequest;
-import com.wanted.preonboarding.ticket.domain.dto.ReservationResponse;
-import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.domain.entity.Showing;
+import com.wanted.preonboarding.ticket.presentation.dto.ReservationRequest;
+import com.wanted.preonboarding.ticket.presentation.dto.ReservationResponse;
+import com.wanted.preonboarding.ticket.domain.Reservation;
+import com.wanted.preonboarding.ticket.domain.Showing;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ShowingRepository;
 import jakarta.persistence.EntityNotFoundException;

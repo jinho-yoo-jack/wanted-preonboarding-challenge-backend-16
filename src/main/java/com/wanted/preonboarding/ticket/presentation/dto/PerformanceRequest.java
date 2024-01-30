@@ -1,6 +1,6 @@
-package com.wanted.preonboarding.ticket.domain.dto;
+package com.wanted.preonboarding.ticket.presentation.dto;
 
-import com.wanted.preonboarding.ticket.domain.entity.PerformanceType;
+import com.wanted.preonboarding.ticket.domain.vo.PerformanceType;
 import java.time.LocalDate;
 
 public record PerformanceRequest(

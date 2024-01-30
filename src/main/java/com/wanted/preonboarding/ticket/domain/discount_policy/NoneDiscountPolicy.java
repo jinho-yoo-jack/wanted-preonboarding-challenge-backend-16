@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain;
+package com.wanted.preonboarding.ticket.domain.discount_policy;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

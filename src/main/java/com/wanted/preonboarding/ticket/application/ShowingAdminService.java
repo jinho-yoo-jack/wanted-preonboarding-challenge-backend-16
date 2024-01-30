@@ -1,10 +1,10 @@
 package com.wanted.preonboarding.ticket.application;
 
-import com.wanted.preonboarding.ticket.domain.NoneDiscountPolicy;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceRequest;
-import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import com.wanted.preonboarding.ticket.domain.entity.Showing;
-import com.wanted.preonboarding.ticket.domain.entity.Showroom;
+import com.wanted.preonboarding.ticket.domain.discount_policy.NoneDiscountPolicy;
+import com.wanted.preonboarding.ticket.presentation.dto.PerformanceRequest;
+import com.wanted.preonboarding.ticket.domain.Performance;
+import com.wanted.preonboarding.ticket.domain.Showing;
+import com.wanted.preonboarding.ticket.domain.Showroom;
 import com.wanted.preonboarding.ticket.infrastructure.repository.DiscountPolicyRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ShowingRepository;

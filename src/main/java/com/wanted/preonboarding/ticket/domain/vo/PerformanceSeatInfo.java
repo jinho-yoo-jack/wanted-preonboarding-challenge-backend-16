@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain.entity;
+package com.wanted.preonboarding.ticket.domain.vo;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;

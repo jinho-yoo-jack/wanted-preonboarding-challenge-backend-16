@@ -1,6 +1,7 @@
-package com.wanted.preonboarding.ticket.domain.entity;
+package com.wanted.preonboarding.ticket.domain;
 
-import com.wanted.preonboarding.ticket.domain.DiscountPolicy;
+import com.wanted.preonboarding.ticket.domain.discount_policy.DiscountPolicy;
+import com.wanted.preonboarding.ticket.domain.vo.PerformanceType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

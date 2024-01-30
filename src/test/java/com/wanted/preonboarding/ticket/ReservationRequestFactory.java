@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReservationRequest;
+import com.wanted.preonboarding.ticket.presentation.dto.ReservationRequest;
 import java.util.UUID;
 
 public class ReservationRequestFactory {

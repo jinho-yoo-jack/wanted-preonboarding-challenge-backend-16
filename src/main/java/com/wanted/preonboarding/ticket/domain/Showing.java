@@ -1,6 +1,6 @@
-package com.wanted.preonboarding.ticket.domain.entity;
+package com.wanted.preonboarding.ticket.domain;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReservationRequest;
+import com.wanted.preonboarding.ticket.presentation.dto.ReservationRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -58,9 +58,5 @@ public class Showing {
 	public Reservation reserve(ReservationRequest request) {
 		int fee = performance.calculateFee();
 		return Reservation.of(this,request,fee);
-	}
-
-	public int getFee() {
-		return performance.calculateFee();
 	}
 }

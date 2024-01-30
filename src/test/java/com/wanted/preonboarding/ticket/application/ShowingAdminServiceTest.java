@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.ticket.ShowingRequestFactory;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceRequest;
+import com.wanted.preonboarding.ticket.presentation.dto.PerformanceRequest;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

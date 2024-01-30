@@ -1,7 +1,7 @@
-package com.wanted.preonboarding.ticket.domain.dto;
+package com.wanted.preonboarding.ticket.presentation.dto;
 
-import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import com.wanted.preonboarding.ticket.domain.entity.Showing;
+import com.wanted.preonboarding.ticket.domain.Performance;
+import com.wanted.preonboarding.ticket.domain.Showing;
 import java.time.LocalDate;
 import java.util.UUID;
 

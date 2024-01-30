@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.infrastructure.repository;
 
-import com.wanted.preonboarding.ticket.domain.entity.Showing;
+import com.wanted.preonboarding.ticket.domain.Showing;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

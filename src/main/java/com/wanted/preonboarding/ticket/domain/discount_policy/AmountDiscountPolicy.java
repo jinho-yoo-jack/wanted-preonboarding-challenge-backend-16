@@ -1,17 +1,18 @@
-package com.wanted.preonboarding.ticket.domain;
+package com.wanted.preonboarding.ticket.domain.discount_policy;
 
 import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 
+@Entity
 @DiscriminatorValue(value="amount")
 @PrimaryKeyJoinColumn(name = "id")
-public class PercentDiscountPolicy extends DiscountPolicy {
+public class AmountDiscountPolicy extends DiscountPolicy{
 
-	double percent;
+	int amount;
 
 	@Override
 	public int getDiscountAmount(int price) {
-
-		return (int) (price * percent);
+		return amount;
 	}
 }

@@ -2,7 +2,7 @@ package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.PerformanceService;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceResponse;
+import com.wanted.preonboarding.ticket.presentation.dto.PerformanceResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

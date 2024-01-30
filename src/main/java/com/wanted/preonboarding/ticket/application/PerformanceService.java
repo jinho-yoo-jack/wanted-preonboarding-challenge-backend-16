@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.application;
 
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceResponse;
+import com.wanted.preonboarding.ticket.presentation.dto.PerformanceResponse;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ShowingRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

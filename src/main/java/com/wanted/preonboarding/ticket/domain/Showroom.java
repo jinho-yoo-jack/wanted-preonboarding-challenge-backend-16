@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain.entity;
+package com.wanted.preonboarding.ticket.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -2,10 +2,10 @@ package com.wanted.preonboarding.ticket;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceRequest;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceResponse;
-import com.wanted.preonboarding.ticket.domain.dto.ReservationRequest;
-import com.wanted.preonboarding.ticket.domain.dto.ReservationResponse;
+import com.wanted.preonboarding.ticket.presentation.dto.PerformanceRequest;
+import com.wanted.preonboarding.ticket.presentation.dto.PerformanceResponse;
+import com.wanted.preonboarding.ticket.presentation.dto.ReservationRequest;
+import com.wanted.preonboarding.ticket.presentation.dto.ReservationResponse;
 
 public class AssertCluster {
 	public static void performanceAssert(

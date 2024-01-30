@@ -1,7 +1,8 @@
-package com.wanted.preonboarding.ticket.domain.entity;
+package com.wanted.preonboarding.ticket.domain;
 
-import com.wanted.preonboarding.ticket.domain.ReservationStatus;
-import com.wanted.preonboarding.ticket.domain.dto.ReservationRequest;
+import com.wanted.preonboarding.ticket.domain.vo.ReservationStatus;
+import com.wanted.preonboarding.ticket.domain.vo.PerformanceSeatInfo;
+import com.wanted.preonboarding.ticket.presentation.dto.ReservationRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
