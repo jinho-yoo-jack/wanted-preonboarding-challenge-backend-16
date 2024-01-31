@@ -18,7 +18,8 @@ public class ReserveController {
         System.out.println("reservation");
 
         return ticketSeller.reserve(ReserveInfo.builder()
-            .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
+//            .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
+            .performanceId(UUID.fromString("4438a3e6"))
             .reservationName("유진호")
             .reservationPhoneNumber("010-1234-1234")
             .reservationStatus("reserve")
@@ -29,4 +30,6 @@ public class ReserveController {
             .build()
         );
     }
+
+
 }

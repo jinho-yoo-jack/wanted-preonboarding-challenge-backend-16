@@ -1,5 +1,6 @@
 package com.wanted.preonboarding;
 
+import com.wanted.preonboarding.ticket.presentation.ReserveController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
