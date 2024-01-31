@@ -90,11 +90,11 @@ public class Reservation {
     @Column(nullable = true)
     private LocalDateTime updatedAt;     // 수정 시각
 
-    public static Reservation of(ReserveInfo info, Performance performance) {
+    public static Reservation of(ReserveInfo info, Performance performance, User user) {
         return Reservation.builder()
             .performance(performance)
             .name(info.getReservationName())
-            .user(info.getUser())
+            .user(user)
             .gate(1)
             .line(info.getLine())
             .seat(info.getSeat())

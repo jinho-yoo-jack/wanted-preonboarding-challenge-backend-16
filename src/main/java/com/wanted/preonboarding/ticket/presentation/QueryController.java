@@ -1,6 +1,4 @@
 package com.wanted.preonboarding.ticket.presentation;
-
-import com.wanted.preonboarding.core.config.UserAuth;
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.TicketSeller;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceDetailInfo;
@@ -9,7 +7,6 @@ import com.wanted.preonboarding.ticket.domain.dto.SeatInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,10 +37,15 @@ public class QueryController {
             );
     }
 
+    /**
+     * 공연 상세 정보 조회
+     * @param performanceId
+     * @return
+     */
     @GetMapping(value = "/{performanceId}")
     public ResponseEntity<ResponseHandler<PerformanceDetailInfo>> getPerformanceDetailInfo(@PathVariable String performanceId){
         PerformanceDetailInfo performanceInfo = ticketSeller.getPerformanceInfoDetailById(performanceId);
-        List<SeatInfo> detailInfos = ticketSeller.getPerformanceSeatInfoDetailById(performanceId);
+        List<SeatInfo> detailInfos = ticketSeller.getPerformanceSeatInfoDetailListById(performanceId);
 
         if(detailInfos.isEmpty()) {
             return ResponseEntity
@@ -64,7 +66,5 @@ public class QueryController {
                 .data(performanceInfo)
                 .build()
             );
-
-
     }
 }

@@ -12,53 +12,56 @@
 </head>
 
 <body>
-  <form method="post" action="">
-    <input type="hidden" name="performanceId" th:value="${performanceInfo.performanceId}">
+  <form method="post" th:action="${performanceInfo.performanceRound}">
+    <input type="hidden" id="performanceId" name="performanceId" th:value="${performanceInfo.performanceId}">
+    <input type="hidden" id="seat" name="seat" th:value="${performanceInfo.seat}">
+    <input type="hidden" id="line" name="line" th:value="${performanceInfo.line}">
+    <input type="hidden" id="round" name="round" th:value="${performanceInfo.performanceRound}">
+    <input type="hidden" id="balanceAmount" name="balanceAmount" th:value="${userInfo.paymentCard.balanceAmount}">
+    <input type="hidden" id="reservationStatus" name="reservationStatus" th:value="reserve">
     <div class="row">
       <div class="col">
-        예약자 성함: <input type="text" name="name" th:value="${userInfo.name}"
+        예약자 성함: <input type="text" id="reservationName" name="reservationName" th:value="${userInfo.name}"
           style="border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;" readonly>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        예약자 휴대전화 번호: <input type="text" name="phoneNumber" th:value="${userInfo.phoneNumber}"
+        예약자 휴대전화 번호: <input type="text" id="phoneNumber" name="phoneNumber" th:value="${userInfo.phoneNumber}"
           style="border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;" readonly>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        공연 이름: <input type="text" name="performanceName" th:value="${performanceInfo.performanceName}"
+        공연 이름: <input type="text" id="performanceName" name="performanceName" th:value="${performanceInfo.performanceName}"
           style="border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;" readonly>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        공연 회차: <input type="text" name="performanceRound" th:value="${performanceRound}"
-          style="border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;" readonly>회
+        공연 회차: <a th:text="|${performanceInfo.performanceRound}회|"></a>
       </div>
     </div>
     <div class="row">
       <div class="col">
-
+        좌석 번호: <a th:text="|${performanceInfo.seat}${performanceInfo.line}"></a>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        좌석 번호: <input type="text" name="seat" th:value="${seat}"
-          style="border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;" readonly>
-        <input type="text" name="line" th:value="${line}"
-          style="border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;" readonly>
+        현재 결제수단 잔액: <a th:text="|${userInfo.paymentCard.balanceAmount}원|"></a>
       </div>
     </div>
     <div class="row">
       <div class="col">
-
+        가격: <a th:text="|${performanceInfo.performancePrice}원|"></a>
       </div>
     </div>
-
-
-
+    <div class="row">
+      <div class="col">
+        <input type="submit" value="예매하기">
+      </div>
+    </div>
 
   </form>
 

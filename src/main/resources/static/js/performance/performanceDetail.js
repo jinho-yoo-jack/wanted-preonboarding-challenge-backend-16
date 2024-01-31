@@ -72,7 +72,7 @@ window.onload = () => {
                 newListRow.appendChild(newButton);
 
                 newButton.addEventListener("click", function (event) {
-                    location.href = "/reservation/" + performanceId + "/" + round + "?seat=" + seat + "&line=" + line;
+                    location.href = "/performance/" + performanceId + "/" + round + "?seat=" + seat + "&line=" + line;
                 });
             }
 

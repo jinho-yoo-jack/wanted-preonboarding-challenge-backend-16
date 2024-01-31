@@ -13,15 +13,13 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor  // 테스트를 위해 추가
-@AllArgsConstructor // 테스트를 위해 추가
 public class ReserveInfo {
     // 공연 및 전시 정보 + 예약자 정보
     private UUID performanceId;
-    private String reservationName;
-    private User user;
+    private String reservationName; // 예약자 이름
+    private String phoneNumber; // 예약자 핸드폰 번호
     private String reservationStatus; // 예약; 취소;
-    private long amount;
+    private long balanceAmount;
     private int round;
     private char line;
     private int seat;
