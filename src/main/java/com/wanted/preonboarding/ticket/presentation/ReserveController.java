@@ -2,7 +2,6 @@ package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.ticket.application.TicketSeller;
 import com.wanted.preonboarding.ticket.domain.dto.CancelReserveRequest;
-import com.wanted.preonboarding.ticket.domain.dto.CanceledReserveResponse;
 import com.wanted.preonboarding.ticket.domain.dto.CheckReserveRequest;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
