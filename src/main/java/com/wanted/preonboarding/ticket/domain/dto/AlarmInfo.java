@@ -4,8 +4,6 @@ import com.wanted.preonboarding.ticket.domain.entity.Alarm;
 import lombok.Builder;
 import lombok.Data;
 
-import java.sql.Timestamp;
-
 @Data
 @Builder
 public class AlarmInfo {

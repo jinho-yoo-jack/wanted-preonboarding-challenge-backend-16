@@ -2,7 +2,6 @@ package com.wanted.preonboarding.ticket.service;
 
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceSeatInfo;
-import com.wanted.preonboarding.ticket.domain.dto.ReservationInfo;
 import com.wanted.preonboarding.ticket.domain.dto.UserInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeat;
@@ -10,7 +9,6 @@ import com.wanted.preonboarding.ticket.domain.entity.User;
 import com.wanted.preonboarding.ticket.exception.*;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatRepository;
-import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -13,7 +13,6 @@ import com.wanted.preonboarding.ticket.exception.PriceOver;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
-import com.wanted.preonboarding.ticket.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
