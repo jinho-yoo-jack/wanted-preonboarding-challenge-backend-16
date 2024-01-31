@@ -105,13 +105,7 @@ public class AlarmSmsService {
         log.info("SmsService sendSms");
 
         //Send Message: 공연ID, 공연명, 회차, 시작 일시 예매 가능한 좌석 정보
-        this.secondContentPart = "공연ID: " + sendMessagePerformanceSeatInfoDto.getPerformanceId() +
-        ", 공연명: " + sendMessagePerformanceSeatInfoDto.getPerformanceName() +
-        ", 회차: " + sendMessagePerformanceSeatInfoDto.getRound() +
-        ", 시작 일시: " + sendMessagePerformanceSeatInfoDto.getStartDate() +
-        ", 예매 가능한 좌석 정보: Gate: " + sendMessagePerformanceSeatInfoDto.getGate() +
-        ", Line: " + sendMessagePerformanceSeatInfoDto.getLine() +
-        ", Seat: " + sendMessagePerformanceSeatInfoDto.getSeat();
+        inputSecondContentPart(sendMessagePerformanceSeatInfoDto);
 
 
         Long time = System.currentTimeMillis();
@@ -140,6 +134,17 @@ public class AlarmSmsService {
         return smsResponse;
 
     }
+
+    private void inputSecondContentPart(SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto) {
+        this.secondContentPart = "공연ID: " + sendMessagePerformanceSeatInfoDto.getPerformanceId() +
+        ", 공연명: " + sendMessagePerformanceSeatInfoDto.getPerformanceName() +
+        ", 회차: " + sendMessagePerformanceSeatInfoDto.getRound() +
+        ", 시작 일시: " + sendMessagePerformanceSeatInfoDto.getStartDate() +
+        ", 예매 가능한 좌석 정보: Gate: " + sendMessagePerformanceSeatInfoDto.getGate() +
+        ", Line: " + sendMessagePerformanceSeatInfoDto.getLine() +
+        ", Seat: " + sendMessagePerformanceSeatInfoDto.getSeat();
+    }
+
     public String makeSignature(Long time) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
         log.info("AlarmSmsService makeSignature");
         String space = " ";
