@@ -27,7 +27,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-@DisplayName("이벤트: 예약 취소")
+@DisplayName("이벤트: 예약 취소 - 발행")
 public class EventPublisherTest extends ServiceTest {
 
 	@Autowired
