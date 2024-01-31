@@ -12,7 +12,7 @@ public class RequestFactory {
 
 	private TestUser testUser;
 
-	public static ReservationCancelRequest getCancelRequest(UUID reserveItemNo) {
+	public static ReservationCancelRequest getCancel(UUID reserveItemNo) {
 		return new ReservationCancelRequestFactory().create(reserveItemNo);
 	}
 

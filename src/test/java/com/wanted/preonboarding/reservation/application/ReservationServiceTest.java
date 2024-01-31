@@ -2,13 +2,12 @@ package com.wanted.preonboarding.reservation.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.withMarginOf;
 
+import com.wanted.preonboarding.RequestFactory;
 import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.core.exception.ReservationSoldOutException;
 import com.wanted.preonboarding.performance.AssertCluster;
-import com.wanted.preonboarding.performance.PerformanceRequestFactory;
-import com.wanted.preonboarding.performance.ReservationCancelRequestFactory;
-import com.wanted.preonboarding.performance.ReservationRequestFactory;
 import com.wanted.preonboarding.performance.application.PerformAdminService;
 import com.wanted.preonboarding.performance.application.PerformService;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
@@ -17,7 +16,6 @@ import com.wanted.preonboarding.reservation.framwork.presentation.dto.Reservatio
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservedItemResponse;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,25 +35,24 @@ public class ReservationServiceTest extends ServiceTest {
 	private PerformService performService;
 
 
-
-	private final PerformanceRequestFactory factory = new PerformanceRequestFactory();
-	private final PerformRequest performRequest = factory.create();
-	private UUID performID;
+	private PerformRequest performRequest;
 	private ReservationRequest reservationRequest;
-	private final ReservationRequestFactory reservationRequestFactory
-		= new ReservationRequestFactory();
+	private UUID performID;
 
 	@BeforeEach
 	void setUp() {
+		//performRequest
+		performRequest = RequestFactory.getPerformRegister();
 		performID = performAdminService.register(performRequest);
-		reservationRequest = reservationRequestFactory.create(performID);
+		reservationRequest = RequestFactory.getReservation(performID);
+
 	}
 
 	@Test
 	public void 공연을_예약_할_수_있다() {
 		//given
-		ReservationRequest reservationRequest = reservationRequestFactory
-			.create(performID);
+		performID = performAdminService.register(performRequest);
+		reservationRequest = RequestFactory.getReservation(performID);
 		//when
 		ReservedItemResponse reserve = reservationService.reserve(reservationRequest);
 		//then
@@ -64,46 +61,41 @@ public class ReservationServiceTest extends ServiceTest {
 
 	@Test
 	public void 공연을_예약_할_수_있다_fail_잘못된_id() {
-		UUID wrongId = UUID.randomUUID();
 		//given
-		ReservationRequest reservationRequest = reservationRequestFactory.create(wrongId);
+		UUID wrongId = UUID.randomUUID();
+		ReservationRequest reservationRequest = RequestFactory.getReservation(wrongId);
 		//when //then
 		assertThatThrownBy(() -> {
-			ReservedItemResponse reserve = reservationService.reserve(reservationRequest);
+			reservationService.reserve(reservationRequest);
 		}).isInstanceOf(EntityNotFoundException.class);
-
 	}
 
 	@Test
 	public void 공연을_예약_할_수_있다_fail_SOLD_OUT() {
 		//given
-		ReservationRequest reservationRequest = reservationRequestFactory
-			.create(performID);
-
+		performID = performAdminService.register(performRequest);
+		reservationRequest = RequestFactory.getReservation(performID);
 		//when
 		performService.soldOut(performID);
 		//then
 		assertThatThrownBy(() -> {
-				ReservedItemResponse reserve = reservationService.reserve(reservationRequest);
-			}).isInstanceOf(ReservationSoldOutException.class).hasMessageContaining("매진된 상품 입니다.");
+			reservationService.reserve(reservationRequest);
+		}).isInstanceOf(ReservationSoldOutException.class).hasMessageContaining("매진된 상품 입니다.");
 
 	}
 
 	@Test
 	public void 공연예약을_취소_할_수_있다() {
 		//given
-		ReservationRequest reservationRequest = reservationRequestFactory
-			.create(performID);
 		ReservedItemResponse reserve = reservationService.reserve(reservationRequest);
-
+		String number = reserve.phoneNumber();
+		String userName = reserve.userName();
+		ReservationCancelRequest cancelRequest = RequestFactory.getCancel(reserve.id());
 		//when
-		ReservationCancelRequest cancelRequest
-			= new ReservationCancelRequestFactory().create(reserve.id());
 		reservationService.cancel(cancelRequest);
 		//then
-		ReservedItemResponse reservation = reservationService.getReservations(reserve.userName(),
-			reserve.phoneNumber()).get(0);
-		assertThat(reservation.status()).isEqualTo(ReservationStatus.CANCEL);
+		final var reservationList = reservationService.getReservations(userName, number);
+		assertThat(reservationList.get(0).status()).isEqualTo(ReservationStatus.CANCEL);
 	}
 
 	@Test
@@ -113,11 +105,10 @@ public class ReservationServiceTest extends ServiceTest {
 		String number = reserve.phoneNumber();
 		String userName = reserve.userName();
 		//when
-		List<ReservedItemResponse> reservationList = reservationService
-			.getReservations(userName, number);
+		final var reservationList = reservationService.getReservations(userName, number);
 		//then
 		ReservedItemResponse reservation = reservationList.get(0);
-		AssertCluster.ReservationAssert(reservation,reservationRequest, performRequest);
+		AssertCluster.ReservationAssert(reservation, reservationRequest, performRequest);
 	}
 
 }

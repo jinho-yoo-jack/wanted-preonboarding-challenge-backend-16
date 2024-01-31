@@ -2,7 +2,6 @@ package com.wanted.preonboarding.performance.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -56,7 +55,7 @@ class PerformanceCancelEventServiceTest extends ServiceTest {
 		//퍼포먼스 예약
 		reservedItemResponse = reservationService.reserve(RequestFactory.getReservation(performId));
 		//취소 request 생성
-		cancelRequest = RequestFactory.getCancelRequest(reservedItemResponse.id());
+		cancelRequest = RequestFactory.getCancel(reservedItemResponse.id());
 	}
 
 	@Test

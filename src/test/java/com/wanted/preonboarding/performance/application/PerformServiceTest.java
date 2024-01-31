@@ -4,6 +4,7 @@ import com.wanted.preonboarding.RequestFactory;
 import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.performance.AssertCluster;
 import com.wanted.preonboarding.performance.PerformanceRequestFactory;
+import com.wanted.preonboarding.performance.TestPerformance;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceResponse;
 import java.util.List;
@@ -42,6 +43,9 @@ public class PerformServiceTest extends ServiceTest {
 	@Test
 	public void 예약_불가능한_공연_및_전시_정보_목록을_조회할_수_있다() {
 		//given
+		PerformanceRequestFactory performanceRequestFactory = new PerformanceRequestFactory();
+		performanceRequestFactory.setReserve(false);
+		PerformRequest performRequest = performanceRequestFactory.create();
 		performAdminService.register(performRequest);
 		//when
 		List<PerformanceResponse> response = performService.getAllPerformanceInfoList(false);
