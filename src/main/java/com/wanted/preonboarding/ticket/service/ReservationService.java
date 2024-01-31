@@ -84,7 +84,7 @@ public class ReservationService {
     }
 
     public UserInfo getUserInfo(String name, String phoneNumber) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByNameAndPhoneNumber(name, phoneNumber));
+        Optional<User> user = userRepository.findByNameAndPhoneNumber(name, phoneNumber);
 
         // 유저 정보가 있으면 => 기존 유저 ID로
         if (user.isPresent()) {
@@ -115,7 +115,7 @@ public class ReservationService {
     }
 
     public PerformanceInfo getPerformanceInfoByNameAndRound(String performanceName, Integer round) {
-        Optional<Performance> performance = Optional.ofNullable(performanceRepository.findByNameAndRound(performanceName, round));
+        Optional<Performance> performance = performanceRepository.findByNameAndRound(performanceName, round);
 
         // 공연 정보가 없으면 => 예외 발생
         if (performance.isEmpty()) {
@@ -135,7 +135,7 @@ public class ReservationService {
     }
 
     public PerformanceSeatInfo getPerformanceSeatInfo(UUID performanceId, Integer round, Character line, Integer seat) {
-        Optional<PerformanceSeat> performanceSeat = Optional.ofNullable(performanceSeatRepository.findByPerformanceIdAndRoundAndLineAndSeat(performanceId, round, line, seat));
+        Optional<PerformanceSeat> performanceSeat = performanceSeatRepository.findByPerformanceIdAndRoundAndLineAndSeat(performanceId, round, line, seat);
 
         // 좌석 정보가 없으면 => 예외 발생
         if (performanceSeat.isEmpty()) {
