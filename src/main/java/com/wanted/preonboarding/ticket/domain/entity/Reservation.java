@@ -34,7 +34,6 @@ public class Reservation {
     private int gate;
     private char line;
     private int seat;
-
     public static Reservation of(ReserveInfo info) {
         return Reservation.builder()
             .performanceId(info.getPerformanceId())
