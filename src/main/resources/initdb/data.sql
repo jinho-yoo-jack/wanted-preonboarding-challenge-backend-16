@@ -1,3 +1,7 @@
+CREATE USER 'wanted'@'%' IDENTIFIED WITH mysql_native_password BY 'backend';
+GRANT ALL PRIVILEGES ON *.* TO 'wanted'@'%';
+FLUSH PRIVILEGES;
+
 INSERT INTO `performance` (name, price, round, type, start_date, is_reserve)
 VALUES ('레베카', 100000, 1, 0, '2024-01-20 19:30:00', 'disable');
 
