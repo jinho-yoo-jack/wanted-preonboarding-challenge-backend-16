@@ -71,6 +71,7 @@ public class User {
     private Date birthday;
     @Column(nullable = true)
     private LocalDateTime createdAt;
+    private String defaultPaymentCode;
     @OneToMany(mappedBy = "userInfo")
     private List<PaymentCard> paymentCards;
     @OneToMany(mappedBy = "userInfo")

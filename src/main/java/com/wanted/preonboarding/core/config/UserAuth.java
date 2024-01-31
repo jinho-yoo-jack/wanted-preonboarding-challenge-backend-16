@@ -4,20 +4,23 @@ import com.wanted.preonboarding.user.domain.entity.User;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Slf4j
 public class UserAuth implements UserDetails {
+
+    private UUID userUuid;
     private String id;
     private String password;
-
     private String name;
 
     private Collection<? extends GrantedAuthority> auth;
 
-    public UserAuth (String id, String password, String name, List<GrantedAuthority> auth){
+    public UserAuth (UUID userUuid, String id, String password, String name, List<GrantedAuthority> auth){
+        this.userUuid = userUuid;
         this.id = id;
         this.password = password;
         this.name = name;
@@ -38,6 +41,11 @@ public class UserAuth implements UserDetails {
     public String getUsername() {
         log.info("UserAuth.id={}", id);
         return id;
+    }
+
+    public UUID getUserUuid(){
+        log.info("UserAuth.userUuid={}", userUuid);
+        return userUuid;
     }
 
     @Override
