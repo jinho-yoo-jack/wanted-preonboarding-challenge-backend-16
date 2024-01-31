@@ -1,8 +1,8 @@
 package com.wanted.preonboarding.performance.presentation.dto;
 
 import com.wanted.preonboarding.performance.domain.Performance;
-import com.wanted.preonboarding.performance.domain.PerformanceReservation;
-import com.wanted.preonboarding.performance.domain.PerformanceShowing;
+import com.wanted.preonboarding.performance.presentation.PerformanceReservation;
+import com.wanted.preonboarding.performance.domain.Perform;
 import com.wanted.preonboarding.performance.domain.vo.PerformanceSeatInfo;
 import com.wanted.preonboarding.performance.domain.vo.ReservationStatus;
 import java.util.UUID;
@@ -19,11 +19,11 @@ public record ReservationResponse(
 	ReservationStatus status) {
 
 	public static ReservationResponse of(PerformanceReservation performanceReservation) {
-		PerformanceShowing performanceShowing = performanceReservation.getPerformanceShowing();
-		Performance performance = performanceShowing.getPerformance();
+		Perform perform = performanceReservation.getPerform();
+		Performance performance = perform.getPerformance();
 		PerformanceSeatInfo performanceSeatInfo = performanceReservation.getPerformanceSeatInfo();
 		return new ReservationResponse(
-			performanceShowing.getRound(),
+			perform.getRound(),
 			performance.getName(),
 			performanceSeatInfo.getSeat(),
 			performanceSeatInfo.getLine(),

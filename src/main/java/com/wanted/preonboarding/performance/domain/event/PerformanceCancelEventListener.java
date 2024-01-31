@@ -1,8 +1,7 @@
-package com.wanted.preonboarding.performance.application;
+package com.wanted.preonboarding.performance.domain.event;
 
-import com.wanted.preonboarding.performance.domain.PerformanceShowing;
-import com.wanted.preonboarding.performance.domain.PerformanceShowingObserver;
-import com.wanted.preonboarding.performance.domain.event.ReservationCancelEvent;
+import com.wanted.preonboarding.performance.domain.Perform;
+import com.wanted.preonboarding.performance.domain.PerformSubscribe;
 import com.wanted.preonboarding.performance.infrastructure.repository.PerformanceShowingObserverRepository;
 import com.wanted.preonboarding.performance.infrastructure.repository.ShowingRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,22 +21,22 @@ public class PerformanceCancelEventListener {
 
 	private final PerformanceShowingObserverRepository repository;
 	private final ShowingRepository showingRepository;
-	private final PerformanceCancelEventService performanceCancelEventService;
+	private final CancelEventUsecase cancelEventUsecase;
 
-	@Async()
+	@Async
 	@EventListener
 	public void listenCancelEvent(ReservationCancelEvent event) {
-		performanceCancelEventService.canceled(event);
+		cancelEventUsecase.canceled(event);
 	}
 
 
 	@Transactional
 	public void subscribe(UUID showingId, UUID userId) {
-		PerformanceShowing performanceShowing = showingRepository.findById(showingId)
+		Perform perform = showingRepository.findById(showingId)
 			.orElseThrow(EntityNotFoundException::new);
 
-		PerformanceShowingObserver observer = PerformanceShowingObserver.create(
-			performanceShowing, userId);
+		PerformSubscribe observer = PerformSubscribe.create(
+			perform, userId);
 
 		repository.save(observer);
 	}

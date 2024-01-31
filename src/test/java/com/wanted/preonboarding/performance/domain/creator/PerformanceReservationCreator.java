@@ -1,9 +1,9 @@
 package com.wanted.preonboarding.performance.domain.creator;
 
 import com.wanted.preonboarding.performance.ReservationRequestFactory;
+import com.wanted.preonboarding.performance.domain.Perform;
 import com.wanted.preonboarding.performance.domain.Performance;
-import com.wanted.preonboarding.performance.domain.PerformanceReservation;
-import com.wanted.preonboarding.performance.domain.PerformanceShowing;
+import com.wanted.preonboarding.performance.presentation.PerformanceReservation;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
 
 public class PerformanceReservationCreator {
@@ -16,7 +16,7 @@ public class PerformanceReservationCreator {
 	public PerformanceReservation getReservation() {
 		Performance performance = performanceCreator.getPerformance();
 		ReservationRequest request = requestFactory.create(performance.getId());
-		PerformanceShowing showing = showingCreator.getShowing();
+		Perform showing = showingCreator.getShowing();
 
 		return PerformanceReservation.of(
 			showing,

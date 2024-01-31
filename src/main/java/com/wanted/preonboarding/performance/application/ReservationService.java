@@ -1,9 +1,8 @@
 package com.wanted.preonboarding.performance.application;
 
-import com.wanted.preonboarding.performance.domain.PerformanceReservation;
-import com.wanted.preonboarding.performance.domain.PerformanceShowing;
+import com.wanted.preonboarding.performance.domain.Perform;
+import com.wanted.preonboarding.performance.presentation.PerformanceReservation;
 import com.wanted.preonboarding.performance.domain.event.EventPublisher;
-import com.wanted.preonboarding.performance.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.performance.infrastructure.repository.ReservationRepository;
 import com.wanted.preonboarding.performance.infrastructure.repository.ShowingRepository;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
@@ -30,10 +29,10 @@ public class ReservationService {
 	@Transactional
 	public ReservationResponse reserve(ReservationRequest request) {
 		log.info("ReservationRequest ID => {}", request.showingId());
-		PerformanceShowing performanceShowing = showingRepository.findById(request.showingId())
+		Perform perform = showingRepository.findById(request.showingId())
 			.orElseThrow(EntityNotFoundException::new);
 
-		PerformanceReservation performanceReservation = performanceShowing.reserve(request);
+		PerformanceReservation performanceReservation = perform.reserve(request);
 		// 1. 결제
 		paymentGatewayStub(performanceReservation);
 
@@ -55,7 +54,7 @@ public class ReservationService {
 		paymentGatewayStub(refundAmount);
 
 		//이벤트 발생
-		UUID showingId = performanceReservation.getPerformanceShowing().getId();
+		UUID showingId = performanceReservation.getPerform().getId();
 		eventPublisher.cancelEventPublish(showingId, reservationId);
 
 	}

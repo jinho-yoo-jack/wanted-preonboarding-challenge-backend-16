@@ -1,13 +1,12 @@
 package com.wanted.preonboarding.performance.application;
 
+import com.wanted.preonboarding.performance.domain.Perform;
 import com.wanted.preonboarding.performance.domain.Performance;
-import com.wanted.preonboarding.performance.domain.PerformanceShowing;
-import com.wanted.preonboarding.performance.domain.PerformanceShowroom;
+import com.wanted.preonboarding.performance.domain.vo.Gate;
 import com.wanted.preonboarding.performance.domain.discount_policy.NoneDiscountPolicy;
 import com.wanted.preonboarding.performance.infrastructure.repository.DiscountPolicyRepository;
 import com.wanted.preonboarding.performance.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.performance.infrastructure.repository.ShowingRepository;
-import com.wanted.preonboarding.performance.infrastructure.repository.ShowroomRepository;
 import com.wanted.preonboarding.performance.presentation.dto.PerformanceRequest;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ public class ShowingAdminService {
 	private final PerformanceRepository performanceRepository;
 	private final DiscountPolicyRepository discountPolicyRepository;
 	private final ShowingRepository showingRepository;
-	private final ShowroomRepository showroomRepository;
 
 
 
@@ -40,12 +38,11 @@ public class ShowingAdminService {
 			discountPolicy
 		);
 
-		PerformanceShowroom performanceShowroom = PerformanceShowroom.create(1);
-		PerformanceShowing performanceShowing = PerformanceShowing.create(performance,
-			performanceShowroom, request.round(), request.startDate(), request.isReserve());
+		Gate gate = Gate.create(1);
+		Perform perform = Perform.create(performance,
+			gate, request.round(), request.startDate(), request.isReserve());
 
 		performanceRepository.save(performance);
-		showroomRepository.save(performanceShowroom);
-		return showingRepository.save(performanceShowing).getId();
+		return showingRepository.save(perform).getId();
 	}
 }

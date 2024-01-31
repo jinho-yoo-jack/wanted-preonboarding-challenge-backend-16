@@ -5,7 +5,6 @@ import com.wanted.preonboarding.performance.infrastructure.repository.Performanc
 import com.wanted.preonboarding.performance.infrastructure.repository.PerformanceShowingObserverRepository;
 import com.wanted.preonboarding.performance.infrastructure.repository.ReservationRepository;
 import com.wanted.preonboarding.performance.infrastructure.repository.ShowingRepository;
-import com.wanted.preonboarding.performance.infrastructure.repository.ShowroomRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,8 +19,6 @@ public class TestCleanUp {
 	@Autowired
 	private PerformanceRepository performanceRepository;
 	@Autowired
-	private ShowroomRepository showroomRepository;
-	@Autowired
 	private ShowingRepository showingRepository;
 	@Autowired
 	private PerformanceShowingObserverRepository performanceShowingObserverRepository;
@@ -29,7 +26,6 @@ public class TestCleanUp {
 	void tearDown() {
 		reservationRepository.deleteAll();
 		showingRepository.deleteAll();
-		showroomRepository.deleteAll();
 		performanceRepository.deleteAll();
 		discountPolicyRepository.deleteAll();
 		performanceShowingObserverRepository.deleteAll();

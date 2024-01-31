@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.performance.PerformanceRequestFactory;
 import com.wanted.preonboarding.performance.ReservationRequestFactory;
+import com.wanted.preonboarding.performance.domain.event.PerformanceCancelEventListener;
 import com.wanted.preonboarding.performance.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.performance.infrastructure.output.NotificationOutput;
 import com.wanted.preonboarding.performance.presentation.dto.PerformanceRequest;
@@ -83,7 +84,7 @@ class PerformanceCancelEventServiceTest extends ServiceTest {
 	}
 
 	@Test
-	public void 예약_취소_시_구독자_알림_발송_실패_예약취소에_영향_없음(){
+	public void 예약_취소_시_구독자_알림_발송_실패_예약취소에_영향_없음() throws InterruptedException {
 		Mockito.doThrow(new RuntimeException("알림 외부서비스 에러")).when(notificationOutput).reservationCancelNotify(any(),any());
 		//given
 		performanceCancelEventService.subscribe(showingId, userId);
@@ -91,6 +92,9 @@ class PerformanceCancelEventServiceTest extends ServiceTest {
 
 		//when
 		reservationService.cancel(reserve.id());
+
+		ThreadPoolTaskExecutor executor = (ThreadPoolTaskExecutor) customThreadPoolTaskExecutor;
+		executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
 
 		//then
 		ReservationResponse reservation = reservationService.getReservation(reserve.userName(),

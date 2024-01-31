@@ -1,8 +1,8 @@
 package com.wanted.preonboarding.performance.domain.creator;
 
 import com.wanted.preonboarding.performance.PerformanceRequestFactory;
+import com.wanted.preonboarding.performance.domain.Perform;
 import com.wanted.preonboarding.performance.domain.Performance;
-import com.wanted.preonboarding.performance.domain.PerformanceShowing;
 import com.wanted.preonboarding.performance.presentation.dto.PerformanceRequest;
 
 public class ShowingCreator {
@@ -12,10 +12,10 @@ public class ShowingCreator {
 
 	private final PerformanceRequestFactory performanceRequestFactory = new PerformanceRequestFactory();
 
-	public PerformanceShowing getShowing() {
+	public Perform getShowing() {
 		PerformanceRequest performanceRequest = performanceRequestFactory.create();
 
-		return PerformanceShowing.create(
+		return Perform.create(
 			performance,
 			showRoomCreator.getShowRoom(),
 			performanceRequest.round(),

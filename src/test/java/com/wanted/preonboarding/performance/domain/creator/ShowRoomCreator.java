@@ -1,12 +1,12 @@
 package com.wanted.preonboarding.performance.domain.creator;
 
-import com.wanted.preonboarding.performance.domain.PerformanceShowroom;
+import com.wanted.preonboarding.performance.domain.vo.Gate;
 
 public class ShowRoomCreator {
 
 
-	public PerformanceShowroom getShowRoom() {
-		return PerformanceShowroom.create(3);
+	public Gate getShowRoom() {
+		return Gate.create(3);
 	}
 
 }

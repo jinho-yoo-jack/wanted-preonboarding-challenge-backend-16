@@ -7,15 +7,16 @@ import com.wanted.preonboarding.core.exception.ReservationSoldOutException;
 import com.wanted.preonboarding.performance.ReservationRequestFactory;
 import com.wanted.preonboarding.performance.domain.creator.ShowingCreator;
 import com.wanted.preonboarding.performance.domain.vo.ReservationStatus;
+import com.wanted.preonboarding.performance.presentation.PerformanceReservation;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("도메인: 공연 및 전시 상영 - PerformanceShowing")
-public class PerformanceShowingTest {
+@DisplayName("도메인: 공연 및 전시 상영 - Perform")
+public class PerformTest {
 
 	private final ShowingCreator showingCreator = new ShowingCreator();
-	private final PerformanceShowing showing = showingCreator.getShowing();
+	private final Perform showing = showingCreator.getShowing();
 	private final ReservationRequestFactory factory = new ReservationRequestFactory();
 	private final Performance performance = showing.getPerformance();
 	private final ReservationRequest reservationRequest = factory.create(performance.getId());;
@@ -35,7 +36,7 @@ public class PerformanceShowingTest {
 		assertThat(reservation.getPhoneNumber()).isEqualTo(reservationRequest.reservationPhoneNumber());
 		assertThat(reservation.getPerformanceSeatInfo().getSeat()).isEqualTo(reservationRequest.seat());
 		assertThat(reservation.getPerformanceSeatInfo().getLine()).isEqualTo(reservationRequest.line());
-		assertThat(reservation.getPerformanceShowing().getRound()).isEqualTo(reservationRequest.round());
+		assertThat(reservation.getPerform().getRound()).isEqualTo(reservationRequest.round());
 
 	}
 

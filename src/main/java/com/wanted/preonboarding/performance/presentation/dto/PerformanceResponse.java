@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.performance.presentation.dto;
 
 import com.wanted.preonboarding.performance.domain.Performance;
-import com.wanted.preonboarding.performance.domain.PerformanceShowing;
+import com.wanted.preonboarding.performance.domain.Perform;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -15,7 +15,7 @@ public record PerformanceResponse(
 
 ) {
 
-	public static PerformanceResponse of(PerformanceShowing entity) {
+	public static PerformanceResponse of(Perform entity) {
 		Performance performance = entity.getPerformance();
 		return new PerformanceResponse(
 			entity.getId(),

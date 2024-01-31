@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @DisplayName("서비스: 관리자 공연 및 전시 등록 - PerformanceShowingAdminService")
-public class PerformanceShowingAdminServiceTest extends ServiceTest {
+public class PerformAdminServiceTest extends ServiceTest {
 	@Autowired
 	private ShowingAdminService showingAdminService;
 

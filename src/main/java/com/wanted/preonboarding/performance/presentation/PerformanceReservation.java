@@ -1,5 +1,6 @@
-package com.wanted.preonboarding.performance.domain;
+package com.wanted.preonboarding.performance.presentation;
 
+import com.wanted.preonboarding.performance.domain.Perform;
 import com.wanted.preonboarding.performance.domain.vo.PerformanceSeatInfo;
 import com.wanted.preonboarding.performance.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
@@ -34,8 +35,8 @@ public class PerformanceReservation {
 	private String phoneNumber;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "showing_id", nullable = false)
-	private PerformanceShowing performanceShowing;
+	@JoinColumn(name = "perform_id", nullable = false)
+	private Perform perform;
 
 	@Enumerated(EnumType.STRING)
 	private ReservationStatus reservationStatus; // 예약; 취소
@@ -46,9 +47,9 @@ public class PerformanceReservation {
 	@Column(nullable = false)
 	private int fee;
 
-	private PerformanceReservation(PerformanceShowing performanceShowing, String name, String phoneNumber,
+	private PerformanceReservation(Perform perform, String name, String phoneNumber,
 		PerformanceSeatInfo performanceSeatInfo, ReservationStatus reservationStatus, int fee) {
-		this.performanceShowing = performanceShowing;
+		this.perform = perform;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.performanceSeatInfo = performanceSeatInfo;
@@ -56,16 +57,16 @@ public class PerformanceReservation {
 		this.fee = fee;
 	}
 
-	public static PerformanceReservation of(PerformanceShowing performanceShowing, ReservationRequest request, int fee) {
+	public static PerformanceReservation of(Perform perform, ReservationRequest request, int fee) {
 		PerformanceReservation reservation = new PerformanceReservation(
-			performanceShowing,
+			perform,
 			request.reservationName(),
 			request.reservationPhoneNumber(),
 			PerformanceSeatInfo.create(request.line(), request.seat()),
 			ReservationStatus.RESERVE,
 			fee);
 
-		performanceShowing.addReservation(reservation);
+		perform.addReservation(reservation);
 		return reservation;
 	}
 

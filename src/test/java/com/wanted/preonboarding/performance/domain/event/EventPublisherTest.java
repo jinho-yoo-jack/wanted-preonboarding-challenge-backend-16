@@ -7,24 +7,20 @@ import static org.mockito.Mockito.verify;
 import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.performance.PerformanceRequestFactory;
 import com.wanted.preonboarding.performance.ReservationRequestFactory;
-import com.wanted.preonboarding.performance.application.PerformanceCancelEventListener;
 import com.wanted.preonboarding.performance.application.PerformanceCancelEventService;
 import com.wanted.preonboarding.performance.application.ReservationService;
 import com.wanted.preonboarding.performance.application.ShowingAdminService;
 import com.wanted.preonboarding.performance.presentation.dto.PerformanceRequest;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
 import com.wanted.preonboarding.performance.presentation.dto.ReservationResponse;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @DisplayName("이벤트: 예약 취소 - 발행")

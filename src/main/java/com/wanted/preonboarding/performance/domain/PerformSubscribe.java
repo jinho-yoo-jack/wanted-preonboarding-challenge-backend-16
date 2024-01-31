@@ -16,7 +16,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PerformanceShowingObserver {
+public class PerformSubscribe {
 
 	@Id
 	@GeneratedValue(generator = "uuid2")
@@ -25,18 +25,18 @@ public class PerformanceShowingObserver {
 	private UUID id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "performance_reservation_id")
-	private PerformanceShowing showing;
+	@JoinColumn(name = "perfor_id")
+	private Perform perform;
 
 	@Column(nullable = false)
 	private String userId;
 
-	private PerformanceShowingObserver(PerformanceShowing showing, String userId) {
-		this.showing = showing;
+	private PerformSubscribe(Perform perform, String userId) {
+		this.perform = perform;
 		this.userId = userId;
 	}
 
-	public static PerformanceShowingObserver create(PerformanceShowing showing, UUID userId) {
-		return new PerformanceShowingObserver(showing, userId.toString());
+	public static PerformSubscribe create(Perform perform, UUID userId) {
+		return new PerformSubscribe(perform, userId.toString());
 	}
 }
