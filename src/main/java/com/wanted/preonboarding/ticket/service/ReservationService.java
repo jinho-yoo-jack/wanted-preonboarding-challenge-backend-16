@@ -7,10 +7,7 @@ import com.wanted.preonboarding.ticket.domain.dto.UserInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeat;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.exception.InvalidReservation;
-import com.wanted.preonboarding.ticket.exception.PerformanceDisable;
-import com.wanted.preonboarding.ticket.exception.PerformanceSeatDisable;
-import com.wanted.preonboarding.ticket.exception.PriceOver;
+import com.wanted.preonboarding.ticket.exception.*;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
@@ -19,7 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 
 @Slf4j
 @Service
@@ -107,6 +106,8 @@ public class ReservationService {
                 reservationInfo.getPerformanceInfo().getPerformanceName(),
                 reservationInfo.getPerformanceInfo().getRound()
         );
+        // 공연 시작일이 이미 지났다면 => 예외 발생
+        checkPerformanceDateValidateForCancel(performanceInfo);
         reservationInfo.setPerformanceInfo(performanceInfo);
 
         // 예약 내역 탐색
@@ -119,8 +120,17 @@ public class ReservationService {
             throw new InvalidReservation("InvalidReservation : 예약 공연 정보가 일치하지 않습니다.");
         }
 
-        // 예약 내역 삭제
-        deleteReservation(reservationInfo);
+        // 좌석 정보 탐색
+        PerformanceSeatInfo performanceSeatInfo = commonService.getPerformanceSeatInfo(
+                performanceInfo.getPerformanceId(),
+                performanceInfo.getRound(),
+                dbReservationInfo.getLine(),
+                dbReservationInfo.getSeat()
+        );
+
+        // 예약
+        // 내역 삭제, 좌석 정보 수정, (좌석 매진 취소 시) 공연 정보 수정
+        deleteReservation(reservationInfo, performanceSeatInfo);
 
         // 해당 공연 알림 신청 유저에게 알림 발송
         alarmService.sendAlarm(reservationInfo);
@@ -166,8 +176,39 @@ public class ReservationService {
         return reservationId;
     }
 
-    public void deleteReservation(ReservationInfo reservationInfo) {
+    public void checkPerformanceDateValidateForCancel(PerformanceInfo performanceInfo) {
+        Timestamp startDate = performanceInfo.getStartDate();
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        int comparisonResult = currentTimestamp.compareTo(startDate);
+
+        if (comparisonResult > 0) {
+            throw new CancelTimeOver("CancelTimeOver : 취소 가능한 기간이 지났습니다.");
+        }
+    }
+
+    public void deleteReservation(ReservationInfo reservationInfo, PerformanceSeatInfo performanceSeatInfo) {
         // 예약 내역 삭제 (=> db 트리거로 canceledReservation 에 저장됨)
         reservationRepository.deleteById(reservationInfo.getReservationId());
+
+        // 좌석 정보 수정 (disable -> enable)
+        performanceSeatInfo.setIsReserve("enable");
+        performanceSeatRepository.save(PerformanceSeat.of(performanceSeatInfo));
+
+        // 공연 정보 수정
+        // 현재 공연이 매진(disable) 상태인데, 취소로 enable 좌석이 남아있다면 -> enable
+        PerformanceInfo performanceInfo = reservationInfo.getPerformanceInfo();
+        if (performanceInfo.getIsReserve().equals("disable")) {
+            List<PerformanceSeatInfo> enablePerformanceSeatInfoList = performanceSeatRepository.findByPerformanceIdAndIsReserve(
+                            performanceInfo.getPerformanceId(), "enable")
+                    .stream()
+                    .map(PerformanceSeatInfo::of)
+                    .toList();
+            if (enablePerformanceSeatInfoList.size() > 0) {
+                performanceInfo.setIsReserve("enable");
+                performanceRepository.save(Performance.of(performanceInfo));
+            }
+        }
+
+
     }
 }
