@@ -11,8 +11,7 @@ import com.wanted.preonboarding.performance.ReservationRequestFactory;
 import com.wanted.preonboarding.performance.application.PerformAdminService;
 import com.wanted.preonboarding.performance.application.PerformCancelEventService;
 import com.wanted.preonboarding.performance.application.PerformService;
-import com.wanted.preonboarding.performance.framwork.infrastructure.eventAdapter.ReservationCancelEventListener;
-import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceRequest;
+import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 import com.wanted.preonboarding.reservation.application.ReservationService;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationCancelRequest;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
@@ -49,7 +48,7 @@ public class EventPublisherTest extends ServiceTest {
 	@Test
 	public void 이벤트_발행() throws InterruptedException {
 		PerformanceRequestFactory performanceRequestFactory = new PerformanceRequestFactory();
-		PerformanceRequest performanceRequest = performanceRequestFactory.create();
+		PerformRequest performanceRequest = performanceRequestFactory.create();
 		UUID performId = performAdminService.register(performanceRequest);
 		ReservationRequestFactory factory = new ReservationRequestFactory();
 		ReservationRequest request = factory.create(performId);
@@ -60,7 +59,7 @@ public class EventPublisherTest extends ServiceTest {
 		performService.subscribe(performId, userId);
 		//when
 		ReservationCancelRequest cancelRequest
-			= new ReservationCancelRequestFactory().create(request, reserve.id());
+			= new ReservationCancelRequestFactory().create(reserve.id());
 		reservationService.cancel(cancelRequest);
 
 		//then

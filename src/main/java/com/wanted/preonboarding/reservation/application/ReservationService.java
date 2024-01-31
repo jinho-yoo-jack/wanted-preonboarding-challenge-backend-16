@@ -61,13 +61,13 @@ public class ReservationService {
 			.orElseThrow(EntityNotFoundException::new);
 
 		//예약 취소
-		int refundAmount = reservation.cancel(request.reserveItemNo());
+		int refundAmount = reservation.cancel(request.reservationId());
 
 		//환불
 		paymentGatewayStub(refundAmount);
 
 		//이벤트 발생
-		ReserveItem reserveItem = reservation.getReserveItem(request.reserveItemNo());
+		ReserveItem reserveItem = reservation.getReserveItem(request.reservationId());
 		ReservationCancelEvent cancelEvent = Reservation.createCancelEvent(reserveItem);
 		eventOutputPort.cancelEventPublish(cancelEvent);
 	}

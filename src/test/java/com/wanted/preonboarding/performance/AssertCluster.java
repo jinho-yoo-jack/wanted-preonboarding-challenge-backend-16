@@ -2,14 +2,14 @@ package com.wanted.preonboarding.performance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceRequest;
+import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceResponse;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservedItemResponse;
 
 public class AssertCluster {
 	public static void performanceAssert(
-		PerformanceRequest request, PerformanceResponse response) {
+		PerformRequest request, PerformanceResponse response) {
 		assertThat(response.isReserve()).isEqualTo(request.isReserve());
 		assertThat(response.startDate()).isEqualTo(request.startDate());
 		assertThat(response.performanceId()).isNotNull();
@@ -19,7 +19,7 @@ public class AssertCluster {
 	}
 
 	public static void ReservationAssert(ReservedItemResponse data, ReservationRequest request,
-		PerformanceRequest performanceRequest) {
+		PerformRequest performanceRequest) {
 		assertThat(data.id()).isNotNull();
 		assertThat(data.round()).isEqualTo(request.round());
 		assertThat(data.name()).isEqualTo(performanceRequest.name());
@@ -28,7 +28,7 @@ public class AssertCluster {
 		assertThat(data.phoneNumber()).isEqualTo(request.phoneNumber());
 	}
 
-	public static void reservationAssert(PerformanceRequest performanceRequest,
+	public static void reservationAssert(PerformRequest performanceRequest,
 		ReservationRequest reservationRequest, ReservedItemResponse reserve) {
 		assertThat(reserve.id()).isNotNull();
 		assertThat(reserve.phoneNumber()).isEqualTo(reservationRequest.phoneNumber());

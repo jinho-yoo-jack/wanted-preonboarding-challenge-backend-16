@@ -7,7 +7,7 @@ import com.wanted.preonboarding.performance.domain.vo.Gate;
 import com.wanted.preonboarding.performance.framwork.infrastructure.repository.DiscountPolicyRepository;
 import com.wanted.preonboarding.performance.framwork.infrastructure.repository.PerformRepository;
 import com.wanted.preonboarding.performance.framwork.infrastructure.repository.PerformanceRepository;
-import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceRequest;
+import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class PerformAdminService {
 	private final PerformRepository performRepository;
 
 	@Transactional
-	public UUID register(PerformanceRequest request) {
+	public UUID register(PerformRequest request) {
 		NoneDiscountPolicy discountPolicy = new NoneDiscountPolicy();
 		discountPolicyRepository.save(discountPolicy);
 

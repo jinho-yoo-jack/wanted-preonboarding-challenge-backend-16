@@ -11,8 +11,7 @@ import com.wanted.preonboarding.performance.ReservationCancelRequestFactory;
 import com.wanted.preonboarding.performance.ReservationRequestFactory;
 import com.wanted.preonboarding.performance.application.PerformAdminService;
 import com.wanted.preonboarding.performance.application.PerformService;
-import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceRequest;
-import com.wanted.preonboarding.reservation.application.ReservationService;
+import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 import com.wanted.preonboarding.reservation.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationCancelRequest;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
@@ -40,7 +39,7 @@ public class ReservationServiceTest extends ServiceTest {
 
 
 	private final PerformanceRequestFactory factory = new PerformanceRequestFactory();
-	private final PerformanceRequest performRequest = factory.create();
+	private final PerformRequest performRequest = factory.create();
 	private UUID performID;
 	private ReservationRequest reservationRequest;
 	private final ReservationRequestFactory reservationRequestFactory
@@ -99,7 +98,7 @@ public class ReservationServiceTest extends ServiceTest {
 
 		//when
 		ReservationCancelRequest cancelRequest
-			= new ReservationCancelRequestFactory().create(reservationRequest, reserve.id());
+			= new ReservationCancelRequestFactory().create(reserve.id());
 		reservationService.cancel(cancelRequest);
 		//then
 		ReservedItemResponse reservation = reservationService.getReservations(reserve.userName(),

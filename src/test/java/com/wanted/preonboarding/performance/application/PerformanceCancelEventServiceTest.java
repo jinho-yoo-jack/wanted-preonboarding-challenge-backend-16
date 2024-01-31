@@ -2,20 +2,16 @@ package com.wanted.preonboarding.performance.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.wanted.preonboarding.RequestFactory;
 import com.wanted.preonboarding.ServiceTest;
-import com.wanted.preonboarding.performance.PerformanceRequestFactory;
-import com.wanted.preonboarding.performance.ReservationCancelRequestFactory;
-import com.wanted.preonboarding.performance.ReservationRequestFactory;
 import com.wanted.preonboarding.performance.application.output.NotificationOutput;
-import com.wanted.preonboarding.performance.framwork.infrastructure.eventAdapter.ReservationCancelEventListener;
-import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceRequest;
 import com.wanted.preonboarding.reservation.application.ReservationService;
 import com.wanted.preonboarding.reservation.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationCancelRequest;
-import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservedItemResponse;
 import java.util.List;
 import java.util.UUID;
@@ -40,70 +36,64 @@ class PerformanceCancelEventServiceTest extends ServiceTest {
 	private PerformAdminService performAdminService;
 	@Autowired
 	private ReservationService reservationService;
-
 	@Autowired
 	@Qualifier("customThreadPoolTaskExecutor")
 	private Executor customThreadPoolTaskExecutor;
-	private final PerformanceRequestFactory performanceRequestFactory = new PerformanceRequestFactory();
-	private final PerformanceRequest performanceRequest = performanceRequestFactory.create();
 
-	private final ReservationRequestFactory factory = new ReservationRequestFactory();
-	private final UUID userId = UUID.randomUUID();
+	private UUID userId;
 	private UUID performId;
-	private ReservationRequest reservationRequest;
-
-	@BeforeEach
-	void setUp() {
-		performId = performAdminService.register(performanceRequest);
-		reservationRequest = factory.create(performId);
-
-	}
+	private ReservedItemResponse reservedItemResponse;
+	private ReservationCancelRequest cancelRequest;
 
 	@MockBean
 	private NotificationOutput notificationOutput;
 
+	@BeforeEach
+	void setUp() {
+		userId =  UUID.randomUUID();
+		//퍼포먼스 저장
+		performId = performAdminService.register(RequestFactory.getPerformRegister());
+		//퍼포먼스 예약
+		reservedItemResponse = reservationService.reserve(RequestFactory.getReservation(performId));
+		//취소 request 생성
+		cancelRequest = RequestFactory.getCancelRequest(reservedItemResponse.id());
+	}
+
 	@Test
 	public void 예약_취소_시_구독자_알림_발송() throws InterruptedException {
 		//given
-		performService.subscribe(performId, userId);
-		ReservedItemResponse reserve = reservationService.reserve(reservationRequest);
-		ReservationCancelRequest cancelRequest = new ReservationCancelRequestFactory().create(reservationRequest, reserve.id());
+		performService.subscribe(performId,userId);
 		//when
 		reservationService.cancel(cancelRequest);
-
+		await();
 		//then
-		StringBuilder message = new StringBuilder()
-			.append("공연ID: ").append(reservationRequest.performId()).append("\n")
-			.append("공연명: ").append(reserve.name()).append("\n")
-			.append("회차: ").append(reservationRequest.round()).append("\n")
-			.append("시작 일시: ").append(performanceRequest.startDate()).append("\n")
-			.append("예매 가능한 좌석정보: ").append(reserve.line() + "라인" +" "+ reserve.seat()+"시트").append("\n");
-
-		ThreadPoolTaskExecutor executor = (ThreadPoolTaskExecutor) customThreadPoolTaskExecutor;
-		executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
-
-		verify(notificationOutput, times(1)).reservationCancelNotify(List.of(userId),
-			message.toString());
+		String message = NotifyMessageFactory.reservationCancel(performId);
+		verify(
+			notificationOutput, times(1)
+		).reservationCancelNotify(List.of(userId), message);
 
 	}
 
 	@Test
 	public void 예약_취소_시_구독자_알림_발송_실패_예약취소에_영향_없음() throws InterruptedException {
 		Mockito.doThrow(new RuntimeException("알림 외부서비스 에러")).when(notificationOutput).reservationCancelNotify(any(),any());
+
 		//given
-		performService.subscribe(performId, userId);
-		ReservedItemResponse reserve = reservationService.reserve(reservationRequest);
-		ReservationCancelRequest cancelRequest = new ReservationCancelRequestFactory().create(reservationRequest, reserve.id());
+		performService.subscribe(performId,userId);
 		//when
 		reservationService.cancel(cancelRequest);
-
-		ThreadPoolTaskExecutor executor = (ThreadPoolTaskExecutor) customThreadPoolTaskExecutor;
-		executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
-
+		await();
 		//then
-		ReservedItemResponse reservation = reservationService.getReservations(reserve.userName(),
-			reserve.phoneNumber()).get(0);
+		ReservedItemResponse reservation = reservationService.getReservations(
+				reservedItemResponse.userName(),
+				reservedItemResponse.phoneNumber()
+			).get(0);
 		assertThat(reservation.status()).isEqualTo(ReservationStatus.CANCEL);
 
+	}
+
+	private void await() throws InterruptedException {
+		ThreadPoolTaskExecutor executor = (ThreadPoolTaskExecutor) customThreadPoolTaskExecutor;
+		executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
 	}
 }

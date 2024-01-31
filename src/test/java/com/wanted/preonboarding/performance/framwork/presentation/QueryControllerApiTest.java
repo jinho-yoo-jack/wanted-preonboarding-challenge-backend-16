@@ -5,7 +5,7 @@ import com.wanted.preonboarding.ApiTest;
 import com.wanted.preonboarding.performance.AssertCluster;
 import com.wanted.preonboarding.performance.PerformanceRequestFactory;
 import com.wanted.preonboarding.performance.application.PerformAdminService;
-import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceRequest;
+import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -28,7 +28,7 @@ public class QueryControllerApiTest extends ApiTest {
 	public void 공연_및_전시_정보_목록_조회_API(){
 		//given
 		PerformanceRequestFactory request = new PerformanceRequestFactory();
-		PerformanceRequest performanceRequest = request.create();
+		PerformRequest performanceRequest = request.create();
 		performAdminService.register(performanceRequest);
 
 		//when
@@ -52,7 +52,7 @@ public class QueryControllerApiTest extends ApiTest {
 	public void 공연_및_전시_정보_상세_조회_API(){
 		//given
 		PerformanceRequestFactory request = new PerformanceRequestFactory();
-		PerformanceRequest performanceRequest = request.create();
+		PerformRequest performanceRequest = request.create();
 		UUID performId = performAdminService.register(performanceRequest);
 
 		//when

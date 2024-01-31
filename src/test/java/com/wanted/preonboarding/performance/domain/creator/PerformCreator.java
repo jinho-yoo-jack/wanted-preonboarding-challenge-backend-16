@@ -3,7 +3,7 @@ package com.wanted.preonboarding.performance.domain.creator;
 import com.wanted.preonboarding.performance.PerformanceRequestFactory;
 import com.wanted.preonboarding.performance.domain.Perform;
 import com.wanted.preonboarding.performance.domain.Performance;
-import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceRequest;
+import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 
 public class PerformCreator {
 
@@ -13,7 +13,7 @@ public class PerformCreator {
 	private final PerformanceRequestFactory performanceRequestFactory = new PerformanceRequestFactory();
 
 	public Perform getPerform() {
-		PerformanceRequest performanceRequest = performanceRequestFactory.create();
+		PerformRequest performanceRequest = performanceRequestFactory.create();
 
 		return Perform.create(
 			performance,

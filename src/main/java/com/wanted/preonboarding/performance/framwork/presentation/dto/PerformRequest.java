@@ -3,7 +3,7 @@ package com.wanted.preonboarding.performance.framwork.presentation.dto;
 import com.wanted.preonboarding.performance.domain.vo.PerformanceType;
 import java.time.LocalDate;
 
-public record PerformanceRequest(
+public record PerformRequest(
 	String name,
 	int price,
 	int round,

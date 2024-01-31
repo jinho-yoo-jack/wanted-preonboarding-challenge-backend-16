@@ -5,7 +5,7 @@ import com.wanted.preonboarding.performance.AssertCluster;
 import com.wanted.preonboarding.performance.PerformanceRequestFactory;
 import com.wanted.preonboarding.performance.ReservationRequestFactory;
 import com.wanted.preonboarding.performance.application.PerformAdminService;
-import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceRequest;
+import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservedItemResponse;
 import io.restassured.RestAssured;
@@ -27,7 +27,7 @@ public class ReserveControllerApiTest extends ApiTest {
 	public void 공연_예약_API(){
 
 		//given
-		PerformanceRequest performanceRequest = new PerformanceRequestFactory().create();
+		PerformRequest performanceRequest = new PerformanceRequestFactory().create();
 		UUID performId = performAdminService.register(performanceRequest);
 		ReservationRequestFactory requestFactory = new ReservationRequestFactory();
 		ReservationRequest request = requestFactory.create(performId);

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.performance.PerformanceRequestFactory;
-import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceRequest;
+import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ public class PerformAdminServiceTest extends ServiceTest {
 	@Test
 	public void 관리자는_공연_전시_정보를_등록할_수_있다(){
 		PerformanceRequestFactory request = new PerformanceRequestFactory();
-		PerformanceRequest performanceRequest = request.create();
+		PerformRequest performanceRequest = request.create();
 		UUID register = performAdminService.register(performanceRequest);
 		assertThat(register).isNotNull();
 	}
