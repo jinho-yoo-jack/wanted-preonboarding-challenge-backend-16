@@ -12,10 +12,8 @@ class NoneDiscountPolicyTest {
 		//given
 		int price = 20000;
 		NoneDiscountPolicy discountPolicy = new NoneDiscountPolicy();
-
 		//when
 		int discountFee = discountPolicy.getDiscountAmount(price);
-
 		//then
 		assertThat(discountFee).isEqualTo(0);
 	}
