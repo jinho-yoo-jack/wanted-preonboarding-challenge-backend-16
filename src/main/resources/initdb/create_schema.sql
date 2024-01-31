@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS `user`
     `id`	        BINARY(16)  default (uuid_to_bin(uuid()))   NOT NULL COMMENT '유저 ID',
     `name`          varchar(255)                                NOT NULL COMMENT '유저 이름',
     `phone_number`  varchar(255)                                NOT NULL COMMENT '유저 휴대전화 번호',
-    `created_at`    TIMESTAMP    DEFAULT NOW()                   NOT NULL,
+    `email`         varchar(255) DEFAULT NULL                   COMMENT '유저 이메일 주소',
+    `created_at`    TIMESTAMP    DEFAULT NOW()                  NOT NULL,
     `updated_at`    TIMESTAMP    DEFAULT NULL ON UPDATE NOW(),
     PRIMARY KEY(id),
     UNIQUE KEY user_unique (name, phone_number)

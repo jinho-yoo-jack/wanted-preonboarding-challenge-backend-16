@@ -4,8 +4,10 @@ import com.wanted.preonboarding.ticket.domain.dto.AlarmInfo;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.UserInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Alarm;
+import com.wanted.preonboarding.ticket.domain.entity.User;
 import com.wanted.preonboarding.ticket.exception.AlarmDuplicated;
 import com.wanted.preonboarding.ticket.infrastructure.repository.AlarmRepository;
+import com.wanted.preonboarding.ticket.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,14 +21,17 @@ import java.util.Optional;
 public class AlarmService {
     private final CommonService commonService;
     private final AlarmRepository alarmRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public AlarmInfo registAlarm(AlarmInfo alarmInfo) {
         // 유저 정보 탐색
+        String email = alarmInfo.getUserInfo().getEmail();
         UserInfo userInfo = commonService.getUserInfo(
                 alarmInfo.getUserInfo().getName(),
                 alarmInfo.getUserInfo().getPhoneNumber()
         );
+        userInfo.setEmail(email);
         alarmInfo.setUserInfo(userInfo);
 
         // 공연 정보 탐색
@@ -40,7 +45,7 @@ public class AlarmService {
         checkAlarmDuplicated(alarmInfo);
 
         // 알림
-        // 내역 추가
+        // 내역 추가, 유저 정보 내 이메일 추가
         Integer alarmId = addAlarm(alarmInfo);
         alarmInfo.setAlarmId(alarmId);
 
@@ -50,7 +55,18 @@ public class AlarmService {
 
     public Integer addAlarm(AlarmInfo alarmInfo) {
         // 알림 내역 추가
-        return alarmRepository.save(Alarm.of(alarmInfo)).getId();
+        Integer alarmId = alarmRepository.save(Alarm.of(alarmInfo)).getId();
+
+        // 유저 정보 수정 (이메일 추가)
+        Optional<User> user = userRepository.findByNameAndPhoneNumber(alarmInfo.getUserInfo().getName(), alarmInfo.getUserInfo().getPhoneNumber());
+        assert user.isPresent();
+        User dbUser = user.get();
+        if (dbUser.getEmail() == null) {
+            dbUser.setEmail(alarmInfo.getUserInfo().getEmail());
+            userRepository.save(dbUser);
+        }
+
+        return alarmId;
     }
 
     public void checkAlarmDuplicated(AlarmInfo alarmInfo) {
