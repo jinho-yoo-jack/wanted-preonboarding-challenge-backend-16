@@ -23,11 +23,11 @@ public class QueryController {
     private final TicketSeller ticketSeller;
 
     @GetMapping("/all/performance")
-    public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
+    public ResponseEntity<ResponseHandler<List<ResponsePerformanceInfo>>> getAllPerformanceInfoList() {
         System.out.println("getAllPerformanceInfoList");
         return ResponseEntity
             .ok()
-            .body(ResponseHandler.<List<PerformanceInfo>>builder()
+            .body(ResponseHandler.<List<ResponsePerformanceInfo>>builder()
                 .message("Success")
                 .statusCode(HttpStatus.OK)
                 .data(ticketSeller.getAllPerformanceInfoList())
