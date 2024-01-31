@@ -69,5 +69,82 @@ public class TicketSeller {
 
     }
 
+    public boolean reserve(ReserveInfo reserveInfo) {
+        log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
+        log.info("performanceRepository.findById ID => {}", performanceRepository.findById(reserveInfo.getPerformanceId()));
+
+        Performance info = performanceRepository.findById(reserveInfo.getPerformanceId())
+                .orElseThrow(EntityNotFoundException::new);
+
+        String enableReserve = info.getIsReserve();
+
+        if (enableReserve.equalsIgnoreCase("enable")) {
+
+            reserveInfo.setReserveInfo("Pending");
+
+            try {
+
+                // 1. 결제
+                //공연가격
+
+                int price = info.getPrice();
+                // 가진 amount 돈 양
+                reserveInfo.setAmount(reserveInfo.getAmount() - price);
+                // 2. 예매 진행
+                reservationRepository.save(Reservation.of(reserveInfo));
+
+
+            } catch (Exception e) {
+                reserveInfo.setReserveInfo("Rejected");
+                reserveInfo.setAmount(reserveInfo.getAmount());
+
+
+            }
+
+            updatePerformance(info.getId());
+            reserveInfo.setReserveInfo("Pending");
+
+
+            return true;
+
+        } else {
+            reserveInfo.setReserveInfo("Approved");
+
+            return false;
+        }
+    }
+    @Transactional
+    public void updatePerformance(UUID performanceId) {
+        performanceRepository.updateIsReserveStatus(performanceId, "disable");
+    }
+
+
+
+
+    @Transactional
+    public Reservation checkReservation(CheckReserveRequest checkReserveRequest) {
+        return reservationRepository.findByNameAndPhoneNumber(checkReserveRequest.getName(), checkReserveRequest.getPhoneNumber()).orElseThrow(
+                () -> new NoSuchElementException("해당하는 데이터를 찾을 수 없습니다."));
+
+    }
+
+    @Transactional
+    public boolean cancleReserve(CancelReserveRequest cancelReserveRequest) {
+        try {
+            reservationRepository.deleteByPerformanceIdAndNameAndPhoneNumberAndRound(
+                    cancelReserveRequest.getPerformanceId(),
+                    cancelReserveRequest.getReservationName(),
+                    cancelReserveRequest.getReservationPhoneNumber(),
+                    cancelReserveRequest.getRound()
+            );
+
+
+            return true;
+        } catch (EmptyResultDataAccessException exception) {
+            throw exception;
+        }
+
+    }
+
 
 }
