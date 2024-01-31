@@ -42,7 +42,7 @@ public class PerformService {
         return perform.isReservationAvailable();
     }
 
-
+    @Transactional
     public void subscribe(UUID performId, UUID userId) {
         Perform perform = performRepository.findById(performId)
             .orElseThrow(EntityNotFoundException::new);

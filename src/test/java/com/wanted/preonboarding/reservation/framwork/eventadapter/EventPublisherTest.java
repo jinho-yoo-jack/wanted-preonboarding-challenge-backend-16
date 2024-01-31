@@ -10,6 +10,7 @@ import com.wanted.preonboarding.performance.ReservationCancelRequestFactory;
 import com.wanted.preonboarding.performance.ReservationRequestFactory;
 import com.wanted.preonboarding.performance.application.PerformAdminService;
 import com.wanted.preonboarding.performance.application.PerformCancelEventService;
+import com.wanted.preonboarding.performance.application.PerformService;
 import com.wanted.preonboarding.performance.framwork.infrastructure.eventAdapter.ReservationCancelEventListener;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceRequest;
 import com.wanted.preonboarding.reservation.application.ReservationService;
@@ -30,7 +31,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class EventPublisherTest extends ServiceTest {
 
 	@Autowired
-	private ReservationCancelEventListener reservationCancelEventListener;
+	private PerformService performService;
 
 	@Autowired
 	private PerformAdminService performAdminService;
@@ -56,7 +57,7 @@ public class EventPublisherTest extends ServiceTest {
 		UUID userId = UUID.randomUUID();
 
 		//given
-		reservationCancelEventListener.subscribe(performId, userId);
+		performService.subscribe(performId, userId);
 		//when
 		ReservationCancelRequest cancelRequest
 			= new ReservationCancelRequestFactory().create(request, reserve.id());

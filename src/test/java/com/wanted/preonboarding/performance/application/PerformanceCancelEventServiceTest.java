@@ -35,7 +35,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 class PerformanceCancelEventServiceTest extends ServiceTest {
 
 	@Autowired
-	private ReservationCancelEventListener performanceCancelEventService;
+	private PerformService performService;
 	@Autowired
 	private PerformAdminService performAdminService;
 	@Autowired
@@ -65,7 +65,7 @@ class PerformanceCancelEventServiceTest extends ServiceTest {
 	@Test
 	public void 예약_취소_시_구독자_알림_발송() throws InterruptedException {
 		//given
-		performanceCancelEventService.subscribe(performId, userId);
+		performService.subscribe(performId, userId);
 		ReservedItemResponse reserve = reservationService.reserve(reservationRequest);
 		ReservationCancelRequest cancelRequest = new ReservationCancelRequestFactory().create(reservationRequest, reserve.id());
 		//when
@@ -91,7 +91,7 @@ class PerformanceCancelEventServiceTest extends ServiceTest {
 	public void 예약_취소_시_구독자_알림_발송_실패_예약취소에_영향_없음() throws InterruptedException {
 		Mockito.doThrow(new RuntimeException("알림 외부서비스 에러")).when(notificationOutput).reservationCancelNotify(any(),any());
 		//given
-		performanceCancelEventService.subscribe(performId, userId);
+		performService.subscribe(performId, userId);
 		ReservedItemResponse reserve = reservationService.reserve(reservationRequest);
 		ReservationCancelRequest cancelRequest = new ReservationCancelRequestFactory().create(reservationRequest, reserve.id());
 		//when
