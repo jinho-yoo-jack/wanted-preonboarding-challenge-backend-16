@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.service;
 
 import com.wanted.preonboarding.ticket.domain.dto.AlarmInfo;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
+import com.wanted.preonboarding.ticket.domain.dto.ReservationInfo;
 import com.wanted.preonboarding.ticket.domain.dto.UserInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Alarm;
 import com.wanted.preonboarding.ticket.domain.entity.User;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -20,6 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AlarmService {
     private final CommonService commonService;
+    private final EmailService emailService;
     private final AlarmRepository alarmRepository;
     private final UserRepository userRepository;
 
@@ -81,4 +84,31 @@ public class AlarmService {
         }
     }
 
+    public void sendAlarm(ReservationInfo reservationInfo) {
+        // 예약 내역 데이터 해체
+        Integer reservationId = reservationInfo.getReservationId();
+        PerformanceInfo performanceInfo = reservationInfo.getPerformanceInfo();
+        UserInfo userInfo = reservationInfo.getUserInfo();
+
+        // 취소된 공연 알림 신청 유저 리스트 탐색
+        List<User> targetUserList = userRepository.findAlarmRegisteredUsers(performanceInfo.getPerformanceId());
+
+        for (User user : targetUserList) {
+            // 발송 메세지 가공
+            String message = getMessage(user, performanceInfo);
+
+            // 알림 신청 유저에게 메일 발송
+            String emailAddress = user.getEmail();
+            emailService.sendEmail(emailAddress, "대기 공연 예약 취소 안내", message);
+        }
+
+    }
+
+    public String getMessage(User user, PerformanceInfo performanceInfo) {
+        String userName = user.getName();
+        String performanceName = performanceInfo.getPerformanceName();
+        Integer performanceRound = performanceInfo.getRound();
+
+        return "%s 님, 대기 신청하신 공연 예매 취소 안내 드립니다.\n[%s/%d회차] 취소표 발생했습니다.".formatted(userName, performanceName, performanceRound);
+    }
 }

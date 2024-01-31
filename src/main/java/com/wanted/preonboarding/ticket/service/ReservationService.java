@@ -26,6 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReservationService {
     private final CommonService commonService;
+    private final AlarmService alarmService;
     private final ReservationRepository reservationRepository;
     private final PerformanceRepository performanceRepository;
     private final PerformanceSeatRepository performanceSeatRepository;
@@ -122,6 +123,7 @@ public class ReservationService {
         deleteReservation(reservationInfo);
 
         // 해당 공연 알림 신청 유저에게 알림 발송
+        alarmService.sendAlarm(reservationInfo);
 
         // 예약 취소 내역 반환
         return reservationInfo;
@@ -166,6 +168,6 @@ public class ReservationService {
 
     public void deleteReservation(ReservationInfo reservationInfo) {
         // 예약 내역 삭제 (=> db 트리거로 canceledReservation 에 저장됨)
-        reservationRepository.delete(Reservation.of(reservationInfo));
+        reservationRepository.deleteById(reservationInfo.getReservationId());
     }
 }
