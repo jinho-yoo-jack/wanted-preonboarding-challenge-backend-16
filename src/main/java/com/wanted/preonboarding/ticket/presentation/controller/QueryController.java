@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.presentation;
+package com.wanted.preonboarding.ticket.presentation.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.TicketSeller;

@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.presentation;
+package com.wanted.preonboarding.ticket.presentation.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
