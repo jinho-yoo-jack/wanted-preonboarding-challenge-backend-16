@@ -1,7 +1,7 @@
-package com.wanted.preonboarding.performance.domain.creator;
+package com.wanted.preonboarding.uitl.domaincreator;
 
-import com.wanted.preonboarding.TestUser;
-import com.wanted.preonboarding.performance.TestPerformance;
+import com.wanted.preonboarding.uitl.testdata.TestUser;
+import com.wanted.preonboarding.uitl.testdata.TestPerformance;
 import com.wanted.preonboarding.performance.domain.Performance;
 import com.wanted.preonboarding.performance.domain.discount_policy.DiscountPolicy;
 import com.wanted.preonboarding.performance.domain.discount_policy.NoneDiscountPolicy;

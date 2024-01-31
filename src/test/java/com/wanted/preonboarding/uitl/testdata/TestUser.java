@@ -1,4 +1,4 @@
-package com.wanted.preonboarding;
+package com.wanted.preonboarding.uitl.testdata;
 
 
 public class TestUser {

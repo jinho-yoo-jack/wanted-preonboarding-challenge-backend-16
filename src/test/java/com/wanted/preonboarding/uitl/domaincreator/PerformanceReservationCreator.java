@@ -1,7 +1,6 @@
-package com.wanted.preonboarding.performance.domain.creator;
+package com.wanted.preonboarding.uitl.domaincreator;
 
-import com.wanted.preonboarding.TestUser;
-import com.wanted.preonboarding.performance.ItemCreator;
+import com.wanted.preonboarding.uitl.testdata.TestUser;
 import com.wanted.preonboarding.performance.domain.Performance;
 import com.wanted.preonboarding.reservation.domain.Reservation;
 import com.wanted.preonboarding.reservation.domain.vo.Item;

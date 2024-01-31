@@ -1,5 +1,6 @@
-package com.wanted.preonboarding.performance;
+package com.wanted.preonboarding.uitl.requestfactory;
 
+import com.wanted.preonboarding.uitl.testdata.TestPerformance;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 
 public class PerformanceRequestFactory {

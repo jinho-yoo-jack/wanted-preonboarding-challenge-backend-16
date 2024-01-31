@@ -1,9 +1,9 @@
 package com.wanted.preonboarding.reservation.framwork.persentation;
 
-import com.wanted.preonboarding.ApiTest;
-import com.wanted.preonboarding.performance.AssertCluster;
-import com.wanted.preonboarding.performance.PerformanceRequestFactory;
-import com.wanted.preonboarding.performance.ReservationRequestFactory;
+import com.wanted.preonboarding.uitl.basetest.ApiTest;
+import com.wanted.preonboarding.uitl.AssertCluster;
+import com.wanted.preonboarding.uitl.requestfactory.PerformanceRequestFactory;
+import com.wanted.preonboarding.uitl.requestfactory.ReservationRequestFactory;
 import com.wanted.preonboarding.performance.application.PerformAdminService;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;

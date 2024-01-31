@@ -1,8 +1,7 @@
-package com.wanted.preonboarding.performance;
+package com.wanted.preonboarding.uitl.requestfactory;
 
-import com.wanted.preonboarding.TestUser;
+import com.wanted.preonboarding.uitl.testdata.TestUser;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationCancelRequest;
-import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
 import java.util.UUID;
 
 public class ReservationCancelRequestFactory {

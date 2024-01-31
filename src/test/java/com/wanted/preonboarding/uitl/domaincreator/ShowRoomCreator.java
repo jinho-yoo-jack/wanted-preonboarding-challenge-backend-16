@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.performance.domain.creator;
+package com.wanted.preonboarding.uitl.domaincreator;
 
 import com.wanted.preonboarding.performance.domain.vo.Gate;
 

@@ -2,8 +2,8 @@ package com.wanted.preonboarding.performance.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.wanted.preonboarding.ServiceTest;
-import com.wanted.preonboarding.performance.PerformanceRequestFactory;
+import com.wanted.preonboarding.uitl.basetest.ServiceTest;
+import com.wanted.preonboarding.uitl.requestfactory.PerformanceRequestFactory;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;

@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.performance;
+package com.wanted.preonboarding.uitl.testdata;
 
 public class TestSeatInfo {
 	private char line = 'c';

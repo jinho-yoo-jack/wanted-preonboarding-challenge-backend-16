@@ -1,10 +1,12 @@
-package com.wanted.preonboarding.performance;
+package com.wanted.preonboarding.uitl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.wanted.preonboarding.TestUser;
+import com.wanted.preonboarding.uitl.testdata.TestUser;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceResponse;
+import com.wanted.preonboarding.uitl.testdata.TestPerformance;
+import com.wanted.preonboarding.uitl.testdata.TestSeatInfo;
 import com.wanted.preonboarding.reservation.domain.Reservation;
 import com.wanted.preonboarding.reservation.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.reservation.domain.vo.ReserveItem;

@@ -2,18 +2,14 @@ package com.wanted.preonboarding.reservation.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.wanted.preonboarding.TestUser;
-import com.wanted.preonboarding.performance.AssertCluster;
-import com.wanted.preonboarding.performance.ItemCreator;
-import com.wanted.preonboarding.performance.ReservationRequestFactory;
-import com.wanted.preonboarding.performance.TestPerformance;
+import com.wanted.preonboarding.uitl.AssertCluster;
+import com.wanted.preonboarding.uitl.domaincreator.ItemCreator;
 import com.wanted.preonboarding.performance.domain.Performance;
-import com.wanted.preonboarding.performance.domain.creator.PerformanceCreator;
-import com.wanted.preonboarding.performance.domain.creator.PerformanceReservationCreator;
+import com.wanted.preonboarding.uitl.domaincreator.PerformanceCreator;
+import com.wanted.preonboarding.uitl.domaincreator.PerformanceReservationCreator;
 import com.wanted.preonboarding.reservation.domain.vo.Item;
 import com.wanted.preonboarding.reservation.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.reservation.domain.vo.ReserveItem;
-import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

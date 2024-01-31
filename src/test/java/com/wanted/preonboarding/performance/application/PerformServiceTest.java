@@ -1,10 +1,9 @@
 package com.wanted.preonboarding.performance.application;
 
-import com.wanted.preonboarding.RequestFactory;
-import com.wanted.preonboarding.ServiceTest;
-import com.wanted.preonboarding.performance.AssertCluster;
-import com.wanted.preonboarding.performance.PerformanceRequestFactory;
-import com.wanted.preonboarding.performance.TestPerformance;
+import com.wanted.preonboarding.uitl.requestfactory.RequestFactory;
+import com.wanted.preonboarding.uitl.basetest.ServiceTest;
+import com.wanted.preonboarding.uitl.AssertCluster;
+import com.wanted.preonboarding.uitl.requestfactory.PerformanceRequestFactory;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceResponse;
 import java.util.List;

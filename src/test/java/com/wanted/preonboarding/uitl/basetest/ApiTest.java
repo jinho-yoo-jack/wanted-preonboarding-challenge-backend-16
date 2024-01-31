@@ -1,4 +1,4 @@
-package com.wanted.preonboarding;
+package com.wanted.preonboarding.uitl.basetest;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;

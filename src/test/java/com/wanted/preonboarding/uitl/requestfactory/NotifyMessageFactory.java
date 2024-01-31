@@ -1,7 +1,6 @@
-package com.wanted.preonboarding.performance.application;
+package com.wanted.preonboarding.uitl.requestfactory;
 
-import com.wanted.preonboarding.RequestFactory;
-import com.wanted.preonboarding.performance.TestPerformance;
+import com.wanted.preonboarding.uitl.testdata.TestPerformance;
 import java.util.UUID;
 
 public class NotifyMessageFactory {

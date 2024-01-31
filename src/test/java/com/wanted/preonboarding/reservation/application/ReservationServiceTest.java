@@ -2,12 +2,11 @@ package com.wanted.preonboarding.reservation.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.withMarginOf;
 
-import com.wanted.preonboarding.RequestFactory;
-import com.wanted.preonboarding.ServiceTest;
+import com.wanted.preonboarding.uitl.requestfactory.RequestFactory;
+import com.wanted.preonboarding.uitl.basetest.ServiceTest;
 import com.wanted.preonboarding.core.exception.ReservationSoldOutException;
-import com.wanted.preonboarding.performance.AssertCluster;
+import com.wanted.preonboarding.uitl.AssertCluster;
 import com.wanted.preonboarding.performance.application.PerformAdminService;
 import com.wanted.preonboarding.performance.application.PerformService;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;

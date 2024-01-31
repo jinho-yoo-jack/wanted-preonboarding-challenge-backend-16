@@ -5,9 +5,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.wanted.preonboarding.RequestFactory;
-import com.wanted.preonboarding.ServiceTest;
+import com.wanted.preonboarding.uitl.requestfactory.RequestFactory;
+import com.wanted.preonboarding.uitl.basetest.ServiceTest;
 import com.wanted.preonboarding.performance.application.output.NotificationOutput;
+import com.wanted.preonboarding.uitl.requestfactory.NotifyMessageFactory;
 import com.wanted.preonboarding.reservation.application.ReservationService;
 import com.wanted.preonboarding.reservation.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationCancelRequest;

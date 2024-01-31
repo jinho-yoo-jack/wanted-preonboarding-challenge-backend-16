@@ -1,9 +1,10 @@
-package com.wanted.preonboarding.performance;
+package com.wanted.preonboarding.uitl.domaincreator;
 
-import com.wanted.preonboarding.TestUser;
+import com.wanted.preonboarding.uitl.testdata.TestUser;
+import com.wanted.preonboarding.uitl.testdata.TestPerformance;
+import com.wanted.preonboarding.uitl.testdata.TestSeatInfo;
 import com.wanted.preonboarding.reservation.domain.vo.Item;
 import com.wanted.preonboarding.reservation.domain.vo.SeatInfo;
-import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
 import java.util.UUID;
 
 public class ItemCreator {

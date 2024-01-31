@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.performance;
+package com.wanted.preonboarding.uitl.testdata;
 
 import com.wanted.preonboarding.performance.domain.vo.PerformanceType;
 import java.time.LocalDate;

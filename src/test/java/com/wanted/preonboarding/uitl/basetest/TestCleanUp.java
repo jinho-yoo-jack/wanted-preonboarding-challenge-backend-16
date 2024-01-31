@@ -1,4 +1,4 @@
-package com.wanted.preonboarding;
+package com.wanted.preonboarding.uitl.basetest;
 
 import com.wanted.preonboarding.performance.framwork.infrastructure.repository.DiscountPolicyRepository;
 import com.wanted.preonboarding.performance.framwork.infrastructure.repository.PerformRepository;
