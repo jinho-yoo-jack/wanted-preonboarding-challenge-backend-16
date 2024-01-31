@@ -20,8 +20,4 @@ public class SeatInfo {
 	public static SeatInfo create(char line, int seat){
 	        return new SeatInfo(line,seat);
 	    }
-
-	public String getSeatInfoToString() {
-		return line +":"+seat;
-	}
 }
