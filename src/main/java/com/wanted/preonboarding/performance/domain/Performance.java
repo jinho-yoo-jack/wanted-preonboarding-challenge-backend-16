@@ -57,8 +57,4 @@ public class Performance {
         return this.price - discountAmount;
     }
 
-
-    public void changePrice(int price) {
-        this.price = price;
-    }
 }
