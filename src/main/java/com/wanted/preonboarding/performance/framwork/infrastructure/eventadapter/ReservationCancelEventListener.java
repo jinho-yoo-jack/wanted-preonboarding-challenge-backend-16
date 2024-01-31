@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.performance.framwork.infrastructure.eventAdapter;
+package com.wanted.preonboarding.performance.framwork.infrastructure.eventadapter;
 
 import com.wanted.preonboarding.performance.application.PerformCancelEventService;
 

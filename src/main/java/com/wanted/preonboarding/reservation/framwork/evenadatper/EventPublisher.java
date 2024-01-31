@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.reservation.framwork.evenadatper;
 
-import com.wanted.preonboarding.performance.framwork.infrastructure.eventAdapter.PerformLister;
+import com.wanted.preonboarding.performance.framwork.infrastructure.eventadapter.PerformLister;
 import com.wanted.preonboarding.reservation.application.output.EventOutputPort;
 import com.wanted.preonboarding.reservation.domain.event.ReservationCancelEvent;
 import com.wanted.preonboarding.reservation.domain.event.ReserveEvent;
