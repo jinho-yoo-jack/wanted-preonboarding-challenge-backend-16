@@ -11,13 +11,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+
     properties:
       hibernate:
         auto_quote_keyword: false
         globally_quoted_identifiers: false
         format_sql: true
         show_sql: true
-
 logging:
   level:
     org:
