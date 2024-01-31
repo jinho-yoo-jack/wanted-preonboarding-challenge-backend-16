@@ -19,6 +19,15 @@ spring:
         format_sql: true     # 쿼리 로그 포맷 (정렬)
         show_sql: true       # 쿼리 로그 출력
 
+sms:
+  service-id: ${sms.service-id}
+  access-key: ${sms.access-key}
+  secret-key: ${sms.secret-key}
+  send-phone: ${sms.send-phone}
+  send-company-name: ${sms.send-company-name}
+  first-content-part: "예약 가능 알림 서비스"
+  second-content-part:
+
 logging:
   level:
     org:

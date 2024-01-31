@@ -1,10 +1,11 @@
 package com.wanted.preonboarding.ticket.presentation;
 
 
-import com.wanted.preonboarding.ticket.application.TicketSeller;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.wanted.preonboarding.ticket.domain.dto.SmsResponse;
 import com.wanted.preonboarding.ticket.domain.dto.ReservePossibleAlarmCustomerInfoDto;
-import com.wanted.preonboarding.ticket.domain.dto.SendMessagePerformanceSeatInfoDto;
 import com.wanted.preonboarding.ticket.domain.dto.ResponseDto;
+import com.wanted.preonboarding.ticket.presentation.service.AlarmSmsService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,24 +16,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
 @Slf4j
 @RestController
 @RequestMapping("/alarm")
 @RequiredArgsConstructor
 public class AlarmController {
 
-    private final TicketSeller ticketSeller;
+    private final AlarmSmsService alarmSmsService;
 
 
-    @PostMapping("/all/customer/performance/cancel")
-    public ResponseEntity<ResponseDto> sendMessagePerformanceCancelCameout(@RequestBody ReservePossibleAlarmCustomerInfoDto dto) {
+    @PostMapping("/customer/performance-seat/new")
+    public ResponseEntity<ResponseDto> sendMessagePerformanceCancelCameout(@RequestBody ReservePossibleAlarmCustomerInfoDto dto) throws NoSuchAlgorithmException, URISyntaxException, UnsupportedEncodingException, InvalidKeyException, JsonProcessingException {
 
         ResponseDto responseDto = new ResponseDto();
         try {
-            SendMessagePerformanceSeatInfoDto responsePerformanceCancelDto = ticketSeller.performanceCancelCameout(dto);
+            SmsResponse smsResponse = alarmSmsService.performanceCancelCameout(dto);
             responseDto.setResponse("success");
             responseDto.setMessage("취소된 예약이 있다는 알림이 성공적으로 전달했습니다.");
-            responseDto.setData(responsePerformanceCancelDto);
+            responseDto.setData(smsResponse);
             return ResponseEntity.ok(responseDto);
         } catch (EntityNotFoundException e) {
             responseDto.setResponse("failed");

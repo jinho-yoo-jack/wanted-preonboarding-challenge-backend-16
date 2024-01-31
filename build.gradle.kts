@@ -32,6 +32,7 @@ dependencies {
     testImplementation("org.junit.vintage:junit-vintage-engine") {
         exclude("org.hamcrest", "hamcrest-core")
     }
+    implementation("org.apache.httpcomponents:httpclient:4.5.13")
 }
 
 tasks.withType<Test> {

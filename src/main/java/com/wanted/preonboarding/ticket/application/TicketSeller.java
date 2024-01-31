@@ -2,7 +2,6 @@ package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.global.exception.InvalidInputException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
@@ -84,48 +83,6 @@ public class TicketSeller {
 
 
 
-    public SendMessagePerformanceSeatInfoDto performanceCancelCameout(ReservePossibleAlarmCustomerInfoDto reserveAlarmCustomerInfoDto) {
 
-        isSendReserveExist(reserveAlarmCustomerInfoDto);
-
-        Optional<PerformanceSeatInfo> optionalPerformanceSeatInfo = performanceSeatInfoRepository.findByUUID(reserveAlarmCustomerInfoDto.getPerformanceId());
-
-        if(!optionalPerformanceSeatInfo.isPresent()) {
-            throw new EntityNotFoundException();
-        }
-        PerformanceSeatInfo performanceSeatInfo = optionalPerformanceSeatInfo.get();
-
-
-        Optional<Performance> optionalPerformance = performanceRepository.findById(reserveAlarmCustomerInfoDto.getPerformanceId());
-        if(!optionalPerformance.isPresent()) {
-            throw new EntityNotFoundException();
-        }
-        Performance performance = optionalPerformance.get();
-
-
-        SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto = SendMessagePerformanceSeatInfoDto.of(performanceSeatInfo);
-        sendMessagePerformanceSeatInfoDto.setPerformanceName(performance.getName());
-        sendMessagePerformanceSeatInfoDto.setStartDate(performance.getStart_date());
-
-        //알림 보내기
-        sendAlarm(sendMessagePerformanceSeatInfoDto, reserveAlarmCustomerInfoDto);
-
-        return SendMessagePerformanceSeatInfoDto.of(performanceSeatInfo);
-    }
-
-    private void isSendReserveExist(ReservePossibleAlarmCustomerInfoDto reservePossibleAlarmCustomerInfoDto) {
-        Optional<Reservation> optionalReservation = reservationRepository.findByNameAndPhoneNumber(reservePossibleAlarmCustomerInfoDto.getReservationName(), reservePossibleAlarmCustomerInfoDto.getReservationPhoneNumber());
-        if(!optionalReservation.isPresent()) {
-            throw new EntityNotFoundException();
-        }
-    }
-
-    private void sendAlarm(SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto, ReservePossibleAlarmCustomerInfoDto reservePossibleAlarmCustomerInfoDto) {
-
-        //sendAlarmInfo to phoneNumber in sendMessagePerformanceSeatInfoDto
-        String reservationPhoneNumber = reservePossibleAlarmCustomerInfoDto.getReservationPhoneNumber();
-
-
-    }
 
 }
