@@ -14,10 +14,8 @@ class AmountDiscountPolicyTest {
 		int price = 20000;
 		int discountAmount = 2000;
 		AmountDiscountPolicy discountPolicy = new AmountDiscountPolicy(discountAmount);
-
 		//when
 		int discountFee = discountPolicy.getDiscountAmount(price);
-
 		//then
 		assertThat(discountFee).isEqualTo(discountAmount);
 	}
