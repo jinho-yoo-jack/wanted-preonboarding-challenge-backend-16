@@ -10,6 +10,7 @@ import com.wanted.preonboarding.reservation.domain.event.ReservationCanceledEven
 import com.wanted.preonboarding.reservation.domain.event.WaitToReserveEvent;
 import com.wanted.preonboarding.reservation.domain.valueObject.UserInfo;
 import com.wanted.preonboarding.reservation.infrastructure.configuration.TwilioProperties;
+import com.wanted.preonboarding.reservation.infrastructure.repository.AlarmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -19,68 +20,44 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class ReservationAlarm {
-
-    private static final String START = "예약 대기한 공연에 빈 좌석이 나와 안내드립니다.";
-    private static final String PERFORMANCE_ID = "\n공연ID : ";
-    private static final String PERFORMANCE_NAME = "\n공연명 : ";
-    private static final String ROUND = "\n회차 : ";
-    private static final String START_DATE = "\n시작일시 : ";
-    private static final String SEAT_INFO = "\n좌석 정보 : ";
     private static final String KOREA_LOCALE = "+082";
-    private static final int FILTERED_LENGTH = 1;
-    private static final int FILTERED_INDEX = 0;
-    private static final Map<Performance, List<UserInfo>> waitingMap = new HashMap<>();
+    private static final String MESSAGE_FORMAT =
+            """
+            예약 대기한 공연에 빈 좌석이 나와 안내드립니다.
+            공연ID : %s
+            공연명 : %s
+            회차 : %d
+            시작일시 : %s
+            좌석 정보 : %s
+            """;
 
     private final TwilioProperties twilioProperties;
+    private final AlarmRepository alarmRepository;
 
     @EventListener(WaitToReserveEvent.class)
     public void addWaitingUser(final WaitToReserveEvent waiting) {
-        if(containsPerformance(waiting.getPerformance())) {
-            addNewUserInfo(waiting);
-            return;
-        }
-        addNewWaitingData(waiting);
+        alarmRepository.addWaiting(waiting);
     }
 
     @EventListener(CheckWaitingEvent.class)
     public void deleteWaitingIfExist(final CheckWaitingEvent event) {
-        List<Performance> filteredList =
-                waitingMap.keySet().stream()
-                        .filter(performance -> performance.equalsId(event.getPerformanceId()))
-                        .toList();
-        if(filteredList.size() != FILTERED_LENGTH) return;
-        if(!containsUserInfo(event, filteredList.get(FILTERED_INDEX))) return;
-        waitingMap.get(filteredList.get(FILTERED_INDEX)).remove(event.getUserInfo());
+        alarmRepository.deleteWaiting(event);
     }
 
 
     @EventListener(ReservationCanceledEvent.class)
     public void sendMessageToWaiting(final ReservationCanceledEvent reservationCanceledEvent) {
-        waitingMap.keySet().stream()
-                .filter(performance -> performance.equalsId(reservationCanceledEvent.getPerformanceId()))
+
+        alarmRepository.findWaitingByPerformanceId(reservationCanceledEvent)
                 .forEach(performance -> sendWaitingsMessage(reservationCanceledEvent, performance));
     }
 
     private void sendWaitingsMessage(final ReservationCanceledEvent event, Performance performance) {
-        waitingMap.get(performance)
+        alarmRepository.findUsersByPerformance(performance)
                 .forEach(userInfo -> {
                     String message = createVacantSeatMessage(event, performance);
                     sendNotification(userInfo.getPhoneNumber(), message);
                 });
-    }
-
-    private boolean containsPerformance(final Performance performance) {
-        return waitingMap.containsKey(performance);
-    }
-
-    private void addNewWaitingData(final WaitToReserveEvent waiting) {
-        List<UserInfo> userInfos = new ArrayList<>();
-        userInfos.add(waiting.getUserInfo());
-        waitingMap.put(waiting.getPerformance(), userInfos);
-    }
-
-    private void addNewUserInfo(final WaitToReserveEvent waiting) {
-        waitingMap.get(waiting.getPerformance()).add(waiting.getUserInfo());
     }
 
     private void sendNotification(final String phoneNumber, final String message) {
@@ -95,15 +72,13 @@ public class ReservationAlarm {
 
     private String createVacantSeatMessage(final ReservationCanceledEvent event, final Performance performance) {
         SeatInfo seatInfo = event.getSeatInfo();
-        return START
-                + PERFORMANCE_ID + performance.getId()
-                + PERFORMANCE_NAME + performance.getName()
-                + ROUND + performance.getRound()
-                + START_DATE + performance.getStartDate().toString()
-                + SEAT_INFO + seatInfo.toString();
-    }
-
-    private boolean containsUserInfo(CheckWaitingEvent event, Performance performance) {
-        return waitingMap.get(performance).contains(event.getUserInfo());
+        return String.format(
+                MESSAGE_FORMAT,
+                performance.getId(),
+                performance.getName(),
+                performance.getRound(),
+                performance.getStartDate().toString(),
+                seatInfo.toString()
+                );
     }
 }
