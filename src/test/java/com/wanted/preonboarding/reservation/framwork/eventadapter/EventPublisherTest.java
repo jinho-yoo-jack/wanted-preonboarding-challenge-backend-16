@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.wanted.preonboarding.RequestFactory;
 import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.performance.PerformanceRequestFactory;
 import com.wanted.preonboarding.performance.ReservationCancelRequestFactory;
@@ -19,6 +20,7 @@ import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservedIt
 import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,41 +33,49 @@ public class EventPublisherTest extends ServiceTest {
 
 	@Autowired
 	private PerformService performService;
-
 	@Autowired
 	private PerformAdminService performAdminService;
-
 	@Autowired
 	private ReservationService reservationService;
-
-	@MockBean
-	private PerformCancelEventService performanceCancelEventService;
-
 	@Autowired
 	@Qualifier("customThreadPoolTaskExecutor")
 	private Executor customThreadPoolTaskExecutor;
 
+	@MockBean
+	private PerformCancelEventService performanceCancelEventService;
+
+	private UUID userId;
+	private UUID performId;
+	private ReservedItemResponse reservedItemResponse;
+	private ReservationCancelRequest cancelRequest;
+
+	@BeforeEach
+	void setUp() {
+		userId =  UUID.randomUUID();
+		//퍼포먼스 저장
+		performId = performAdminService.register(RequestFactory.getPerformRegister());
+		//퍼포먼스 예약
+		reservedItemResponse = reservationService.reserve(RequestFactory.getReservation(performId));
+		//취소 request 생성
+		cancelRequest = RequestFactory.getCancel(reservedItemResponse.id());
+	}
+
 	@Test
 	public void 이벤트_발행() throws InterruptedException {
-		PerformanceRequestFactory performanceRequestFactory = new PerformanceRequestFactory();
-		PerformRequest performanceRequest = performanceRequestFactory.create();
-		UUID performId = performAdminService.register(performanceRequest);
-		ReservationRequestFactory factory = new ReservationRequestFactory();
-		ReservationRequest request = factory.create(performId);
-		ReservedItemResponse reserve = reservationService.reserve(request);
-		UUID userId = UUID.randomUUID();
-
 		//given
 		performService.subscribe(performId, userId);
 		//when
-		ReservationCancelRequest cancelRequest
-			= new ReservationCancelRequestFactory().create(reserve.id());
 		reservationService.cancel(cancelRequest);
-
 		//then
+		await();
+		verify(
+			performanceCancelEventService, times(1)
+		).canceled(any());
+	}
+
+	private void await() throws InterruptedException {
 		ThreadPoolTaskExecutor executor = (ThreadPoolTaskExecutor) customThreadPoolTaskExecutor;
 		executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
-		verify(performanceCancelEventService, times(1)).canceled(any());
 	}
 
 }
