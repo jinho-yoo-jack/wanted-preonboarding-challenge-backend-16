@@ -2,7 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.2.1"
     id("io.spring.dependency-management") version "1.1.4"
-	id("com.google.cloud.tools.jib") version "3.4.0"
+    id("com.google.cloud.tools.jib") version "3.4.0"
 }
 
 group = "com.wanted"
@@ -31,6 +31,7 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.assertj:assertj-core:3.22.0")
     testImplementation("org.junit.vintage:junit-vintage-engine") {
         exclude("org.hamcrest", "hamcrest-core")
     }
@@ -38,7 +39,9 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    systemProperty("spring.profiles.active", "test")
 }
+
 
 tasks.bootJar {
     enabled = true
