@@ -1,10 +1,10 @@
 package com.wanted.preonboarding.uitl.requestfactory;
 
-import com.wanted.preonboarding.uitl.testdata.TestUser;
-import com.wanted.preonboarding.uitl.testdata.TestPerformance;
-import com.wanted.preonboarding.uitl.testdata.TestSeatInfo;
 import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformRequest;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
+import com.wanted.preonboarding.uitl.testdata.TestPerformance;
+import com.wanted.preonboarding.uitl.testdata.TestSeatInfo;
+import com.wanted.preonboarding.uitl.testdata.TestUser;
 import java.util.UUID;
 
 public class ReservationRequestFactory {

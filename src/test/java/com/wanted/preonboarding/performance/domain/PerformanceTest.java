@@ -2,8 +2,8 @@ package com.wanted.preonboarding.performance.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.wanted.preonboarding.uitl.domaincreator.PerformanceCreator;
 import com.wanted.preonboarding.performance.domain.discount_policy.PercentDiscountPolicy;
+import com.wanted.preonboarding.uitl.domaincreator.PerformanceCreator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

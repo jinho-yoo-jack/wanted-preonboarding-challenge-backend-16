@@ -1,10 +1,10 @@
 package com.wanted.preonboarding.uitl.domaincreator;
 
-import com.wanted.preonboarding.uitl.testdata.TestUser;
 import com.wanted.preonboarding.performance.domain.Performance;
 import com.wanted.preonboarding.reservation.domain.Reservation;
 import com.wanted.preonboarding.reservation.domain.vo.Item;
 import com.wanted.preonboarding.reservation.domain.vo.NamePhone;
+import com.wanted.preonboarding.uitl.testdata.TestUser;
 import java.util.UUID;
 
 public class PerformanceReservationCreator {
