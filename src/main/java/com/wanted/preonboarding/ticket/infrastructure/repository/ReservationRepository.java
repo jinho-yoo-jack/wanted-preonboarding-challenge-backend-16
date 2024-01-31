@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
-//    Reservation findByNameAndPhoneNumber(String name, String phoneNumber);
+    List<Reservation> findByUserId(UUID userId);
 }

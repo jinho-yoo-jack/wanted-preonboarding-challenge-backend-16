@@ -1,17 +1,12 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.dto.ReservationInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Entity
@@ -37,7 +32,7 @@ public class Reservation {
     @Column(nullable = false)
     private Integer seat;
 
-    public static Reservation of(ReserveInfo info) {
+    public static Reservation of(ReservationInfo info) {
         return Reservation.builder()
                 .performanceId(info.getPerformanceInfo().getPerformanceId())
                 .userId(info.getUserInfo().getUserId())

@@ -2,7 +2,7 @@ package com.wanted.preonboarding.ticket.service;
 
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceSeatInfo;
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.dto.ReservationInfo;
 import com.wanted.preonboarding.ticket.domain.dto.UserInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeat;
@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,38 +33,54 @@ public class ReservationService {
     private final PerformanceSeatRepository performanceSeatRepository;
 
     @Transactional
-    public ReserveInfo reservation(ReserveInfo reserveInfo) {
+    public ReservationInfo reservation(ReservationInfo reservationInfo) {
         // 유저 정보 탐색
         UserInfo userInfo = getUserInfo(
-                reserveInfo.getUserInfo().getName(),
-                reserveInfo.getUserInfo().getPhoneNumber()
+                reservationInfo.getUserInfo().getName(),
+                reservationInfo.getUserInfo().getPhoneNumber()
         );
-        reserveInfo.setUserInfo(userInfo);
+        reservationInfo.setUserInfo(userInfo);
 
         // 공연 정보 탐색
-        PerformanceInfo performanceInfo = getPerformanceInfo(
-                reserveInfo.getPerformanceInfo().getPerformanceName(),
-                reserveInfo.getPerformanceInfo().getRound()
+        PerformanceInfo performanceInfo = getPerformanceInfoByNameAndRound(
+                reservationInfo.getPerformanceInfo().getPerformanceName(),
+                reservationInfo.getPerformanceInfo().getRound()
         );
-        reserveInfo.setPerformanceInfo(performanceInfo);
+        reservationInfo.setPerformanceInfo(performanceInfo);
 
         // 좌석 정보 탐색
         PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfo(
                 performanceInfo.getPerformanceId(),
                 performanceInfo.getRound(),
-                reserveInfo.getLine(),
-                reserveInfo.getSeat()
+                reservationInfo.getLine(),
+                reservationInfo.getSeat()
         );
 
         // 할인 정보, 최종 가격 정보 탐색
-        Integer finalPrice = getFinalPrice(userInfo, performanceInfo, reserveInfo);
+        Integer finalPrice = getFinalPrice(userInfo, performanceInfo, reservationInfo);
 
         // 예약
         // 내역 추가, 좌석 정보 수정, (좌석 매진 시) 공연 정보 수정
-        addReservation(reserveInfo, performanceSeatInfo, performanceInfo);
+        addReservation(reservationInfo, performanceSeatInfo, performanceInfo);
 
         // 예약 내역 반환
-        return reserveInfo;
+        return reservationInfo;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReservationInfo> getUserReservation(UserInfo userInfo) {
+        // 유저 정보 탐색
+        UserInfo dbUserInfo = getUserInfo(userInfo.getName(), userInfo.getPhoneNumber());
+
+        // 유저의 예약 내역 탐색
+        return reservationRepository.findByUserId(dbUserInfo.getUserId())
+                .stream()
+                .map(r -> ReservationInfo.of(
+                        r,
+                        getPerformanceInfoById(r.getPerformanceId()),
+                        dbUserInfo
+                        ))
+                .toList();
     }
 
     public UserInfo getUserInfo(String name, String phoneNumber) {
@@ -86,7 +103,18 @@ public class ReservationService {
         }
     }
 
-    public PerformanceInfo getPerformanceInfo(String performanceName, Integer round) {
+    public PerformanceInfo getPerformanceInfoById(UUID performanceId) {
+        Optional<Performance> performance = performanceRepository.findById(performanceId);
+
+        // 공연 정보가 없으면 => 예외 발생
+        if (performance.isEmpty()) {
+            throw new PerformanceNotFound("PerformanceNotFound : 공연을 찾을 수 없습니다.");
+        }
+
+        return PerformanceInfo.of(performance.get());
+    }
+
+    public PerformanceInfo getPerformanceInfoByNameAndRound(String performanceName, Integer round) {
         Optional<Performance> performance = Optional.ofNullable(performanceRepository.findByNameAndRound(performanceName, round));
 
         // 공연 정보가 없으면 => 예외 발생
@@ -126,13 +154,13 @@ public class ReservationService {
 
     }
 
-    public Integer getFinalPrice(UserInfo userInfo, PerformanceInfo performanceInfo, ReserveInfo reserveInfo) {
+    public Integer getFinalPrice(UserInfo userInfo, PerformanceInfo performanceInfo, ReservationInfo reservationInfo) {
         // 우선은 기본 가격 그대로 최종 가격 결정
         Integer performancePrice = performanceInfo.getPrice();
         Integer discountPrice = 0;
         Integer finalPrice = performancePrice - discountPrice;
 
-        long userAmount = reserveInfo.getAmount();
+        long userAmount = reservationInfo.getAmount();
 
         if (finalPrice > userAmount) {
             throw new PriceOver("PriceOver : 결제 금액이 부족합니다.");
@@ -141,9 +169,9 @@ public class ReservationService {
         return finalPrice;
     }
 
-    public void addReservation(ReserveInfo reserveInfo, PerformanceSeatInfo performanceSeatInfo, PerformanceInfo performanceInfo) {
+    public void addReservation(ReservationInfo reservationInfo, PerformanceSeatInfo performanceSeatInfo, PerformanceInfo performanceInfo) {
         // 예약 내역 추가
-        reservationRepository.save(Reservation.of(reserveInfo));
+        reservationRepository.save(Reservation.of(reservationInfo));
 
         // 좌석 정보 수정 (enable -> disable)
         performanceSeatInfo.setIsReserve("disable");
