@@ -32,6 +32,19 @@ dependencies {
     testImplementation("org.junit.vintage:junit-vintage-engine") {
         exclude("org.hamcrest", "hamcrest-core")
     }
+
+    // QueryDSL 설정
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    // twilio : SMS를 이용한 알람에 사용
+    implementation("com.twilio.sdk:twilio:9.15.1")
+
+    // validation
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 }
 
 tasks.withType<Test> {
