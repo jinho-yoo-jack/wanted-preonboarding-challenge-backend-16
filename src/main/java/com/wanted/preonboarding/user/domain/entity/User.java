@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ import org.hibernate.annotations.GenericGenerator;
  *    private String phoneNumber;           // 유저 휴대전화 번호
  *    private Date birthday;                // 유저 생일
  *    private LocalDateTime createdAt;      // 유저 가입 일시
+ *    private int defaultPaymentCode;       // 기본 결제 수단
  */
 
 @Table(
@@ -71,7 +73,7 @@ public class User {
     private Date birthday;
     @Column(nullable = true)
     private LocalDateTime createdAt;
-    private String defaultPaymentCode;
+    private Long defaultPaymentCode;
     @OneToMany(mappedBy = "userInfo")
     private List<PaymentCard> paymentCards;
     @OneToMany(mappedBy = "userInfo")
@@ -87,5 +89,8 @@ public class User {
             .birthday(info.getBirthday())
             .build();
 
+    }
+    public void updatedefaultPaymentCode(Long paymentCardId){
+        this.defaultPaymentCode = paymentCardId;
     }
 }

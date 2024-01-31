@@ -28,8 +28,9 @@ public class PaymentCard extends Payment{
     private String cvc;
 
     public static PaymentCard of(PaymentSetting paymentSetting, UUID userUuid){
-        return new PaymentCard().builder()
-            .userInfo(new User().builder().userUuid(userUuid).build())
+
+        return builder()
+            .userInfo(User.builder().userUuid(userUuid).build())
             .balanceAmount(100000L)
             .cardName(paymentSetting.getCardName())
             .cardNum(paymentSetting.getCardNum())

@@ -12,6 +12,7 @@ import com.wanted.preonboarding.user.domain.entity.User;
 import com.wanted.preonboarding.user.infrastructure.PaymentRepository;
 import com.wanted.preonboarding.user.infrastructure.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,22 +51,31 @@ public class UserInfoService {
 
     }
 
-    public UserAndPaymentInfo getUserAndPayments(String userUuid){
-        User user = userRepository.findById(UUID.fromString(userUuid)).orElseThrow(EntityNotFoundException::new);
-        String paymentCode = user.getDefaultPaymentCode();
+    /**
+     * 유저 정보 및 결제 수단 정보 질의
+     * @param id
+     * @return
+     */
+    public UserAndPaymentInfo getUserAndPayments(String id){
 
-        if(paymentCode.equals("1")){
-            log.info("paymentcode is 1");
-            return UserAndPaymentInfo.of(user, user.getPaymentCards());
-        }
-        log.info("paymentcode is not 1");
-        return UserAndPaymentInfo.of(user, user.getPaymentPoints());
+        User user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        System.out.println(user.getPaymentCards().toString());
+        PaymentCard paymentCard = user.getPaymentCards()
+            .stream()
+            .filter(card -> card.getId().equals(user.getDefaultPaymentCode()))
+            .findAny()
+            .orElseThrow(EntityNotFoundException::new);
+
+        return UserAndPaymentInfo.of(user, paymentCard);
     }
 
     public void setPaymentInfo(PaymentSetting paymentSetting, String userUuid){
         log.info("setPaymentInfo");
         PaymentCard payment = PaymentCard.of(paymentSetting, UUID.fromString(userUuid));
         paymentRepository.save(payment);
+        User user = userRepository.getReferenceById(UUID.fromString(userUuid));
+        user.updatedefaultPaymentCode(payment.getId());
+        userRepository.save(user);
     }
 
 
