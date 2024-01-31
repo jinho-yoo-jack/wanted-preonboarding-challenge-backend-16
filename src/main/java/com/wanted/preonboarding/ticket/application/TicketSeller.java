@@ -23,9 +23,9 @@ public class TicketSeller {
 
     public List<PerformanceInfo> getAllPerformanceInfoList() {
         return performanceRepository.findByIsReserve("enable")
-            .stream()
-            .map(PerformanceInfo::of)
-            .toList();
+                .stream()
+                .map(PerformanceInfo::of)
+                .toList();
     }
 
     public PerformanceInfo getPerformanceInfoDetail(String name) {
@@ -35,14 +35,14 @@ public class TicketSeller {
     public boolean reserve(ReserveInfo reserveInfo) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
         Performance info = performanceRepository.findById(reserveInfo.getPerformanceId())
-            .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
         String enableReserve = info.getIsReserve();
         if (enableReserve.equalsIgnoreCase("enable")) {
             // 1. 결제
             int price = info.getPrice();
             reserveInfo.setAmount(reserveInfo.getAmount() - price);
             // 2. 예매 진행
-            reservationRepository.save(Reservation.of(reserveInfo));
+            reservationRepository.save(Reservation.of(reserveInfo, info));
             return true;
 
         } else {

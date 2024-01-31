@@ -1,10 +1,10 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.dto.ReserveFindResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
-import java.util.UUID;
 
 @Entity
 @Table
@@ -15,12 +15,12 @@ import java.util.UUID;
 public class Reservation extends AuditInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
     @Comment("공연전시ID")
-    private UUID performanceId;
+    private Performance performance;
 
     @Column(nullable = false)
     @Comment("예약자명")
@@ -45,9 +45,10 @@ public class Reservation extends AuditInformation {
     @Comment("좌석 행")
     private int seat;
 
-    public static Reservation of(ReserveInfo info) {
+    // TODO: performance를 넣어도 되는것일까
+    public static Reservation of(ReserveInfo info, Performance performance) {
         return Reservation.builder()
-                .performanceId(info.getPerformanceId())
+                .performance(performance)
                 .name(info.getReservationName())
                 .phoneNumber(info.getReservationPhoneNumber())
                 .round(info.getRound())
@@ -57,4 +58,15 @@ public class Reservation extends AuditInformation {
                 .build();
     }
 
+    public ReserveFindResponse toReserveSelectResponse() {
+        return ReserveFindResponse.builder()
+                .performanceId(this.performance.getId())
+                .performanceName(this.performance.getName())
+                .round(this.round)
+                .seat(this.seat)
+                .line(String.valueOf(this.line))
+                .reservationName(this.name)
+                .phoneNumber(this.phoneNumber)
+                .build();
+    }
 }
