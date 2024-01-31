@@ -28,7 +28,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 
 @DisplayName("이벤트: 예약 취소 - 리스너")
-class PerformancePerformanceCancelEventServiceTest extends ServiceTest {
+class PerformanceCancelEventServiceTest extends ServiceTest {
 
 	@Autowired
 	private PerformanceCancelEventListener performanceCancelEventService;
