@@ -33,7 +33,7 @@ public class EventPublisherTest extends ServiceTest {
 	private ReservationCancelEventListener reservationCancelEventListener;
 
 	@Autowired
-	private PerformAdminService showingAdminService;
+	private PerformAdminService performAdminService;
 
 	@Autowired
 	private ReservationService reservationService;
@@ -49,7 +49,7 @@ public class EventPublisherTest extends ServiceTest {
 	public void 이벤트_발행() throws InterruptedException {
 		PerformanceRequestFactory performanceRequestFactory = new PerformanceRequestFactory();
 		PerformanceRequest performanceRequest = performanceRequestFactory.create();
-		UUID performId = showingAdminService.register(performanceRequest);
+		UUID performId = performAdminService.register(performanceRequest);
 		ReservationRequestFactory factory = new ReservationRequestFactory();
 		ReservationRequest request = factory.create(performId);
 		ReservedItemResponse reserve = reservationService.reserve(request);

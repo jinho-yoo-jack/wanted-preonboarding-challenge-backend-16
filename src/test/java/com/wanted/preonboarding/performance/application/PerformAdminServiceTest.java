@@ -10,16 +10,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@DisplayName("서비스: 관리자 공연 및 전시 등록 - PerformanceShowingAdminService")
+@DisplayName("서비스: 관리자 공연 및 전시 등록 - PerformAdminService")
 public class PerformAdminServiceTest extends ServiceTest {
 	@Autowired
-	private PerformAdminService showingAdminService;
+	private PerformAdminService performAdminService;
 
 	@Test
 	public void 관리자는_공연_전시_정보를_등록할_수_있다(){
 		PerformanceRequestFactory request = new PerformanceRequestFactory();
 		PerformanceRequest performanceRequest = request.create();
-		UUID register = showingAdminService.register(performanceRequest);
+		UUID register = performAdminService.register(performanceRequest);
 		assertThat(register).isNotNull();
 	}
 

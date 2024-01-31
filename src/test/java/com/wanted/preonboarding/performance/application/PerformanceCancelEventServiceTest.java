@@ -36,10 +36,8 @@ class PerformanceCancelEventServiceTest extends ServiceTest {
 
 	@Autowired
 	private ReservationCancelEventListener performanceCancelEventService;
-
 	@Autowired
-	private PerformAdminService showingAdminService;
-
+	private PerformAdminService performAdminService;
 	@Autowired
 	private ReservationService reservationService;
 
@@ -56,7 +54,7 @@ class PerformanceCancelEventServiceTest extends ServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		performId = showingAdminService.register(performanceRequest);
+		performId = performAdminService.register(performanceRequest);
 		reservationRequest = factory.create(performId);
 
 	}

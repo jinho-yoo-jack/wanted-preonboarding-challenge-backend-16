@@ -19,16 +19,16 @@ public class TestCleanUp {
 	@Autowired
 	private PerformanceRepository performanceRepository;
 	@Autowired
-	private PerformRepository showingRepository;
+	private PerformRepository performRepository;
 	@Autowired
-	private ReservationCancelSubscribeRepository performanceShowingObserverRepository;
+	private ReservationCancelSubscribeRepository reservationCancelSubscribeRepository;
 	@AfterEach
 	void tearDown() {
 		reservationRepository.deleteAll();
-		showingRepository.deleteAll();
+		performRepository.deleteAll();
 		performanceRepository.deleteAll();
 		discountPolicyRepository.deleteAll();
-		performanceShowingObserverRepository.deleteAll();
+		reservationCancelSubscribeRepository.deleteAll();
 	}
 
 }

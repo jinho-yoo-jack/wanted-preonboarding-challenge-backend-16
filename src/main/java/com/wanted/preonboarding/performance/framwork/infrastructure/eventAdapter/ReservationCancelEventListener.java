@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ReservationCancelEventListener {
 
-	private final PerformRepository showingRepository;
 	private final PerformService performService;
 	private final PerformCancelEventService performCancelEventService;
 

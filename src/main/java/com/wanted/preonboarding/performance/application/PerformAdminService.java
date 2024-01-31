@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-//TODO: showroom, showing 생성 클래스 분리해야됩니다. 시간상 생략합니다.
+//TODO: perform, performance 생성 클래스 분리해야됩니다. 시간상 생략합니다.
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -22,9 +22,7 @@ public class PerformAdminService {
 
 	private final PerformanceRepository performanceRepository;
 	private final DiscountPolicyRepository discountPolicyRepository;
-	private final PerformRepository showingRepository;
-
-
+	private final PerformRepository performRepository;
 
 	@Transactional
 	public UUID register(PerformanceRequest request) {
@@ -43,6 +41,6 @@ public class PerformAdminService {
 			gate, request.round(), request.startDate(), request.isReserve());
 
 		performanceRepository.save(performance);
-		return showingRepository.save(perform).getId();
+		return performRepository.save(perform).getId();
 	}
 }

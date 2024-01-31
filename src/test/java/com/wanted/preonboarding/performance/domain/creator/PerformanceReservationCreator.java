@@ -19,7 +19,6 @@ public class PerformanceReservationCreator {
 	public Reservation getReservation() {
 		Performance performance = performanceCreator.getPerformance();
 		ReservationRequest request = requestFactory.create(performance.getId());
-		Perform showing = performCreator.getPerform();
 
 		Reservation reservation = Reservation.create(
 			NamePhone.create(request.userName(), request.phoneNumber()));

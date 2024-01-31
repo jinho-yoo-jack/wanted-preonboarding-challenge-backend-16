@@ -28,7 +28,7 @@ public class AssertCluster {
 		assertThat(data.phoneNumber()).isEqualTo(request.phoneNumber());
 	}
 
-	public static void reservationAssert(PerformanceRequest showingRequest,
+	public static void reservationAssert(PerformanceRequest performanceRequest,
 		ReservationRequest reservationRequest, ReservedItemResponse reserve) {
 		assertThat(reserve.id()).isNotNull();
 		assertThat(reserve.phoneNumber()).isEqualTo(reservationRequest.phoneNumber());
@@ -36,6 +36,6 @@ public class AssertCluster {
 		assertThat(reserve.round()).isEqualTo(reservationRequest.round());
 		assertThat(reserve.seat()).isEqualTo(reservationRequest.seat());
 		assertThat(reserve.userName()).isEqualTo(reservationRequest.userName());
-		assertThat(reserve.name()).isEqualTo(showingRequest.name());
+		assertThat(reserve.name()).isEqualTo(performanceRequest.name());
 	}
 }

@@ -9,9 +9,9 @@ import org.junit.jupiter.api.DisplayName;
 public class PerformTest {
 
 	private final PerformCreator performCreator = new PerformCreator();
-	private final Perform showing = performCreator.getPerform();
+	private final Perform perform = performCreator.getPerform();
 	private final ReservationRequestFactory factory = new ReservationRequestFactory();
-	private final Performance performance = showing.getPerformance();
+	private final Performance performance = perform.getPerformance();
 	private final ReservationRequest reservationRequest = factory.create(performance.getId());;
 
 

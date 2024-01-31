@@ -21,16 +21,16 @@ import org.springframework.http.MediaType;
 public class ReserveControllerApiTest extends ApiTest {
 
 	@Autowired
-	private PerformAdminService showingAdminService;
+	private PerformAdminService performAdminService;
 
 	@Test
 	public void 공연_예약_API(){
 
 		//given
 		PerformanceRequest performanceRequest = new PerformanceRequestFactory().create();
-		UUID showingId = showingAdminService.register(performanceRequest);
+		UUID performId = performAdminService.register(performanceRequest);
 		ReservationRequestFactory requestFactory = new ReservationRequestFactory();
-		ReservationRequest request = requestFactory.create(showingId);
+		ReservationRequest request = requestFactory.create(performId);
 
 		//when
 		ExtractableResponse<Response> result = RestAssured.given().log().all()
