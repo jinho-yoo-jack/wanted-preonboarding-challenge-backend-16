@@ -39,11 +39,19 @@ public class QueryController {
                 );
     }
 
+
     @PostMapping("/performance")
     public ResponseEntity<Boolean> putPerformanceInfo(@RequestBody CreatePerformance createPerformance) {
         boolean result = ticketSeller.addPerformance(createPerformance);
         return new ResponseEntity<>(result, HttpStatus.OK);
 
+    }
+
+    //TODO: 예약가능 공연 상세정보조회
+    @PostMapping("/performanceId")
+    public Performance getPerformanceId(@RequestBody PerformanceIdRequest performanceIdRequest) {
+        Performance performance = ticketSeller.getPerformanceId(performanceIdRequest);
+        return performance;
     }
 
 
