@@ -36,15 +36,13 @@ public class Reservation {
     private Character line;
     @Column(nullable = false)
     private Integer seat;
-    @Column(nullable = false, name = "created_at")
-    private Timestamp createdAt;
 
     public static Reservation of(ReserveInfo info) {
         return Reservation.builder()
-                .performanceId(info.getPerformanceId())
+                .performanceId(info.getPerformanceInfo().getPerformanceId())
                 .userId(info.getUserInfo().getUserId())
-                .round(info.getRound())
-                .gate(1)
+                .round(info.getPerformanceInfo().getRound())
+                .gate(info.getGate())
                 .line(info.getLine())
                 .seat(info.getSeat())
                 .build();

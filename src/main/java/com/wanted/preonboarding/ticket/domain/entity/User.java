@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.domain.dto.UserInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,7 @@ public class User {
     @Column(nullable = false, name = "phone_number")
     private String phoneNumber;
 
-    public static User of(User info) {
+    public static User of(UserInfo info) {
         return User.builder()
                 .name(info.getName())
                 .phoneNumber(info.getPhoneNumber())

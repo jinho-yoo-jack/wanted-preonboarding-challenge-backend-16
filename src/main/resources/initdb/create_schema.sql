@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS `user`
     `phone_number`  varchar(255)                                NOT NULL COMMENT '유저 휴대전화 번호',
     `created_at`    TIMESTAMP    DEFAULT NOW()                   NOT NULL,
     `updated_at`    TIMESTAMP    DEFAULT NULL ON UPDATE NOW(),
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    UNIQUE KEY user_unique (name, phone_number)
 );
 
 CREATE TABLE IF NOT EXISTS `performance`
