@@ -2,10 +2,10 @@ package com.wanted.preonboarding.performance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.wanted.preonboarding.performance.presentation.dto.PerformanceRequest;
-import com.wanted.preonboarding.performance.presentation.dto.PerformanceResponse;
-import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
-import com.wanted.preonboarding.performance.presentation.dto.ReservationResponse;
+import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceRequest;
+import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceResponse;
+import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
+import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservedItemResponse;
 
 public class AssertCluster {
 	public static void performanceAssert(
@@ -18,24 +18,24 @@ public class AssertCluster {
 		assertThat(response.round()).isEqualTo(request.round());
 	}
 
-	public static void ReservationAssert(ReservationResponse data, ReservationRequest request,
+	public static void ReservationAssert(ReservedItemResponse data, ReservationRequest request,
 		PerformanceRequest performanceRequest) {
 		assertThat(data.id()).isNotNull();
 		assertThat(data.round()).isEqualTo(request.round());
 		assertThat(data.name()).isEqualTo(performanceRequest.name());
 		assertThat(data.line()).isEqualTo(request.line());
-		assertThat(data.userName()).isEqualTo(request.reservationName());
-		assertThat(data.phoneNumber()).isEqualTo(request.reservationPhoneNumber());
+		assertThat(data.userName()).isEqualTo(request.userName());
+		assertThat(data.phoneNumber()).isEqualTo(request.phoneNumber());
 	}
 
 	public static void reservationAssert(PerformanceRequest showingRequest,
-		ReservationRequest reservationRequest, ReservationResponse reserve) {
+		ReservationRequest reservationRequest, ReservedItemResponse reserve) {
 		assertThat(reserve.id()).isNotNull();
-		assertThat(reserve.phoneNumber()).isEqualTo(reservationRequest.reservationPhoneNumber());
+		assertThat(reserve.phoneNumber()).isEqualTo(reservationRequest.phoneNumber());
 		assertThat(reserve.line()).isEqualTo(reservationRequest.line());
 		assertThat(reserve.round()).isEqualTo(reservationRequest.round());
 		assertThat(reserve.seat()).isEqualTo(reservationRequest.seat());
-		assertThat(reserve.userName()).isEqualTo(reservationRequest.reservationName());
+		assertThat(reserve.userName()).isEqualTo(reservationRequest.userName());
 		assertThat(reserve.name()).isEqualTo(showingRequest.name());
 	}
 }

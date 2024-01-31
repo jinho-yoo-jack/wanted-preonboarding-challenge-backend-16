@@ -1,10 +1,10 @@
 package com.wanted.preonboarding;
 
-import com.wanted.preonboarding.performance.infrastructure.repository.DiscountPolicyRepository;
-import com.wanted.preonboarding.performance.infrastructure.repository.PerformanceRepository;
-import com.wanted.preonboarding.performance.infrastructure.repository.PerformanceShowingObserverRepository;
-import com.wanted.preonboarding.performance.infrastructure.repository.ReservationRepository;
-import com.wanted.preonboarding.performance.infrastructure.repository.ShowingRepository;
+import com.wanted.preonboarding.performance.framwork.infrastructure.repository.DiscountPolicyRepository;
+import com.wanted.preonboarding.performance.framwork.infrastructure.repository.PerformRepository;
+import com.wanted.preonboarding.performance.framwork.infrastructure.repository.PerformanceRepository;
+import com.wanted.preonboarding.performance.framwork.infrastructure.repository.ReservationCancelSubscribeRepository;
+import com.wanted.preonboarding.reservation.framwork.jpaadapter.repository.ReservationRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,9 +19,9 @@ public class TestCleanUp {
 	@Autowired
 	private PerformanceRepository performanceRepository;
 	@Autowired
-	private ShowingRepository showingRepository;
+	private PerformRepository showingRepository;
 	@Autowired
-	private PerformanceShowingObserverRepository performanceShowingObserverRepository;
+	private ReservationCancelSubscribeRepository performanceShowingObserverRepository;
 	@AfterEach
 	void tearDown() {
 		reservationRepository.deleteAll();

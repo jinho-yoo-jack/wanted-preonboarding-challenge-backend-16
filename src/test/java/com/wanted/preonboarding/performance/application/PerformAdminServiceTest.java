@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.wanted.preonboarding.ServiceTest;
 import com.wanted.preonboarding.performance.PerformanceRequestFactory;
-import com.wanted.preonboarding.performance.presentation.dto.PerformanceRequest;
+import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceRequest;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @DisplayName("서비스: 관리자 공연 및 전시 등록 - PerformanceShowingAdminService")
 public class PerformAdminServiceTest extends ServiceTest {
 	@Autowired
-	private ShowingAdminService showingAdminService;
+	private PerformAdminService showingAdminService;
 
 	@Test
 	public void 관리자는_공연_전시_정보를_등록할_수_있다(){

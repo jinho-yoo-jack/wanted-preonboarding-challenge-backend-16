@@ -1,11 +1,13 @@
 package com.wanted.preonboarding.performance;
 
-import com.wanted.preonboarding.performance.presentation.dto.ReservationRequest;
+import com.wanted.preonboarding.performance.framwork.presentation.dto.PerformanceRequest;
+import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
 import java.util.UUID;
 
 public class ReservationRequestFactory {
 
-	public ReservationRequest create(UUID showingId) {
-		return new ReservationRequest(showingId, "예약자이름", "01012345678", 20000, 3, 'c', 3);
+	private final PerformanceRequest performanceRequest  = new PerformanceRequestFactory().create();
+	public ReservationRequest create(UUID performId) {
+		return new ReservationRequest(performId, performanceRequest.name(),"예약자이름", "01012345678", 20000, 3, 'c', 3);
 	}
 }
