@@ -46,9 +46,7 @@ public class ReservationService {
                 .userInfo(param.getUserInfo())
                 .seatInfo(param.getSeatInfo())
                 .build();
-        reservationRepository.save(reservation);
-
-        return reservation;
+        return reservationRepository.save(reservation);
     }
 
     public void cancel(ReservationCancelParam param) {
