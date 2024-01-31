@@ -32,4 +32,10 @@ public class ReservationController {
     }
 
     /** 특정 유저 공연/전시 예약 취소 **/
+    @DeleteMapping(value = "")
+    public ResponseEntity<ReservationInfo> cancelReservation(@RequestBody ReservationInfo reservationInfo) {
+        return ResponseEntity
+                .ok()
+                .body(reservationService.cancelReservation(reservationInfo));
+    }
 }

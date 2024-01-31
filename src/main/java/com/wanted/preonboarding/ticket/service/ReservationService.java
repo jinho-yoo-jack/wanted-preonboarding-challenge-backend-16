@@ -7,6 +7,7 @@ import com.wanted.preonboarding.ticket.domain.dto.UserInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeat;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
+import com.wanted.preonboarding.ticket.exception.InvalidReservation;
 import com.wanted.preonboarding.ticket.exception.PerformanceDisable;
 import com.wanted.preonboarding.ticket.exception.PerformanceSeatDisable;
 import com.wanted.preonboarding.ticket.exception.PriceOver;
@@ -91,6 +92,41 @@ public class ReservationService {
                 .toList();
     }
 
+    @Transactional
+    public ReservationInfo cancelReservation(ReservationInfo reservationInfo) {
+        // 유저 정보 탐색
+        UserInfo userInfo = commonService.getUserInfo(
+                reservationInfo.getUserInfo().getName(),
+                reservationInfo.getUserInfo().getPhoneNumber()
+        );
+        reservationInfo.setUserInfo(userInfo);
+
+        // 공연 정보 탐색
+        PerformanceInfo performanceInfo = commonService.getPerformanceInfoByNameAndRound(
+                reservationInfo.getPerformanceInfo().getPerformanceName(),
+                reservationInfo.getPerformanceInfo().getRound()
+        );
+        reservationInfo.setPerformanceInfo(performanceInfo);
+
+        // 예약 내역 탐색
+        // 예약 내역 내, 유저 정보 및 공연 정보 일치 여부 확인
+        ReservationInfo dbReservationInfo = commonService.getReservationInfoById(reservationInfo.getReservationId());
+        if (!dbReservationInfo.getUserInfo().getUserId().equals(userInfo.getUserId())) {
+            throw new InvalidReservation("InvalidReservation : 예약자 정보가 일치하지 않습니다.");
+        }
+        if (!dbReservationInfo.getPerformanceInfo().getPerformanceId().equals(performanceInfo.getPerformanceId())) {
+            throw new InvalidReservation("InvalidReservation : 예약 공연 정보가 일치하지 않습니다.");
+        }
+
+        // 예약 내역 삭제
+        deleteReservation(reservationInfo);
+
+        // 해당 공연 알림 신청 유저에게 알림 발송
+
+        // 예약 취소 내역 반환
+        return reservationInfo;
+    }
+
     public Integer getFinalPrice(UserInfo userInfo, PerformanceInfo performanceInfo, ReservationInfo reservationInfo) {
         // 우선은 기본 가격 그대로 최종 가격 결정
         Integer performancePrice = performanceInfo.getPrice();
@@ -126,5 +162,10 @@ public class ReservationService {
         }
 
         return reservationId;
+    }
+
+    public void deleteReservation(ReservationInfo reservationInfo) {
+        // 예약 내역 삭제 (=> db 트리거로 canceledReservation 에 저장됨)
+        reservationRepository.delete(Reservation.of(reservationInfo));
     }
 }

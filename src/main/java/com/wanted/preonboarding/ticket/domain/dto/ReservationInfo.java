@@ -16,6 +16,21 @@ public class ReservationInfo {
     private Character line;
     private Integer seat;
 
+    public static ReservationInfo of(Reservation entity) {
+        return ReservationInfo.builder()
+                .reservationId(entity.getId())
+                .performanceInfo(PerformanceInfo.builder()
+                        .performanceId(entity.getPerformanceId())
+                        .build())
+                .userInfo(UserInfo.builder()
+                        .userId(entity.getUserId())
+                        .build())
+                .gate(entity.getGate())
+                .line(entity.getLine())
+                .seat(entity.getSeat())
+                .build();
+    }
+
     public static ReservationInfo of(Reservation reservation, PerformanceInfo performanceInfo, UserInfo userInfo) {
         return ReservationInfo.builder()
                 .reservationId(reservation.getId())
