@@ -1,16 +1,17 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
-import jakarta.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
@@ -18,42 +19,37 @@ import lombok.NoArgsConstructor;
  * JPA를 통해 'reservation' 테이블과 매핑됩니다.
  */
 @Entity
-@Table
-@Getter
-@Builder
-@AllArgsConstructor
+@Table(name = "reservation")
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Reservation {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
-  @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
-  private UUID performanceId;
-  @Column(nullable = false)
-  private String name;
-  @Column(nullable = false, name = "phone_number")
-  private String phoneNumber;
-  @Column(nullable = false)
-  private int round;
-  private int gate;
-  private char line;
-  private int seat;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id", columnDefinition = "bigint")
+  @JsonManagedReference
+  private UserInfo userInfo;
+
+  @OneToOne
+  @JoinColumn(name = "seat_id")
+  @JsonManagedReference
+  private SeatInfo seatInfo;
 
   /**
-   * {@link ReserveInfo}를 받아 {@link Reservation} 객체를 생성합니다.
+   * {@link UserInfo}와 {@link SeatInfo}를 받아 {@link Reservation} 객체를 생성합니다.
    *
-   * @param info 예약의 정보를 포함하는 {@link ReserveInfo} 객체.
+   * @param user 예약자의 정보
+   * @param seatInfo 예약하려는 좌석 정보
    * @return 생성된 {@link Reservation}
    */
-  public static Reservation of(ReserveInfo info) {
+  public static Reservation of(UserInfo user, SeatInfo seatInfo) {
     return Reservation.builder()
-        .performanceId(info.getPerformanceId())
-        .name(info.getReservationName())
-        .phoneNumber(info.getReservationPhoneNumber())
-        .round(info.getRound())
-        .gate(1)
-        .line(info.getLine())
-        .seat(info.getSeat())
+        .seatInfo(seatInfo)
+        .userInfo(user)
         .build();
   }
 }
