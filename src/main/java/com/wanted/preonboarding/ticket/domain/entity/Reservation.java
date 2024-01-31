@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.domain.entity;
 
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.user.domain.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -67,8 +68,12 @@ public class Reservation {
     @Column(nullable = false)
     private String name;    // 예약자명
 
-    @Column(nullable = false, name = "phone_number")
-    private String phoneNumber; // 예약자 휴대전화 번호
+//    @Column(nullable = false, name = "phone_number")
+//    private String phoneNumber; // 예약자 휴대전화 번호
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "phone_number", referencedColumnName = "phoneNumber", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private User user;
 
     @Column(nullable = false)
     private int gate;   // 입장 게이트
@@ -89,7 +94,7 @@ public class Reservation {
         return Reservation.builder()
             .performance(performance)
             .name(info.getReservationName())
-            .phoneNumber(info.getReservationPhoneNumber())
+            .user(info.getUser())
             .gate(1)
             .line(info.getLine())
             .seat(info.getSeat())

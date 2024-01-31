@@ -15,6 +15,7 @@ window.onload = () => {
             let isReserve = responseData["isReserve"];
             let seatInfo = responseData["seatInfo"];
 
+            // 공연 정보 출력
             let newRow = document.createElement("div");
             newRow.setAttribute("class", "row");
             let newPerformanceName = document.createElement("div");
@@ -40,14 +41,13 @@ window.onload = () => {
             if (isReserve === "disable") {
                 newIsReserve.innerText = "예약 불가능";
             }
-
+            // 좌석 정보 출력
             for (var i = 0; i < seatInfo.length; i++) {
                 let round = seatInfo[i]["round"];
-                let gate = seatInfo[i].gate;
+                let gate = seatInfo[i]["gate"];
                 let line = seatInfo[i]["line"];
                 let seat = seatInfo[i]["seat"];
 
-                console.log(round);
                 let newListRow = document.createElement("div");
                 newListRow.setAttribute("class", "row");
                 let newRound = document.createElement("div");
@@ -56,7 +56,11 @@ window.onload = () => {
                 newGate.setAttribute("class", "col");
                 let newSeat = document.createElement("div");
                 newSeat.setAttribute("class", "col");
-
+                let newButton = document.createElement("input");
+                newButton.setAttribute("type", "button");
+                newButton.setAttribute("value", "예약하기");
+                newButton.setAttribute("class", "col btn");
+                newButton.setAttribute("name", "reservation")
 
                 reservableSeatList.appendChild(newListRow);
                 newListRow.appendChild(newRound);
@@ -65,7 +69,13 @@ window.onload = () => {
                 newGate.innerText = gate + "번 게이트";
                 newListRow.appendChild(newSeat);
                 newSeat.innerText = line + seat + "번 좌석";
+                newListRow.appendChild(newButton);
+
+                newButton.addEventListener("click", function (event) {
+                    location.href = "/reservation/" + performanceId + "/" + round + "?seat=" + seat + "&line=" + line;
+                });
             }
+
 
 
 
@@ -74,4 +84,3 @@ window.onload = () => {
         }
     })
 }
-//{"statusCode":"OK","message":"Success","data":{"performanceId":"23066020-be9c-11ee-bc5b-0242ac140002","performanceName":"영웅","performanceRound":1,"startDate":"2024-01-27T19:30:00","isReserve":"enable"}}
