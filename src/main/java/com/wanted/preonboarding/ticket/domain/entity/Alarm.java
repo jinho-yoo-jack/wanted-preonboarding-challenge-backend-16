@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.domain.dto.AlarmInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,13 +24,11 @@ public class Alarm {
     private UUID userId;
     @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
     private UUID performanceId;
-    @Column(nullable = false, name = "created_at")
-    private Timestamp createdAt;
 
-    public static Alarm of(Alarm info) {
+    public static Alarm of(AlarmInfo info) {
         return Alarm.builder()
-                .userId(info.getUserId())
-                .performanceId(info.getPerformanceId())
+                .userId(info.getUserInfo().getUserId())
+                .performanceId(info.getPerformanceInfo().getPerformanceId())
                 .build();
     }
 }

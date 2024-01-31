@@ -1,8 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
-import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.domain.entity.User;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,6 +8,7 @@ import lombok.Data;
 @Builder
 public class ReservationInfo {
     // 공연 및 전시 정보 + 예약자 정보
+    private Integer reservationId;
     private PerformanceInfo performanceInfo;
     private UserInfo userInfo;
     private Integer amount;
@@ -19,6 +18,7 @@ public class ReservationInfo {
 
     public static ReservationInfo of(Reservation reservation, PerformanceInfo performanceInfo, UserInfo userInfo) {
         return ReservationInfo.builder()
+                .reservationId(reservation.getId())
                 .performanceInfo(performanceInfo)
                 .userInfo(userInfo)
                 .gate(reservation.getGate())
