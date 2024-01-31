@@ -37,7 +37,7 @@ public class ReservationService {
 		NamePhone namePhone = NamePhone.create(request.userName(), request.phoneNumber());
 		SeatInfo seatInfo = SeatInfo.create(request.line(), request.seat());
 
-		Reservation reservation = reservationRepository.findByUserNameAndPhoneNubmer(namePhone.getName(),namePhone.getPhoneNumber())
+		Reservation reservation = reservationRepository.findByNamePhone(namePhone)
 			.orElse(Reservation.create(namePhone));
 
 		ReserveEvent reserveEvent = Reservation.createReserveEvent(request.performId(), seatInfo);
@@ -57,7 +57,7 @@ public class ReservationService {
 	@Transactional
 	public void cancel(ReservationCancelRequest request) {
 		NamePhone namePhone = NamePhone.create(request.userName(), request.phoneNumber());
-		Reservation reservation = reservationRepository.findByUserNameAndPhoneNubmer(namePhone.getName(),namePhone.getPhoneNumber())
+		Reservation reservation = reservationRepository.findByNamePhone(namePhone)
 			.orElseThrow(EntityNotFoundException::new);
 
 		//예약 취소
@@ -74,7 +74,7 @@ public class ReservationService {
 
 	public List<ReservedItemResponse> getReservations(String userName, String phoneNumber) {
 		NamePhone namePhone = NamePhone.create(userName,phoneNumber);
-		Reservation reservation = reservationRepository.findByUserNameAndPhoneNubmer(namePhone.getName(),namePhone.getPhoneNumber())
+		Reservation reservation = reservationRepository.findByNamePhone(namePhone)
 			.orElseThrow(EntityNotFoundException::new);
 
 		List<ReserveItem> reserveItemList = reservation.getReserveItemList();
