@@ -53,7 +53,21 @@ public class TicketSeller {
                 .toList();
     }
 
+    @Transactional
+    public Performance getPerformanceId(PerformanceIdRequest performanceIdRequest) {
 
+        return performanceRepository.findByNameAndTypeAndRoundAndStartDateAndIsReserve(
+
+                performanceIdRequest.getPerformanceName(),
+                performanceIdRequest.getPerformanceType(),
+                performanceIdRequest.getPerformanceRound(),
+                performanceIdRequest.getStartDate(),
+                performanceIdRequest.getIsReserve()
+
+        );
+
+
+    }
 
 
 }
