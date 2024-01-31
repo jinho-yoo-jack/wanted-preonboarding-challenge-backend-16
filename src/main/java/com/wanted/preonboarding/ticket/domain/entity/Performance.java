@@ -1,11 +1,12 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceFindResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -34,9 +35,17 @@ public class Performance extends AuditInformation {
     private int type;
     @Column(nullable = false)
     @Comment("공연 일시")
-    private Date start_date;
+    private LocalDateTime start_date;
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     @Comment("예약 여부")
     private String isReserve;
 
+    public PerformanceFindResponse toPerformanceFindResponse() {
+        return PerformanceFindResponse.builder()
+                .performanceName(this.name)
+                .round(this.round)
+                .dateTime(this.start_date)
+                .isReserve(this.isReserve)
+                .build();
+    }
 }

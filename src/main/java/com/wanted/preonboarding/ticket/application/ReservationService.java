@@ -1,9 +1,9 @@
 package com.wanted.preonboarding.ticket.application;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReserveFindRequest;
-import com.wanted.preonboarding.ticket.domain.dto.ReserveFindResponse;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReserveFindRequest;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReserveFindResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.exception.NoSuchReservationFound;
+import com.wanted.preonboarding.ticket.exception.ReservationNotFoundException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class ReservationService {
     public List<ReserveFindResponse> findReservation(ReserveFindRequest request) {
         List<Reservation> reservations = reservationRepository.findByNameAndPhoneNumber(request.getReservationName(), request.getReservationPhoneNumber());
         if (reservations.isEmpty()) {
-            throw new NoSuchReservationFound("예매된 공연이 없습니다.");  //TODO: 상수로 변경
+            throw new ReservationNotFoundException("예매된 공연이 없습니다.");  //TODO: 상수로 변경
         } else {
             return reservations.stream().map(Reservation::toReserveSelectResponse).collect(Collectors.toList());
         }
