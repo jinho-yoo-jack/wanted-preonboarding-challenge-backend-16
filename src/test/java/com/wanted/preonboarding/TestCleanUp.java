@@ -2,6 +2,7 @@ package com.wanted.preonboarding;
 
 import com.wanted.preonboarding.performance.infrastructure.repository.DiscountPolicyRepository;
 import com.wanted.preonboarding.performance.infrastructure.repository.PerformanceRepository;
+import com.wanted.preonboarding.performance.infrastructure.repository.PerformanceShowingObserverRepository;
 import com.wanted.preonboarding.performance.infrastructure.repository.ReservationRepository;
 import com.wanted.preonboarding.performance.infrastructure.repository.ShowingRepository;
 import com.wanted.preonboarding.performance.infrastructure.repository.ShowroomRepository;
@@ -22,6 +23,8 @@ public class TestCleanUp {
 	private ShowroomRepository showroomRepository;
 	@Autowired
 	private ShowingRepository showingRepository;
+	@Autowired
+	private PerformanceShowingObserverRepository performanceShowingObserverRepository;
 	@AfterEach
 	void tearDown() {
 		reservationRepository.deleteAll();
@@ -29,6 +32,7 @@ public class TestCleanUp {
 		showroomRepository.deleteAll();
 		performanceRepository.deleteAll();
 		discountPolicyRepository.deleteAll();
+		performanceShowingObserverRepository.deleteAll();
 	}
 
 }

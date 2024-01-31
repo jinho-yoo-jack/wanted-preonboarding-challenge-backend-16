@@ -9,31 +9,23 @@ import com.wanted.preonboarding.performance.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.performance.infrastructure.output.NotificationOutput;
 import com.wanted.preonboarding.performance.infrastructure.repository.PerformanceShowingObserverRepository;
 import com.wanted.preonboarding.performance.infrastructure.repository.ReservationRepository;
-import com.wanted.preonboarding.performance.infrastructure.repository.ShowingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @RequiredArgsConstructor
 @Slf4j
-@Transactional(readOnly = true)
 public class PerformanceCancelEventService {
-
 	private final PerformanceShowingObserverRepository repository;
-	private final ShowingRepository showingRepository;
 	private final ReservationRepository reservationRepository;
-
 	private final NotificationOutput notificationOutput;
 
-	@EventListener
-	public void listenCancelEvent(ReservationCancelEvent event) {
+	public void canceled(ReservationCancelEvent event) {
 		List<PerformanceShowingObserver> observer = repository.findByShowingId(event.showingId());
 
 		if (observer.isEmpty()) {
@@ -51,7 +43,8 @@ public class PerformanceCancelEventService {
 		notificationOutput.reservationCancelNotify(userIds, message.toString());
 	}
 
-	private StringBuilder reservationCancelMessage(ReservationCancelEvent event) {
+	public StringBuilder reservationCancelMessage(ReservationCancelEvent event) {
+		log.info("reservationID {}",event.reservationId());
 		PerformanceReservation cancel = reservationRepository
 			.findByIdAndReservationStatus(event.reservationId(), ReservationStatus.CANCEL)
 			.orElseThrow(EntityNotFoundException::new);
@@ -67,18 +60,5 @@ public class PerformanceCancelEventService {
 			.append("시작 일시: ").append(showing.getStartDate()).append("\n")
 			.append("예매 가능한 좌석정보: ").append(cancel.getSeatInfoToString()).append("\n");
 		return message;
-	}
-
-
-
-	@Transactional
-	public void subscribe(UUID showingId, UUID userId) {
-		PerformanceShowing performanceShowing = showingRepository.findById(showingId)
-			.orElseThrow(EntityNotFoundException::new);
-
-		PerformanceShowingObserver observer = PerformanceShowingObserver.create(
-			performanceShowing, userId);
-
-		repository.save(observer);
 	}
 }
