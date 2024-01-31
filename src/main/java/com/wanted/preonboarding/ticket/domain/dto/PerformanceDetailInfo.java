@@ -12,6 +12,14 @@ import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ *  UUID performanceId: 공연 ID
+ *  String performanceName: 공연 이름
+ *  int performanceRound: 공연 회차
+ *  LocalDateTime startDate: 공연 시작 일자
+ *  String isReserve: 예약 가능 여부
+ *  List<SeatInfo> seatInfo: 좌석 정보 리스트
+ */
 
 @Getter
 @Builder
@@ -28,7 +36,6 @@ public class PerformanceDetailInfo {
     }
 
     public static PerformanceDetailInfo of(Performance entity){
-
         return PerformanceDetailInfo.builder()
             .performanceId(entity.getId())
             .performanceName(entity.getName())
