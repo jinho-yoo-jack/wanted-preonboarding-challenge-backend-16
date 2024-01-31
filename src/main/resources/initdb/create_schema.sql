@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `user_info`
     `phone_number`   varchar(255)                             NOT NULL COMMENT '유저 휴대전화 번호',
     `birthday`       DATETIME                                 NOT NULL COMMENT '생일',
     `created_at`     DATETIME   DEFAULT NOW()                 NOT NULL COMMENT '가입 일시',
-    `default_payment_code` varchar(50) DEFAULT '1'            NOT NULL COMMENT '결제 수단 선택 코드',
+    `default_payment_code` INT                                NOT NULL COMMENT '결제 수단 선택 코드',
     PRIMARY KEY (user_uuid),
     UNIQUE KEY user_info_unique (id, email, phone_number)
 );
