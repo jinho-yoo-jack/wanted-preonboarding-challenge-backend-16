@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.NameNotFoundException;
+
 @Slf4j
 @RestController
 @RequestMapping("/reserve")
@@ -60,6 +62,9 @@ public class ReserveController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
         }
     }
+
+
+
 
     private static ResponseReserveQueryDto getResponseQueryDto(ReserveInfo reserveInfo, PerformanceInfo performanceInfoDetail) {
         ResponseReserveQueryDto reserveResponseQueryDto = ResponseReserveQueryDto

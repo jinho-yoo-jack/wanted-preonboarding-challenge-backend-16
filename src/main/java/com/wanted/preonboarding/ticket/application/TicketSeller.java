@@ -2,9 +2,11 @@ package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
+import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.global.exception.InvalidInputException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
+import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -22,6 +22,7 @@ import java.util.UUID;
 public class TicketSeller {
     private final PerformanceRepository performanceRepository;
     private final ReservationRepository reservationRepository;
+    private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private long totalAmount = 0L;
 
     public List<ResponsePerformanceInfo> getAllPerformanceInfoList() {
@@ -79,6 +80,52 @@ public class TicketSeller {
         responseQueryDto.setPerformanceName(performanceName);
 
         return responseQueryDto;
+    }
+
+
+
+    public SendMessagePerformanceSeatInfoDto performanceCancelCameout(ReservePossibleAlarmCustomerInfoDto reserveAlarmCustomerInfoDto) {
+
+        isSendReserveExist(reserveAlarmCustomerInfoDto);
+
+        Optional<PerformanceSeatInfo> optionalPerformanceSeatInfo = performanceSeatInfoRepository.findByUUID(reserveAlarmCustomerInfoDto.getPerformanceId());
+
+        if(!optionalPerformanceSeatInfo.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+        PerformanceSeatInfo performanceSeatInfo = optionalPerformanceSeatInfo.get();
+
+
+        Optional<Performance> optionalPerformance = performanceRepository.findById(reserveAlarmCustomerInfoDto.getPerformanceId());
+        if(!optionalPerformance.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+        Performance performance = optionalPerformance.get();
+
+
+        SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto = SendMessagePerformanceSeatInfoDto.of(performanceSeatInfo);
+        sendMessagePerformanceSeatInfoDto.setPerformanceName(performance.getName());
+        sendMessagePerformanceSeatInfoDto.setStartDate(performance.getStart_date());
+
+        //알림 보내기
+        sendAlarm(sendMessagePerformanceSeatInfoDto, reserveAlarmCustomerInfoDto);
+
+        return SendMessagePerformanceSeatInfoDto.of(performanceSeatInfo);
+    }
+
+    private void isSendReserveExist(ReservePossibleAlarmCustomerInfoDto reservePossibleAlarmCustomerInfoDto) {
+        Optional<Reservation> optionalReservation = reservationRepository.findByNameAndPhoneNumber(reservePossibleAlarmCustomerInfoDto.getReservationName(), reservePossibleAlarmCustomerInfoDto.getReservationPhoneNumber());
+        if(!optionalReservation.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    private void sendAlarm(SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto, ReservePossibleAlarmCustomerInfoDto reservePossibleAlarmCustomerInfoDto) {
+
+        //sendAlarmInfo to phoneNumber in sendMessagePerformanceSeatInfoDto
+        String reservationPhoneNumber = reservePossibleAlarmCustomerInfoDto.getReservationPhoneNumber();
+
+
     }
 
 }
