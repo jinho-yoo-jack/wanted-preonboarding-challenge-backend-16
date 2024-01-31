@@ -2,30 +2,40 @@ package com.wanted.preonboarding.reservation.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.wanted.preonboarding.TestUser;
+import com.wanted.preonboarding.performance.AssertCluster;
 import com.wanted.preonboarding.performance.ItemCreator;
 import com.wanted.preonboarding.performance.ReservationRequestFactory;
+import com.wanted.preonboarding.performance.TestPerformance;
+import com.wanted.preonboarding.performance.domain.Performance;
+import com.wanted.preonboarding.performance.domain.creator.PerformanceCreator;
 import com.wanted.preonboarding.performance.domain.creator.PerformanceReservationCreator;
-import com.wanted.preonboarding.reservation.domain.Reservation;
 import com.wanted.preonboarding.reservation.domain.vo.Item;
 import com.wanted.preonboarding.reservation.domain.vo.ReservationStatus;
 import com.wanted.preonboarding.reservation.domain.vo.ReserveItem;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 @DisplayName("도메인: 공연 및 전시 예약 - Reservation")
 public class ReservationTest {
+
+	private PerformanceReservationCreator reservationCreator;
+
+	@BeforeEach
+	void setUp() {
+		reservationCreator = new PerformanceReservationCreator();
+	}
 
 	@Test
 	void reservation_cancel() {
 		//given
-		PerformanceReservationCreator creator = new PerformanceReservationCreator();
-		Reservation reservation = creator.getReservation();
-		UUID reserveItemNo = creator.addReserve(reservation);
-
+		Reservation reservation = reservationCreator.createReservation();
+		UUID reserveItemNo = reservationCreator.addReserveItem(reservation);
 		//when
 		int refundAmount = reservation.cancel(reserveItemNo);
-
 		//then
 		ReserveItem reserveItem = reservation.getReserveItem(reserveItemNo);
 		assertThat(reserveItem.getReservationStatus()).isEqualTo(ReservationStatus.CANCEL);
@@ -35,25 +45,15 @@ public class ReservationTest {
 	@Test
 	void reservation_reserve() {
 		//given
-		UUID performId = UUID.randomUUID();
-		ReservationRequest reservationRequest = new ReservationRequestFactory().create(performId);
-		PerformanceReservationCreator creator = new PerformanceReservationCreator();
-		Reservation reservation = creator.getReservation();
-		Item item = new ItemCreator().create(reservationRequest);
+		Performance performance = new PerformanceCreator().getPerformance();
+		Item item = new ItemCreator().create( UUID.randomUUID());
 		//when
-		UUID reserveItemId = reservation.reserve(item,300);
-
+		Reservation reservation = reservationCreator.createReservation();
+		UUID reserveItemId = reservation.reserve(item, performance.calculateFee());
 		//then
-		ReserveItem reserveItem = reservation.getReserveItem(reserveItemId);
-		assertThat(reserveItem.getReservationStatus()).isEqualTo(ReservationStatus.RESERVE);
-		assertThat(reservation.getNamePhone().getName()).isEqualTo(reservationRequest.userName());
-		assertThat(reservation.getNamePhone().getPhoneNumber()).isEqualTo(reservationRequest.phoneNumber());
-		assertThat(reserveItem.getItem().getSeatInfo().getSeat()).isEqualTo(reservationRequest.seat());
-		assertThat(reserveItem.getItem().getSeatInfo().getLine()).isEqualTo(reservationRequest.line());
-		assertThat(reserveItem.getItem().getRound()).isEqualTo(reservationRequest.round());
+		AssertCluster.reserveItem(reservation,reserveItemId);
 
 	}
-
 
 
 }
