@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -30,11 +31,11 @@ public class TicketSeller {
             .toList();
     }
 
-    public PerformanceInfo getPerformanceInfoDetail(String name) {
-        Optional<Performance> optionalPerformance = performanceRepository.findByName(name);
+    public PerformanceInfo getPerformanceInfoDetail(ReserveInfo info) {
+        Optional<Performance> optionalPerformance = performanceRepository.findById(info.getPerformanceId());
 
         if(!optionalPerformance.isPresent()) {
-            throw new InvalidInputException("예약 고객 정보가 없습니다.");
+            throw new InvalidInputException("예약 공연 정보가 없습니다.");
         }
 
         return PerformanceInfo.of(optionalPerformance.get());

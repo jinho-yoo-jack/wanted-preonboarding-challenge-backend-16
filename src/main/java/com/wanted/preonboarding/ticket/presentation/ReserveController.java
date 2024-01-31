@@ -40,7 +40,7 @@ public class ReserveController {
         ResponseDto responseDto = new ResponseDto();
         try {
             ReserveInfo reserveInfo = reserve(info);
-            PerformanceInfo performanceInfoDetail = ticketSeller.getPerformanceInfoDetail(info.getReservationName());
+            PerformanceInfo performanceInfoDetail = ticketSeller.getPerformanceInfoDetail(info);
             responseDto.setResponse("success");
             responseDto.setMessage("예약을 성공적으로 완료했습니다.");
             ResponseReserveQueryDto reserveResponseQueryDto = getResponseQueryDto(reserveInfo, performanceInfoDetail);
@@ -50,7 +50,7 @@ public class ReserveController {
             return ResponseEntity.ok(responseDto);
         } catch (InvalidInputException e) {
             responseDto.setResponse("failed");
-            responseDto.setMessage("예약 고객 정보가 없습니다.");
+            responseDto.setMessage("예약 공연 정보가 없습니다.");
             responseDto.setData(e.toString());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
         } catch (Exception e) {
