@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
-@DiscriminatorValue(value="amount")
+@DiscriminatorValue(value="none")
 @PrimaryKeyJoinColumn(name = "id")
 public class NoneDiscountPolicy extends DiscountPolicy{
 

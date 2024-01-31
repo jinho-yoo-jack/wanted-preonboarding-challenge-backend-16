@@ -1,9 +1,14 @@
 package com.wanted.preonboarding.performance.domain.discount_policy;
 
 import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-@DiscriminatorValue(value="amount")
+@Entity
+@DiscriminatorValue(value="percent")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @PrimaryKeyJoinColumn(name = "id")
 public class PercentDiscountPolicy extends DiscountPolicy {
 

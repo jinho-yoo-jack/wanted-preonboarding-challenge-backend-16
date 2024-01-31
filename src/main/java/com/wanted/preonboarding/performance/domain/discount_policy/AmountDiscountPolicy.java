@@ -1,10 +1,13 @@
 package com.wanted.preonboarding.performance.domain.discount_policy;
 
 import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Entity;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@Entity
 @DiscriminatorValue(value="amount")
-@PrimaryKeyJoinColumn(name = "id")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AmountDiscountPolicy extends DiscountPolicy{
 
 	private int amount;
