@@ -14,10 +14,8 @@ class PercentDiscountPolicyTest {
 		int price = 20000;
 		int discountPercent = 10;
 		PercentDiscountPolicy discountPolicy = new PercentDiscountPolicy(discountPercent);
-
 		//when
 		int discountFee = discountPolicy.getDiscountAmount(price);
-
 		//then
 		assertThat(discountFee).isEqualTo(price * discountPercent / 100);
 	}
