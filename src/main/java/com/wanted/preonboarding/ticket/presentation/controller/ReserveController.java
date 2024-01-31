@@ -24,23 +24,6 @@ import java.security.NoSuchAlgorithmException;
 public class ReserveController {
     private final TicketSeller ticketSeller;
 
-//    @PostMapping("/")
-//    public boolean reservation(ReserveInfo info) {
-//        System.out.println("reservation");
-//
-//        return ticketSeller.reserve(ReserveInfo.builder()
-//                .performanceId(info.getPerformanceId()) // 예약을 원하는 공연 또는 전시회ID
-//                .reservationName(info.getReservationName()) // 고객의 이름
-//                .reservationPhoneNumber(info.getReservationPhoneNumber()) // 휴대 전화
-//                .reservationStatus(info.getReservationStatus()) // 예약; 취소;
-//                .amount(info.getAmount()) // 결제 가능한 금액(잔고)
-//                .round(info.getRound()) // 회차
-//                .line(info.getLine()) // 좌석 정보
-//                .seat(info.getSeat()) // 좌석 정보
-//                .build()
-//        );
-//    }
-
     @PostMapping("/")
     public ResponseEntity<ResponseDto> reservation(@RequestBody ReserveInfo info) {
         log.info("ReserveController reservation");
