@@ -1,9 +1,10 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceIdRequest;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,24 @@ import java.util.UUID;
 public class TicketSellerTest {
     @Autowired
     private PerformanceRepository performanceRepository;
+
+    @Test
+    public void addPerformance() {
+        UUID uuid = UUID.randomUUID();
+        System.out.println("uuid = " + uuid);
+        Performance performance = Performance.builder().
+                id(uuid)
+                .name("브루노마스")
+                .price(50000)
+                .round(1)
+                .type(1)
+                .startDate(Date.valueOf("2024-01-31"))
+                .isReserve("disable")
+                .build();
+
+        performanceRepository.save(performance);
+
+    }
 
     @Test
     public void getAllPerformanceInfoList() {
