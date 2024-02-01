@@ -32,6 +32,9 @@ dependencies {
     testImplementation("org.junit.vintage:junit-vintage-engine") {
         exclude("org.hamcrest", "hamcrest-core")
     }
+    implementation("org.apache.commons:commons-lang3:3.12.0")
+    implementation("io.netty:netty-all")
+
 }
 
 tasks.withType<Test> {
