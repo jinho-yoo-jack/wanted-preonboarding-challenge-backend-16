@@ -26,22 +26,40 @@ public class TicketSeller {
 
     @Transactional
     public boolean addPerformance(CreatePerformance createPerformance) {
-        UUID uuid = UUID.randomUUID();
 
-        Performance performance = Performance.builder().
-                id(uuid)
-                .name(createPerformance.getName())
-                .price(createPerformance.getPrice())
-                .round(createPerformance.getRound())
-                .type(createPerformance.getType())
-                .startDate(createPerformance.getStart_date())
-                .isReserve(createPerformance.getIsReserve())
-                .build();
+        Performance checkPerformance =
+                performanceRepository.findByNameAndTypeAndRoundAndStartDate(
+                        createPerformance.getName(),
+                        createPerformance.getType(),
+                        createPerformance.getRound(),
+                        createPerformance.getStart_date()
+                );
 
-        performanceRepository.save(performance);
+        if (checkPerformance != null) {
+            return false;
+        } else {
 
 
-        return true;
+            UUID uuid = UUID.randomUUID();
+
+            Performance performance = Performance.builder().
+                    id(uuid)
+                    .name(createPerformance.getName())
+                    .price(createPerformance.getPrice())
+                    .round(createPerformance.getRound())
+                    .type(createPerformance.getType())
+                    .startDate(createPerformance.getStart_date())
+                    .isReserve(createPerformance.getIsReserve())
+                    .build();
+
+
+            performanceRepository.save(performance);
+
+
+            return true;
+
+        }
+
 
     }
 
@@ -54,17 +72,19 @@ public class TicketSeller {
     }
 
     @Transactional
-    public Performance getSpecificPerformance(PerformanceIdRequest performanceIdRequest) {
+    public UUID getPerformanceId(PerformanceIdRequest performanceIdRequest) {
 
-        return performanceRepository.findByNameAndTypeAndRoundAndStartDateAndIsReserve(
+        Performance performance = performanceRepository.findByNameAndTypeAndRoundAndStartDate(
 
                 performanceIdRequest.getPerformanceName(),
                 performanceIdRequest.getPerformanceType(),
                 performanceIdRequest.getPerformanceRound(),
-                performanceIdRequest.getStartDate(),
-                performanceIdRequest.getIsReserve()
+                performanceIdRequest.getStartDate()
+
 
         );
+
+        return performance.getId();
 
 
     }
@@ -113,12 +133,11 @@ public class TicketSeller {
             return false;
         }
     }
+
     @Transactional
     public void updatePerformance(UUID performanceId) {
         performanceRepository.updateIsReserveStatus(performanceId, "disable");
     }
-
-
 
 
     @Transactional
