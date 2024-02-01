@@ -7,7 +7,7 @@ import java.util.Map;
 
 
 @RequiredArgsConstructor
-public class ServiceException extends Exception {
+public class ServiceException extends RuntimeException {
     private final int resultCode;
     private final String resultMessage;
 

@@ -16,9 +16,9 @@ public enum ResultCode {
     VALID_NOT_REGEXP(400, ResultMessage.VALID_NOT_REGEXP),
     UNSUPPORTED_ENCODING(400, ResultMessage.UNSUPPORTED_ENCODING),
     NO_SUCH_ALGORITHM(500, ResultMessage.NO_SUCH_ALGORITHM),
-    URI_SYNTAX_EXCEPTION(400, ResultMessage.URI_SYNTAX_EXCEPTION),
-    INVALID_KEY_EXCEPTION(500, ResultMessage.INVALID_KEY_EXCEPTION),
-    JSON_PROCESSING_EXCEPTION(400, ResultMessage.JSON_PROCESSING_EXCEPTION)
+    URI_SYNTAX(400, ResultMessage.URI_SYNTAX),
+    INVALID_KEY(500, ResultMessage.INVALID_KEY),
+    JSON_PROCESSING(400, ResultMessage.JSON_PROCESSING)
     ;
 
     private final int resultCode;
@@ -53,8 +53,8 @@ public enum ResultCode {
         String VALID_NOT_REGEXP = "입력 형식이 올바르지 않습니다.";
         String UNSUPPORTED_ENCODING = "지원되지 않는 인코딩 형식입니다.";
         String NO_SUCH_ALGORITHM = "사용 가능한 암호화 알고리즘이 없습니다.";
-        String URI_SYNTAX_EXCEPTION = "URI 형식이 잘못되었습니다.";
-        String INVALID_KEY_EXCEPTION = "암호화 키가 유효하지 않습니다.";
-        String JSON_PROCESSING_EXCEPTION = "JSON 처리 중 오류가 발생했습니다.";
+        String URI_SYNTAX = "URI 형식이 잘못되었습니다.";
+        String INVALID_KEY = "암호화 키가 유효하지 않습니다.";
+        String JSON_PROCESSING = "JSON 처리 중 오류가 발생했습니다.";
     }
 }

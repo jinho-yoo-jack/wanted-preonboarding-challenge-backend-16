@@ -103,7 +103,7 @@ public class AlarmSmsService {
 
     //TODO: 네이버클라우드플랫폼 개인계정 SENS 서비스 이용불가. 다른 방법 찾기
     @Transactional
-    public SmsResponse sendSms(String recipientPhoneNumber, SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto) {
+    public SmsResponse sendSms(String recipientPhoneNumber, SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto)  {
         log.info("SmsService sendSms");
 
         //Send Message: 공연ID, 공연명, 회차, 시작 일시 예매 가능한 좌석 정보
@@ -122,7 +122,7 @@ public class AlarmSmsService {
         try {
             jsonBody = objectMapper.writeValueAsString(smsRequest);
         } catch (JsonProcessingException e) {
-            throw new ServiceException(ResultCode.JSON_PROCESSING_EXCEPTION));
+            throw new ServiceException(ResultCode.JSON_PROCESSING);
         }
 
         HttpHeaders headers = new HttpHeaders();
@@ -130,14 +130,29 @@ public class AlarmSmsService {
         headers.set("x-ncp-apigw-timestamp", time.toString());
         headers.set("x-ncp-iam-access-key", this.accessKey);
 
-        String sig = makeSignature(time); //암호화
+        String sig; //암호화
+        try {
+            sig = makeSignature(time);
+        } catch (UnsupportedEncodingException e) {
+            throw new ServiceException(ResultCode.UNSUPPORTED_ENCODING);
+        } catch (NoSuchAlgorithmException e) {
+            throw new ServiceException(ResultCode.NO_SUCH_ALGORITHM);
+        } catch (InvalidKeyException e) {
+            throw new ServiceException(ResultCode.INVALID_KEY);
+        }
         headers.set("x-ncp-apigw-signature-v2", sig);
 
         HttpEntity<String> body = new HttpEntity<>(jsonBody,headers);
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-        SmsResponse smsResponse = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + this.serviceId + "/messages"), body, SmsResponse.class);
+
+        SmsResponse smsResponse = null;
+        try {
+            smsResponse = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + this.serviceId + "/messages"), body, SmsResponse.class);
+        } catch (URISyntaxException e) {
+            throw new ServiceException(ResultCode.URI_SYNTAX);
+        }
 
         return smsResponse;
 

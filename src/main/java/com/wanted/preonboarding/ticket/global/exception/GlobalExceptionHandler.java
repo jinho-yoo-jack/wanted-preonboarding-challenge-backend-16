@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindException;
 
 import java.io.UnsupportedEncodingException;
@@ -19,7 +16,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @Slf4j
-@ControllerAdvice
+//@ControllerAdvice
+@RestControllerAdvice
 @RestController
 public class GlobalExceptionHandler {
 
