@@ -15,7 +15,7 @@ public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
-    @PostMapping
+    @PostMapping("/subscribe")
     public ResponseEntity<ResponseHandler<SubscribeResponse>> subscribe(@RequestBody SubscribeRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
