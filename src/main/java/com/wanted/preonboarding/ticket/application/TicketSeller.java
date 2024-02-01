@@ -8,6 +8,7 @@ import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepo
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,43 +26,35 @@ public class TicketSeller {
     private long totalAmount = 0L;
 
     @Transactional
-    public boolean addPerformance(CreatePerformance createPerformance) {
-
-        Performance checkPerformance =
-                performanceRepository.findByNameAndTypeAndRoundAndStartDate(
-                        createPerformance.getName(),
-                        createPerformance.getType(),
-                        createPerformance.getRound(),
-                        createPerformance.getStartDate()
-                );
+    public PerformanceInfo addPerformance(CreatePerformance createPerformance) {
+        Performance checkPerformance = performanceRepository.findByNameAndTypeAndRoundAndStartDate(
+                createPerformance.getName(),
+                createPerformance.getType(),
+                createPerformance.getRound(),
+                createPerformance.getStartDate()
+        );
 
         if (checkPerformance != null) {
-            return false;
-        } else {
-
-
-            UUID uuid = UUID.randomUUID();
-
-            Performance performance = Performance.builder().
-                    id(uuid)
-                    .name(createPerformance.getName())
-                    .price(createPerformance.getPrice())
-                    .round(createPerformance.getRound())
-                    .type(createPerformance.getType())
-                    .startDate(createPerformance.getStartDate())
-                    .isReserve(createPerformance.getIsReserve())
-                    .build();
-
-
-            performanceRepository.save(performance);
-
-
-            return true;
-
+            throw new DataIntegrityViolationException("해당 공연이 이미 존재합니다.");
         }
+        UUID uuid = UUID.randomUUID();
+
+        Performance performance = Performance.builder().
+                id(uuid)
+                .name(createPerformance.getName())
+                .price(createPerformance.getPrice())
+                .round(createPerformance.getRound())
+                .type(createPerformance.getType())
+                .startDate(createPerformance.getStartDate())
+                .isReserve(createPerformance.getIsReserve())
+                .build();
+
+
+        return PerformanceInfo.of(performanceRepository.save(performance));
 
 
     }
+
 
     public List<PerformanceInfo> getAllPerformanceInfoList() {
         //예약 가능한 공연리스트 가져옴
