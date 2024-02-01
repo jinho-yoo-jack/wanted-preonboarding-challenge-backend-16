@@ -34,6 +34,7 @@ dependencies {
     testImplementation("org.junit.vintage:junit-vintage-engine") {
         exclude("org.hamcrest", "hamcrest-core")
     testImplementation("org.springframework.security:spring-security-test") // 스프링 시큐리티 테스트 라이브러리 의존성 추가
+    implementation ("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.1") // SQL 파라미터 값 확인 라이브러리
     }
 }
 
