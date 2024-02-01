@@ -6,11 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Entity
@@ -35,7 +31,11 @@ public class Reservation {
     private char line;
     private int seat;
 
-    public static Reservation of(ReserveInfo info) {
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "performance_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Performance performance;
+
+    public static Reservation from(ReserveInfo info) {
         return Reservation.builder()
             .performanceId(info.getPerformanceId())
             .name(info.getReservationName())

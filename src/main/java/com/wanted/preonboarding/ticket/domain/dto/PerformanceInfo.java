@@ -1,6 +1,5 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
-import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import lombok.Builder;
 import lombok.Data;
 
@@ -22,7 +21,7 @@ public class PerformanceInfo {
             .performanceId(entity.getId())
             .performanceName(entity.getName())
             .performanceType(convertCodeToName(entity.getType()))
-            .startDate(entity.getStart_date())
+            .startDate(entity.getStartDate())
             .isReserve(entity.getIsReserve())
             .build();
     }
