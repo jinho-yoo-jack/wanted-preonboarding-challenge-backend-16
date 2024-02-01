@@ -34,5 +34,4 @@ public class Performance {
     private Date start_date;
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;
-
 }
