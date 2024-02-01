@@ -69,19 +69,11 @@ public class AlarmSmsService {
 
         isSendReserveExist(reservePossibleAlarmCustomerInfoDto);
 
-        Optional<PerformanceSeatInfo> optionalPerformanceSeatInfo = performanceSeatInfoRepository.findByUUID(reservePossibleAlarmCustomerInfoDto.getPerformanceId());
+        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findByUUID(reservePossibleAlarmCustomerInfoDto.getPerformanceId())
+                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
-        if(!optionalPerformanceSeatInfo.isPresent()) {
-            throw new EntityNotFoundException();
-        }
-        PerformanceSeatInfo performanceSeatInfo = optionalPerformanceSeatInfo.get();
-
-
-        Optional<Performance> optionalPerformance = performanceRepository.findById(reservePossibleAlarmCustomerInfoDto.getPerformanceId());
-        if(!optionalPerformance.isPresent()) {
-            throw new EntityNotFoundException();
-        }
-        Performance performance = optionalPerformance.get();
+        Performance performance = performanceRepository.findById(reservePossibleAlarmCustomerInfoDto.getPerformanceId())
+                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
 
         SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto = SendMessagePerformanceSeatInfoDto.of(performanceSeatInfo);
@@ -92,10 +84,9 @@ public class AlarmSmsService {
     }
 
     private void isSendReserveExist(ReservePossibleAlarmCustomerInfoDto reservePossibleAlarmCustomerInfoDto) {
-        Optional<Reservation> optionalReservation = reservationRepository.findByNameAndPhoneNumber(reservePossibleAlarmCustomerInfoDto.getReservationName(), reservePossibleAlarmCustomerInfoDto.getReservationPhoneNumber());
-        if(!optionalReservation.isPresent()) {
-            throw new EntityNotFoundException();
-        }
+        Reservation reservation = reservationRepository
+                .findByNameAndPhoneNumber(reservePossibleAlarmCustomerInfoDto.getReservationName(), reservePossibleAlarmCustomerInfoDto.getReservationPhoneNumber())
+                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
     }
 
 

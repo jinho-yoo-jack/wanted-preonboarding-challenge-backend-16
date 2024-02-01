@@ -77,27 +77,19 @@ public class TicketSeller {
     }
 
     public BaseResDto getReserveInfoDetail(RequestReserveQueryDto dto) {
-        Optional<Reservation> optionalReservation = reservationRepository.findByNameAndPhoneNumber(dto.getReservationName(), dto.getReservationPhoneNumber());
+        Reservation reservation = reservationRepository.findByNameAndPhoneNumber(dto.getReservationName(), dto.getReservationPhoneNumber())
+                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
-        if(!optionalReservation.isPresent()) {
-            throw new InvalidInputException("예약 고객 정보가 없습니다.");
-        }
+        ResponseReserveQueryDto responseQueryDto = ResponseReserveQueryDto.of(reservation);
 
-        ResponseReserveQueryDto responseQueryDto = ResponseReserveQueryDto.of(optionalReservation.get());
-        Reservation reservation = optionalReservation.get();
-        Optional<Performance> optionalPerformance = performanceRepository.findById(reservation.getPerformanceId());
-        if(!optionalPerformance.isPresent()) {
-            throw new IllegalArgumentException("예약한 공연 정보가 없습니다.");
-        }
-        String performanceName = optionalPerformance.get().getName();
+        Performance performance = performanceRepository.findById(reservation.getPerformanceId())
+                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
+
+        String performanceName = performance.getName();
 
         responseQueryDto.setPerformanceName(performanceName);
 
         return responseQueryDto;
     }
-
-
-
-
 
 }
