@@ -8,7 +8,6 @@ import java.util.UUID;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
     Optional<Reservation> findByNameAndPhoneNumber(String name, String phoneNumber);
-
     void deleteByPerformanceIdAndNameAndPhoneNumberAndRound(
             UUID performanceId,String name,String phoneNumber, int round
     );

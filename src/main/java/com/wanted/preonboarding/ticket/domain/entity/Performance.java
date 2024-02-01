@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
@@ -19,9 +20,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Performance {
     @Id
-//    @GeneratedValue(generator = "uuid2")
-//    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
+    @NotNull
     private UUID id;
     @Column(nullable = false)
     private String name;
