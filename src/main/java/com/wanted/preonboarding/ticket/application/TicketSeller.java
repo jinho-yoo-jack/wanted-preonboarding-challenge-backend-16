@@ -67,7 +67,18 @@ public class TicketSeller {
             // 1. 결제
             int price = info.getPrice();
             reserveInfo.setAmount(reserveInfo.getAmount() - price);
-            // 2. 예매 진행
+
+            // 2. 예매 된 좌석인지 확인
+            reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
+                                            reserveInfo.getPerformanceId(),
+                                            reserveInfo.getRound(),
+                                            reserveInfo.getLine(),
+                                            reserveInfo.getSeat())
+                    .ifPresent(reservation -> {
+                    throw new ServiceException(ResultCode.ALREADY_EXISTS);
+                    });
+
+            // 3. 예매 진행
             reservationRepository.save(Reservation.of(reserveInfo));
             return true;
 

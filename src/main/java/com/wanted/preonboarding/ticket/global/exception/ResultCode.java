@@ -6,6 +6,7 @@ public enum ResultCode {
     NO_AUTH(403, ResultMessage.NO_AUTH),
     BAD_REQUEST(404, ResultMessage.BAD_REQUEST),
     NOT_FOUND(405, ResultMessage.NOT_FOUND),
+    ALREADY_EXISTS(409, ResultMessage.ALREADY_EXISTS),
     INTERNAL_ERROR(500, ResultMessage.INTERNAL_ERROR),
     VALID_NOT_PHONE_NUM(1_007, ResultMessage.VALID_NOT_PHONE_NUM),
     VALID_NOT_PASSWORD(1_008, ResultMessage.VALID_NOT_PASSWORD),
@@ -56,5 +57,6 @@ public enum ResultCode {
         String URI_SYNTAX = "URI 형식이 잘못되었습니다.";
         String INVALID_KEY = "암호화 키가 유효하지 않습니다.";
         String JSON_PROCESSING = "JSON 처리 중 오류가 발생했습니다.";
+        String ALREADY_EXISTS = "이미 존재하는 데이터입니다.";
     }
 }
