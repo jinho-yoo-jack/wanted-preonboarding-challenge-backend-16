@@ -24,8 +24,6 @@ public class QueryController {
     //TODO: 예약 가능한 공연 목록 조회
     @GetMapping("/all/performance")
     public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
-        System.out.println("getAllPerformanceInfoList");
-
         List<PerformanceInfo> allPerformanceInfoList = ticketSeller.getAllPerformanceInfoList();
         allPerformanceInfoList.stream().forEach(e -> e.getPerformanceId());
 
@@ -48,9 +46,9 @@ public class QueryController {
     }
 
     //TODO: 예약가능 공연 상세정보조회
-    @PostMapping("/performanceId")
-    public Performance getPerformanceId(@RequestBody PerformanceIdRequest performanceIdRequest) {
-        Performance performance = ticketSeller.getPerformanceId(performanceIdRequest);
+    @PostMapping("/specificPerformance")
+    public Performance getSpecificPerformance(@RequestBody PerformanceIdRequest performanceIdRequest) {
+        Performance performance = ticketSeller.getSpecificPerformance(performanceIdRequest);
         return performance;
     }
 
