@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("query")
@@ -47,9 +48,9 @@ public class QueryController {
 
     //TODO: 예약가능 공연 상세정보조회
     @PostMapping("/specificPerformance")
-    public Performance getSpecificPerformance(@RequestBody PerformanceIdRequest performanceIdRequest) {
-        Performance performance = ticketSeller.getSpecificPerformance(performanceIdRequest);
-        return performance;
+    public ResponseEntity<UUID> getPerformanceId(@RequestBody PerformanceIdRequest performanceIdRequest) {
+        UUID performanceId = ticketSeller.getPerformanceId(performanceIdRequest);
+        return new ResponseEntity<>(performanceId,HttpStatus.OK);
     }
 
 
