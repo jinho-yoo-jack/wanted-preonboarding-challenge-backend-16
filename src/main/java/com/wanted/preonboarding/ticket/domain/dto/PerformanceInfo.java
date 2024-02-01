@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
+import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class PerformanceInfo {
+public class PerformanceInfo extends BaseResDto {
     private UUID performanceId;
     private String performanceName; // 공연명
     private String performanceType;

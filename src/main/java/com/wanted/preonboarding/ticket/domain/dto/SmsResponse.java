@@ -1,15 +1,11 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
 import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@Builder
 @Getter
 public class SmsResponse extends BaseResDto {
     private String requestId;

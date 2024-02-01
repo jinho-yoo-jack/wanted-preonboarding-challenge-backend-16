@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
+import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class ReserveInfo {
+public class ReserveInfo extends BaseResDto {
     // 공연 및 전시 정보 + 예약자 정보
     private UUID performanceId; // 예약을 원하는 공연 또는 전시회ID
     private String reservationName; // 고객의 이름

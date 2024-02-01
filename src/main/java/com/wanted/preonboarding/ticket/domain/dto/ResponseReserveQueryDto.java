@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
+import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,7 +9,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class ResponseReserveQueryDto {
+public class ResponseReserveQueryDto extends BaseResDto {
 
     private UUID performanceId; //공연ID
     private int round; //회차

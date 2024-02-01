@@ -3,7 +3,10 @@ package com.wanted.preonboarding.ticket.application;
 import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
+import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
 import com.wanted.preonboarding.ticket.global.exception.InvalidInputException;
+import com.wanted.preonboarding.ticket.global.exception.ResultCode;
+import com.wanted.preonboarding.ticket.global.exception.ServiceException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
@@ -31,23 +34,33 @@ public class TicketSeller {
             .toList();
     }
 
-    public PerformanceInfo getPerformanceInfoDetail(ReserveInfo info) {
-        Optional<Performance> optionalPerformance = performanceRepository.findById(info.getPerformanceId());
+    public BaseResDto getPerformanceInfoDetail(ReserveInfo info) {
+        log.info("getPerformanceInfoDetail");
+        Performance performance = performanceRepository.findById(info.getPerformanceId())
+                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
-        if(!optionalPerformance.isPresent()) {
-            throw new InvalidInputException("예약 공연 정보가 없습니다.");
-        }
+        Reservation reservation = reservationRepository.findByUUID(performance.getId())
+                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
-        return PerformanceInfo.of(optionalPerformance.get());
+        return ResponseReserveQueryDto
+                .builder()
+                .performanceId(performance.getId())
+                .performanceName(performance.getName())
+                .round(reservation.getRound())
+                .gate(reservation.getGate())
+                .line(reservation.getLine())
+                .seat(reservation.getSeat())
+                .reservationName(reservation.getName())
+                .reservationPhoneNumber(reservation.getPhoneNumber())
+                .build();
     }
 
     @Transactional
     public boolean reserve(ReserveInfo reserveInfo) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
         Performance info = performanceRepository.findById(reserveInfo.getPerformanceId())
-            .orElseThrow(EntityNotFoundException::new);
+            .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
         String enableReserve = info.getIsReserve();
-
         if (enableReserve.equalsIgnoreCase("enable")) {
             // 1. 결제
             int price = info.getPrice();
@@ -61,7 +74,7 @@ public class TicketSeller {
         }
     }
 
-    public ResponseReserveQueryDto getReserveInfoDetail(RequestReserveQueryDto dto) {
+    public BaseResDto getReserveInfoDetail(RequestReserveQueryDto dto) {
         Optional<Reservation> optionalReservation = reservationRepository.findByNameAndPhoneNumber(dto.getReservationName(), dto.getReservationPhoneNumber());
 
         if(!optionalReservation.isPresent()) {

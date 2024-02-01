@@ -13,5 +13,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     Optional<Reservation> findByNameAndPhoneNumber(String name, String phoneNumber);
 
     @Query("select r from Reservation r where r.performanceId =:id")
-    Reservation findByUUID(UUID id);
+    Optional<Reservation> findByUUID(UUID id);
 }

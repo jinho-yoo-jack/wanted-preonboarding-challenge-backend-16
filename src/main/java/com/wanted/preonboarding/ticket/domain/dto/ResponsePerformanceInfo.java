@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class ResponsePerformanceInfo {
-
+    private UUID performanceId;
     private String performanceName; // 공연명
     private String performanceType;
     private Date startDate;
@@ -20,6 +20,7 @@ public class ResponsePerformanceInfo {
 
     public static ResponsePerformanceInfo of (Performance entity) {
         return ResponsePerformanceInfo.builder()
+                .performanceId(entity.getId())
                 .performanceName(entity.getName())
                 .performanceType(convertCodeToName(entity.getType()))
                 .startDate(entity.getStart_date())
