@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,16 +28,16 @@ public class TicketSeller {
 
     @Transactional
     public PerformanceInfo addPerformance(CreatePerformance createPerformance) {
-        Performance checkPerformance = performanceRepository.findByNameAndTypeAndRoundAndStartDate(
+        Optional.ofNullable(performanceRepository.findByNameAndTypeAndRoundAndStartDate(
                 createPerformance.getName(),
                 createPerformance.getType(),
                 createPerformance.getRound(),
                 createPerformance.getStartDate()
+        )).orElseThrow(() ->
+                new DataIntegrityViolationException("해당 공연이 이미 존재합니다.")
         );
 
-        if (checkPerformance != null) {
-            throw new DataIntegrityViolationException("해당 공연이 이미 존재합니다.");
-        }
+
         UUID uuid = UUID.randomUUID();
 
         Performance performance = Performance.builder().
