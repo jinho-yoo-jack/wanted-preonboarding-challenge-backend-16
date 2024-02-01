@@ -12,7 +12,7 @@ public class CreatePerformance {
     private int price;
     private int round;
     private int type;
-    private Date start_date;
+    private Date startDate;
     private String isReserve ;
 
 }

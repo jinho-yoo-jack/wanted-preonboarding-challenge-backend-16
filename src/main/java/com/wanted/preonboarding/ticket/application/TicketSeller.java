@@ -32,7 +32,7 @@ public class TicketSeller {
                         createPerformance.getName(),
                         createPerformance.getType(),
                         createPerformance.getRound(),
-                        createPerformance.getStart_date()
+                        createPerformance.getStartDate()
                 );
 
         if (checkPerformance != null) {
@@ -48,7 +48,7 @@ public class TicketSeller {
                     .price(createPerformance.getPrice())
                     .round(createPerformance.getRound())
                     .type(createPerformance.getType())
-                    .startDate(createPerformance.getStart_date())
+                    .startDate(createPerformance.getStartDate())
                     .isReserve(createPerformance.getIsReserve())
                     .build();
 
