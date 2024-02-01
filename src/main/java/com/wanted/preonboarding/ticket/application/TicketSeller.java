@@ -82,7 +82,7 @@ public class TicketSeller {
 
         ResponseReserveQueryDto responseQueryDto = ResponseReserveQueryDto.of(reservation);
 
-        Performance performance = performanceRepository.findById(reservation.getPerformanceId())
+        Performance performance = performanceRepository.findByIdAndRound(reservation.getPerformanceId(), reservation.getRound())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
         String performanceName = performance.getName();
