@@ -2,9 +2,7 @@ package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.SubscriptionService;
-import com.wanted.preonboarding.ticket.presentation.dto.ReservationResponse;
-import com.wanted.preonboarding.ticket.presentation.dto.SubscribeRequest;
-import com.wanted.preonboarding.ticket.presentation.dto.SubscribeResponse;
+import com.wanted.preonboarding.ticket.presentation.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +26,10 @@ public class SubscriptionController {
                         .build()
                 );
     }
-//
-//    @PostMapping
-//    public ResponseEntity<ResponseHandler<SubscriptionResponse>> unsubscribe(@RequestBody ReservationCreateRequest request) {
-//        return ResponseEntity.noContent().build();
-//    }
+
+    @PostMapping("/unsubscribe")
+    public ResponseEntity<ResponseHandler<SubscribeResponse>> unsubscribe(@RequestBody UnsubscribeRequest request) {
+        subscriptionService.unsubscribe(request.toDto());
+        return ResponseEntity.noContent().build();
+    }
 }
