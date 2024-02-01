@@ -8,8 +8,7 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Getter @Setter
 @Builder
 public class ReserveInfo extends BaseResDto {
     // 공연 및 전시 정보 + 예약자 정보

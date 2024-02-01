@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Builder
-@Getter
+@Getter @Setter
 public class SmsResponse extends BaseResDto {
     private String requestId;
     private LocalDateTime requestTime;

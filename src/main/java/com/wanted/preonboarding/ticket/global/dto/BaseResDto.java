@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-@Getter
-@Setter
+@Getter @Setter
 public class BaseResDto {
     private int resultCode = ResultCode.SUCCESS.getResultCode();
     private String resultMessage = ResultCode.SUCCESS.getResultMessage();

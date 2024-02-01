@@ -7,8 +7,7 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
+@Getter @Setter
 public class MessagesDto {
     private String to;
     private String content;

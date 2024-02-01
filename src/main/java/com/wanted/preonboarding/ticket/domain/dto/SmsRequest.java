@@ -9,8 +9,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
+@Getter @Setter
 public class SmsRequest {
     private String type;
     private String contentType;
