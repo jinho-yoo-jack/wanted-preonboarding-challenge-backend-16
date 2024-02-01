@@ -10,6 +10,9 @@ import com.wanted.preonboarding.ticket.domain.dto.SendMessagePerformanceSeatInfo
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
+import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
+import com.wanted.preonboarding.ticket.global.exception.ResultCode;
+import com.wanted.preonboarding.ticket.global.exception.ServiceException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
@@ -62,7 +65,7 @@ public class AlarmSmsService {
     private final ReservationRepository reservationRepository;
 
 
-    public SmsResponse performanceCancelCameout(ReservePossibleAlarmCustomerInfoDto reservePossibleAlarmCustomerInfoDto) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+    public BaseResDto performanceCancelCameout(ReservePossibleAlarmCustomerInfoDto reservePossibleAlarmCustomerInfoDto) {
 
         isSendReserveExist(reservePossibleAlarmCustomerInfoDto);
 
@@ -87,7 +90,6 @@ public class AlarmSmsService {
 
         //알림 보내기
         SmsResponse smsResponse = sendSms(reservePossibleAlarmCustomerInfoDto.getReservationPhoneNumber(), sendMessagePerformanceSeatInfoDto);
-
         return smsResponse;
     }
 
@@ -101,7 +103,7 @@ public class AlarmSmsService {
 
     //TODO: 네이버클라우드플랫폼 개인계정 SENS 서비스 이용불가. 다른 방법 찾기
     @Transactional
-    public SmsResponse sendSms(String recipientPhoneNumber, SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto) throws JsonProcessingException, UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, URISyntaxException {
+    public SmsResponse sendSms(String recipientPhoneNumber, SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto) {
         log.info("SmsService sendSms");
 
         //Send Message: 공연ID, 공연명, 회차, 시작 일시 예매 가능한 좌석 정보
@@ -115,7 +117,13 @@ public class AlarmSmsService {
 
         SmsRequest smsRequest = new SmsRequest("SMS", "COMM", "82", sendPhoneNo, "내용", messages);
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonBody = objectMapper.writeValueAsString(smsRequest);
+
+        String jsonBody;
+        try {
+            jsonBody = objectMapper.writeValueAsString(smsRequest);
+        } catch (JsonProcessingException e) {
+            throw new ServiceException(ResultCode.JSON_PROCESSING_EXCEPTION));
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
