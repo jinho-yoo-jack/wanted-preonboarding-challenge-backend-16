@@ -10,4 +10,5 @@ import java.util.UUID;
 
 public interface SubscriptionRepository extends JpaRepository<Subscription, Integer> {
     boolean existsByPerformanceIdAndUserInfo(UUID performanceId, UserInfo userInfo);
+    List<Subscription> findAllByPerformanceId(UUID performanceId);
 }

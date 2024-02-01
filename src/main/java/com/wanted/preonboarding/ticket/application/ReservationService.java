@@ -5,12 +5,14 @@ import com.wanted.preonboarding.ticket.application.dto.ReservationCreateParam;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.entity.UserInfo;
+import com.wanted.preonboarding.ticket.domain.event.ReservationCanceledEvent;
 import com.wanted.preonboarding.ticket.domain.exception.NotFoundException;
 import com.wanted.preonboarding.ticket.domain.exception.PaymentException;
 import com.wanted.preonboarding.ticket.domain.exception.ForbiddenException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,7 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final PerformanceRepository performanceRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public List<Reservation> getReservations(String userName, String userPhoneNumber) {
         return reservationRepository.findAllByUserInfo(UserInfo.builder().name(userName).phoneNumber(userPhoneNumber).build());
@@ -60,5 +63,11 @@ public class ReservationService {
         Performance performance = performanceRepository.findById(reservation.getPerformanceId()).orElseThrow(() -> new NotFoundException("공연이 존재하지 않습니다."));
         performance.cancelSeat(reservation.getSeatInfo());
         performanceRepository.save(performance);
+
+        eventPublisher.publishEvent(ReservationCanceledEvent.builder()
+                .performanceId(performance.getId())
+                .performanceName(performance.getName())
+                .seatInfo(reservation.getSeatInfo())
+                .build());
     }
 }
