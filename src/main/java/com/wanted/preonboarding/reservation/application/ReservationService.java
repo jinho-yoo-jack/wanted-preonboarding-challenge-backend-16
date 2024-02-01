@@ -49,7 +49,7 @@ public class ReservationService {
 
 		// 2. 예매 진행
 		Item item = Item.create(request.performId(), request.name(), request.round(), seatInfo);
-		UUID reserveNo = reservation.reserve(item, request.amount());
+		UUID reserveNo = reservation.reserve(item, request.paymentAmount());
 		reservationRepository.save(reservation);
 		return ReservedItemResponse.of(reservation.getReserveItem(reserveNo),namePhone);
 	}
