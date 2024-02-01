@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Data
@@ -22,7 +23,7 @@ public class PerformanceInfo {
             .performanceId(entity.getId())
             .performanceName(entity.getName())
             .performanceType(convertCodeToName(entity.getType()))
-            .startDate(entity.getStart_date())
+            .startDate(entity.getStartDate())
             .isReserve(entity.getIsReserve())
             .build();
     }
