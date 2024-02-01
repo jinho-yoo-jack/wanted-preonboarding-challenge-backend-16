@@ -3,7 +3,7 @@ package com.wanted.preonboarding.performance.application;
 import com.wanted.preonboarding.performance.domain.Perform;
 import com.wanted.preonboarding.performance.domain.Performance;
 import com.wanted.preonboarding.performance.domain.discount_policy.NoneDiscountPolicy;
-import com.wanted.preonboarding.performance.domain.vo.Gate;
+import com.wanted.preonboarding.performance.domain.vo.PerformancePlace;
 import com.wanted.preonboarding.performance.framwork.infrastructure.repository.DiscountPolicyRepository;
 import com.wanted.preonboarding.performance.framwork.infrastructure.repository.PerformRepository;
 import com.wanted.preonboarding.performance.framwork.infrastructure.repository.PerformanceRepository;
@@ -36,9 +36,9 @@ public class PerformAdminService {
 			discountPolicy
 		);
 
-		Gate gate = Gate.create(1);
+		PerformancePlace performancePlace = PerformancePlace.create(1);
 		Perform perform = Perform.create(performance,
-			gate, request.round(), request.startDate(), request.isReserve());
+			performancePlace, request.round(), request.startDate(), request.isReserve());
 
 		performanceRepository.save(performance);
 		return performRepository.save(perform).getId();

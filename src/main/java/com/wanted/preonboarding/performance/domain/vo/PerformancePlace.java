@@ -9,16 +9,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Gate {
+public class PerformancePlace {
 
 	@Column(nullable = false)
 	private int gate;
 
-	private Gate(int gate) {
+	private PerformancePlace(int gate) {
 		this.gate = gate;
 	}
 
-	public static Gate create(int gate) {
-		return new Gate(gate);
+	public static PerformancePlace create(int gate) {
+		return new PerformancePlace(gate);
 	}
 }

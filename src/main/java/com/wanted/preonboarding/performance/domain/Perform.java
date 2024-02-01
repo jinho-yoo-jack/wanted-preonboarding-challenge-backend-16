@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.performance.domain;
 
-import com.wanted.preonboarding.performance.domain.vo.Gate;
+import com.wanted.preonboarding.performance.domain.vo.PerformancePlace;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -46,20 +46,20 @@ public class Perform {
 	private boolean reservationAvailable;
 
 	@Embedded
-	private Gate gate;
+	private PerformancePlace performancePlace;
 
-	private Perform(Performance performance, Gate gate,  int round,
+	private Perform(Performance performance, PerformancePlace performancePlace,  int round,
 		LocalDate startDate, boolean reservationAvailable) {
 		this.performance = performance;
-		this.gate = gate;
+		this.performancePlace = performancePlace;
 		this.round = round;
 		this.startDate = startDate;
 		this.reservationAvailable = reservationAvailable;
 	}
 
-	public static Perform create(Performance performance, Gate gate, int round,
+	public static Perform create(Performance performance, PerformancePlace performancePlace, int round,
 		LocalDate startDate, boolean reservationAvailable) {
-		return new Perform(performance, gate,round,startDate,reservationAvailable);
+		return new Perform(performance, performancePlace,round,startDate,reservationAvailable);
 	}
 
 	public void soldOut() {
