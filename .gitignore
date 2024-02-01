@@ -39,5 +39,5 @@ out/
 
 ### Docker ####
 Dockerfile_bak
-/dev/mysql_docker/data/
+dev/
 
