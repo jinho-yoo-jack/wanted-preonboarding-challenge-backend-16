@@ -150,15 +150,7 @@ public class AlarmSmsService {
         headers.set("x-ncp-iam-access-key", this.accessKey);
 
         String sig; //암호화
-        try {
-            sig = makeSignature(time);
-        } catch (UnsupportedEncodingException e) {
-            throw new ServiceException(ResultCode.UNSUPPORTED_ENCODING);
-        } catch (NoSuchAlgorithmException e) {
-            throw new ServiceException(ResultCode.NO_SUCH_ALGORITHM);
-        } catch (InvalidKeyException e) {
-            throw new ServiceException(ResultCode.INVALID_KEY);
-        }
+        sig = makeSignature(time);
         headers.set("x-ncp-apigw-signature-v2", sig);
         return headers;
     }
@@ -169,7 +161,7 @@ public class AlarmSmsService {
                 dto.getRound(), dto.getStartDate(), dto.getGate(), dto.getLine(), dto.getSeat());
     }
 
-    public String makeSignature(Long time) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
+    public String makeSignature(Long time)  {
         log.info("AlarmSmsService makeSignature");
         String space = " ";
         String newLine = "\n";
@@ -189,11 +181,32 @@ public class AlarmSmsService {
                 .append(accessKey)
                 .toString();
 
-        SecretKeySpec signingKey = new SecretKeySpec(secretKey.getBytes("UTF-8"), "HmacSHA256");
-        Mac mac = Mac.getInstance("HmacSHA256");
-        mac.init(signingKey);
+        SecretKeySpec signingKey;
+        try {
+            signingKey = new SecretKeySpec(secretKey.getBytes("UTF-8"), "HmacSHA256");
+        } catch (UnsupportedEncodingException e) {
+            throw new ServiceException(ResultCode.UNSUPPORTED_ENCODING);
+        }
 
-        byte[] rawHmac = mac.doFinal(message.getBytes("UTF-8"));
+        Mac mac;
+        try {
+            mac = Mac.getInstance("HmacSHA256");
+        } catch (NoSuchAlgorithmException e) {
+            throw new ServiceException(ResultCode.NO_SUCH_ALGORITHM);
+        }
+
+        try {
+            mac.init(signingKey);
+        } catch (InvalidKeyException e) {
+            throw new ServiceException(ResultCode.INVALID_KEY);
+        }
+
+        byte[] rawHmac;
+        try {
+            rawHmac = mac.doFinal(message.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new ServiceException(ResultCode.UNSUPPORTED_ENCODING);
+        }
 
         return Base64.encodeBase64String(rawHmac);
     }
