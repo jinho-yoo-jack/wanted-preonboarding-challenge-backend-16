@@ -16,7 +16,6 @@ import com.wanted.preonboarding.ticket.global.exception.ServiceException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -38,7 +37,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -65,14 +63,14 @@ public class AlarmSmsService {
     private final ReservationRepository reservationRepository;
 
 
-    public BaseResDto performanceCancelCameout(ReservePossibleAlarmCustomerInfoDto reservePossibleAlarmCustomerInfoDto) {
+    public BaseResDto performanceCancelCameout(ReservePossibleAlarmCustomerInfoDto dto) {
 
-        isSendReserveExist(reservePossibleAlarmCustomerInfoDto);
+        isSendReserveExist(dto);
 
-        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findByUUID(reservePossibleAlarmCustomerInfoDto.getPerformanceId())
+        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findByUUID(dto.getPerformanceId())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
-        Performance performance = performanceRepository.findById(reservePossibleAlarmCustomerInfoDto.getPerformanceId())
+        Performance performance = performanceRepository.findById(dto.getPerformanceId())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
 
@@ -80,40 +78,72 @@ public class AlarmSmsService {
         sendMessagePerformanceSeatInfoDto.setPerformanceName(performance.getName());
         sendMessagePerformanceSeatInfoDto.setStartDate(performance.getStart_date());
 
-        return sendSms(reservePossibleAlarmCustomerInfoDto.getReservationPhoneNumber(), sendMessagePerformanceSeatInfoDto);
+        return messageBody(dto.getReservationPhoneNumber(), sendMessagePerformanceSeatInfoDto);
     }
 
-    private void isSendReserveExist(ReservePossibleAlarmCustomerInfoDto reservePossibleAlarmCustomerInfoDto) {
+    private void isSendReserveExist(ReservePossibleAlarmCustomerInfoDto dto) {
         Reservation reservation = reservationRepository
-                .findByNameAndPhoneNumber(reservePossibleAlarmCustomerInfoDto.getReservationName(), reservePossibleAlarmCustomerInfoDto.getReservationPhoneNumber())
+                .findByNameAndPhoneNumber(dto.getReservationName(), dto.getReservationPhoneNumber())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
     }
 
 
-    //TODO: 네이버클라우드플랫폼 개인계정 SENS 서비스 이용불가. 다른 방법 찾기
-    @Transactional
-    public SmsResponse sendSms(String recipientPhoneNumber, SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto)  {
-        log.info("SmsService sendSms");
+    public SmsResponse messageBody(String recipientPhoneNumber, SendMessagePerformanceSeatInfoDto dto) {
+        log.info("SmsService messageBody");
 
         //Send Message: 공연ID, 공연명, 회차, 시작 일시 예매 가능한 좌석 정보
-        inputSecondContentPart(sendMessagePerformanceSeatInfoDto);
-
+        this.secondContentPart = createSecondContentPart(dto);
 
         Long time = System.currentTimeMillis();
-        List<MessagesDto> messages = new ArrayList<>();
-        String sendContent = sendCompanyName + " " + firstContentPart + "\n" + secondContentPart;
-        messages.add(new MessagesDto(recipientPhoneNumber, sendContent));
+
+        List<MessagesDto> messages = getMessagesDtos(recipientPhoneNumber);
 
         SmsRequest smsRequest = new SmsRequest("SMS", "COMM", "82", sendPhoneNo, "내용", messages);
-        ObjectMapper objectMapper = new ObjectMapper();
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonBody = getString(smsRequest, objectMapper);
+
+        HttpHeaders headers = getHttpHeaders(time);
+
+        HttpEntity<String> body = new HttpEntity<>(jsonBody, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
+        return sendSms(restTemplate, body);
+    }
+
+    private static String getString(SmsRequest smsRequest, ObjectMapper objectMapper) {
         String jsonBody;
         try {
             jsonBody = objectMapper.writeValueAsString(smsRequest);
         } catch (JsonProcessingException e) {
             throw new ServiceException(ResultCode.JSON_PROCESSING);
         }
+        return jsonBody;
+    }
 
+    private List<MessagesDto> getMessagesDtos(String recipientPhoneNumber) {
+        List<MessagesDto> messages = new ArrayList<>();
+        String sendContent = this.sendCompanyName + " " + this.firstContentPart + "\n" + this.secondContentPart;
+        messages.add(new MessagesDto(recipientPhoneNumber, sendContent));
+        return messages;
+    }
+
+    //TODO: 네이버클라우드플랫폼 개인계정 SENS 서비스 이용불가. 다른 방법 찾기
+    @Transactional
+    public SmsResponse sendSms(RestTemplate restTemplate, HttpEntity<String> body)  {
+        log.info("SmsService sendSms");
+        SmsResponse smsResponse;
+        try {
+            smsResponse = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + this.serviceId + "/messages"), body, SmsResponse.class);
+        } catch (URISyntaxException e) {
+            throw new ServiceException(ResultCode.URI_SYNTAX);
+        }
+        return smsResponse;
+    }
+
+    private HttpHeaders getHttpHeaders(Long time) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("x-ncp-apigw-timestamp", time.toString());
@@ -130,31 +160,13 @@ public class AlarmSmsService {
             throw new ServiceException(ResultCode.INVALID_KEY);
         }
         headers.set("x-ncp-apigw-signature-v2", sig);
-
-        HttpEntity<String> body = new HttpEntity<>(jsonBody,headers);
-
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-
-        SmsResponse smsResponse = null;
-        try {
-            smsResponse = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + this.serviceId + "/messages"), body, SmsResponse.class);
-        } catch (URISyntaxException e) {
-            throw new ServiceException(ResultCode.URI_SYNTAX);
-        }
-
-        return smsResponse;
-
+        return headers;
     }
 
-    private void inputSecondContentPart(SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto) {
-        this.secondContentPart = "공연ID: " + sendMessagePerformanceSeatInfoDto.getPerformanceId() +
-        ", 공연명: " + sendMessagePerformanceSeatInfoDto.getPerformanceName() +
-        ", 회차: " + sendMessagePerformanceSeatInfoDto.getRound() +
-        ", 시작 일시: " + sendMessagePerformanceSeatInfoDto.getStartDate() +
-        ", 예매 가능한 좌석 정보: Gate: " + sendMessagePerformanceSeatInfoDto.getGate() +
-        ", Line: " + sendMessagePerformanceSeatInfoDto.getLine() +
-        ", Seat: " + sendMessagePerformanceSeatInfoDto.getSeat();
+    private String createSecondContentPart(SendMessagePerformanceSeatInfoDto dto) {
+        return String.format("%s %s\n공연ID: %s\n,공연명: %s\n,회차: %s\n, 시작 일시: %s\n,예매 가능한 좌석 정보: Gate: %s, Line: %s, Seat: %s",
+                sendCompanyName, firstContentPart, dto.getPerformanceId(), dto.getPerformanceName(),
+                dto.getRound(), dto.getStartDate(), dto.getGate(), dto.getLine(), dto.getSeat());
     }
 
     public String makeSignature(Long time) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
