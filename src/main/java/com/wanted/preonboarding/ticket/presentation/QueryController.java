@@ -39,7 +39,7 @@ public class QueryController {
                 .body(ResponseHandler.<ReserveInfo>builder()
                         .message("Success")
                         .statusCode(HttpStatus.OK)
-                        .data(ticketSeller.getRevervationInfo("4438a3e6-b01c-11ee-9426-0242ac180002"))
+                        .data(ticketSeller.getRevervationInfo("유진호","010-1234-1234"))
                         .build()
                 );
     }

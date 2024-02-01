@@ -32,11 +32,12 @@ public class TicketSeller {
     }
 
 
-    public ReserveInfo getRevervationInfo(String id) {
 
-        UUID uuid = UUID.fromString(id);
+    public ReserveInfo getRevervationInfo(String name, String phoneNumber) {
 
-        ReserveInfo reserve = ReserveInfo.of(reservationRepository.findByPerformanceIdAndStatus(uuid, "reserve"));
+        ReserveInfo reserve = ReserveInfo.of(reservationRepository.findByNameAndPhoneNumberAndStatus(name, phoneNumber,"reserve"));
+
+        UUID uuid = reserve.getPerformanceId();
 
         Optional<Performance> performanceOptional = performanceRepository.findById(uuid);
         PerformanceInfo per;
