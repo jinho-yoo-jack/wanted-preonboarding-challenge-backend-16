@@ -23,7 +23,6 @@ public class Performance {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
-    @NotNull
     private UUID id;
     @Column(nullable = false)
     private String name;

@@ -18,6 +18,5 @@ public class PerformanceIdRequest {
     private int performanceType;
     private int performanceRound;
     private Date startDate;
-    private String isReserve;
 
 }

@@ -21,8 +21,8 @@ public interface PerformanceRepository extends JpaRepository<Performance, UUID> 
     @Modifying
     @Query("UPDATE Performance p SET  p.isReserve = :newIsReserveStatus WHERE p.id = :performanceId")
     void updateIsReserveStatus(@Param("performanceId") UUID performanceId, @Param("newIsReserveStatus") String newIsReserveStatus);
-    Performance findByNameAndTypeAndRoundAndStartDateAndIsReserve(
-            String name, int type, int round, Date startDate,String isReserve);
+    Performance findByNameAndTypeAndRoundAndStartDate(
+            String name, int type, int round, Date startDate);
 
 
 
