@@ -59,7 +59,6 @@ public class TicketSeller {
 
 
     public List<PerformanceInfo> getAllPerformanceInfoList() {
-        //예약 가능한 공연리스트 가져옴
         return performanceRepository.findByIsReserve("enable")
                 .stream()
                 .map(PerformanceInfo::of)
@@ -107,7 +106,6 @@ public class TicketSeller {
 
                 // 1. 결제
                 //공연가격
-
                 int price = info.getPrice();
                 // 가진 amount 돈 양
                 reserveInfo.setAmount(reserveInfo.getAmount() - price);

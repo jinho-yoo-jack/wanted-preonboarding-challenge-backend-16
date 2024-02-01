@@ -21,8 +21,7 @@ import java.util.UUID;
 public class TicketSellerTest {
     @Autowired
     private PerformanceRepository performanceRepository;
-
-    //생성시 UUID가 존재하면 추가되지 않도록 pk로
+    
     @Test
     public void addPerformance() {
         UUID uuid = UUID.randomUUID();

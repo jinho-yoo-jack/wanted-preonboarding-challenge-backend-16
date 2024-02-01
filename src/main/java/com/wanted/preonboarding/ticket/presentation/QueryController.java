@@ -18,8 +18,6 @@ import java.util.UUID;
 public class QueryController {
     private final TicketSeller ticketSeller;
 
-
-    //TODO: 예약 가능한 공연 목록 조회
     @GetMapping("/all")
     public ResponseEntity<List<PerformanceInfo>> getAllPerformanceInfoList() {
         List<PerformanceInfo> allPerformanceInfoList = ticketSeller.getAllPerformanceInfoList();
@@ -29,9 +27,7 @@ public class QueryController {
 
     @GetMapping("/{performanceId}")
     public ResponseEntity<PerformanceInfo> getPerformanceById(@PathVariable(value = "performanceId") String performanceId) {
-        // 성능 ID를 사용하여 성능 정보 조회
         PerformanceInfo performanceById = ticketSeller.getPerformanceById(performanceId);
-
         return new ResponseEntity<>(performanceById, HttpStatus.OK);
     }
 
@@ -43,8 +39,6 @@ public class QueryController {
 
     }
 
-
-    //TODO: 예약가능 공연 상세정보조회
     @PostMapping("/specific")
     public ResponseEntity<UUID> getPerformanceId(@RequestBody PerformanceIdRequest performanceIdRequest) {
         UUID performanceId = ticketSeller.getPerformanceId(performanceIdRequest);
