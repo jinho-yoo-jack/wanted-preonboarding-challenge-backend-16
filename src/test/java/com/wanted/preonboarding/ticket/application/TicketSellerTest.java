@@ -75,7 +75,7 @@ public class TicketSellerTest {
         if(flag) {
             //then
             Performance resultPerformance = performanceRepository.findById(performance.getId()).get();
-            Reservation resultReservation = reservationRepository.findByPerformanceId(performance.getId())
+            Reservation resultReservation = reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(performance.getId(),performance.getRound(), info.getLine(), info.getSeat())
                     .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));;
             assertThat(resultPerformance.getId()).isEqualTo(resultReservation.getPerformanceId());
         }
