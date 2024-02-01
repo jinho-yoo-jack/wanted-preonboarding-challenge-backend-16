@@ -1,8 +1,6 @@
 package com.wanted.preonboarding.ticket.application;
 
-import com.wanted.preonboarding.ticket.domain.dto.RequestReserveQueryDto;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
-import com.wanted.preonboarding.ticket.domain.dto.ResponseReserveQueryDto;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.global.exception.ResultCode;
@@ -15,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Date;
@@ -78,7 +75,7 @@ public class TicketSellerTest {
         if(flag) {
             //then
             Performance resultPerformance = performanceRepository.findById(performance.getId()).get();
-            Reservation resultReservation = reservationRepository.findByUUID(performance.getId())
+            Reservation resultReservation = reservationRepository.findByPerformanceId(performance.getId())
                     .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));;
             assertThat(resultPerformance.getId()).isEqualTo(resultReservation.getPerformanceId());
         }

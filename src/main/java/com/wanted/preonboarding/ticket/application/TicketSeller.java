@@ -10,7 +10,6 @@ import com.wanted.preonboarding.ticket.global.exception.ServiceException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
-import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,10 +35,12 @@ public class TicketSeller {
 
     public BaseResDto getPerformanceInfoDetail(ReserveInfo info) {
         log.info("getPerformanceInfoDetail");
-        Performance performance = performanceRepository.findById(info.getPerformanceId())
+
+        Performance performance = performanceRepository.findByIdAndRound(info.getPerformanceId(), info.getRound())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
-        Reservation reservation = reservationRepository.findByUUID(performance.getId())
+        Reservation reservation = reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
+                performance.getId(),performance.getRound(), info.getLine(), info.getSeat())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
         return ResponseReserveQueryDto
@@ -58,8 +59,9 @@ public class TicketSeller {
     @Transactional
     public boolean reserve(ReserveInfo reserveInfo) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
-        Performance info = performanceRepository.findById(reserveInfo.getPerformanceId())
+        Performance info = performanceRepository.findByIdAndRound(reserveInfo.getPerformanceId(), reserveInfo.getRound())
             .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
+
         String enableReserve = info.getIsReserve();
         if (enableReserve.equalsIgnoreCase("enable")) {
             // 1. 결제
