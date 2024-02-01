@@ -13,7 +13,7 @@ public class PerformanceCreator {
 	private int price = testPerformance.getPrice();
 	private DiscountPolicy discountPolicy = new NoneDiscountPolicy();
 	public Performance getPerformance() {
-		return new Performance(
+		return Performance.create(
 			testUser.getName(),
 			price,
 			PerformanceType.CONCERT,
