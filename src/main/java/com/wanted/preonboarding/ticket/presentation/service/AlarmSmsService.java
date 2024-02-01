@@ -88,9 +88,7 @@ public class AlarmSmsService {
         sendMessagePerformanceSeatInfoDto.setPerformanceName(performance.getName());
         sendMessagePerformanceSeatInfoDto.setStartDate(performance.getStart_date());
 
-        //알림 보내기
-        SmsResponse smsResponse = sendSms(reservePossibleAlarmCustomerInfoDto.getReservationPhoneNumber(), sendMessagePerformanceSeatInfoDto);
-        return smsResponse;
+        return sendSms(reservePossibleAlarmCustomerInfoDto.getReservationPhoneNumber(), sendMessagePerformanceSeatInfoDto);
     }
 
     private void isSendReserveExist(ReservePossibleAlarmCustomerInfoDto reservePossibleAlarmCustomerInfoDto) {
