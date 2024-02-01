@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -18,12 +18,14 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Performance {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
-    @Column(nullable = false)
-    private String name;
+    @Column(columnDefinition = "VARBINARY(16)", name = "performance_id")
+    private UUID performanceId;
+    @Column(nullable = false, name = "performance_name")
+    private String peformanceName;
     @Column(nullable = false)
     private int price;
     @Column(nullable = false)
@@ -31,8 +33,11 @@ public class Performance {
     @Column(nullable = false)
     private int type;
     @Column(nullable = false)
-    private Date start_date;
-    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
-    private String isReserve;
+    private LocalDate start_date;
+    @Column(nullable = false, name = "reserved")
+    private boolean reserved = false;
 
+    public void reserved() {
+        this.reserved = true;
+    }
 }

@@ -1,12 +1,18 @@
 package com.wanted.preonboarding.ticket.infrastructure.repository;
 
-import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
 import java.util.UUID;
 
+import com.wanted.preonboarding.ticket.domain.entity.Reservation;
+import com.wanted.preonboarding.ticket.domain.info.ReservationStatus;
+import com.wanted.preonboarding.ticket.domain.info.SeatInfo;
+import com.wanted.preonboarding.ticket.domain.info.UserInfo;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
-    Reservation findByNameAndPhoneNumber(String name, String phoneNumber);
+    List<Reservation> findByUserInfoAndReservationStatus(UserInfo userInfo, ReservationStatus reservationStatus);
+    boolean existsReservationByPerformanceIdAndSeatInfo(UUID performanceId, SeatInfo seatInfo);
+
+    Reservation findReservationByPerformanceIdAndSeatInfo(UUID performanceId, SeatInfo seatInfo);
 }

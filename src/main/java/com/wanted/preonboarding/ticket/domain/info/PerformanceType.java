@@ -1,7 +1,4 @@
-package com.wanted.preonboarding.ticket.domain.dto;
-
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+package com.wanted.preonboarding.ticket.domain.info;
 
 public enum PerformanceType {
     NONE(0),
