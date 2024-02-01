@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.exception;
 
+import jakarta.persistence.NoResultException;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -27,9 +27,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, exceptionResponse.httpStatus);
     }
 
-
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<ExceptionResponse> NoSuchElementException(NoSuchElementException exception) {
+    @ExceptionHandler(NoResultException.class)
+    public ResponseEntity<ExceptionResponse> NoResultException(NoResultException exception) {
         ExceptionResponse exceptionResponse = ExceptionResponse.builder().exceptionMessage(exception.getMessage()).httpStatus(HttpStatus.NO_CONTENT).build();
         return new ResponseEntity<>(exceptionResponse, exceptionResponse.httpStatus);
     }

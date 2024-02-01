@@ -3,7 +3,7 @@ package com.wanted.preonboarding.ticket.application;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceIdRequest;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.NoResultException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,7 +53,7 @@ public class TicketSellerTest {
     @Test
     public void findByIdPerformanceInfoList() {
         Performance performance = performanceRepository.findById(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new NoResultException("해당 Id로 공연을 찾을 수 없습니다."));
 
         log.info("performanceId=", performance.getId());
     }
@@ -73,7 +73,7 @@ public class TicketSellerTest {
                 performanceIdRequest.getPerformanceType(),
                 performanceIdRequest.getPerformanceRound(),
                 performanceIdRequest.getStartDate()
-        );
+        ).orElseThrow(() -> new NoResultException("해당하는 데이터를 찾을 수 없습니다."));
 
         log.info("performanceId=", performance.getId());
 
