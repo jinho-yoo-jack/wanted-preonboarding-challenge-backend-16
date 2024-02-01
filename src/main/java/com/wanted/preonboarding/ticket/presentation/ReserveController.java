@@ -35,5 +35,10 @@ public class ReserveController {
         );
     }
 
+    @PostMapping("/able")
+    public boolean ableReservation() {
+        return ticketSeller.ableReserve("4438a3e6-b01c-11ee-9426-0242ac180002");
+    }
+
 
 }

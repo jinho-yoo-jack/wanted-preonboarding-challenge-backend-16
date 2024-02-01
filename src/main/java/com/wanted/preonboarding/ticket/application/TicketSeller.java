@@ -31,7 +31,15 @@ public class TicketSeller {
                 .toList();
     }
 
-
+    public boolean ableReserve(String id){
+        UUID uuid = UUID.fromString(id);
+        boolean result;
+        if(performanceRepository.findByIdAndIsReserve(uuid,"enable") == 1)
+            result = true;
+        else
+            result = false;
+        return result;
+    }
 
     public ReserveInfo getRevervationInfo(String name, String phoneNumber) {
 

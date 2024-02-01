@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.Assert.assertFalse;
 
 @SpringBootTest
 class ReserveControllerTest {
@@ -39,7 +41,10 @@ class ReserveControllerTest {
         assertThat(result);
     }
 
-
-
+    @Test
+    void ableReservationTest() {
+        Boolean result = res.ableReservation();
+        assertTrue(result);
+    }
 
 }
