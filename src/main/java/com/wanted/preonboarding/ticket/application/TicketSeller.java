@@ -6,6 +6,7 @@ import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,6 +28,7 @@ public class TicketSeller {
 
     @Transactional
     public PerformanceInfo addPerformance(CreatePerformance createPerformance) {
+
         Optional.ofNullable(performanceRepository.findByNameAndTypeAndRoundAndStartDate(
                 createPerformance.getName(),
                 createPerformance.getType(),
@@ -75,10 +76,16 @@ public class TicketSeller {
                 performanceIdRequest.getPerformanceRound(),
                 performanceIdRequest.getStartDate()
 
-
-        );
+        ).orElseThrow(() -> new NoResultException("공연을 찾을 수 없습니다."));
 
         return performance.getId();
+
+    }
+
+    public PerformanceInfo getPerformanceById(String performanceId) {
+        UUID uuid = UUID.fromString(performanceId);
+        Performance performance = performanceRepository.findById(uuid).orElseThrow(() -> new NoResultException("해당 Id로 공연을 찾을 수 없습니다."));
+        return PerformanceInfo.of(performance);
 
 
     }
@@ -137,7 +144,7 @@ public class TicketSeller {
     @Transactional
     public Reservation checkReservation(CheckReserveRequest checkReserveRequest) {
         return reservationRepository.findByNameAndPhoneNumber(checkReserveRequest.getName(), checkReserveRequest.getPhoneNumber()).orElseThrow(
-                () -> new NoSuchElementException("해당하는 데이터를 찾을 수 없습니다."));
+                () -> new NoResultException("해당하는 데이터를 찾을 수 없습니다."));
 
     }
 
