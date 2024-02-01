@@ -39,7 +39,7 @@ public class Performance {
     @JoinColumn(name = "discount_policy_id")
     private DiscountPolicy discountPolicy;
 
-    public Performance(String name, int price, PerformanceType type,
+    private Performance(String name, int price, PerformanceType type,
         DiscountPolicy discountPolicy) {
         this.name = name;
         this.price = price;
