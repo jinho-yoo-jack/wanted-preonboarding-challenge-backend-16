@@ -12,7 +12,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PerformanceRepository extends JpaRepository<Performance, UUID> {
-
     List<Performance> findByIsReserve(String isReserve);
 
     Optional<Performance> findById(UUID id);
@@ -21,9 +20,9 @@ public interface PerformanceRepository extends JpaRepository<Performance, UUID> 
     @Modifying
     @Query("UPDATE Performance p SET  p.isReserve = :newIsReserveStatus WHERE p.id = :performanceId")
     void updateIsReserveStatus(@Param("performanceId") UUID performanceId, @Param("newIsReserveStatus") String newIsReserveStatus);
+
     Performance findByNameAndTypeAndRoundAndStartDate(
             String name, int type, int round, Date startDate);
-
 
 
 }

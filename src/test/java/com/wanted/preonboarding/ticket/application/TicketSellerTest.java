@@ -78,5 +78,4 @@ public class TicketSellerTest {
         log.info("performanceId=", performance.getId());
 
     }
-
 }

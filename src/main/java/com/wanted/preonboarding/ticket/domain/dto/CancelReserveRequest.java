@@ -12,12 +12,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CancelReserveRequest {
-
     private UUID performanceId;
     private String reservationName;
     private String reservationPhoneNumber;
     private int round;
-
 
 
 }
