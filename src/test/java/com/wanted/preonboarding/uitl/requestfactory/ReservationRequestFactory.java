@@ -20,7 +20,6 @@ public class ReservationRequestFactory {
 			testUser.getName(),
 			testUser.getPhoneNumber(),
 			testPerformance.getPrice(),
-			testPerformance.getRound(),
 			info.getLine(),
 			info.getSeat());
 	}
