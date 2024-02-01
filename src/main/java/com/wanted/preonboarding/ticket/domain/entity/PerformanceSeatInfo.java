@@ -32,13 +32,6 @@ public class PerformanceSeatInfo extends BaseEntity {
     @Convert(converter = EnableDisableConverter.class)
     private Boolean isReservable;
 
-    public boolean isSeatInfoEqual(SeatInfo seatInfo) {
-        return this.seatInfo.getRound().equals(seatInfo.getRound())
-                && this.seatInfo.getGate().equals(seatInfo.getGate())
-                && this.seatInfo.getLine().equals(seatInfo.getLine())
-                && this.seatInfo.getSeat().equals(seatInfo.getSeat());
-    }
-
     public void reserveSeat(){
         if(!isReservable){
             throw new BadRequestException("예약할 수 없는 좌석입니다.");

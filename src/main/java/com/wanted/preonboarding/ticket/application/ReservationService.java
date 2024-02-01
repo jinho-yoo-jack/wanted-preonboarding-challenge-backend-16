@@ -52,7 +52,7 @@ public class ReservationService {
     public void cancel(ReservationCancelParam param) {
         Reservation reservation = reservationRepository.findById(param.getReservationId()).orElseThrow(() -> new NotFoundException("예약이 존재하지 않습니다."));
 
-        if(!reservation.compareUserInfo(param.getUserInfo())){
+        if(!reservation.getUserInfo().equals(param.getUserInfo())){
             throw new ForbiddenException("예약 취소 권한이 없습니다.");
         }
         reservationRepository.delete(reservation);

@@ -52,7 +52,7 @@ public class Performance extends BaseEntity {
 
     private PerformanceSeatInfo getSeat(SeatInfo seatInfo){
         return seatInfos.stream()
-                .filter(s -> s.isSeatInfoEqual(seatInfo))
+                .filter(s -> s.getSeatInfo().equals(seatInfo))
                 .findAny()
                 .orElseThrow(() -> new NotFoundException("좌석이 존재하지 않습니다."));
     }
