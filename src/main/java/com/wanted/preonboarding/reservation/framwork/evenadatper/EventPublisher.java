@@ -4,6 +4,7 @@ import com.wanted.preonboarding.performance.framwork.infrastructure.eventadapter
 import com.wanted.preonboarding.reservation.application.output.EventOutputPort;
 import com.wanted.preonboarding.reservation.domain.event.ReservationCancelEvent;
 import com.wanted.preonboarding.reservation.domain.event.ReserveEvent;
+import com.wanted.preonboarding.reservation.framwork.evenadatper.dto.ReserveEventResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,9 @@ public class EventPublisher implements EventOutputPort {
 	}
 
 	@Override
-	public boolean reserveEventPublish(ReserveEvent evnet) {
-		return performLister.isAvailable(evnet);
+	public ReserveEventResult reserveEventPublish(ReserveEvent event) {
+		int paymentAmount = performLister.getPaymentAmount(event);
+		boolean available = performLister.isAvailable(event);
+		return ReserveEventResult.create(paymentAmount,available);
 	}
 }

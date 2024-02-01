@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.performance.framwork.infrastructure.eventadapter;
 
 import com.wanted.preonboarding.performance.application.PerformService;
+import com.wanted.preonboarding.performance.domain.Performance;
 import com.wanted.preonboarding.reservation.domain.event.ReserveEvent;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,11 @@ public class PerformLister {
 	public boolean isAvailable(ReserveEvent reserveEvent) {
 		UUID performId = reserveEvent.getItemId();
 		return performService.isAvailable(performId);
+	}
+
+	public int getPaymentAmount(ReserveEvent reserveEvent){
+		UUID performId = reserveEvent.getItemId();
+		return performService.getPaymentAmount(performId);
 	}
 
 }

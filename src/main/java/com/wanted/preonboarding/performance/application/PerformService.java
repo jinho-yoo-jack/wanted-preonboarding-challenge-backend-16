@@ -42,6 +42,13 @@ public class PerformService {
         return perform.isReservationAvailable();
     }
 
+    public int getPaymentAmount(UUID performId){
+        Perform perform = performRepository.findById(performId)
+            .orElseThrow(EntityNotFoundException::new);
+
+        return perform.calculatePaymentFee();
+    }
+
     @Transactional
     public void subscribe(UUID performId, UUID userId) {
         Perform perform = performRepository.findById(performId)

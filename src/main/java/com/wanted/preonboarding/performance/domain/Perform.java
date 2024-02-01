@@ -66,4 +66,7 @@ public class Perform {
 		this.reservationAvailable = false;
 	}
 
+	public int calculatePaymentFee() {
+		return this.performance.calculateFee();
+	}
 }

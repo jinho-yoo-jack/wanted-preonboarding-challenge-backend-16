@@ -8,7 +8,6 @@ public record ReservationRequest(
 	String name,
 	String userName,
 	String phoneNumber,
-	int paymentAmount,
 	int round,
 	char line,
 	int seat

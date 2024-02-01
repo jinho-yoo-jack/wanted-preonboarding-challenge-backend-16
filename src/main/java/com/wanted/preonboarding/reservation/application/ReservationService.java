@@ -9,6 +9,7 @@ import com.wanted.preonboarding.reservation.domain.vo.Item;
 import com.wanted.preonboarding.reservation.domain.vo.NamePhone;
 import com.wanted.preonboarding.reservation.domain.vo.ReserveItem;
 import com.wanted.preonboarding.reservation.domain.vo.SeatInfo;
+import com.wanted.preonboarding.reservation.framwork.evenadatper.dto.ReserveEventResult;
 import com.wanted.preonboarding.reservation.framwork.jpaadapter.repository.ReservationRepository;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationCancelRequest;
 import com.wanted.preonboarding.reservation.framwork.presentation.dto.ReservationRequest;
@@ -41,7 +42,8 @@ public class ReservationService {
 			.orElse(Reservation.create(namePhone));
 
 		ReserveEvent reserveEvent = Reservation.createReserveEvent(request.performId(), seatInfo);
-		if(!eventOutputPort.reserveEventPublish(reserveEvent))
+		ReserveEventResult reserveEventResult = eventOutputPort.reserveEventPublish(reserveEvent);
+		if(!reserveEventResult.isAvailable())
 			throw new ReservationSoldOutException();
 
 		// 1. 결제
@@ -49,7 +51,7 @@ public class ReservationService {
 
 		// 2. 예매 진행
 		Item item = Item.create(request.performId(), request.name(), request.round(), seatInfo);
-		UUID reserveNo = reservation.reserve(item, request.paymentAmount());
+		UUID reserveNo = reservation.reserve(item,reserveEventResult.paymentAmount());
 		reservationRepository.save(reservation);
 		return ReservedItemResponse.of(reservation.getReserveItem(reserveNo),namePhone);
 	}
