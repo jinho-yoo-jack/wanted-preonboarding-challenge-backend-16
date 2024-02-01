@@ -2,9 +2,12 @@ package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.core.config.UserAuth;
 import com.wanted.preonboarding.ticket.application.TicketSeller;
+import com.wanted.preonboarding.ticket.domain.dto.ReservationSearchResult;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveResult;
 import com.wanted.preonboarding.user.application.UserInfoService;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@Slf4j
 @Controller
 public class PageController {
 
@@ -98,5 +102,17 @@ public class PageController {
         return "reservation/reserveResult";
     }
 
+    @GetMapping("/reservation/search")
+    public String reservations(){
+        return "reservation/searchReservation";
+    }
+
+    @GetMapping(value = "/reservation/search", params = {"reservationname", "phonenumber"})
+    public String reservationSearch(@RequestParam("reservationname") String reservationName, @RequestParam("phonenumber") String phoneNumber, Model model){
+        log.info("reservation name={}, phoneNumber={}", reservationName, phoneNumber);
+        List<ReservationSearchResult> results = ticketSeller.searchReservation(reservationName, phoneNumber);
+        model.addAttribute("results", results);
+        return "reservation/searchReservationList";
+    }
 
 }

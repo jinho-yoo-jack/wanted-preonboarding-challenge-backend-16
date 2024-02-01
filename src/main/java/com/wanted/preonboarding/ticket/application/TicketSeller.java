@@ -3,6 +3,7 @@ package com.wanted.preonboarding.ticket.application;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceAndSeatInfo;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceDetailInfo;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
+import com.wanted.preonboarding.ticket.domain.dto.ReservationSearchResult;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveResult;
 import com.wanted.preonboarding.ticket.domain.dto.SeatInfo;
@@ -106,7 +107,13 @@ public class TicketSeller {
     }
 
     public ReserveResult getReservationInfo(int reservationId){
-        return ReserveResult.of(reservationRepository.findById(reservationId).orElseThrow(EntityNotFoundException::new));
+        return ReserveResult.of(reservationRepository.findById(reservationId)
+            .orElseThrow(EntityNotFoundException::new));
+    }
+
+    public List<ReservationSearchResult> searchReservation(String reservationName, String phoneNumber){
+        return reservationRepository.findByUser_phoneNumberAndUser_name(phoneNumber, reservationName).stream()
+            .map(ReservationSearchResult::of).toList();
     }
 
 }

@@ -19,7 +19,7 @@
   <input sec:authorize="isAuthenticated()" type="button" value="회원 정보" th:data-url="@{/user/{userUuid}(userUuid=${#authentication.principal.userUuid})}"
     th:onclick="location.href=(this.getAttribute('data-url'))">
   <!-- url에 추가로 값을 설정하는 등의 작업을 할 시에는 th:data-url 등의 th:data- 태그를 이용해볼 것 -->
-  <input sec:authorize="isAuthenticated()" type="button" value="예약 조회" onclick="location.href=''">
+  <input sec:authorize="isAuthenticated()" type="button" value="예약 조회" onclick="location.href='/reservation/search'">
   <script src="" async defer></script>
 </body>
 

@@ -10,10 +10,10 @@ import java.util.UUID;
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
 
     /**
-     * name과 phoneNumber 필드가 매개변수 String name, String phoneNumber 과 같은 엔티티를 리턴
+     * Reservation의 연관 엔티티인 User 엔티티의 phoneNumber, name 필드를 통해 예약 정보 질의
      * @param name
      * @param phoneNumber
-     * @return Reservation
+     * @return List<Reservation>
      */
-    //Reservation findByNameAndPhoneNumber(String name, String phoneNumber);
+    List<Reservation> findByUser_phoneNumberAndUser_name(String phoneNumber, String name);
 }
