@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.id.UUIDGenerator;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,9 +27,8 @@ import java.util.UUID;
 public class Performance extends BaseEntity {
 
     @Id
+    @UuidGenerator
     @Comment("공연/전시 정보 ID")
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "id", columnDefinition = "BINARY(16)") // BINARY(16)이 아니면, 공백이 포함되어 오류 발생 가능성
     private UUID id;
 
