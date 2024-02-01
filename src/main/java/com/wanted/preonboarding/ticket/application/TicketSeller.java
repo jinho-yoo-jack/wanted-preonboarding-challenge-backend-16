@@ -54,7 +54,7 @@ public class TicketSeller {
     }
 
     @Transactional
-    public Performance getPerformanceId(PerformanceIdRequest performanceIdRequest) {
+    public Performance getSpecificPerformance(PerformanceIdRequest performanceIdRequest) {
 
         return performanceRepository.findByNameAndTypeAndRoundAndStartDateAndIsReserve(
 
