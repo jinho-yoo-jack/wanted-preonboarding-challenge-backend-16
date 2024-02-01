@@ -1,8 +1,5 @@
 package com.wanted.preonboarding.ticket.infrastructure.repository;
 
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceIdRequest;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -26,6 +23,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, UUID> 
     void updateIsReserveStatus(@Param("performanceId") UUID performanceId, @Param("newIsReserveStatus") String newIsReserveStatus);
     Performance findByNameAndTypeAndRoundAndStartDateAndIsReserve(
             String name, int type, int round, Date startDate,String isReserve);
+
 
 
 }
