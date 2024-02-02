@@ -36,7 +36,6 @@ public class TicketSeller {
         log.info("getPerformanceInfoDetail");
         Performance performance = getPerformance(reserveInfo.getPerformanceId(), reserveInfo.getRound());
         Reservation reservation = getReservation(reserveInfo, performance);
-
         return ResponseReserveQueryDto.of(performance, reservation);
     }
 
@@ -86,18 +85,15 @@ public class TicketSeller {
     }
 
     public BaseResDto getReserveInfoDetail(RequestReserveQueryDto dto) {
+        Reservation reservation = getReservation(dto);
+        Performance performance = getPerformance(reservation.getPerformanceId(), reservation.getRound());
+        return ResponseReserveQueryDto.of(performance, reservation);
+    }
+
+    private Reservation getReservation(RequestReserveQueryDto dto) {
         Reservation reservation = reservationRepository.findByNameAndPhoneNumber(dto.getReservationName(), dto.getReservationPhoneNumber())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
-
-        ResponseReserveQueryDto responseQueryDto = ResponseReserveQueryDto.from(reservation);
-
-        Performance performance = getPerformance(reservation.getPerformanceId(), reservation.getRound());
-
-        String performanceName = performance.getName();
-
-        responseQueryDto.setPerformanceName(performanceName);
-
-        return responseQueryDto;
+        return reservation;
     }
 
 }
