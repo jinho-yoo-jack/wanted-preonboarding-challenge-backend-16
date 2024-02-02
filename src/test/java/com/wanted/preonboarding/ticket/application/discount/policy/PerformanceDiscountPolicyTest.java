@@ -1,29 +1,25 @@
 package com.wanted.preonboarding.ticket.application.discount.policy;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
-import com.wanted.preonboarding.ticket.config.DiscountBeanConfig;
 import com.wanted.preonboarding.ticket.domain.discount.Discount;
 import com.wanted.preonboarding.ticket.domain.discount.DiscountRepository;
 import com.wanted.preonboarding.ticket.domain.discount.model.DiscountType;
 import com.wanted.preonboarding.ticket.domain.performance.Performance;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceRepository;
 import com.wanted.preonboarding.ticket.domain.performance.model.PerformanceType;
+import com.wanted.preonboarding.ticket.domain.performance.model.ReserveState;
 import com.wanted.preonboarding.ticket.dto.request.discount.DiscountInfo;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
 
 @SpringBootTest
@@ -74,7 +70,7 @@ class PerformanceDiscountPolicyTest {
             .round(1)
             .type(PerformanceType.CONCERT)
             .startDate(LocalDateTime.of(2024, 12, 31, 11, 59))
-            .isReserve("enable")
+            .isReserve(ReserveState.ENABLE)
             .build()).getId();
 
         LocalDateTime endDate = LocalDateTime.of(2099, 12, 31, 11, 59);

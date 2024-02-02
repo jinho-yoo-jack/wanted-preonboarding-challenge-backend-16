@@ -8,6 +8,7 @@ import com.wanted.preonboarding.ticket.domain.discount.model.DiscountType;
 import com.wanted.preonboarding.ticket.domain.performance.Performance;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceRepository;
 import com.wanted.preonboarding.ticket.domain.performance.model.PerformanceType;
+import com.wanted.preonboarding.ticket.domain.performance.model.ReserveState;
 import com.wanted.preonboarding.ticket.dto.request.discount.PaymentInfo;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -67,7 +68,7 @@ class DefaultDiscountManagerTest {
             .round(1)
             .type(PerformanceType.CONCERT)
             .startDate(LocalDateTime.of(2024, 12, 31, 11, 59))
-            .isReserve("enable")
+            .isReserve(ReserveState.ENABLE)
             .build()).getId().toString();
 
         LocalDateTime endDate = LocalDateTime.of(2099, 12, 31, 11, 59);

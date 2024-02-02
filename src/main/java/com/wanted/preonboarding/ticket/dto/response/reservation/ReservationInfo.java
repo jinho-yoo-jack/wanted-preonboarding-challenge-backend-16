@@ -1,6 +1,5 @@
 package com.wanted.preonboarding.ticket.dto.response.reservation;
 
-import com.wanted.preonboarding.ticket.domain.performance.Performance;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.reservation.Reservation;
 import lombok.Builder;
