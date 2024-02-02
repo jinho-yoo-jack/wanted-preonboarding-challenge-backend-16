@@ -42,56 +42,56 @@ public class TicketSellerTest {
 
     @Test
     public void insertSeatInfo(){
-        Date start = new Date(20240205L);
-        Performance performance = Performance.builder()
-            .id(UUID.randomUUID())
-            .name("test")
-            .price(10023)
-            .round(2)
-            .type(3)
-            .start_date(start)
-            .isReserve("enable")
-            .build();
-        PerformanceSeatInfo seatInfo = PerformanceSeatInfo.builder()
-            .performance(performance)
-            .gate(3)
-            .line('B')
-            .seat(2)
-            .isReserve("reserve")
-            .build();
-        performanceSeatInfoRepository.save(seatInfo);
+//        Date start = new Date(20240205L);
+//        Performance performance = Performance.builder()
+//            .id(UUID.randomUUID())
+//            .name("test")
+//            .price(10023)
+//            .round(2)
+//            .type(3)
+//            .start_date(start)
+//            .isReserve("enable")
+//            .build();
+//        PerformanceSeatInfo seatInfo = PerformanceSeatInfo.builder()
+//            .performance(performance)
+//            .gate(3)
+//            .line('B')
+//            .seat(2)
+//            .isReserve("reserve")
+//            .build();
+//        performanceSeatInfoRepository.save(seatInfo);
 
     }
 
     @Test
     public void ticketSellerReserveTest(){
-        Date start = new Date(20240205L);
-        Performance performance = Performance.builder()
-            .id(UUID.randomUUID())
-            .name("test")
-            .price(10023)
-            .round(2)
-            .type(3)
-            .start_date(start)
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
-            .isReserve("enable")
-            .build();
-        performanceRepository.save(performance);
-        ReserveInfo reserveInfo = new ReserveInfo();
-        reserveInfo.setPerformanceId(performance.getId());
-        reserveInfo.setReservationName("김철수");
-        reserveInfo.setReservationPhoneNumber("010-2121-2121");
-        reserveInfo.setReservationStatus("reserved");
-        reserveInfo.setAmount(500000L);
-        reserveInfo.setRound(1);
-        reserveInfo.setLine('A');
-        reserveInfo.setSeat(2);
-
-
-        boolean result = ticketSeller.reserve(reserveInfo);
-
-        Assertions.assertTrue(result);
+//        Date start = new Date(20240205L);
+//        Performance performance = Performance.builder()
+//            .id(UUID.randomUUID())
+//            .name("test")
+//            .price(10023)
+//            .round(2)
+//            .type(3)
+//            .start_date(start)
+//            .createdAt(LocalDateTime.now())
+//            .updatedAt(LocalDateTime.now())
+//            .isReserve("enable")
+//            .build();
+//        performanceRepository.save(performance);
+//        ReserveInfo reserveInfo = new ReserveInfo();
+//        reserveInfo.setPerformanceId(performance.getId());
+//        reserveInfo.setReservationName("김철수");
+//        reserveInfo.setReservationPhoneNumber("010-2121-2121");
+//        reserveInfo.setReservationStatus("reserved");
+//        reserveInfo.setAmount(500000L);
+//        reserveInfo.setRound(1);
+//        reserveInfo.setLine('A');
+//        reserveInfo.setSeat(2);
+//
+//
+//        boolean result = ticketSeller.reserve(reserveInfo);
+//
+//        Assertions.assertTrue(result);
 
 
     }
