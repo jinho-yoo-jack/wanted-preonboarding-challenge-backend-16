@@ -10,7 +10,9 @@ import com.wanted.preonboarding.ticket.domain.reservation.Reservation;
 import com.wanted.preonboarding.ticket.domain.reservation.ReservationRepository;
 import com.wanted.preonboarding.ticket.dto.request.discount.PaymentInfo;
 import com.wanted.preonboarding.ticket.dto.request.reservation.ReservationRequest;
+import com.wanted.preonboarding.ticket.dto.response.page.PageResponse;
 import com.wanted.preonboarding.ticket.dto.response.reservation.ReservationInfo;
+import com.wanted.preonboarding.ticket.dto.result.ReservationModel;
 import com.wanted.preonboarding.ticket.exception.argument.InvalidSeatException;
 import com.wanted.preonboarding.ticket.exception.badrequest.AmountNotEnoughException;
 import com.wanted.preonboarding.ticket.exception.badrequest.SeatAlreadyReservedException;
@@ -18,6 +20,8 @@ import com.wanted.preonboarding.ticket.exception.notfound.PerformanceNotFoundExc
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +52,12 @@ public class ReserveServiceImpl implements ReserveService {
 
         seatInfo.reserve();
         return ReservationInfo.of(reservation, seatInfo, performance.getName(), discountedPrice);
+    }
+
+    @Override
+    public PageResponse<ReservationModel> findReservation(final String name, final String phone, final Pageable pageable) {
+        Page<ReservationModel> reservationModel = reservationRepository.findReservationModel(name, phone, pageable);
+        return PageResponse.of(reservationModel);
     }
 
     private Reservation createReservation(final PerformanceSeatInfo seatInfo, final String name, final String phoneNumber) {
