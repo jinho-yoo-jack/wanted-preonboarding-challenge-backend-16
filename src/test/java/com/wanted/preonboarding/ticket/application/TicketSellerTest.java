@@ -1,10 +1,9 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.ticket.domain.dto.RequestReserveQueryDto;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.global.exception.ResultCode;
-import com.wanted.preonboarding.ticket.global.exception.ServiceException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -55,7 +54,6 @@ public class TicketSellerTest {
                 .start_date(Date.valueOf("2024-01-30"))
                 .isReserve("enable")
                 .build();
-
         performanceRepository.save(performance);
 
         ReserveInfo info = ReserveInfo.builder()
@@ -81,42 +79,36 @@ public class TicketSellerTest {
     }
 
 
-//    @DisplayName("예약 조회 시스템 테스트")
-//    @Test
-//    public void ticketReserveInfoTest() {
-//
-//        //given
-//        Performance performance = Performance.builder()
-//                .name("whiplash")
-//                .price(20000)
-//                .round(2)
-//                .type(0)
-//                .start_date(Date.valueOf("2024-01-30"))
-//                .isReserve("enable")
-//                .build();
-//        performanceRepository.save(performance);
-//
-//        Reservation reservation = Reservation.builder()
-//                .performanceId(performance.getId())
-//                .name("이곰돌")
-//                .phoneNumber("010-2222-2222")
-//                .build();
-//        reservationRepository.save(reservation);
-//        RequestReserveQueryDto dto = RequestReserveQueryDto
-//                                        .builder()
-//                                        .reservationName(reservation.getName())
-//                                        .reservationPhoneNumber(reservation.getPhoneNumber())
-//                                        .build();
-//
-//
-//        //when
-//        ResponseReserveQueryDto responseQueryDto = ticketSeller.getReserveInfoDetail(dto);
-//        Performance resultPerformance = performanceRepository.findById(responseQueryDto.getPerformanceId()).get();
-//        Reservation resultReservation = reservationRepository.findByUUID(resultPerformance.getId());
-//
-//
-//        //then
-//        assertThat(responseQueryDto.getReservationName()).isEqualTo(resultReservation.getName());
-//        assertThat(responseQueryDto.getReservationPhoneNumber()).isEqualTo(resultReservation.getPhoneNumber());
-//    }
+    @DisplayName("예약 조회 시스템 테스트")
+    @Test
+    public void ticketReserveInfoTest() {
+
+        //given
+        Performance performance = Performance.builder()
+                .name("whiplash")
+                .price(20000)
+                .round(2)
+                .type(0)
+                .start_date(Date.valueOf("2024-01-30"))
+                .isReserve("enable")
+                .build();
+        performanceRepository.save(performance);
+
+        Reservation reservation = Reservation.builder()
+                .performanceId(performance.getId())
+                .name("이곰돌")
+                .phoneNumber("010-2222-2222")
+                .build();
+        reservationRepository.save(reservation);
+        RequestReserveQueryDto dto = RequestReserveQueryDto.of(reservation.getName(), reservation.getPhoneNumber());
+
+
+        //when
+        Reservation resultReservation = reservationRepository.findByNameAndPhoneNumber(reservation.getName(), reservation.getPhoneNumber()).get();
+
+
+        //then
+        assertThat(dto.getReservationName()).isEqualTo(resultReservation.getName());
+        assertThat(dto.getReservationPhoneNumber()).isEqualTo(resultReservation.getPhoneNumber());
+    }
 }

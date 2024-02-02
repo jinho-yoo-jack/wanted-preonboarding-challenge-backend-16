@@ -11,4 +11,11 @@ import lombok.experimental.SuperBuilder;
 public class RequestReserveQueryDto {
     private String reservationName;
     private String reservationPhoneNumber;
+
+    public static RequestReserveQueryDto of(String reservationName, String reservationPhoneNumber) {
+        return RequestReserveQueryDto.builder()
+                .reservationName(reservationName)
+                .reservationPhoneNumber(reservationPhoneNumber)
+                .build();
+    }
 }
