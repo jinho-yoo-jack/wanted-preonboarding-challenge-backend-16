@@ -4,8 +4,6 @@ import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Date;
 import java.util.UUID;
 
 @Getter

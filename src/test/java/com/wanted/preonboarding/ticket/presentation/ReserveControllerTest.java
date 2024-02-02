@@ -12,7 +12,6 @@ import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.Assert.assertFalse;
 
 @SpringBootTest
 class ReserveControllerTest {
@@ -45,6 +44,12 @@ class ReserveControllerTest {
     void ableReservationTest() {
         Boolean result = res.ableReservation();
         assertTrue(result);
+    }
+
+    @Test
+    void cancelReservationTest() {
+        Boolean result = res.cancelReservation();
+        assertThat(result);
     }
 
 }
