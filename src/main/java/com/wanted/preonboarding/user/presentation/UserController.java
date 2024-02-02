@@ -30,19 +30,30 @@ public class UserController {
         this.userInfoService = userInfoService;
     }
 
+    /**
+     * 로그인 페이지
+     * @return
+     */
     @GetMapping("/login")
     public String login(){
         log.info("loginPage");
         return "userinfo/login";
     }
 
-
-
+    /**
+     * 회원 가입 페이지
+     * @return
+     */
     @GetMapping("/signup")
     public String signup(){
         return "userinfo/signup";
     }
 
+    /**
+     * 회원 가입 정보 저장 페이지
+     * @param info
+     * @return
+     */
     @PostMapping("/signup")
     public String signup(SignUpInfo info){
         log.info("signup={}", info.getId());
@@ -50,23 +61,38 @@ public class UserController {
         return "redirect:/";
     }
 
+    /**
+     * 회원 정보 열람 페이지
+     * @param strUserUuid
+     * @param model
+     * @return
+     */
     @GetMapping("/user/{userUuid}")
     public String user(@PathVariable(name = "userUuid") String strUserUuid, Model model){
         log.info("userUuid={}", strUserUuid);
-
         UserInfo info = userInfoService.getUserInfo(strUserUuid);
         model.addAttribute("info", info);
-
-
         return "userinfo/userInfo";
-    }   //custom principal 객체 사용 시 @AuthenticationPrincipal UserAuth userAuth와 같이 어노테이션 붙이기
+    }
 
+    /**
+     * 결제 정보 설정 페이지
+     * @param userUuid
+     * @return
+     */
     @GetMapping("/user/{userUuid}/paymentsetting")
     public String paymentSetting(@PathVariable String userUuid){
         log.info("paymentSetting: GET");
         return "payment/paymentSetting";
     }
 
+    /**
+     * 결제 정보 설정 저장 페이지
+     * @param paymentSetting
+     * @param userUuid
+     * @param redirectAttributes
+     * @return
+     */
     @PostMapping("/user/{userUuid}/paymentsetting")
     public String paymentSetting(PaymentSetting paymentSetting, @PathVariable String userUuid, RedirectAttributes redirectAttributes){
         log.info("paymentSetting: POST");

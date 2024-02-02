@@ -45,6 +45,7 @@ public class TicketSeller {
      * 예약 가능한 공연 리스트 질의
      * @return List<PerformanceInfo>
      */
+    @Transactional(readOnly = true)
     public List<PerformanceInfo> getAllPerformanceInfoList() {
         return performanceRepository.findByIsReserveAndStartDateAfter(ReservationStatus.ENABLE.getStatus(),
                 LocalDateTime.now())
@@ -53,6 +54,12 @@ public class TicketSeller {
             .toList();
     }
 
+    /**
+     * 예약 불가능한 공연 리스트 질의
+     * @return List<PerformanceInfo>
+     * @return List<PerformanceInfo>
+     */
+    @Transactional(readOnly = true)
     public List<PerformanceInfo> getAllPerformanceUnreservaleList(){
         return performanceRepository.findByIsReserveAndStartDateAfter(ReservationStatus.DISABLE.getStatus(),
                 LocalDateTime.now())
@@ -66,15 +73,17 @@ public class TicketSeller {
      * @param name
      * @return PerformanceInfo
      */
+    @Transactional(readOnly = true)
     public PerformanceInfo getPerformanceInfoDetail(String name) {
         return PerformanceInfo.of(performanceRepository.findByName(name));
     }
 
     /**
-     * 공연 정보 및 좌석 정보 리스트 질의
+     * 공연 상세 정보 및 좌석 정보 리스트 질의
      * @param id
      * @return PerformanceDetailInfo
      */
+    @Transactional(readOnly = true)
     public PerformanceDetailInfo getPerformanceInfoDetailById(String id){
         UUID performanceId = UUID.fromString(id);
         Performance detailInfo = performanceRepository.findById(performanceId)
@@ -82,6 +91,15 @@ public class TicketSeller {
         return PerformanceDetailInfo.of(detailInfo);
     }
 
+    /**
+     * 공연 상세 정보 및 좌석 정보 리스트 질의
+     * @param id
+     * @param round
+     * @param seat
+     * @param line
+     * @return PerformanceAndSeatInfo
+     */
+    @Transactional(readOnly = true)
     public PerformanceAndSeatInfo getPerformanceAndSeatInfo(String id, int round, int seat, char line){
         UUID performanceId = UUID.fromString(id);
          return PerformanceAndSeatInfo.of(performanceSeatInfoRepository.findBySeatAndLineAndPerformance_idAndPerformance_round(seat, line, performanceId, round)
@@ -95,6 +113,7 @@ public class TicketSeller {
      * @param id
      * @return List<SeatInfo>
      */
+    @Transactional(readOnly = true)
     public List<SeatInfo> getPerformanceSeatInfoDetailListById(String id){
         UUID performanceId = UUID.fromString(id);
         List<PerformanceSeatInfo> detailInfos =
@@ -102,6 +121,13 @@ public class TicketSeller {
                 .orElseThrow(EntityNotFoundException::new);
         return detailInfos.stream().map(SeatInfo::of).toList();
     }
+
+    /**
+     * 공연 예매 메서드
+     * @param reserveInfo
+     * @param reservationId
+     * @return
+     */
     @Transactional
     public boolean reserve(ReserveInfo reserveInfo, ReservationId reservationId) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
@@ -142,16 +168,33 @@ public class TicketSeller {
         }
     }
 
+    /**
+     * 예매 정보 질의 메서드
+     * @param reservationId
+     * @return
+     */
+    @Transactional(readOnly = true)
     public ReserveResult getReservationInfo(int reservationId){
         return ReserveResult.of(reservationRepository.findById(reservationId)
             .orElseThrow(EntityNotFoundException::new));
     }
 
+    /**
+     * 예매 정보 리스트 질의 메서드
+     * @param reservationName
+     * @param phoneNumber
+     * @return
+     */
+    @Transactional(readOnly = true)
     public List<ReservationSearchResult> searchReservation(String reservationName, String phoneNumber){
         return reservationRepository.findByUser_phoneNumberAndUser_name(phoneNumber, reservationName).stream()
             .map(ReservationSearchResult::of).toList();
     }
 
+    /**
+     * 예매 취소 및 환불 메서드
+     * @param reservationId
+     */
     @Transactional
     public void reservationCancel(int reservationId){
         Reservation reservation = reservationRepository.findById(reservationId)
@@ -168,6 +211,7 @@ public class TicketSeller {
             .orElseThrow(EntityNotFoundException::new);
         seatInfo.cancel();
         paymentCard.updateBalanceAmount(paymentCard.getBalanceAmount() + reservation.getPrice());
+
         if(performance.getIsReserve().equals(ReservationStatus.DISABLE.getStatus())){
             performance.reservable();
             performanceRepository.save(performance);
@@ -175,8 +219,6 @@ public class TicketSeller {
         reservationRepository.delete(reservation);
         performanceSeatInfoRepository.save(seatInfo);
         paymentRepository.save(paymentCard);
-
-
     }
 
 }

@@ -37,5 +37,5 @@ public class UserSecurityService implements UserDetailsService {
         auth.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
         log.info("UserSecurityService.loadUserByUsername id={}, password={}, userRole={}", user.getId(), user.getPassword(), UserRole.USER.getValue());
         return new UserAuth(user.getUserUuid(), user.getId(), user.getPassword(), user.getName(), auth);
-    }// username에 null 값이 들어오는 경우 html form의 파라미터 네임이 username이 맞는지 확인해야한다 아니라면 null 값이 들어옴
+    }
 }

@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -27,22 +28,29 @@ public class UserInfoService {
     private final PaymentRepository paymentRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private ObjectMapper objectMapper;
-
     @Autowired
-    public UserInfoService(UserRepository userInfoRepository, PaymentRepository paymentRepository, PasswordEncoder passwordEncoder, ObjectMapper objectMapper){
+    public UserInfoService(UserRepository userInfoRepository, PaymentRepository paymentRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userInfoRepository;
         this.paymentRepository = paymentRepository;
         this.passwordEncoder = passwordEncoder;
-        this.objectMapper = objectMapper;
     }
 
+    /**
+     * 회원 정보 저장 메서드
+     * @param info
+     */
     public void save(SignUpInfo info){
         info.setPassword(passwordEncoder.encode(info.getPassword()));
         userRepository.save(User.of(info));
 
     }
 
+    /**
+     * 회원 정보 조회 메서드
+     * @param strUserUuid
+     * @return
+     */
+    @Transactional(readOnly = true)
     public UserInfo getUserInfo(String strUserUuid) {
         UUID userUuid = UUID.fromString(strUserUuid);
         User user = userRepository.findById(userUuid)
@@ -56,10 +64,9 @@ public class UserInfoService {
      * @param id
      * @return
      */
+    @Transactional(readOnly = true)
     public UserAndPaymentInfo getUserAndPayments(String id){
-
         User user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        System.out.println(user.getPaymentCards().toString());
         PaymentCard paymentCard = user.getPaymentCards()
             .stream()
             .filter(card -> card.getId().equals(user.getDefaultPaymentCode()))
@@ -69,6 +76,11 @@ public class UserInfoService {
         return UserAndPaymentInfo.of(user, paymentCard);
     }
 
+    /**
+     * 결제 정보 설정 메서드
+     * @param paymentSetting
+     * @param userUuid
+     */
     public void setPaymentInfo(PaymentSetting paymentSetting, String userUuid){
         log.info("setPaymentInfo");
         PaymentCard payment = PaymentCard.of(paymentSetting, UUID.fromString(userUuid));

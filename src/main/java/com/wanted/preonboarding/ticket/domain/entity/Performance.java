@@ -40,7 +40,6 @@ public class Performance {
     private String name;    // 공연/전시 이름
     @Column(nullable = false)
     private int price;  // 가격
-
     @Column(unique = true ,nullable = false)
     private int round;  // 공연/전시 회차
     @Column(nullable = false)

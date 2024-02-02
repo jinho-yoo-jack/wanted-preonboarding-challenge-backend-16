@@ -108,6 +108,11 @@ public class PageController {
         return "reservation/reserveResult";
     }
 
+    /**
+     * 예매 취소 및 환불 URL
+     * @param reservationId
+     * @return
+     */
     @PostMapping("/reservation/{reservationId}")
     public String reservationCancel(@PathVariable int reservationId){
         log.info("reservation cancel reservationId={}", reservationId);
@@ -115,11 +120,22 @@ public class PageController {
         return "redirect:/";
     }
 
+    /**
+     * 예매 정보 검색 페이지
+     * @return
+     */
     @GetMapping("/reservation/search")
     public String reservations(){
         return "reservation/searchReservation";
     }
 
+    /**
+     * 예매 정보 검색 결과 페이지
+     * @param reservationName
+     * @param phoneNumber
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/reservation/search", params = {"reservationname", "phonenumber"})
     public String reservationSearch(@RequestParam("reservationname") String reservationName, @RequestParam("phonenumber") String phoneNumber, Model model){
         log.info("reservation name={}, phoneNumber={}", reservationName, phoneNumber);
