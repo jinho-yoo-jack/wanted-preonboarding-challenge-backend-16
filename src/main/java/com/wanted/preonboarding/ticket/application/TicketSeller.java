@@ -74,7 +74,6 @@ public class TicketSeller {
             int price = info.getPrice();
             reserveInfo.setAmount(reserveInfo.getAmount() - price);
             // 2. 예매 진행
-            // .of() 불변객체유지해줌.
             reservationRepository.save(Reservation.of(reserveInfo));
             return true;
 
