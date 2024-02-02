@@ -1,25 +1,39 @@
-package com.wanted.preonboarding.ticket.domain.dto;
-
-import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import lombok.Builder;
-import lombok.Data;
+package com.wanted.preonboarding.performance.domain.dto;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.UUID;
 
-@Data
+import com.wanted.preonboarding.performance.domain.entity.Performance;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+/**
+ * 
+ * 
+ * 
+ * 
+ */
+@Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PerformanceInfo {
-    private UUID performanceId;
+	
     private String performanceName;
     private String performanceType;
     private Date startDate;
     private String isReserve;
-
-    public static PerformanceInfo of(Performance entity) {
+    
+    /**
+     * 예약 가능한 공연 및 전시 정보
+     * @param entity
+     * @return
+     */
+    public static PerformanceInfo enablePerformance(Performance entity) {
         return PerformanceInfo.builder()
-            .performanceId(entity.getId())
             .performanceName(entity.getName())
             .performanceType(convertCodeToName(entity.getType()))
             .startDate(entity.getStart_date())
@@ -27,11 +41,15 @@ public class PerformanceInfo {
             .build();
     }
 
+    /**
+     * 공연 타입 맵핑
+     * @param code
+     * @return
+     */
     private static String convertCodeToName(int code){
         return Arrays.stream(PerformanceType.values()).filter(value -> value.getCategory() == code)
             .findFirst()
             .orElse(PerformanceType.NONE)
             .name();
     }
-
 }
