@@ -30,4 +30,8 @@ public abstract class Payment {
     @Column(nullable = false)
     private Long balanceAmount;    // 결제 수단 잔액
 
+    public void updateBalanceAmount(Long newBalanceAmount){
+        this.balanceAmount = newBalanceAmount;
+    }
+
 }

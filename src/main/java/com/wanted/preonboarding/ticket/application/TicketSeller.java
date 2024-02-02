@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.discountpolicy.Discount;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceAndSeatInfo;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceDetailInfo;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
@@ -13,7 +14,9 @@ import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
+import com.wanted.preonboarding.user.domain.entity.PaymentCard;
 import com.wanted.preonboarding.user.domain.entity.User;
+import com.wanted.preonboarding.user.infrastructure.PaymentRepository;
 import com.wanted.preonboarding.user.infrastructure.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.UUID;
@@ -31,6 +34,7 @@ public class TicketSeller {
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private final ReservationRepository reservationRepository;
     private final UserRepository userRepository;
+    private final PaymentRepository paymentRepository;
     private long totalAmount = 0L;
 
     /**
@@ -88,17 +92,26 @@ public class TicketSeller {
 
     public boolean reserve(ReserveInfo reserveInfo, Integer reservationId) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
+
         Performance info = performanceRepository.findById(reserveInfo.getPerformanceId())
             .orElseThrow(EntityNotFoundException::new);
         User user = userRepository.getReferenceByPhoneNumber(reserveInfo.getPhoneNumber());
+        PaymentCard paymentCard = user.getPaymentCards()
+            .stream()
+            .filter(card -> card.getId().equals(user.getDefaultPaymentCode()))
+            .findAny()
+            .orElseThrow(EntityNotFoundException::new);
         String enableReserve = info.getIsReserve();
+
         if (enableReserve.equalsIgnoreCase("enable")) {
             // 1. 결제
-            int price = info.getPrice();
-            reserveInfo.setBalanceAmount(reserveInfo.getBalanceAmount() - price);
+            Discount discount = new Discount(info.getPrice(), user.getBirthday(), info.getStart_date());
+            int resultPrice = discount.discountCalc();
+            paymentCard.updateBalanceAmount(reserveInfo.getBalanceAmount() - resultPrice);
             // 2. 예매 진행
             Reservation reservation = Reservation.of(reserveInfo, info, user);
             reservationRepository.save(reservation);
+            paymentRepository.save(paymentCard);
             reservationId = reservation.getId();
             return true;
         } else {
