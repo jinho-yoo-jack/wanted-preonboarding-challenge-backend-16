@@ -61,44 +61,44 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public BaseResDto exception(MissingServletRequestParameterException e) {
         return BaseResDto.of(ResultCode.VALID_NOT_NULL.getResultCode(), ResultCode.VALID_NOT_NULL.getResultMessage().replace(FIELD, e.getParameterName()));
     }
 
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public BaseResDto exception(Exception e) {
         return BaseResDto.of(ResultCode.INTERNAL_ERROR.getResultCode(), ResultCode.INTERNAL_ERROR.getResultMessage());
     }
 
     @ExceptionHandler(UnsupportedEncodingException.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public BaseResDto exception(UnsupportedEncodingException e) {
         return BaseResDto.of(ResultCode.UNSUPPORTED_ENCODING.getResultCode(), ResultCode.UNSUPPORTED_ENCODING.getResultMessage());
     }
 
     @ExceptionHandler(NoSuchAlgorithmException.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public BaseResDto exception(NoSuchAlgorithmException e) {
         return BaseResDto.of(ResultCode.NO_SUCH_ALGORITHM.getResultCode(), ResultCode.NO_SUCH_ALGORITHM.getResultMessage());
     }
 
     @ExceptionHandler(URISyntaxException.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public BaseResDto exception(URISyntaxException e) {
         return BaseResDto.of(ResultCode.URI_SYNTAX.getResultCode(), ResultCode.URI_SYNTAX.getResultMessage());
     }
 
     @ExceptionHandler(InvalidKeyException.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public BaseResDto exception(InvalidKeyException e) {
         return BaseResDto.of(ResultCode.INVALID_KEY.getResultCode(), ResultCode.INVALID_KEY.getResultMessage());
     }
 
     @ExceptionHandler(JsonProcessingException.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public BaseResDto exception(JsonProcessingException e) {
         return BaseResDto.of(ResultCode.JSON_PROCESSING.getResultCode(), ResultCode.JSON_PROCESSING.getResultMessage());
     }
