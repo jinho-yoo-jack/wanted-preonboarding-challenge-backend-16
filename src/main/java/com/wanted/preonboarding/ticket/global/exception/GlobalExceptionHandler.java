@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.OK)
     public BaseResDto exception(MissingServletRequestParameterException e) {
-        return BaseResDto.of(ResultCode.VALID_NOT_NULL.getResultCode(), ResultCode.VALID_NOT_NULL.getResultMessage());
+        return BaseResDto.of(ResultCode.VALID_NOT_NULL.getResultCode(), ResultCode.VALID_NOT_NULL.getResultMessage().replace(field, e.getParameterName()));
     }
 
 
