@@ -18,15 +18,19 @@ public record PageResponse<T>(
 ) {
 
     public static <T> PageResponse<T> of(Page<T> pageContents) {
+        return PageResponse.of(pageContents, pageContents.getContent());
+    }
+
+    public static <T> PageResponse<T> of(final Page<?> page, final List<T> contents) {
         return PageResponse.<T>builder()
-            .contents(pageContents.getContent())
-            .sort(SortResponse.of(pageContents.getSort()))
-            .currentPage(pageContents.getNumber() + 1)
-            .pageSize(pageContents.getSize())
-            .first(pageContents.isFirst())
-            .last(pageContents.isLast())
-            .totalElement(pageContents.getTotalElements())
-            .totalPage(pageContents.getTotalPages())
+            .contents(contents)
+            .sort(SortResponse.of(page.getSort()))
+            .currentPage(page.getNumber() + 1)
+            .pageSize(page.getSize())
+            .first(page.isFirst())
+            .last(page.isLast())
+            .totalElement(page.getTotalElements())
+            .totalPage(page.getTotalPages())
             .build();
     }
 }
