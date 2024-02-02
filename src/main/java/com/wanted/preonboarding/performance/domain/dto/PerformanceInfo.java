@@ -9,18 +9,11 @@ import com.wanted.preonboarding.performance.domain.entity.Performance;
 import com.wanted.preonboarding.performance.domain.entity.PerformanceSeatInfo;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-/**
- * 
- * 
- * 
- * 
- */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -28,7 +21,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class PerformanceInfo {
 	
-	@NotNull(message = "은 비어있을수 없습니다.")
+	@NotNull(groups = PerformanceGroupOrder.selectEnablePerformanceInfoDetail.class)
 	private UUID performanceId;
     private String performanceName;
     private String performanceType;

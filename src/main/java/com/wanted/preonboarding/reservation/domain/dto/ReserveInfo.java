@@ -21,11 +21,11 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class ReserveInfo {
 	
-    // 
+	@NotNull(groups = ReserveGroupOrder.reservation.class)
     private UUID performanceId;
-    @NotNull(message = "은 비어있을수 없습니다.")
+    @NotNull(groups = ReserveGroupOrder.selectReserveInfo.class)
 	private String reservationName;
-    @NotNull(message = "은 비어있을수 없습니다.")
+    @NotNull(groups = ReserveGroupOrder.selectReserveInfo.class)
     private String reservationPhoneNumber;
     
     private char line;

@@ -3,15 +3,16 @@ package com.wanted.preonboarding.performance.presentation;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wanted.preonboarding.performance.application.PerformanceService;
+import com.wanted.preonboarding.performance.domain.dto.PerformanceGroupOrder;
 import com.wanted.preonboarding.performance.domain.dto.PerformanceInfo;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -34,7 +35,7 @@ public class PerformanceController {
      * @return
      */
     @PostMapping("/select/detail")
-    public ResponseEntity<List<PerformanceInfo>> selectEnablePerformanceInfoDetail(@RequestBody @Valid PerformanceInfo performanceInfo){
+    public ResponseEntity<List<PerformanceInfo>> selectEnablePerformanceInfoDetail(@RequestBody @Validated(PerformanceGroupOrder.selectEnablePerformanceInfoDetail.class) PerformanceInfo performanceInfo){
         return ResponseEntity.ok(performanceService.selectEnablePerformanceInfoDetail(performanceInfo));
     }
 }

@@ -11,6 +11,9 @@ import com.wanted.preonboarding.reservation.infrastructure.repository.Reservatio
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 예약 관련 서비스
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor

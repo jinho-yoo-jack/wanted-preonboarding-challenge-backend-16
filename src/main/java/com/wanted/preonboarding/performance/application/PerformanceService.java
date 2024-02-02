@@ -10,6 +10,10 @@ import com.wanted.preonboarding.performance.infrastructure.repository.Performanc
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 공연/전시 관련 서비스
+ * 
+ */
 @Service
 @RequiredArgsConstructor
 public class PerformanceService {
@@ -34,7 +38,8 @@ public class PerformanceService {
     }
     
     /**
-     * 예약 가능 공연 및 전시 리스트 조회
+     * 예약 가능 공연 및 전시 상세 조회
+     * @param performanceInfo
      * @return
      */
     public List<PerformanceInfo> selectEnablePerformanceInfoDetail(PerformanceInfo performanceInfo) {

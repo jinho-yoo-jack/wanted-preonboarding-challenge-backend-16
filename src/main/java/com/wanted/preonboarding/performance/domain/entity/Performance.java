@@ -43,6 +43,6 @@ public class Performance {
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;
     
-    @OneToMany
+    @OneToMany(mappedBy = "performance")
     private List<PerformanceSeatInfo> performanceSeatInfo;
 }
