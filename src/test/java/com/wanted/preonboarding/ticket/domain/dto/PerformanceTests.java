@@ -3,6 +3,8 @@ package com.wanted.preonboarding.ticket.domain.dto;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.wanted.preonboarding.performance.domain.dto.PerformanceType;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
