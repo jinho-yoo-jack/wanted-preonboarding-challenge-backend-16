@@ -32,24 +32,29 @@ public class TicketSeller {
             .toList();
     }
 
-    public BaseResDto getPerformanceInfoDetail(ReserveInfo info) {
+    public BaseResDto getPerformanceInfoDetail(ReserveInfo reserveInfo) {
         log.info("getPerformanceInfoDetail");
-
-        Performance performance = performanceRepository.findByIdAndRound(info.getPerformanceId(), info.getRound())
-                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
-
-        Reservation reservation = reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
-                performance.getId(),performance.getRound(), info.getLine(), info.getSeat())
-                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
+        Performance performance = getPerformance(reserveInfo.getPerformanceId(), reserveInfo.getRound());
+        Reservation reservation = getReservation(reserveInfo, performance);
 
         return ResponseReserveQueryDto.of(performance, reservation);
+    }
+
+    private Reservation getReservation(ReserveInfo reserveInfo, Performance performance) {
+        return reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
+                performance.getId(), performance.getRound(), reserveInfo.getLine(), reserveInfo.getSeat())
+                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
+    }
+
+    private Performance getPerformance(UUID id, int round) {
+        return performanceRepository.findByIdAndRound(id, round)
+                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
     }
 
     @Transactional
     public boolean reserve(ReserveInfo reserveInfo) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
-        Performance info = performanceRepository.findByIdAndRound(reserveInfo.getPerformanceId(), reserveInfo.getRound())
-            .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
+        Performance info = getPerformance(reserveInfo.getPerformanceId(), reserveInfo.getRound());
 
         String enableReserve = info.getIsReserve();
         if (enableReserve.equalsIgnoreCase("enable")) {
@@ -58,14 +63,7 @@ public class TicketSeller {
             reserveInfo.setAmount(reserveInfo.getAmount() - price);
 
             // 2. 예매 된 좌석인지 확인
-            reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
-                                            reserveInfo.getPerformanceId(),
-                                            reserveInfo.getRound(),
-                                            reserveInfo.getLine(),
-                                            reserveInfo.getSeat())
-                    .ifPresent(reservation -> {
-                    throw new ServiceException(ResultCode.ALREADY_EXISTS);
-                    });
+            checkIsReserved(reserveInfo);
 
             // 3. 예매 진행
             reservationRepository.save(Reservation.of(reserveInfo));
@@ -76,14 +74,24 @@ public class TicketSeller {
         }
     }
 
+    private void checkIsReserved(ReserveInfo reserveInfo) {
+        reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
+                                        reserveInfo.getPerformanceId(),
+                                        reserveInfo.getRound(),
+                                        reserveInfo.getLine(),
+                                        reserveInfo.getSeat())
+                .ifPresent(reservation -> {
+                throw new ServiceException(ResultCode.ALREADY_EXISTS);
+                });
+    }
+
     public BaseResDto getReserveInfoDetail(RequestReserveQueryDto dto) {
         Reservation reservation = reservationRepository.findByNameAndPhoneNumber(dto.getReservationName(), dto.getReservationPhoneNumber())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
         ResponseReserveQueryDto responseQueryDto = ResponseReserveQueryDto.from(reservation);
 
-        Performance performance = performanceRepository.findByIdAndRound(reservation.getPerformanceId(), reservation.getRound())
-                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
+        Performance performance = getPerformance(reservation.getPerformanceId(), reservation.getRound());
 
         String performanceName = performance.getName();
 
