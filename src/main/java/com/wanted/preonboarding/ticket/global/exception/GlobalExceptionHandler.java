@@ -15,13 +15,16 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @Slf4j
-//@ControllerAdvice
-@RestControllerAdvice
+@ControllerAdvice
 @RestController
 public class GlobalExceptionHandler {
 
-    private static final String field = "${field}";
-
+    private static final String FIELD = "${field}";
+    private static final String NOT_NULL = "NotNull";
+    private static final String NOT_EMPTY = "NotEmpty";
+    private static final String NOT_BLANK = "NotBlank";
+    private static final String PATTERN = "Pattern";
+    private static final String MAX_BYTE = "MaxByte";
     @ExceptionHandler(com.wanted.preonboarding.ticket.global.exception.ServiceException.class)
     @ResponseStatus(HttpStatus.OK)
     public BaseResDto exception(com.wanted.preonboarding.ticket.global.exception.ServiceException e) {
@@ -45,11 +48,11 @@ public class GlobalExceptionHandler {
     private static BaseResDto findBindError(FieldError fieldError) {
         String code = fieldError.getCode();
 
-        if ("NotNull".equals(code) || "NotEmpty".equals(code) || "NotBlank".equals(code)) {
-            return BaseResDto.of(ResultCode.VALID_NOT_NULL.getResultCode(), ResultCode.VALID_NOT_NULL.getResultMessage().replace(field, fieldError.getField()));
-        } else if ("Pattern".equals(code)) {
-            return BaseResDto.of(ResultCode.VALID_NOT_REGEXP.getResultCode(), ResultCode.VALID_NOT_REGEXP.getResultMessage().replace(field, fieldError.getField()));
-        } else if ("MaxByte".equals(code)) {
+        if (NOT_NULL.equals(code) || NOT_EMPTY.equals(code) || NOT_BLANK.equals(code)) {
+            return BaseResDto.of(ResultCode.VALID_NOT_NULL.getResultCode(), ResultCode.VALID_NOT_NULL.getResultMessage().replace(FIELD, fieldError.getField()));
+        } else if (PATTERN.equals(code)) {
+            return BaseResDto.of(ResultCode.VALID_NOT_REGEXP.getResultCode(), ResultCode.VALID_NOT_REGEXP.getResultMessage().replace(FIELD, fieldError.getField()));
+        } else if (MAX_BYTE.equals(code)) {
             return BaseResDto.of(ResultCode.PARAM_NOT_VALID.getResultCode(), String.format("%s 값이 %dbyte 보다 큽니다.", fieldError.getRejectedValue(), fieldError.getArguments()[1]));
         } else {
             return BaseResDto.of(ResultCode.PARAM_NOT_VALID.getResultCode(), ResultCode.PARAM_NOT_VALID.getResultMessage());
@@ -60,7 +63,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.OK)
     public BaseResDto exception(MissingServletRequestParameterException e) {
-        return BaseResDto.of(ResultCode.VALID_NOT_NULL.getResultCode(), ResultCode.VALID_NOT_NULL.getResultMessage().replace(field, e.getParameterName()));
+        return BaseResDto.of(ResultCode.VALID_NOT_NULL.getResultCode(), ResultCode.VALID_NOT_NULL.getResultMessage().replace(FIELD, e.getParameterName()));
     }
 
 
