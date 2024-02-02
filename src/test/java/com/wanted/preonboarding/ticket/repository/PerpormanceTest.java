@@ -90,10 +90,10 @@ public class PerpormanceTest {
     this.repository.save(test2);
 
     //  when
-    Performance performance = this.repository.findByName("테스트");
+    List<Performance> performance = this.repository.findAllByName("테스트");
 
     //  then
-    assertThat(performance).isEqualTo(test1);
+    assertThat(performance).asList().contains(test1, test2);
   }
 
   @Test

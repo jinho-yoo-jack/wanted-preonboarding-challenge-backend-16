@@ -11,8 +11,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * {@code Performance} 클래스는 티켓 시스템의 "공연 정보" Entity입니다.
@@ -21,7 +23,9 @@ import lombok.Getter;
 @Entity
 @Table(name = "performance")
 @Data
-@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Performance {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)

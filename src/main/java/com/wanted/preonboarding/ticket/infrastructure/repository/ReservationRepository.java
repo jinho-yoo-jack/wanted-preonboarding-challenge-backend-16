@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.infrastructure.repository;
 
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.entity.UserInfo;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -11,4 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
   Reservation findByUserInfo(UserInfo userInfo);
+
+  List<Reservation> findAllByUserInfo(UserInfo userInfo);
 }
