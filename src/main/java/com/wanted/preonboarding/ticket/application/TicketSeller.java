@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -89,11 +90,11 @@ public class TicketSeller {
                 .orElseThrow(EntityNotFoundException::new);
         return detailInfos.stream().map(SeatInfo::of).toList();
     }
-
+    @Transactional
     public boolean reserve(ReserveInfo reserveInfo, Integer reservationId) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
 
-        Performance info = performanceRepository.findById(reserveInfo.getPerformanceId())
+        Performance performance = performanceRepository.findById(reserveInfo.getPerformanceId())
             .orElseThrow(EntityNotFoundException::new);
         User user = userRepository.getReferenceByPhoneNumber(reserveInfo.getPhoneNumber());
         PaymentCard paymentCard = user.getPaymentCards()
@@ -101,17 +102,26 @@ public class TicketSeller {
             .filter(card -> card.getId().equals(user.getDefaultPaymentCode()))
             .findAny()
             .orElseThrow(EntityNotFoundException::new);
-        String enableReserve = info.getIsReserve();
+        PerformanceSeatInfo seatInfo = performanceSeatInfoRepository.findBySeatAndLineAndPerformance_idAndPerformance_round(reserveInfo.getSeat(),
+            reserveInfo.getLine(), performance.getId(), performance.getRound()).orElseThrow(EntityNotFoundException::new);
+        String enableReserve = performance.getIsReserve();
 
         if (enableReserve.equalsIgnoreCase("enable")) {
             // 1. 결제
-            Discount discount = new Discount(info.getPrice(), user.getBirthday(), info.getStart_date());
+            Discount discount = new Discount(performance.getPrice(), user.getBirthday(), performance.getStart_date());
             int resultPrice = discount.discountCalc();
             paymentCard.updateBalanceAmount(reserveInfo.getBalanceAmount() - resultPrice);
             // 2. 예매 진행
-            Reservation reservation = Reservation.of(reserveInfo, info, user);
-            reservationRepository.save(reservation);
+            Reservation reservation = Reservation.of(reserveInfo, performance, user);
+            seatInfo.reserved("disable");
             paymentRepository.save(paymentCard);
+            reservationRepository.save(reservation);
+            performanceSeatInfoRepository.save(seatInfo);
+            long enableReserveCount = performanceSeatInfoRepository.countByIsReserveAndPerformance_id("enable", performance.getId());
+            if(enableReserveCount == 0){
+                performance.soldOut("disable");
+                performanceRepository.save(performance);
+            }
             reservationId = reservation.getId();
             return true;
         } else {

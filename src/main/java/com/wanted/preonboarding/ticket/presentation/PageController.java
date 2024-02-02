@@ -85,8 +85,13 @@ public class PageController {
         boolean result = ticketSeller.reserve(reserveInfo, reservationId);
         System.out.println("RESULT IS " + result);
         System.out.println("reservationId IS " + reservationId);
-        redirectAttributes.addAttribute("reservationId", reservationId);
-        return "redirect:/reservation/{reservationId}";
+        if(result) {
+            redirectAttributes.addAttribute("reservationId", reservationId);
+            return "redirect:/reservation/{reservationId}";
+        }
+        redirectAttributes.addAttribute("performanceId", performanceId);
+        redirectAttributes.addAttribute("round", round);
+        return "redirect:/performance/{performanceId}/{round}";
     }
 
     /**

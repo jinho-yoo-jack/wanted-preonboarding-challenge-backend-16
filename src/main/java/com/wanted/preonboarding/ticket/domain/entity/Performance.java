@@ -55,4 +55,8 @@ public class Performance {
     @Column(nullable = false, columnDefinition = "DATETIME DEFAULT NOW()")
     private LocalDateTime updatedAt;     // 수정 시각
 
+    public void soldOut(String disable){
+        this.isReserve = disable;
+    }
+
 }

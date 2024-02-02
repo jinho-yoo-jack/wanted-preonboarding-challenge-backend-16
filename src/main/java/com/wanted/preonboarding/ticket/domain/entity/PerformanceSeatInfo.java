@@ -85,6 +85,10 @@ public class PerformanceSeatInfo {
     @Column(nullable = true, columnDefinition = "DATETIME DEFAULT NOW()")
     private LocalDateTime updatedAt;     // 수정 시각
 
+    public void reserved (String disable){
+        this.isReserve = disable;
+    }
+
 }
 /*
 not-null property references a null or transient value
