@@ -30,11 +30,9 @@ public class ReserveController {
     public ResponseEntity<BaseResDto> reservation(@RequestBody ReserveInfo info) {
         log.info("ReserveController reservation");
         boolean reserve = ticketSeller.reserve(info);
-        BaseResDto baseResDto;
+        BaseResDto baseResDto = null;
         if(reserve) {
             baseResDto = ticketSeller.getPerformanceInfoDetail(info);
-        } else {
-            baseResDto = new BaseResDto();
         }
         return ResponseEntity.ok(baseResDto);
     }

@@ -6,11 +6,12 @@ import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
 @Getter @Setter
-@Builder
+@SuperBuilder
 public class ResponseReserveQueryDto extends BaseResDto {
 
     private UUID performanceId; //공연ID

@@ -1,6 +1,5 @@
 package com.wanted.preonboarding.ticket.global.exception;
 
-import ch.qos.logback.core.util.ContextUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +32,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.OK)
     public BaseResDto exception(BindException e) {
+
         FieldError fieldError = e.getBindingResult().getFieldError();
 
         if (fieldError == null) {
             return BaseResDto.of(ResultCode.INTERNAL_ERROR.getResultCode(), ResultCode.INTERNAL_ERROR.getResultMessage());
         }
 
+        return findBindError(fieldError);
+    }
+
+    private static BaseResDto findBindError(FieldError fieldError) {
         String code = fieldError.getCode();
 
         if ("NotNull".equals(code) || "NotEmpty".equals(code) || "NotBlank".equals(code)) {

@@ -6,13 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
 @Getter @Setter
-@Builder
+@SuperBuilder
 public class PerformanceInfo extends BaseResDto {
     private UUID performanceId;
     private String performanceName; // 공연명
