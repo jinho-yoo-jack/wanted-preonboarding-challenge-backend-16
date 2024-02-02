@@ -72,6 +72,6 @@ public class UserController {
         log.info("paymentSetting: POST");
         userInfoService.setPaymentInfo(paymentSetting, userUuid);
         redirectAttributes.addAttribute("userUuid", userUuid);
-        return "redirect:/user/{userUuid}";
+        return "redirect:/";
     }
 }
