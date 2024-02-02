@@ -32,4 +32,12 @@ public class SendMessagePerformanceSeatInfoDto {
                 .seat(entity.getSeat())
                 .build();
     }
+
+    public void updatePerformanceName(String performanceName) {
+        this.performanceName = performanceName;
+    }
+
+    public void updateStartDate(java.sql.Date start_date) {
+        this.startDate = start_date;
+    }
 }

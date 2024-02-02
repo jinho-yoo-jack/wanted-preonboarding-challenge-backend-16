@@ -63,6 +63,7 @@ public class AlarmSmsService {
     private final ReservationRepository reservationRepository;
 
 
+    @Transactional
     public BaseResDto performanceCancelCameout(ReservePossibleAlarmCustomerInfoDto dto) {
 
         isSendReserveExist(dto);
@@ -71,8 +72,8 @@ public class AlarmSmsService {
         Performance performance = getPerformance(dto);
 
         SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto = SendMessagePerformanceSeatInfoDto.from(performanceSeatInfo);
-        sendMessagePerformanceSeatInfoDto.setPerformanceName(performance.getName());
-        sendMessagePerformanceSeatInfoDto.setStartDate(performance.getStart_date());
+        sendMessagePerformanceSeatInfoDto.updatePerformanceName(performance.getName());
+        sendMessagePerformanceSeatInfoDto.updateStartDate(performance.getStart_date());
 
         return messageBody(dto.getReservationPhoneNumber(), sendMessagePerformanceSeatInfoDto);
     }
