@@ -67,18 +67,24 @@ public class AlarmSmsService {
 
         isSendReserveExist(dto);
 
-        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findByPerformanceIdAndIsReserve(dto.getPerformanceId(), "cancel")
-                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
-
-        Performance performance = performanceRepository.findById(dto.getPerformanceId())
-                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
-
+        PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfo(dto);
+        Performance performance = getPerformance(dto);
 
         SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto = SendMessagePerformanceSeatInfoDto.from(performanceSeatInfo);
         sendMessagePerformanceSeatInfoDto.setPerformanceName(performance.getName());
         sendMessagePerformanceSeatInfoDto.setStartDate(performance.getStart_date());
 
         return messageBody(dto.getReservationPhoneNumber(), sendMessagePerformanceSeatInfoDto);
+    }
+
+    private Performance getPerformance(ReservePossibleAlarmCustomerInfoDto dto) {
+        return performanceRepository.findById(dto.getPerformanceId())
+                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
+    }
+
+    private PerformanceSeatInfo getPerformanceSeatInfo(ReservePossibleAlarmCustomerInfoDto dto) {
+        return performanceSeatInfoRepository.findByPerformanceIdAndIsReserve(dto.getPerformanceId(), "cancel")
+                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
     }
 
     private void isSendReserveExist(ReservePossibleAlarmCustomerInfoDto dto) {
