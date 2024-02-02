@@ -26,115 +26,73 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(com.wanted.preonboarding.ticket.global.exception.ServiceException.class)
     @ResponseStatus(HttpStatus.OK)
     public BaseResDto exception(com.wanted.preonboarding.ticket.global.exception.ServiceException e) {
-        BaseResDto baseResDto = new BaseResDto();
-        baseResDto.setResultCode(e.getResultCode());
-        baseResDto.setResultMessage(e.getResultMessage());
-
-        return baseResDto;
+        return BaseResDto.of(e.getResultCode(), e.getResultMessage());
     }
 
 
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.OK)
     public BaseResDto exception(BindException e) {
-        BaseResDto baseResDto = new BaseResDto();
         FieldError fieldError = e.getBindingResult().getFieldError();
 
         if (fieldError == null) {
-            baseResDto.setResultCode(ResultCode.INTERNAL_ERROR.getResultCode());
-            baseResDto.setResultMessage(ResultCode.INTERNAL_ERROR.getResultMessage());
-
-            return baseResDto;
+            return BaseResDto.of(ResultCode.INTERNAL_ERROR.getResultCode(), ResultCode.INTERNAL_ERROR.getResultMessage());
         }
 
         String code = fieldError.getCode();
 
         if ("NotNull".equals(code) || "NotEmpty".equals(code) || "NotBlank".equals(code)) {
-            baseResDto.setResultCode(ResultCode.VALID_NOT_NULL.getResultCode());
-            baseResDto.setResultMessage(ResultCode.VALID_NOT_NULL.getResultMessage().replace(field, fieldError.getField()));
+            return BaseResDto.of(ResultCode.VALID_NOT_NULL.getResultCode(), ResultCode.VALID_NOT_NULL.getResultMessage().replace(field, fieldError.getField()));
         } else if ("Pattern".equals(code)) {
-            baseResDto.setResultCode(ResultCode.VALID_NOT_REGEXP.getResultCode());
-            baseResDto.setResultMessage(ResultCode.VALID_NOT_REGEXP.getResultMessage().replace(field, fieldError.getField()));
+            return BaseResDto.of(ResultCode.VALID_NOT_REGEXP.getResultCode(), ResultCode.VALID_NOT_REGEXP.getResultMessage().replace(field, fieldError.getField()));
         } else if ("MaxByte".equals(code)) {
-            baseResDto.setResultCode(ResultCode.PARAM_NOT_VALID.getResultCode());
-            baseResDto.setResultMessage(String.format("%s 값이 %dbyte 보다 큽니다.", fieldError.getRejectedValue(), fieldError.getArguments()[1]));
+            return BaseResDto.of(ResultCode.PARAM_NOT_VALID.getResultCode(), String.format("%s 값이 %dbyte 보다 큽니다.", fieldError.getRejectedValue(), fieldError.getArguments()[1]));
         } else {
-            baseResDto.setResultCode(ResultCode.PARAM_NOT_VALID.getResultCode());
-            baseResDto.setResultMessage(ResultCode.PARAM_NOT_VALID.getResultMessage());
+            return BaseResDto.of(ResultCode.PARAM_NOT_VALID.getResultCode(), ResultCode.PARAM_NOT_VALID.getResultMessage());
         }
-
-        return baseResDto;
     }
 
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.OK)
     public BaseResDto exception(MissingServletRequestParameterException e) {
-        BaseResDto baseResDto = new BaseResDto();
-        baseResDto.setResultCode(ResultCode.VALID_NOT_NULL.getResultCode());
-        baseResDto.setResultMessage(ResultCode.VALID_NOT_NULL.getResultMessage().replace(field, e.getParameterName()));
-
-        return baseResDto;
+        return BaseResDto.of(ResultCode.VALID_NOT_NULL.getResultCode(), ResultCode.VALID_NOT_NULL.getResultMessage());
     }
 
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.OK)
     public BaseResDto exception(Exception e) {
-        BaseResDto baseResDto = new BaseResDto();
-        baseResDto.setResultCode(ResultCode.INTERNAL_ERROR.getResultCode());
-        baseResDto.setResultMessage(ResultCode.INTERNAL_ERROR.getResultMessage());
-
-        return baseResDto;
+        return BaseResDto.of(ResultCode.INTERNAL_ERROR.getResultCode(), ResultCode.INTERNAL_ERROR.getResultMessage());
     }
 
     @ExceptionHandler(UnsupportedEncodingException.class)
     @ResponseStatus(HttpStatus.OK)
     public BaseResDto exception(UnsupportedEncodingException e) {
-        BaseResDto baseResDto = new BaseResDto();
-        baseResDto.setResultCode(ResultCode.INTERNAL_ERROR.getResultCode());
-        baseResDto.setResultMessage(ResultCode.INTERNAL_ERROR.getResultMessage());
-
-        return baseResDto;
+        return BaseResDto.of(ResultCode.UNSUPPORTED_ENCODING.getResultCode(), ResultCode.UNSUPPORTED_ENCODING.getResultMessage());
     }
 
     @ExceptionHandler(NoSuchAlgorithmException.class)
     @ResponseStatus(HttpStatus.OK)
     public BaseResDto exception(NoSuchAlgorithmException e) {
-        BaseResDto baseResDto = new BaseResDto();
-        baseResDto.setResultCode(ResultCode.INTERNAL_ERROR.getResultCode());
-        baseResDto.setResultMessage(ResultCode.INTERNAL_ERROR.getResultMessage());
-
-        return baseResDto;
+        return BaseResDto.of(ResultCode.NO_SUCH_ALGORITHM.getResultCode(), ResultCode.NO_SUCH_ALGORITHM.getResultMessage());
     }
 
     @ExceptionHandler(URISyntaxException.class)
     @ResponseStatus(HttpStatus.OK)
     public BaseResDto exception(URISyntaxException e) {
-        BaseResDto baseResDto = new BaseResDto();
-        baseResDto.setResultCode(ResultCode.INTERNAL_ERROR.getResultCode());
-        baseResDto.setResultMessage(ResultCode.INTERNAL_ERROR.getResultMessage());
-
-        return baseResDto;
+        return BaseResDto.of(ResultCode.URI_SYNTAX.getResultCode(), ResultCode.URI_SYNTAX.getResultMessage());
     }
 
     @ExceptionHandler(InvalidKeyException.class)
     @ResponseStatus(HttpStatus.OK)
     public BaseResDto exception(InvalidKeyException e) {
-        BaseResDto baseResDto = new BaseResDto();
-        baseResDto.setResultCode(ResultCode.INTERNAL_ERROR.getResultCode());
-        baseResDto.setResultMessage(ResultCode.INTERNAL_ERROR.getResultMessage());
-
-        return baseResDto;
+        return BaseResDto.of(ResultCode.INVALID_KEY.getResultCode(), ResultCode.INVALID_KEY.getResultMessage());
     }
 
     @ExceptionHandler(JsonProcessingException.class)
     @ResponseStatus(HttpStatus.OK)
     public BaseResDto exception(JsonProcessingException e) {
-        BaseResDto baseResDto = new BaseResDto();
-        baseResDto.setResultCode(ResultCode.INTERNAL_ERROR.getResultCode());
-        baseResDto.setResultMessage(ResultCode.INTERNAL_ERROR.getResultMessage());
-
-        return baseResDto;
+        return BaseResDto.of(ResultCode.JSON_PROCESSING.getResultCode(), ResultCode.JSON_PROCESSING.getResultMessage());
     }
 }

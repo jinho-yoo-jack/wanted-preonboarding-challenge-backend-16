@@ -7,8 +7,15 @@ import lombok.Setter;
 
 
 @Getter @Setter
+@Builder
 public class BaseResDto {
-    private int resultCode = ResultCode.SUCCESS.getResultCode();
-    private String resultMessage = ResultCode.SUCCESS.getResultMessage();
-//    private Object resultData;
+    private int resultCode;
+    private String resultMessage;
+
+    public static BaseResDto of(int resultCode, String resultMessage) {
+        return BaseResDto.builder()
+                .resultCode(resultCode)
+                .resultMessage(resultMessage)
+                .build();
+    }
 }
