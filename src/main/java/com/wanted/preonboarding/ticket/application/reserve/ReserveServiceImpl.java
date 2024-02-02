@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.application.reserve;
 
-import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.RESERVED;
+import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.DISABLE;
 
 import com.wanted.preonboarding.ticket.application.discount.DiscountManager;
 import com.wanted.preonboarding.ticket.domain.performance.Performance;
@@ -73,7 +73,7 @@ public class ReserveServiceImpl implements ReserveService {
     }
 
     private void validateReservation(final PerformanceSeatInfo seatInfo, final ReservationRequest request, int discountedPrice) {
-        if (seatInfo.getIsReserved() == RESERVED) throw new SeatAlreadyReservedException();
+        if (seatInfo.getIsReserved() == DISABLE) throw new SeatAlreadyReservedException();
         if (request.costAmount() < discountedPrice) throw new AmountNotEnoughException();
     }
 

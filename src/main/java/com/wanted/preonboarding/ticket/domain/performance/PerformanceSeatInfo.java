@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.performance;
 
-import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.RESERVED;
+import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.DISABLE;
 
 import com.wanted.preonboarding.ticket.domain.base.BaseTimeEntity;
 import com.wanted.preonboarding.ticket.domain.performance.model.ReserveState;
@@ -58,6 +58,6 @@ public class PerformanceSeatInfo extends BaseTimeEntity {
     }
 
     public void reserve() {
-        this.isReserved = RESERVED;
+        this.isReserved = DISABLE;
     }
 }

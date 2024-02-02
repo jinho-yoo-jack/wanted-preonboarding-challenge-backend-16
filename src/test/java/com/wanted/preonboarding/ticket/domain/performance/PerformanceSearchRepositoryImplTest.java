@@ -2,7 +2,7 @@ package com.wanted.preonboarding.ticket.domain.performance;
 
 import static com.wanted.preonboarding.ticket.domain.performance.model.PerformanceType.CONCERT;
 import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.ENABLE;
-import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.RESERVED;
+import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.DISABLE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.wanted.preonboarding.support.config.RepositoryTest;
@@ -54,7 +54,7 @@ class PerformanceSearchRepositoryImplTest {
         int day = 1;
         for (int i = 1; i <= 5; i++) {
             ReserveState state = ENABLE;
-            if (i % 2 == 0) state = RESERVED;
+            if (i % 2 == 0) state = DISABLE;
 
             LocalDateTime startDate = LocalDateTime.of(2023, 12, day, 19, 00);
             savePerformance(startDate, "Hola" + i, state);

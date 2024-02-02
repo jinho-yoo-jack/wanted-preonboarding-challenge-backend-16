@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public enum ReserveState {
-    RESERVED("disable", "예약됨"),
+    DISABLE("disable", "예약 불가"),
     ENABLE("enable", "예약 가능");
 
     private final String command;

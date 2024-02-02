@@ -2,7 +2,7 @@ package com.wanted.preonboarding.ticket.application.performance;
 
 import static com.wanted.preonboarding.ticket.domain.performance.model.PerformanceType.CONCERT;
 import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.ENABLE;
-import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.RESERVED;
+import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.DISABLE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -90,7 +90,7 @@ class PerformanceServiceImplTest {
         // given
         for (int i = 1; i <= 10; i++) {
             ReserveState state = ENABLE;
-            if (i % 2 == 0) state = RESERVED;
+            if (i % 2 == 0) state = DISABLE;
             savePerformance("Hola" + i, state);
         }
         final PageRequest pageRequest = PageRequest.of(0, 10);
@@ -112,7 +112,7 @@ class PerformanceServiceImplTest {
         // given
         for (int i = 1; i <= 10; i++) {
             ReserveState state = ENABLE;
-            if (i % 2 == 0) state = RESERVED;
+            if (i % 2 == 0) state = DISABLE;
             savePerformance("Hola" + i, state);
         }
         final PageRequest pageRequest = PageRequest.of(0, 10);
@@ -134,7 +134,7 @@ class PerformanceServiceImplTest {
         // given
         for (int i = 1; i <= 10; i++) {
             ReserveState state = ENABLE;
-            if (i % 2 == 0) state = RESERVED;
+            if (i % 2 == 0) state = DISABLE;
             savePerformance("Hola" + i, state);
         }
         final PageRequest pageRequest = PageRequest.of(0, 10);

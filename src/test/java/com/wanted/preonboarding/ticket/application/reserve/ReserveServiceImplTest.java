@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.application.reserve;
 
 import static com.wanted.preonboarding.ticket.domain.performance.model.PerformanceType.CONCERT;
-import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.RESERVED;
+import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.DISABLE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.groups.Tuple.tuple;
@@ -345,7 +345,7 @@ class ReserveServiceImplTest {
                 .round(1)
                 .type(CONCERT)
                 .startDate(startDate)
-                .isReserve(RESERVED)
+                .isReserve(DISABLE)
                 .build();
             return performanceRepository.save(performance).getId();
         }
