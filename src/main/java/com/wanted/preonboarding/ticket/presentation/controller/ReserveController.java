@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/reserve")
+@RequestMapping("/reservation")
 @RequiredArgsConstructor
 public class ReserveController {
     private final TicketSeller ticketSeller;
