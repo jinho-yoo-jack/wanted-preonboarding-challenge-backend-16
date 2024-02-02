@@ -45,7 +45,7 @@ public class ReserveController {
    */
   @PostMapping
   public ResponseEntity<?> makeReservation(
-    @RequestBody CreateReservationDto createReservationDto
+      @RequestBody CreateReservationDto createReservationDto
   ) {
     System.out.println(createReservationDto);
     return ResponseEntity.ok().body(createReservationDto);

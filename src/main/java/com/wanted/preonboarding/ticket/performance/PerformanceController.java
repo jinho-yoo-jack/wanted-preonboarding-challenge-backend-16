@@ -50,7 +50,9 @@ public class PerformanceController {
    * @return 공연의 상세 정보
    */
   @GetMapping("/{id}")
-  public ResponseEntity<ResponseHandler<Performance>> getPerformanceDetail(@PathVariable("id") UUID id) {
+  public ResponseEntity<ResponseHandler<Performance>> getPerformanceDetail(
+      @PathVariable("id") UUID id
+  ) {
     return ResponseEntity.ok()
         .body(ResponseHandler.<Performance>builder()
             .statusCode(HttpStatus.OK)
