@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,14 +20,14 @@ public class QueryController {
     private final TicketSeller ticketSeller;
 
     @GetMapping("/all/performance")
-    public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
+    public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList(@RequestParam String isEnable) {
         System.out.println("getAllPerformanceInfoList");
         return ResponseEntity
             .ok()
             .body(ResponseHandler.<List<PerformanceInfo>>builder()
                 .message("Success")
                 .statusCode(HttpStatus.OK)
-                .data(ticketSeller.getAllPerformanceInfoList())
+                .data(ticketSeller.getAllPerformanceInfoList(isEnable))
                 .build()
             );
     }

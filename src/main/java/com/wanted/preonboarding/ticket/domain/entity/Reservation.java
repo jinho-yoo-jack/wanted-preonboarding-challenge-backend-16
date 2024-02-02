@@ -46,5 +46,4 @@ public class Reservation {
             .seat(info.getSeat())
             .build();
     }
-
 }
