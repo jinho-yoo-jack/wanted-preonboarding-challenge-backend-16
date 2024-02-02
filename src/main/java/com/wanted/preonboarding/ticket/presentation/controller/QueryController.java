@@ -19,6 +19,12 @@ import java.util.List;
 public class QueryController {
     private final TicketSeller ticketSeller;
 
+    /**
+     * 공연 및 전시 정보 조회(목록, 상세 조회)
+     * Request Message: 예매 가능 여부
+     * Response Message: 예매 가능한 공연 리스트(정보: 공연명, 회차, 시작 일시, 예매 가능 여부)
+     * @return
+     */
     @GetMapping("/all/performance")
     public ResponseEntity<ResponseHandler<List<ResponsePerformanceInfo>>> getAllPerformanceInfoList() {
         log.info("QueryController getAllPerformanceInfoList");
@@ -33,6 +39,13 @@ public class QueryController {
     }
 
 
+    /**
+     * 예약 조회 시스템
+     * Request Message: 고객의 이름, 휴대 전화
+     * Response Message: 예매가 완료된 공연의 정보(회차, 공연명, 좌석정보, 공연ID) + 예매자 정보(이름, 연락처)
+     * @param dto
+     * @return
+     */
     @GetMapping("/reserve/info")
     public ResponseEntity<BaseResDto> getReserveInfo(@RequestBody RequestReserveQueryDto dto) {
         log.info("QueryController getReserveInfo");
