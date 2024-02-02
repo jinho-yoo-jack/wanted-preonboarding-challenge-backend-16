@@ -5,6 +5,8 @@ import com.wanted.preonboarding.ticket.application.TicketSeller;
 import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
 import com.wanted.preonboarding.ticket.global.exception.InvalidInputException;
+import com.wanted.preonboarding.ticket.global.exception.ResultCode;
+import com.wanted.preonboarding.ticket.global.exception.ServiceException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +33,10 @@ public class ReserveController {
     @PostMapping("/")
     public ResponseEntity<BaseResDto> reservation(@RequestBody ReserveInfo info) {
         log.info("ReserveController reservation");
-        boolean reserve = ticketSeller.reserve(info);
-        BaseResDto baseResDto = null;
-        if(reserve) {
-            baseResDto = ticketSeller.getPerformanceInfoDetail(info);
+        if(ticketSeller.reserve(info)) {
+            return ResponseEntity.ok(ticketSeller.getPerformanceInfoDetail(info));
+        } else {
+            throw new ServiceException(ResultCode.RESERVE_NOT_VALID);
         }
-        return ResponseEntity.ok(baseResDto);
     }
 }

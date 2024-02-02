@@ -52,13 +52,12 @@ public class TicketSeller {
 
     @Transactional
     public boolean reserve(ReserveInfo reserveInfo) {
-        log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
-        Performance info = getPerformance(reserveInfo.getPerformanceId(), reserveInfo.getRound());
+        Performance performance = getPerformance(reserveInfo.getPerformanceId(), reserveInfo.getRound());
 
-        String enableReserve = info.getIsReserve();
+        String enableReserve = performance.getIsReserve();
         if (enableReserve.equalsIgnoreCase("enable")) {
             // 1. 결제
-            int price = info.getPrice();
+            int price = performance.getPrice();
             reserveInfo.setAmount(reserveInfo.getAmount() - price);
 
             // 2. 예매 된 좌석인지 확인

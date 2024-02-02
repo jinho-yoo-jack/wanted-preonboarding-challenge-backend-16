@@ -19,8 +19,8 @@ public enum ResultCode {
     NO_SUCH_ALGORITHM(500, ResultMessage.NO_SUCH_ALGORITHM),
     URI_SYNTAX(400, ResultMessage.URI_SYNTAX),
     INVALID_KEY(500, ResultMessage.INVALID_KEY),
-    JSON_PROCESSING(400, ResultMessage.JSON_PROCESSING)
-    ;
+    JSON_PROCESSING(400, ResultMessage.JSON_PROCESSING),
+    RESERVE_NOT_VALID(400, ResultMessage.RESERVE_NOT_VALID);
 
     private final int resultCode;
     private final String resultMessage;
@@ -58,5 +58,6 @@ public enum ResultCode {
         String INVALID_KEY = "암호화 키가 유효하지 않습니다.";
         String JSON_PROCESSING = "JSON 처리 중 오류가 발생했습니다.";
         String ALREADY_EXISTS = "이미 존재하는 데이터입니다.";
+        String RESERVE_NOT_VALID = "예약이 불가능한 공연입니다.";
     }
 }
