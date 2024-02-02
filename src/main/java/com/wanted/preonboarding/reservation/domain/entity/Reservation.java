@@ -23,7 +23,8 @@ import java.util.UUID;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(nullable = false, name = "reservation_id")
+    private int reservationId;
     
     @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
     private UUID performanceId;
