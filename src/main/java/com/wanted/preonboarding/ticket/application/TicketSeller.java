@@ -21,6 +21,7 @@ import com.wanted.preonboarding.user.domain.entity.User;
 import com.wanted.preonboarding.user.infrastructure.PaymentRepository;
 import com.wanted.preonboarding.user.infrastructure.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,16 @@ public class TicketSeller {
      * @return List<PerformanceInfo>
      */
     public List<PerformanceInfo> getAllPerformanceInfoList() {
-        return performanceRepository.findByIsReserve("enable")
+        return performanceRepository.findByIsReserveAndStartDateAfter(ReservationStatus.ENABLE.getStatus(),
+                LocalDateTime.now())
+            .stream()
+            .map(PerformanceInfo::of)
+            .toList();
+    }
+
+    public List<PerformanceInfo> getAllPerformanceUnreservaleList(){
+        return performanceRepository.findByIsReserveAndStartDateAfter(ReservationStatus.DISABLE.getStatus(),
+                LocalDateTime.now())
             .stream()
             .map(PerformanceInfo::of)
             .toList();
@@ -110,7 +120,7 @@ public class TicketSeller {
 
         if (enableReserve.equalsIgnoreCase(ReservationStatus.ENABLE.getStatus())) {
             // 1. 결제
-            Discount discount = new Discount(performance.getPrice(), user.getBirthday(), performance.getStart_date());
+            Discount discount = new Discount(performance.getPrice(), user.getBirthday(), performance.getStartDate());
             int resultPrice = discount.discountCalc();
             paymentCard.updateBalanceAmount(reserveInfo.getBalanceAmount() - resultPrice);
             // 2. 예매 진행

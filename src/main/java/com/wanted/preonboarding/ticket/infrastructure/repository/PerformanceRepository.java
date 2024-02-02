@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.infrastructure.repository;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,7 +15,7 @@ public interface PerformanceRepository extends JpaRepository<Performance, UUID> 
      * @param isReserve
      * @return List<Performance>
      */
-    List<Performance> findByIsReserve(String isReserve);
+    List<Performance> findByIsReserveAndStartDateAfter(String isReserve, LocalDateTime startDate);
 
     /**
      * name 필드의 값이 매개변수 String name과 동일한 Performance 엔티티를 리턴
