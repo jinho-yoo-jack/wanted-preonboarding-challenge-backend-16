@@ -1,6 +1,8 @@
 package com.wanted.preonboarding.ticket.exception;
 
-public class PerformanceNotFoundException extends IllegalStateException {
+import jakarta.persistence.EntityNotFoundException;
+
+public class PerformanceNotFoundException extends EntityNotFoundException {
     public PerformanceNotFoundException(String s) {
         super(s);
     }

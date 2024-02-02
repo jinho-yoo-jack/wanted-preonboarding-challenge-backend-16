@@ -58,13 +58,13 @@ public class Reservation extends AuditInformation {
                 .build();
     }
 
-    public ReserveFindResponse toReserveSelectResponse() {
+    public ReserveFindResponse toReserveFindResponse() {
         return ReserveFindResponse.builder()
                 .performanceId(this.performance.getId())
                 .performanceName(this.performance.getName())
                 .round(this.round)
                 .seat(this.seat)
-                .line(String.valueOf(this.line))
+                .line(this.line)
                 .reservationName(this.name)
                 .phoneNumber(this.phoneNumber)
                 .build();

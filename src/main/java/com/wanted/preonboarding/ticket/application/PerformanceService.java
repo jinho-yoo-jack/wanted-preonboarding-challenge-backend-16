@@ -20,7 +20,7 @@ public class PerformanceService {
     public List<PerformanceFindResponse> findPerformances(String isReserve) {
         List<Performance> performanceList = performanceRepository.findByIsReserve(isReserve);
         if (performanceList.isEmpty()) {
-            throw new PerformanceNotFoundException(isReserve);    //TODO: 분리하기
+            throw new PerformanceNotFoundException("공연 정보가 존재하지 않습니다.");    //TODO: 분리하기, String 상수로
         } else {
             return performanceList.stream()
                     .map(Performance::toPerformanceFindResponse)

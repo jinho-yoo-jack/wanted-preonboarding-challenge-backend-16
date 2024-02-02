@@ -10,16 +10,17 @@ import org.hibernate.annotations.Comment;
 @AllArgsConstructor
 @Table
 @Entity
-public class PerformanceSeatInfo {
+public class PerformanceSeatInfo extends AuditInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
+    @JoinColumn(name = "performance_id", columnDefinition = "BINARY(16)", nullable = false)
     @Comment("공연전시ID")
     private Performance performance;
 
+    // TODO: JoinColumn으로 할지 결정
     @Column(nullable = false)
     @Comment("회차")
     private int round;
@@ -36,8 +37,8 @@ public class PerformanceSeatInfo {
     @Comment("좌석 행")
     private int seat;
 
-    @Column(nullable = false, name = "is_reverse", columnDefinition = "varchar default 'disable'")
+    @Column(name = "is_reverse", nullable = false, columnDefinition = "varchar default 'disable'")
     @Comment("예약 여부")
-    private String isReverse;
+    private String isReserve;
 
 }

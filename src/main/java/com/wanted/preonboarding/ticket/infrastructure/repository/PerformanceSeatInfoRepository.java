@@ -1,7 +1,12 @@
 package com.wanted.preonboarding.ticket.infrastructure.repository;
 
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
+import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PerformanceSeatInfoRepository extends JpaRepository<PerformanceInfo, Integer> {
+import java.util.Optional;
+import java.util.UUID;
+
+public interface PerformanceSeatInfoRepository extends JpaRepository<PerformanceSeatInfo, Integer> {
+    Optional<PerformanceSeatInfo> findByPerformanceIdAndRoundAndSeatAndLine(UUID performanceId, int round, int seat, char line);
+    //TODO: performanceId, line, seat, round로 찾는것
 }
