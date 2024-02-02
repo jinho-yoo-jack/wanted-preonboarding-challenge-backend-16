@@ -60,7 +60,7 @@ public class PerformanceInfo {
     }
     
     /**
-     * 예약 가능한 공연 및 전시 정보
+     * 예약 가능한 공연 및 전시 상세 정보
      * @param entity
      * @return
      */
@@ -78,6 +78,8 @@ public class PerformanceInfo {
             .isReserve(entity.getIsReserve())
             .build();
     }
+    
+    
     /**
      * 공연 타입 맵핑
      * @param code
