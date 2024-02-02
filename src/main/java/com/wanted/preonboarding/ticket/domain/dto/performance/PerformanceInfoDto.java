@@ -1,8 +1,9 @@
-package com.wanted.preonboarding.ticket.domain.dto;
+package com.wanted.preonboarding.ticket.domain.dto.performance;
 
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceType;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Data;
@@ -15,24 +16,24 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class PerformanceInfo {
-  private UUID performanceId;
-  private String performanceName;
-  private String performanceType;
-  private Date startDate;
-  private String isReserve;
+public class PerformanceInfoDto {
+  private UUID    performanceId;
+  private String  performanceName;
+  private int     round;
+  private LocalDateTime startDate;
+  private String  isReserve;
 
   /**
    * 공연의 정보를 {@link Performance} 엔티티 객체로부터 생성합니다.
    *
    * @param entity 변환할 {@link Performance} 엔티티 객체
-   * @return 변환된 {@link PerformanceInfo} 객체
+   * @return 변환된 {@link Performance} 객체
    */
-  public static PerformanceInfo of(Performance entity) {
-    return PerformanceInfo.builder()
+  public static PerformanceInfoDto of(Performance entity) {
+    return PerformanceInfoDto.builder()
         .performanceId(entity.getId())
         .performanceName(entity.getName())
-        .performanceType(convertCodeToName(entity.getType()))
+        .round(entity.getRound())
         .startDate(entity.getStartDate())
         .isReserve(entity.getIsReserve())
         .build();
@@ -44,5 +45,4 @@ public class PerformanceInfo {
         .orElse(PerformanceType.NONE)
         .name();
   }
-
 }
