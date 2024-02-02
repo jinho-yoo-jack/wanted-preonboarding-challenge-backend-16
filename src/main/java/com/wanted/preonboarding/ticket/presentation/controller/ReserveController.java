@@ -30,7 +30,7 @@ import java.security.NoSuchAlgorithmException;
 public class ReserveController {
     private final TicketSeller ticketSeller;
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<BaseResDto> reservation(@RequestBody ReserveInfo info) {
         log.info("ReserveController reservation");
         if(ticketSeller.reserve(info)) {
