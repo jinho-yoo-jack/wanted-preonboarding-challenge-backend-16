@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,65 +31,47 @@ public class CommonService {
     private final ReservationRepository reservationRepository;
 
     public UserInfo getUserInfo(String name, String phoneNumber) {
-        Optional<User> user = userRepository.findByNameAndPhoneNumber(name, phoneNumber);
+        User user = userRepository.findByNameAndPhoneNumber(name, phoneNumber)
+                .orElse(saveNewUser(name, phoneNumber));
 
-        // 유저 정보가 있으면 => 기존 유저 ID로
-        if (user.isPresent()) {
-            return UserInfo.of(user.get());
-        }
+        return UserInfo.of(user);
+    }
 
-        // 유저 정보가 없으면 => 새로운 유저 ID로
+    public User saveNewUser(String name, String phoneNumber) {
         UserInfo newUserInfo = UserInfo.builder()
                 .name(name)
                 .phoneNumber(phoneNumber)
                 .build();
         User newUser = User.of(newUserInfo);
-        UUID userId = userRepository.save(newUser).getId();
-        newUserInfo.setUserId(userId);
-        return newUserInfo;
+        userRepository.save(newUser);
+        return newUser;
     }
 
     public PerformanceInfo getPerformanceInfoById(UUID performanceId) {
-        Optional<Performance> performance = performanceRepository.findById(performanceId);
+        Performance performance = performanceRepository.findById(performanceId)
+                .orElseThrow(NoSuchElementException::new);
 
-        // 공연 정보가 없으면 => 예외 발생
-        if (performance.isEmpty()) {
-            throw new PerformanceNotFound("PerformanceNotFound : 공연을 찾을 수 없습니다.");
-        }
-
-        return PerformanceInfo.of(performance.get());
+        return PerformanceInfo.of(performance);
     }
 
     public PerformanceInfo getPerformanceInfoByNameAndRound(String performanceName, Integer round) {
-        Optional<Performance> performance = performanceRepository.findByNameAndRound(performanceName, round);
+        Performance performance = performanceRepository.findByNameAndRound(performanceName, round)
+                .orElseThrow(NoSuchElementException::new);
 
-        // 공연 정보가 없으면 => 예외 발생
-        if (performance.isEmpty()) {
-            throw new PerformanceNotFound("PerformanceNotFound : 공연을 찾을 수 없습니다.");
-        }
-
-        return PerformanceInfo.of(performance.get());
+        return PerformanceInfo.of(performance);
     }
 
     public PerformanceSeatInfo getPerformanceSeatInfo(UUID performanceId, Integer round, Character line, Integer seat) {
-        Optional<PerformanceSeat> performanceSeat = performanceSeatRepository.findByPerformanceIdAndRoundAndLineAndSeat(performanceId, round, line, seat);
+        PerformanceSeat performanceSeat = performanceSeatRepository.findByPerformanceIdAndRoundAndLineAndSeat(performanceId, round, line, seat)
+                .orElseThrow(NoSuchElementException::new);
 
-        // 좌석 정보가 없으면 => 예외 발생
-        if (performanceSeat.isEmpty()) {
-            throw new PerformanceSeatNotFound("PerformanceSeatNotFound : 공연 좌석을 찾을 수 없습니다.");
-        }
-
-        return PerformanceSeatInfo.of(performanceSeat.get());
+        return PerformanceSeatInfo.of(performanceSeat);
     }
 
     public ReservationInfo getReservationInfoById(Integer reservationId) {
-        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(NoSuchElementException::new);
 
-        // 예약 정보가 없으면 => 예외 발생
-        if (reservation.isEmpty()) {
-            throw new ReservationNotFound("ReservationNotFound : 예약 내역을 찾을 수 없습니다.");
-        }
-
-        return ReservationInfo.of(reservation.get());
+        return ReservationInfo.of(reservation);
     }
 }
