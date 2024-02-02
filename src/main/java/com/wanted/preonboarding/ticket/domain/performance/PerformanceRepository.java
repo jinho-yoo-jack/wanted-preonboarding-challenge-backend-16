@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface PerformanceRepository extends JpaRepository<Performance, UUID> {
+public interface PerformanceRepository extends JpaRepository<Performance, UUID>, PerformanceSearchRepository {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("""
