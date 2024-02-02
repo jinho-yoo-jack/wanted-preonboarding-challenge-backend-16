@@ -10,18 +10,33 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
+<input type="hidden" value="${reserveResult.performanceId}">
 <div class="row">
   <div class="col">
-    <input type="hidden" value="${reserveResult.performanceId}">
-    공연 명: <a th:text="${reserveResult.performanceName}"></a>
-    공연 회차:  <a th:text="${reserveResult.round}"></a>
-    좌석 번호:  <a th:text="|${reserveResult.line}${reserveResult.seat}|"></a>
-    가격: <a th:text="|${reserveResult.price}원|"></a>
-    예약자 명:  <a th:text="${reserveResult.reservationName}"></a>
-    예약자 휴대전화 번호:  <a th:text="${reserveResult.phoneNumber}"></a>
+    <div class="row">
+      공연 명: <a th:text="${reserveResult.performanceName}"></a>
+    </div>
+    <div class="row">
+      공연 회차:  <a th:text="${reserveResult.round}"></a>
+    </div>
+    <div class="row">
+      좌석 번호:  <a th:text="|${reserveResult.line}${reserveResult.seat}|"></a>
+    </div>
+    <div class="row">
+      가격: <a th:text="|${reserveResult.price}원|"></a>
+    </div>
+    <div class="col">
+      예약자 명:  <a th:text="${reserveResult.reservationName}"></a>
+    </div>
+    <div class="row">
+      예약자 휴대전화 번호:  <a th:text="${reserveResult.phoneNumber}"></a>
+    </div>
+  </div>
+  <div class="col">
+    <form method="post" th:action="|@{/reservation/}${reserveResult.reservationId}|">
+      <input type="submit" value="예약 취소">
+    </form>
   </div>
 </div>
-
-<script src="" async defer></script>
 </body>
 </html>

@@ -108,6 +108,13 @@ public class PageController {
         return "reservation/reserveResult";
     }
 
+    @PostMapping("/reservation/{reservationId}")
+    public String reservationCancel(@PathVariable int reservationId){
+        log.info("reservation cancel reservationId={}", reservationId);
+        ticketSeller.reservationCancel(reservationId);
+        return "redirect:/";
+    }
+
     @GetMapping("/reservation/search")
     public String reservations(){
         return "reservation/searchReservation";

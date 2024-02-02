@@ -142,4 +142,31 @@ public class TicketSeller {
             .map(ReservationSearchResult::of).toList();
     }
 
+    @Transactional
+    public void reservationCancel(int reservationId){
+        Reservation reservation = reservationRepository.findById(reservationId)
+            .orElseThrow(EntityNotFoundException::new);
+        Performance performance = reservation.getPerformance();
+        User user = reservation.getUser();
+        PaymentCard paymentCard = user.getPaymentCards()
+            .stream()
+            .filter(card -> card.getId().equals(user.getDefaultPaymentCode()))
+            .findAny()
+            .orElseThrow(EntityNotFoundException::new);
+        PerformanceSeatInfo seatInfo = performanceSeatInfoRepository.findBySeatAndLineAndPerformance_idAndPerformance_round(reservation.getSeat(), reservation.getLine(), performance
+            .getId(), performance.getRound())
+            .orElseThrow(EntityNotFoundException::new);
+        seatInfo.cancel();
+        paymentCard.updateBalanceAmount(paymentCard.getBalanceAmount() + reservation.getPrice());
+        if(performance.getIsReserve().equals(ReservationStatus.DISABLE.getStatus())){
+            performance.reservable();
+            performanceRepository.save(performance);
+        }
+        reservationRepository.delete(reservation);
+        performanceSeatInfoRepository.save(seatInfo);
+        paymentRepository.save(paymentCard);
+
+
+    }
+
 }
