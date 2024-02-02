@@ -33,5 +33,4 @@ public class PerformanceInfo {
             .orElse(PerformanceType.NONE)
             .name();
     }
-
 }
