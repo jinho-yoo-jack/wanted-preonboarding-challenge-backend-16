@@ -6,6 +6,7 @@ import com.wanted.preonboarding.ticket.domain.dto.PerformanceDetailInfo;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReservationId;
 import com.wanted.preonboarding.ticket.domain.dto.ReservationSearchResult;
+import com.wanted.preonboarding.ticket.domain.dto.ReservationStatus;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveResult;
 import com.wanted.preonboarding.ticket.domain.dto.SeatInfo;
@@ -107,20 +108,21 @@ public class TicketSeller {
             reserveInfo.getLine(), performance.getId(), performance.getRound()).orElseThrow(EntityNotFoundException::new);
         String enableReserve = performance.getIsReserve();
 
-        if (enableReserve.equalsIgnoreCase("enable")) {
+        if (enableReserve.equalsIgnoreCase(ReservationStatus.ENABLE.getStatus())) {
             // 1. 결제
             Discount discount = new Discount(performance.getPrice(), user.getBirthday(), performance.getStart_date());
             int resultPrice = discount.discountCalc();
             paymentCard.updateBalanceAmount(reserveInfo.getBalanceAmount() - resultPrice);
             // 2. 예매 진행
-            Reservation reservation = Reservation.of(reserveInfo, performance, user);
-            seatInfo.reserved("disable");
+            Reservation reservation = Reservation.of(reserveInfo, resultPrice, performance, user);
+            seatInfo.reserved();
             paymentRepository.save(paymentCard);
             reservationRepository.save(reservation);
             performanceSeatInfoRepository.save(seatInfo);
-            long enableReserveCount = performanceSeatInfoRepository.countByIsReserveAndPerformance_id("enable", performance.getId());
+            long enableReserveCount = performanceSeatInfoRepository.countByIsReserveAndPerformance_id(
+                ReservationStatus.ENABLE.getStatus(), performance.getId());
             if(enableReserveCount == 0){
-                performance.soldOut("disable");
+                performance.soldOut();
                 performanceRepository.save(performance);
             }
             reservationId.setReservationId(reservation.getId());

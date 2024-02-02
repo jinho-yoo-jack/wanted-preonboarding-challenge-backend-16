@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.domain.dto.ReservationStatus;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
 import java.util.UUID;
 
 /**
@@ -55,8 +55,12 @@ public class Performance {
     @Column(nullable = false, columnDefinition = "DATETIME DEFAULT NOW()")
     private LocalDateTime updatedAt;     // 수정 시각
 
-    public void soldOut(String disable){
-        this.isReserve = disable;
+    public void soldOut(){
+        this.isReserve = ReservationStatus.DISABLE.getStatus();
+    }
+
+    public void reservable(){
+        this.isReserve = ReservationStatus.ENABLE.getStatus();
     }
 
 }

@@ -83,14 +83,18 @@ public class Reservation {
 
     @Column(nullable = false)
     private int seat;   // 좌석 행
+    
+    @Column(nullable = false)
+    private int price;  // 가격
 
     @Column(nullable = true)
     private LocalDateTime createdAt;    // 생성 시각
 
     @Column(nullable = true)
     private LocalDateTime updatedAt;     // 수정 시각
+    
 
-    public static Reservation of(ReserveInfo info, Performance performance, User user) {
+    public static Reservation of(ReserveInfo info, int price, Performance performance, User user) {
         return Reservation.builder()
             .performance(performance)
             .name(info.getReservationName())
@@ -98,6 +102,7 @@ public class Reservation {
             .gate(1)
             .line(info.getLine())
             .seat(info.getSeat())
+            .price(price)
             .build();
     }
 

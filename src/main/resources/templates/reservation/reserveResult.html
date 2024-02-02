@@ -16,6 +16,7 @@
     공연 명: <a th:text="${reserveResult.performanceName}"></a>
     공연 회차:  <a th:text="${reserveResult.round}"></a>
     좌석 번호:  <a th:text="|${reserveResult.line}${reserveResult.seat}|"></a>
+    가격: <a th:text="|${reserveResult.price}원|"></a>
     예약자 명:  <a th:text="${reserveResult.reservationName}"></a>
     예약자 휴대전화 번호:  <a th:text="${reserveResult.phoneNumber}"></a>
   </div>

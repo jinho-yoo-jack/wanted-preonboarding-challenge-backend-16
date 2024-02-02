@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `reservation`
     `gate`           INT                    NOT NULL COMMENT '입장 게이트',
     `line`           CHAR                   NOT NULL COMMENT '좌석 열',
     `seat`           INT                    NOT NULL COMMENT '좌석 행',
+    `price`          INT                    NOT NULL COMMENT '가격',
     `created_at`     DATETIME DEFAULT NOW() NOT NULL,
     `updated_at`     DATETIME DEFAULT NOW() NOT NUll,
     PRIMARY KEY (id),
@@ -55,9 +56,17 @@ CREATE TABLE IF NOT EXISTS `user_info`
     `phone_number`   varchar(255)                             NOT NULL COMMENT '유저 휴대전화 번호',
     `birthday`       DATETIME                                 NOT NULL COMMENT '생일',
     `created_at`     DATETIME   DEFAULT NOW()                 NOT NULL COMMENT '가입 일시',
-    `default_payment_code` INT  DEFAULT INT 0                 NOT NULL COMMENT '결제 수단 선택 코드',
+    `default_payment_code` INT  DEFAULT 0                 NOT NULL COMMENT '결제 수단 선택 코드',
     PRIMARY KEY (user_uuid),
     UNIQUE KEY user_info_unique (id, email, phone_number)
+);
+
+CREATE TABLE IF NOT EXISTS `reservable_alarm`
+(
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '알람 설정 ID',
+  `user_id` BINARY(16) DEFAULT(uuid_to_bin(uuid())) NOT NULL COMMENT '알람 설정한 유저 ID',
+  `performance_id` BINARY(16) DEFAULT(uuid_to_bin(uuid())) NOT NULL COMMENT '알람 설정한 공연 ID',
+  PRIMARY KEY (`id`)
 );
 
 CREATE TABLE IF NOT EXISTS `payment_card`

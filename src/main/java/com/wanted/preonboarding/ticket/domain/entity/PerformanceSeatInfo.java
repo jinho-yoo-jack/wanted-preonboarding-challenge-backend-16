@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
 
-import jakarta.annotation.Nullable;
+import com.wanted.preonboarding.ticket.domain.dto.ReservationStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -16,7 +16,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -85,8 +84,12 @@ public class PerformanceSeatInfo {
     @Column(nullable = true, columnDefinition = "DATETIME DEFAULT NOW()")
     private LocalDateTime updatedAt;     // 수정 시각
 
-    public void reserved (String disable){
-        this.isReserve = disable;
+    public void reserved (){
+        this.isReserve = ReservationStatus.DISABLE.getStatus();
+    }
+
+    public void cancel(){
+        this.isReserve = ReservationStatus.ENABLE.getStatus();
     }
 
 }
