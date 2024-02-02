@@ -47,5 +47,6 @@ CREATE TABLE IF NOT EXISTS `reservation`
     `updated_at`     DATETIME DEFAULT NOW() NOT NUll,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES `user_info`(id),
-    FOREIGN KEY (seat_id) REFERENCES `performance_seat_info`(id)
+    FOREIGN KEY (seat_id) REFERENCES `performance_seat_info`(id),
+    UNIQUE KEY (seat_id)
 );
