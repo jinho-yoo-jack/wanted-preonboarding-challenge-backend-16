@@ -64,7 +64,7 @@ public class AlarmSmsService {
 
 
     @Transactional
-    public BaseResDto performanceCancelCameout(ReservePossibleAlarmCustomerInfoDto dto) {
+    public BaseResDto createAlarmPerformance(ReservePossibleAlarmCustomerInfoDto dto) {
 
         isSendReserveExist(dto);
 

@@ -25,7 +25,7 @@ public class TicketSeller {
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private long totalAmount = 0L;
 
-    public List<ResponsePerformanceInfo> getAllPerformanceInfoList() {
+    public List<ResponsePerformanceInfo> readAllPerformances() {
         return performanceRepository.findByIsReserve("enable")
             .stream()
             .map(ResponsePerformanceInfo::from)

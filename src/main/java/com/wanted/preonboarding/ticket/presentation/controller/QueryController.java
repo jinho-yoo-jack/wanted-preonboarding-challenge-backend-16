@@ -26,14 +26,14 @@ public class QueryController {
      * @return
      */
     @GetMapping("/all/performance")
-    public ResponseEntity<ResponseHandler<List<ResponsePerformanceInfo>>> getAllPerformanceInfoList() {
+    public ResponseEntity<ResponseHandler<List<ResponsePerformanceInfo>>> readAllPerformances() {
         log.info("QueryController getAllPerformanceInfoList");
         return ResponseEntity
             .ok()
             .body(ResponseHandler.<List<ResponsePerformanceInfo>>builder()
                 .message("Success")
                 .statusCode(HttpStatus.OK)
-                .data(ticketSeller.getAllPerformanceInfoList())
+                .data(ticketSeller.readAllPerformances())
                 .build()
             );
     }
@@ -47,7 +47,7 @@ public class QueryController {
      * @return
      */
     @GetMapping("/reserve/info")
-    public ResponseEntity<BaseResDto> getReserveInfo(@RequestBody RequestReserveQueryDto dto) {
+    public ResponseEntity<BaseResDto> readReservation(@RequestBody RequestReserveQueryDto dto) {
         log.info("QueryController getReserveInfo");
         BaseResDto baseResDto = ticketSeller.getReserveInfoDetail(dto);
         return ResponseEntity.ok(baseResDto);

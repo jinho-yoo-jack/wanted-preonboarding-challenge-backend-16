@@ -26,9 +26,9 @@ public class AlarmController {
      * @return
      */
     @PostMapping("/customer/performance-seat/new")
-    public ResponseEntity<BaseResDto> sendMessagePerformanceCancelCameout(@RequestBody ReservePossibleAlarmCustomerInfoDto dto) {
+    public ResponseEntity<BaseResDto> createAlarm(@RequestBody ReservePossibleAlarmCustomerInfoDto dto) {
         log.info("AlarmController sendMessagePerformanceCancelCameout");
-        BaseResDto baseResDto = alarmSmsService.performanceCancelCameout(dto);
+        BaseResDto baseResDto = alarmSmsService.createAlarmPerformance(dto);
         return ResponseEntity.ok(baseResDto);
     }
 }
