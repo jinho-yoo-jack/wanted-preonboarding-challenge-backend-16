@@ -15,8 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.sql.Date;
+import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 
 @SpringBootTest
 @ExtendWith({SpringExtension.class})
@@ -62,13 +64,15 @@ public class TicketSellerTest {
                 .reservationPhoneNumber("010-2222-2222") // 휴대 전화
                 .reservationStatus("enable") // 예약; 취소;
                 .amount(10000) // 결제 가능한 금액(잔고)
-                .round(1) // 회차
+                .gate(1)
+                .round(2) // 회차
                 .line('A') // 좌석 정보
                 .seat(1) // 좌석 정보
                 .build();
 
         //when
         boolean flag = ticketSeller.reserve(info);
+
 
         if(flag) {
             //then

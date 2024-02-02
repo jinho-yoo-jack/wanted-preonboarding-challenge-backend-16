@@ -53,7 +53,6 @@ public class TicketSeller {
     @Transactional
     public boolean reserve(ReserveInfo reserveInfo) {
         Performance performance = getPerformance(reserveInfo.getPerformanceId(), reserveInfo.getRound());
-
         String enableReserve = performance.getIsReserve();
         if (enableReserve.equalsIgnoreCase("enable")) {
             // 1. 결제
@@ -66,7 +65,6 @@ public class TicketSeller {
             // 3. 예매 진행
             reservationRepository.save(Reservation.of(reserveInfo));
             return true;
-
         } else {
             return false;
         }
