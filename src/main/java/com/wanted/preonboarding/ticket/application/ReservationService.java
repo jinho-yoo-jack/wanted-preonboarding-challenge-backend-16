@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.dto.request.ReserveCreateRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReserveFindRequest;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReserveCreateResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.ReserveFindResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
@@ -33,7 +34,7 @@ public class ReservationService {
     // TODO: 예약
 
     @Transactional
-    public boolean reserve(ReserveCreateRequest request) {
+    public ReserveCreateResponse reserve(ReserveCreateRequest request) {
         log.info("ReservationService.reserve");
         Performance performance = findPerformance(request);
         PerformanceSeatInfo seatInfo = performanceSeatInfoRepository.findByPerformanceIdAndRoundAndSeatAndLine(
@@ -41,13 +42,17 @@ public class ReservationService {
                 request.getSeat(), request.getLine()        //TODO: String 상수화 및 분리
         ).orElseThrow(() -> new PerformanceSeatInfoNotFound("좌석 정보가 존재하지 않습니다."));
         //TODO: 분리
-        if (seatInfo.getIsReserve().equals("disable")) {
+        if (seatInfo.getIsReserve().equalsIgnoreCase("disable")) {
             throw new SeatAlreadyReservedException("좌석이 매진되었습니다.");
         }
-        //TODO: 할인 정책 확인
+        //TODO: 할인 정책 확인 및 구매 가능한지 확인
+//        DiscountService.discount();
 
-        //TODO: 할인 후 구매 가능한지 잔고 확인
-        return true;
+        //TODO: 예매 진행
+        Reservation save = reservationRepository.save(Reservation.of(request, performance));
+
+        //TODO: ReserveCreateResponse 반환
+        return save.toReserveCreateResponse();
     }
 
     private Performance findPerformance(ReserveCreateRequest reserveCreateRequest) {

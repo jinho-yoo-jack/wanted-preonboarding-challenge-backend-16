@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReserveCreateRequest;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReserveCreateResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.ReserveFindResponse;
 import jakarta.persistence.*;
 import lombok.*;
@@ -46,15 +47,15 @@ public class Reservation extends AuditInformation {
     private int seat;
 
     // TODO: performance를 넣어도 되는것일까
-    public static Reservation of(ReserveInfo info, Performance performance) {
+    public static Reservation of(ReserveCreateRequest reserveCreateRequest, Performance performance) {
         return Reservation.builder()
                 .performance(performance)
-                .name(info.getReservationName())
-                .phoneNumber(info.getReservationPhoneNumber())
-                .round(info.getRound())
+                .name(reserveCreateRequest.getReservationName())
+                .phoneNumber(reserveCreateRequest.getReservationPhoneNumber())
+                .round(reserveCreateRequest.getRound())
                 .gate(1)
-                .line(info.getLine())
-                .seat(info.getSeat())
+                .line(reserveCreateRequest.getLine())
+                .seat(reserveCreateRequest.getSeat())
                 .build();
     }
 
@@ -67,6 +68,18 @@ public class Reservation extends AuditInformation {
                 .line(this.line)
                 .reservationName(this.name)
                 .phoneNumber(this.phoneNumber)
+                .build();
+    }
+
+    public ReserveCreateResponse toReserveCreateResponse() {
+        return ReserveCreateResponse.builder()
+                .performanceId(this.performance.getId())
+                .performanceName(this.performance.getName())
+                .round(this.round)
+                .seat(this.seat)
+                .line(this.line)
+                .reservationName(this.name)
+                .reservationPhoneNumber(this.phoneNumber)
                 .build();
     }
 }
