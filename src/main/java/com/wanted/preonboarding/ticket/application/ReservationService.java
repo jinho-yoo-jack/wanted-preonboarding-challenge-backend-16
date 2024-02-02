@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.ticket.application.discount.DiscountPolicy;
 import com.wanted.preonboarding.ticket.application.dto.ReservationCancelParam;
 import com.wanted.preonboarding.ticket.application.dto.ReservationCreateParam;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
@@ -26,6 +27,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final PerformanceRepository performanceRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final DiscountPolicy discountPolicy;
 
     public List<Reservation> getReservations(String userName, String userPhoneNumber) {
         return reservationRepository.findAllByUserInfo(UserInfo.builder().name(userName).phoneNumber(userPhoneNumber).build());
@@ -38,9 +40,11 @@ public class ReservationService {
         performanceRepository.save(performance);
 
         Integer price = performance.getPrice();
-        // TODO 할인정책에 따른 금액을 구한다.
+        Integer discountedPrice = discountPolicy.calculateDiscountedPrice(price,performance);
+        System.out.println("정가: " + price);
+        System.out.println("할인가: " + discountedPrice);
 
-        if(param.getAmount() < price){
+        if(param.getAmount() < discountedPrice){
             throw new PaymentException("잔액이 부족합니다.");
         }
 
