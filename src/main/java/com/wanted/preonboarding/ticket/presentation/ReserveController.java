@@ -21,20 +21,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RequiredArgsConstructor
-@RequestMapping("/v1/app")
+@RequestMapping("/v1/app/reserve")
 @RestController
 public class ReserveController {
 
     private final ReserveService reserveService;
 
-    @PostMapping("/reserve")
+    @PostMapping
     public ResponseEntity<ReservationInfo> reservePerformance(@RequestBody ReservationRequest request) {
         LocalDateTime requestTime = LocalDateTime.now();
         ReservationInfo reservationInfo = reserveService.reserve(request, requestTime);
         return ResponseEntity.ok(reservationInfo);
     }
 
-    @GetMapping("/reserve")
+    @GetMapping
     public ResponseEntity<PageResponse<ReservationModel>> findReservation(@RequestBody ReservationInfoRequest request,
                                                                  @PageableDefault(sort = "createAt", direction = DESC) Pageable pageable) {
         PageResponse<ReservationModel> result = reserveService.findReservation(request.name(), request.phone(), pageable);
