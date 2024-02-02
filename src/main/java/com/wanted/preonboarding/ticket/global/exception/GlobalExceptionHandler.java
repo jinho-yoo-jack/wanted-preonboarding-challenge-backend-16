@@ -15,7 +15,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @Slf4j
-//@RestControllerAdvice
 @ControllerAdvice
 @RestController
 public class GlobalExceptionHandler {
