@@ -73,6 +73,7 @@ public class User {
     private Date birthday;
     @Column(nullable = true)
     private LocalDateTime createdAt;
+    @Column(columnDefinition = "DEFAULT INT 0")
     private Long defaultPaymentCode;
     @OneToMany(mappedBy = "userInfo")
     private List<PaymentCard> paymentCards;
@@ -93,4 +94,5 @@ public class User {
     public void updatedefaultPaymentCode(Long paymentCardId){
         this.defaultPaymentCode = paymentCardId;
     }
+
 }
