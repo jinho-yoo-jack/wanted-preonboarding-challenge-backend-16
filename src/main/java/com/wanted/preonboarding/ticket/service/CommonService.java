@@ -36,17 +36,16 @@ public class CommonService {
         if (user.isPresent()) {
             return UserInfo.of(user.get());
         }
+
         // 유저 정보가 없으면 => 새로운 유저 ID로
-        else {
-            UserInfo newUserInfo = UserInfo.builder()
-                    .name(name)
-                    .phoneNumber(phoneNumber)
-                    .build();
-            User newUser = User.of(newUserInfo);
-            UUID userId = userRepository.save(newUser).getId();
-            newUserInfo.setUserId(userId);
-            return newUserInfo;
-        }
+        UserInfo newUserInfo = UserInfo.builder()
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .build();
+        User newUser = User.of(newUserInfo);
+        UUID userId = userRepository.save(newUser).getId();
+        newUserInfo.setUserId(userId);
+        return newUserInfo;
     }
 
     public PerformanceInfo getPerformanceInfoById(UUID performanceId) {
