@@ -6,6 +6,7 @@ import com.wanted.preonboarding.ticket.domain.discount.model.DiscountType;
 import com.wanted.preonboarding.ticket.domain.performance.Performance;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceRepository;
 import com.wanted.preonboarding.ticket.domain.performance.model.PerformanceType;
+import com.wanted.preonboarding.ticket.domain.performance.model.ReserveState;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -40,7 +41,7 @@ class DiscountRepositoryTest {
             .round(1)
             .type(PerformanceType.CONCERT)
             .startDate(LocalDateTime.of(2024, 12, 31, 11, 59))
-            .isReserve("enable")
+            .isReserve(ReserveState.ENABLE)
             .build()).getId();
 
         LocalDateTime endDate = LocalDateTime.of(2099, 12, 31, 11, 59);
@@ -79,7 +80,7 @@ class DiscountRepositoryTest {
             .round(1)
             .type(PerformanceType.CONCERT)
             .startDate(LocalDateTime.of(2024, 12, 31, 11, 59))
-            .isReserve("enable")
+            .isReserve(ReserveState.ENABLE)
             .build()).getId();
 
         LocalDateTime endDate = LocalDateTime.of(2099, 12, 31, 11, 59);

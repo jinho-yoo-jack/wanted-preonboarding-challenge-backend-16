@@ -2,7 +2,7 @@ package com.wanted.preonboarding.ticket.domain.performance;
 
 import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.RESERVED;
 
-import com.wanted.preonboarding.ticket.domain.BaseTimeEntity;
+import com.wanted.preonboarding.ticket.domain.base.BaseTimeEntity;
 import com.wanted.preonboarding.ticket.domain.performance.model.ReserveState;
 import com.wanted.preonboarding.ticket.domain.performance.model.ReserveStateConverter;
 import jakarta.persistence.Column;

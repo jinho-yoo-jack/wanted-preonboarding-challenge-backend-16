@@ -1,8 +1,10 @@
 package com.wanted.preonboarding.ticket.domain.performance;
 
-import com.wanted.preonboarding.ticket.domain.BaseTimeEntity;
+import com.wanted.preonboarding.ticket.domain.base.BaseTimeEntity;
 import com.wanted.preonboarding.ticket.domain.performance.model.PerformanceType;
 import com.wanted.preonboarding.ticket.domain.performance.model.PerformanceTypeConverter;
+import com.wanted.preonboarding.ticket.domain.performance.model.ReserveState;
+import com.wanted.preonboarding.ticket.domain.performance.model.ReserveStateConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -45,10 +47,11 @@ public class Performance extends BaseTimeEntity {
     private LocalDateTime startDate;
 
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'enable'")
-    private String isReserve;
+    @Convert(converter = ReserveStateConverter.class)
+    private ReserveState isReserve;
 
     @Builder
-    public Performance(String name, int price, int round, PerformanceType type, LocalDateTime startDate, String isReserve) {
+    public Performance(String name, int price, int round, PerformanceType type, LocalDateTime startDate, ReserveState isReserve) {
         this.name = name;
         this.price = price;
         this.round = round;

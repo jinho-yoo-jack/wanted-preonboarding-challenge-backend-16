@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.reservation;
 
-import com.wanted.preonboarding.ticket.domain.BaseTimeEntity;
+import com.wanted.preonboarding.ticket.domain.base.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

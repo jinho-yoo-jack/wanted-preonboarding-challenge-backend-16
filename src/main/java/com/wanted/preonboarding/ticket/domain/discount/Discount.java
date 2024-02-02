@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.discount;
 
-import com.wanted.preonboarding.ticket.domain.BaseTimeEntity;
+import com.wanted.preonboarding.ticket.domain.base.BaseTimeEntity;
 import com.wanted.preonboarding.ticket.domain.discount.model.DiscountType;
 import com.wanted.preonboarding.ticket.domain.discount.model.DiscountTypeConverter;
 import jakarta.persistence.Column;
