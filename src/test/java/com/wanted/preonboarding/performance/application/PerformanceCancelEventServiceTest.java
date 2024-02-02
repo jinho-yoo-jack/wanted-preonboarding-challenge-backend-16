@@ -25,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.test.context.transaction.TestTransaction;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @DisplayName("이벤트: 예약 취소 - 리스너")
@@ -89,6 +91,24 @@ class PerformanceCancelEventServiceTest extends ServiceTest {
 				reservedItemResponse.phoneNumber()
 			).get(0);
 		assertThat(reservation.status()).isEqualTo(ReservationStatus.CANCEL);
+
+	}
+
+	@Test
+	@Transactional
+	public void 예약_취소_롤백시_구독자_알림_발송_진행되지_않음() throws InterruptedException {
+		//given
+		performService.subscribe(performId,userId);
+		//when
+		reservationService.cancel(cancelRequest);
+		TestTransaction.flagForRollback();
+		TestTransaction.end();
+		await();
+		//then
+		String message = NotifyMessageFactory.reservationCancel(performId);
+		verify(
+			notificationOutput, times(0)
+		).reservationCancelNotify(List.of(userId), message);
 
 	}
 
