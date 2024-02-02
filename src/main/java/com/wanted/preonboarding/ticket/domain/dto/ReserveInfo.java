@@ -1,12 +1,9 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
-import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Getter @Setter

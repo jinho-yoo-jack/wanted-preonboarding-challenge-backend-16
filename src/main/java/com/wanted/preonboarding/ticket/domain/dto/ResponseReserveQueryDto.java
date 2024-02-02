@@ -2,8 +2,7 @@ package com.wanted.preonboarding.ticket.domain.dto;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
-import lombok.Builder;
+import com.wanted.preonboarding.ticket.aop.dto.BaseResDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;

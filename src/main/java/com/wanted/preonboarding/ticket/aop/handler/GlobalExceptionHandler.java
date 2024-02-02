@@ -1,7 +1,9 @@
-package com.wanted.preonboarding.ticket.global.exception;
+package com.wanted.preonboarding.ticket.aop.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
+import com.wanted.preonboarding.ticket.aop.ResultCode;
+import com.wanted.preonboarding.ticket.aop.exception.ServiceException;
+import com.wanted.preonboarding.ticket.aop.dto.BaseResDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -25,9 +27,9 @@ public class GlobalExceptionHandler {
     private static final String NOT_BLANK = "NotBlank";
     private static final String PATTERN = "Pattern";
     private static final String MAX_BYTE = "MaxByte";
-    @ExceptionHandler(com.wanted.preonboarding.ticket.global.exception.ServiceException.class)
+    @ExceptionHandler(ServiceException.class)
     @ResponseStatus(HttpStatus.OK)
-    public BaseResDto exception(com.wanted.preonboarding.ticket.global.exception.ServiceException e) {
+    public BaseResDto exception(ServiceException e) {
         return BaseResDto.of(e.getResultCode(), e.getResultMessage());
     }
 

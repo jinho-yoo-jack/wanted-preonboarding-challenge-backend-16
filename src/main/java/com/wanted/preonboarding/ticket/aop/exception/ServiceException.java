@@ -1,5 +1,6 @@
-package com.wanted.preonboarding.ticket.global.exception;
+package com.wanted.preonboarding.ticket.aop.exception;
 
+import com.wanted.preonboarding.ticket.aop.ResultCode;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 

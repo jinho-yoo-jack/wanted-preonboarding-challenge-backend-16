@@ -1,7 +1,5 @@
-package com.wanted.preonboarding.ticket.global.dto;
+package com.wanted.preonboarding.ticket.aop.dto;
 
-import com.wanted.preonboarding.ticket.global.exception.ResultCode;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;

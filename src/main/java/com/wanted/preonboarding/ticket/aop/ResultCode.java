@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.global.exception;
+package com.wanted.preonboarding.ticket.aop;
 
 public enum ResultCode {
     SUCCESS(200, ResultMessage.SUCCESS),

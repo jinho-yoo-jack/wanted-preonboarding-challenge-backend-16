@@ -24,7 +24,7 @@ public class SendMessagePerformanceSeatInfoDto {
     public static SendMessagePerformanceSeatInfoDto from(PerformanceSeatInfo entity) {
         return SendMessagePerformanceSeatInfoDto.builder()
                 .performanceId(entity.getPerformanceId())
-//                .performanceName(entity.getName()) 공연명
+                //.performanceName(entity.getName()) 공연명
                 .round(entity.getRound())
                 //.startDate() //시작일시
                 .gate(entity.getGate())

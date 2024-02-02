@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
-import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
+import com.wanted.preonboarding.ticket.aop.dto.BaseResDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

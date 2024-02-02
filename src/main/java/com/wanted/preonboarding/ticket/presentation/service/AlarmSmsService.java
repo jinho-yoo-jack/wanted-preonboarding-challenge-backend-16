@@ -10,9 +10,9 @@ import com.wanted.preonboarding.ticket.domain.dto.SendMessagePerformanceSeatInfo
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
-import com.wanted.preonboarding.ticket.global.exception.ResultCode;
-import com.wanted.preonboarding.ticket.global.exception.ServiceException;
+import com.wanted.preonboarding.ticket.aop.dto.BaseResDto;
+import com.wanted.preonboarding.ticket.aop.ResultCode;
+import com.wanted.preonboarding.ticket.aop.exception.ServiceException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
