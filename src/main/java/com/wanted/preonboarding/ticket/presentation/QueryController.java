@@ -21,11 +21,11 @@ public class QueryController {
     private final TicketSeller ticketSeller;
 
     /**
-     * 공연 및 전시 정보 조회(목록)
-     * @return
+     * 예약 가능 공연 및 전시 정보 조회(목록)
+     * @return ResponseEntity<ResponseHandler<List<PerformanceInfo>>>
      */
-    @GetMapping(value = "/all/performance")
-    public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
+    @GetMapping(value = "/reservable/performance")
+    public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllReservablePerformanceInfoList() {
         System.out.println("getAllPerformanceInfoList");
         return ResponseEntity
             .ok()
@@ -38,9 +38,26 @@ public class QueryController {
     }
 
     /**
+     * 예약 불가능 공연 및 전시 정보 조회(목록)
+     * @return ResponseEntity<ResponseHandler<List<PerformanceInfo>>>
+     */
+    @GetMapping(value = "/disable/performance")
+    public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllDisablePerformanceInfoList() {
+        System.out.println("getAllPerformanceInfoList");
+        return ResponseEntity
+            .ok()
+            .body(ResponseHandler.<List<PerformanceInfo>>builder()
+                .message("Success")
+                .statusCode(HttpStatus.OK)
+                .data(ticketSeller.getAllPerformanceUnreservaleList())
+                .build()
+            );
+    }
+
+    /**
      * 공연 상세 정보 조회
      * @param performanceId
-     * @return
+     * @return ResponseEntity<ResponseHandler<PerformanceDetailInfo>>
      */
     @GetMapping(value = "/{performanceId}")
     public ResponseEntity<ResponseHandler<PerformanceDetailInfo>> getPerformanceDetailInfo(@PathVariable String performanceId){

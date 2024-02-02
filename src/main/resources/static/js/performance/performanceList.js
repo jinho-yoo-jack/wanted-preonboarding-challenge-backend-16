@@ -1,14 +1,30 @@
 window.onload = () => {
 
     const performanceList = document.getElementById("performanceList");
+    const reservable = document.getElementById("reserve");
+    const disable = document.getElementById("disable");
+    const reservableUrl = "/query/reservable/performance"
+    const disableUrl = "/query/disable/performance"
 
-    const url = "/query/all/performance"
+    reservable.addEventListener("click", () => {
+        performanceList.replaceChildren();
+        createList(reservableUrl);
+    });
+    disable.addEventListener("click", () => {
+        performanceList.replaceChildren();
+        createList(disableUrl);
+    })
+
+    createList(reservableUrl);
+};
+
+function createList(url) {
+
     fetch(url).then((response) => response.json())
         .then((data) => {
             console.log(data);
             // let listData = JSON.parse(data);
             let listData = data["data"];
-
             for (var i = 0; i < listData.length; i++) {
                 let performanceId = listData[i].performanceId;
                 let performanceName = listData[i].performanceName;
@@ -63,24 +79,24 @@ window.onload = () => {
                 newPerformance.appendChild(newStartDate);
                 newStartDate.innerText = startDate;
                 newPerformance.appendChild(newIsReserve);
+
                 if (isReserve === "enable") {
                     newIsReserve.innerText = "예약 가능";
+                    newPerformance.appendChild(seatInfo);
+                    seatInfo.addEventListener("click", function (event) {
+                        location.href = "/performance/" + performanceId;
+                    })
                 }
                 if (isReserve === "disable") {
                     newIsReserve.innerText = "예약 불가능";
+
+                    let reserveAlarm = document.createElement("input")
+                    reserveAlarm.setAttribute("type", "button")
+                    reserveAlarm.setAttribute("class", "col btn");
+                    reserveAlarm.setAttribute("name", "reserveAlarm");
+                    reserveAlarm.setAttribute("value", "취소표 알람 설정하기");
+                    newPerformance.appendChild(reserveAlarm);
                 }
-                newPerformance.appendChild(seatInfo);
-                seatInfo.addEventListener("click", function (event) {
-                    location.href = "/performance/" + performanceId;
-                })
-
-
-
             }
-
-
-
         })
-
-
-};
+}
