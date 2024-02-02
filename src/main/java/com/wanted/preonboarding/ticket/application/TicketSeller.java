@@ -63,7 +63,7 @@ public class TicketSeller {
             checkIsReserved(reserveInfo);
 
             // 3. 예매 진행
-            reservationRepository.save(Reservation.of(reserveInfo));
+            reservationRepository.save(Reservation.from(reserveInfo));
             return true;
         } else {
             return false;
