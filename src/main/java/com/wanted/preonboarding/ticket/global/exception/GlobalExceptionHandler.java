@@ -33,13 +33,13 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(BindException.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public BaseResDto exception(BindException e) {
 
         FieldError fieldError = e.getBindingResult().getFieldError();
 
         if (fieldError == null) {
-            return BaseResDto.of(ResultCode.INTERNAL_ERROR.getResultCode(), ResultCode.INTERNAL_ERROR.getResultMessage());
+            return BaseResDto.of(ResultCode.VALID_NOT_NULL.getResultCode(), ResultCode.VALID_NOT_NULL.getResultMessage());
         }
 
         return findBindError(fieldError);
