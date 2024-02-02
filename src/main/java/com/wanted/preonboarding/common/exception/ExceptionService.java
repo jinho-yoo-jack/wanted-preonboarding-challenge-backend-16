@@ -1,8 +1,5 @@
 package com.wanted.preonboarding.common.exception;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -25,9 +22,7 @@ public class ExceptionService {
 	 * @param methodArgumentNotValidException
 	 * @return
 	 */
-	public Map<String,Object> selectMethodArgumentNotValidExceptionMessage(MethodArgumentNotValidException methodArgumentNotValidException){
-		Map<String, Object> errorMap = new HashMap<String, Object>();
-		
+	public ExceptionMessageInfo selectMethodArgumentNotValidExceptionMessage(MethodArgumentNotValidException methodArgumentNotValidException){
 		BindingResult bindingResult = methodArgumentNotValidException.getBindingResult();
 		StringBuffer sb = new StringBuffer();
 		
@@ -45,10 +40,12 @@ public class ExceptionService {
         if (sb.length() > 0) {
         	sb.setLength(sb.length() - 2);
         }
-        errorMap.put("errorCode", MethodArgumentNotValidExceptionErrorCode);
-        errorMap.put("message", sb.toString());
+        sb.append("은 비어있을수 없습니다.");
         
-		return errorMap;
+		return ExceptionMessageInfo.builder()
+				.errorCode(MethodArgumentNotValidExceptionErrorCode)
+				.message(sb.toString())
+				.build();
 	}
 	
 	/**
@@ -57,13 +54,11 @@ public class ExceptionService {
 	 * @param httpMessageNotReadableException
 	 * @return
 	 */
-	public Map<String,Object> selectHttpMessageNotReadableExceptionMessage(HttpMessageNotReadableException httpMessageNotReadableException) {
-		Map<String, Object> errorMap = new HashMap<String, Object>();
-		
-		errorMap.put("errorCode", HttpMessageNotReadableExceptionErrorCode);
-		errorMap.put("message", "API 메세지 형태를 확인해 주세요.");
-		
-		return errorMap;
+	public ExceptionMessageInfo selectHttpMessageNotReadableExceptionMessage(HttpMessageNotReadableException httpMessageNotReadableException) {
+		return ExceptionMessageInfo.builder()
+				.errorCode(HttpMessageNotReadableExceptionErrorCode)
+				.message("API 메세지 형태를 확인해 주세요.")
+				.build();
 	}
 	
 	/**
@@ -72,13 +67,11 @@ public class ExceptionService {
 	 * @param noResourceFoundException
 	 * @return
 	 */
-	public Map<String,Object> selectNoResourceFoundExceptionMessage(NoResourceFoundException noResourceFoundException) {
-		Map<String, Object> errorMap = new HashMap<String, Object>();
-		
-		errorMap.put("errorCode", NoResourceFoundExceptionErrorCode);
-		errorMap.put("message", "API 주소를 확인해 주세요.");
-		
-		return errorMap;
+	public ExceptionMessageInfo selectNoResourceFoundExceptionMessage(NoResourceFoundException noResourceFoundException) {
+		return ExceptionMessageInfo.builder()
+				.errorCode(NoResourceFoundExceptionErrorCode)
+				.message("API 주소를 확인해 주세요.")
+				.build();
 	}
 	
 	/**
@@ -87,13 +80,11 @@ public class ExceptionService {
 	 * @param defaultException
 	 * @return
 	 */
-	public Map<String,Object> selectDefaultExceiptionMessage(Exception defaultException){
-		Map<String, Object> errorMap = new HashMap<String, Object>();
-		
-		errorMap.put("errorCode", DefaultExceiptionErrorCode);
-		errorMap.put("message", "알수없는 이유의 오류가 발생했습니다.");
-		
-		return errorMap;
+	public ExceptionMessageInfo selectDefaultExceiptionMessage(Exception defaultException){
+		return ExceptionMessageInfo.builder()
+				.errorCode(DefaultExceiptionErrorCode)
+				.message("알수없는 이유의 오류가 발생했습니다.")
+				.build();
 	}
 
 	

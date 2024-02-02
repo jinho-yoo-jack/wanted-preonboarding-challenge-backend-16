@@ -1,7 +1,5 @@
 package com.wanted.preonboarding.common.exception;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -29,7 +27,7 @@ public class ExceptionAdvisor {
      * @return
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String,Object>> processValidationError(MethodArgumentNotValidException methodArgumentNotValidException) {
+    public ResponseEntity<ExceptionMessageInfo> processValidationError(MethodArgumentNotValidException methodArgumentNotValidException) {
         return ResponseEntity.badRequest().body(exceptionService.selectMethodArgumentNotValidExceptionMessage(methodArgumentNotValidException));
     }
     /**
@@ -39,7 +37,7 @@ public class ExceptionAdvisor {
      * @return
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<Map<String,Object>> processHttpMessageNotReadableError(HttpMessageNotReadableException httpMessageNotReadableException) {
+	public ResponseEntity<ExceptionMessageInfo> processHttpMessageNotReadableError(HttpMessageNotReadableException httpMessageNotReadableException) {
 		return ResponseEntity.badRequest().body(exceptionService.selectHttpMessageNotReadableExceptionMessage(httpMessageNotReadableException));
 	}
     /**
@@ -49,7 +47,7 @@ public class ExceptionAdvisor {
      * @return
      */
     @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<Map<String,Object>> processNoResourceFoundError(NoResourceFoundException noResourceFoundException) {
+    public ResponseEntity<ExceptionMessageInfo> processNoResourceFoundError(NoResourceFoundException noResourceFoundException) {
     	return ResponseEntity.badRequest().body(exceptionService.selectNoResourceFoundExceptionMessage(noResourceFoundException));
     }
     /**
@@ -59,7 +57,7 @@ public class ExceptionAdvisor {
      * @return
      */
     @ExceptionHandler(Exception.class)
-	public ResponseEntity<Map<String,Object>> processDefaultError(Exception exception) {
+	public ResponseEntity<ExceptionMessageInfo> processDefaultError(Exception exception) {
 		return ResponseEntity.badRequest().body(exceptionService.selectDefaultExceiptionMessage(exception));
 	}
 }
