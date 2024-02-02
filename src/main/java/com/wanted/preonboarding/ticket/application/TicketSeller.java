@@ -42,17 +42,7 @@ public class TicketSeller {
                 performance.getId(),performance.getRound(), info.getLine(), info.getSeat())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
-        return ResponseReserveQueryDto
-                .builder()
-                .performanceId(performance.getId())
-                .performanceName(performance.getName())
-                .round(reservation.getRound())
-                .gate(reservation.getGate())
-                .line(reservation.getLine())
-                .seat(reservation.getSeat())
-                .reservationName(reservation.getName())
-                .reservationPhoneNumber(reservation.getPhoneNumber())
-                .build();
+        return ResponseReserveQueryDto.of(performance, reservation);
     }
 
     @Transactional

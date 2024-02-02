@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
+import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
 import lombok.Builder;
@@ -30,6 +31,20 @@ public class ResponseReserveQueryDto extends BaseResDto {
                 .seat(entity.getSeat())
                 .reservationName(entity.getName())
                 .reservationPhoneNumber(entity.getPhoneNumber())
+                .build();
+    }
+
+    public static ResponseReserveQueryDto of(Performance performance, Reservation reservation) {
+        return ResponseReserveQueryDto
+                .builder()
+                .performanceId(performance.getId())
+                .performanceName(performance.getName())
+                .round(reservation.getRound())
+                .gate(reservation.getGate())
+                .line(reservation.getLine())
+                .seat(reservation.getSeat())
+                .reservationName(reservation.getName())
+                .reservationPhoneNumber(reservation.getPhoneNumber())
                 .build();
     }
 }
