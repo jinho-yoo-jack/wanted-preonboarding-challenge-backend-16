@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.core.config.UserAuth;
 import com.wanted.preonboarding.ticket.application.TicketSeller;
+import com.wanted.preonboarding.ticket.domain.dto.ReservationId;
 import com.wanted.preonboarding.ticket.domain.dto.ReservationSearchResult;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveResult;
@@ -81,12 +82,12 @@ public class PageController {
      */
     @PostMapping("/performance/{performanceId}/{round:[0-9]*}")
     public String reservationPage(@PathVariable String performanceId, @PathVariable int round, @ModelAttribute ReserveInfo reserveInfo, RedirectAttributes redirectAttributes){
-        Integer reservationId = 0;
+        ReservationId reservationId = new ReservationId(0);
         boolean result = ticketSeller.reserve(reserveInfo, reservationId);
         System.out.println("RESULT IS " + result);
-        System.out.println("reservationId IS " + reservationId);
+        System.out.println("reservationId IS " + reservationId.getReservationId());
         if(result) {
-            redirectAttributes.addAttribute("reservationId", reservationId);
+            redirectAttributes.addAttribute("reservationId", reservationId.getReservationId());
             return "redirect:/reservation/{reservationId}";
         }
         redirectAttributes.addAttribute("performanceId", performanceId);

@@ -4,6 +4,7 @@ import com.wanted.preonboarding.discountpolicy.Discount;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceAndSeatInfo;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceDetailInfo;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
+import com.wanted.preonboarding.ticket.domain.dto.ReservationId;
 import com.wanted.preonboarding.ticket.domain.dto.ReservationSearchResult;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveResult;
@@ -91,7 +92,7 @@ public class TicketSeller {
         return detailInfos.stream().map(SeatInfo::of).toList();
     }
     @Transactional
-    public boolean reserve(ReserveInfo reserveInfo, Integer reservationId) {
+    public boolean reserve(ReserveInfo reserveInfo, ReservationId reservationId) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
 
         Performance performance = performanceRepository.findById(reserveInfo.getPerformanceId())
@@ -122,7 +123,7 @@ public class TicketSeller {
                 performance.soldOut("disable");
                 performanceRepository.save(performance);
             }
-            reservationId = reservation.getId();
+            reservationId.setReservationId(reservation.getId());
             return true;
         } else {
             return false;
