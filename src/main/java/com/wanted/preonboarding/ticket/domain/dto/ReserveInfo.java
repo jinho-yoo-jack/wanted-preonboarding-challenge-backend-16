@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.UUID;
 
 @Getter @Setter
-@SuperBuilder
-public class ReserveInfo extends BaseResDto {
+@Builder
+public class ReserveInfo {
     // 공연 및 전시 정보 + 예약자 정보
     private UUID performanceId; // 예약을 원하는 공연 또는 전시회ID
     private String reservationName; // 고객의 이름

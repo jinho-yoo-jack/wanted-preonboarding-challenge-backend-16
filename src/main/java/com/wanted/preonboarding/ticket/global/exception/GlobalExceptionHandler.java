@@ -15,7 +15,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @Slf4j
-@RestControllerAdvice
+//@RestControllerAdvice
+@ControllerAdvice
 @RestController
 public class GlobalExceptionHandler {
 
@@ -66,12 +67,6 @@ public class GlobalExceptionHandler {
         return BaseResDto.of(ResultCode.VALID_NOT_NULL.getResultCode(), ResultCode.VALID_NOT_NULL.getResultMessage().replace(FIELD, e.getParameterName()));
     }
 
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public BaseResDto exception(Exception e) {
-        return BaseResDto.of(ResultCode.INTERNAL_ERROR.getResultCode(), ResultCode.INTERNAL_ERROR.getResultMessage());
-    }
 
     @ExceptionHandler(UnsupportedEncodingException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
