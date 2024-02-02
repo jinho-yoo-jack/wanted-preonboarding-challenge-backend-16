@@ -20,7 +20,7 @@ public class PerformanceInfo extends BaseResDto {
     private Date startDate;
     private String isReserve;
 
-    public static PerformanceInfo of(Performance entity) {
+    public static PerformanceInfo from(Performance entity) {
         return PerformanceInfo.builder()
             .performanceId(entity.getId())
             .performanceName(entity.getName())

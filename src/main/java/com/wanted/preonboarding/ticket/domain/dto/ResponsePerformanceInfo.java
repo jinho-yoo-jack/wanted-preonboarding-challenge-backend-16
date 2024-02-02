@@ -20,7 +20,7 @@ public class ResponsePerformanceInfo {
     private String isReserve;
     private int round;
 
-    public static ResponsePerformanceInfo of (Performance entity) {
+    public static ResponsePerformanceInfo from (Performance entity) {
         return ResponsePerformanceInfo.builder()
                 .performanceId(entity.getId())
                 .performanceName(entity.getName())

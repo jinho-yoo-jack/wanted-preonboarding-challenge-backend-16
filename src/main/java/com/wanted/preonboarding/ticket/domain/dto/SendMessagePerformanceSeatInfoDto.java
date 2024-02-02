@@ -3,7 +3,6 @@ package com.wanted.preonboarding.ticket.domain.dto;
 
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +21,7 @@ public class SendMessagePerformanceSeatInfoDto {
     private char line; //좌석정보
     private int seat; //좌석정보
 
-    public static SendMessagePerformanceSeatInfoDto of(PerformanceSeatInfo entity) {
+    public static SendMessagePerformanceSeatInfoDto from(PerformanceSeatInfo entity) {
         return SendMessagePerformanceSeatInfoDto.builder()
                 .performanceId(entity.getPerformanceId())
 //                .performanceName(entity.getName()) 공연명

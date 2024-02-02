@@ -74,7 +74,7 @@ public class AlarmSmsService {
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
 
-        SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto = SendMessagePerformanceSeatInfoDto.of(performanceSeatInfo);
+        SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto = SendMessagePerformanceSeatInfoDto.from(performanceSeatInfo);
         sendMessagePerformanceSeatInfoDto.setPerformanceName(performance.getName());
         sendMessagePerformanceSeatInfoDto.setStartDate(performance.getStart_date());
 

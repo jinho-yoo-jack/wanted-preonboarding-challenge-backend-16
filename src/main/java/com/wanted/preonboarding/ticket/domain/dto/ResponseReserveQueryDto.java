@@ -3,7 +3,6 @@ package com.wanted.preonboarding.ticket.domain.dto;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +21,7 @@ public class ResponseReserveQueryDto extends BaseResDto {
     private String reservationName; //이름
     private String reservationPhoneNumber; //연락처
 
-    public static ResponseReserveQueryDto of(Reservation entity) {
+    public static ResponseReserveQueryDto from(Reservation entity) {
         return ResponseReserveQueryDto.builder()
                 .performanceId(entity.getPerformanceId())
                 .round(entity.getRound())

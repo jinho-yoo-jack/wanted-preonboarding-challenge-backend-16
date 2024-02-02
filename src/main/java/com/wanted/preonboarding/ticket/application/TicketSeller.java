@@ -4,7 +4,6 @@ import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.global.dto.BaseResDto;
-import com.wanted.preonboarding.ticket.global.exception.InvalidInputException;
 import com.wanted.preonboarding.ticket.global.exception.ResultCode;
 import com.wanted.preonboarding.ticket.global.exception.ServiceException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
@@ -29,7 +28,7 @@ public class TicketSeller {
     public List<ResponsePerformanceInfo> getAllPerformanceInfoList() {
         return performanceRepository.findByIsReserve("enable")
             .stream()
-            .map(ResponsePerformanceInfo::of)
+            .map(ResponsePerformanceInfo::from)
             .toList();
     }
 
@@ -91,7 +90,7 @@ public class TicketSeller {
         Reservation reservation = reservationRepository.findByNameAndPhoneNumber(dto.getReservationName(), dto.getReservationPhoneNumber())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
-        ResponseReserveQueryDto responseQueryDto = ResponseReserveQueryDto.of(reservation);
+        ResponseReserveQueryDto responseQueryDto = ResponseReserveQueryDto.from(reservation);
 
         Performance performance = performanceRepository.findByIdAndRound(reservation.getPerformanceId(), reservation.getRound())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
