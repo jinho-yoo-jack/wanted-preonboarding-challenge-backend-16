@@ -27,7 +27,9 @@ public class AlarmApp {
     private final AlarmRepository alarmRepository;
 
     public void subscribeReservation(SubscriberPerformanceRequestDto requestDto){
-        subscribeReservationRepository.save(ReservationAlarm.of(requestDto));
+        Performance performance = performanceRepository.findById(requestDto.getPerformanceId())
+                .orElseThrow(EntityNotFoundException::new);
+        subscribeReservationRepository.save(ReservationAlarm.of(requestDto,performance));
     }
 
     public void sendAlarm(UUID performanceId){

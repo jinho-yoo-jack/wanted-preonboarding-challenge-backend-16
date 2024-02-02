@@ -13,12 +13,11 @@ import java.util.*;
 @RestController
 @RequestMapping("/reserve")
 @RequiredArgsConstructor
-public class ReserveController {
+public class PerformanceController {
     private final TicketSeller ticketSeller;
 
     @PostMapping("/")
-    public List<ResponseReserveInfo> reservation() throws Exception {
-        System.out.println("reservation");
+    public List<ResponseReserveInfo> createdPerformance() throws Exception {
         List<String> seats = Arrays.asList("A1", "A2");
         ReserveInfo reserveInfo = ReserveInfo.builder()
                 .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))

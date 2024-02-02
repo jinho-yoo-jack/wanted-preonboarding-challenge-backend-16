@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -18,8 +19,7 @@ public class ReserveInfo {
     private String reservationStatus; // 예약; 취소;
     private long amount;
     private int round;
-    private char line;
-    private int seat;
+    private List<String> seats;
     private String discountPolicy;
 
 }

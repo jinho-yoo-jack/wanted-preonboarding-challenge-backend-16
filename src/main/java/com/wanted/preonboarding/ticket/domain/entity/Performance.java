@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.domain.dto.CreatedPerformanceRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,4 +35,15 @@ public class Performance {
     private Date start_date;
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;
+
+    public static Performance of(CreatedPerformanceRequestDto requestDto){
+        return new PerformanceBuilder()
+                .name(requestDto.getPerformanceName())
+                .price(requestDto.getPrice())
+                .round(requestDto.getRound())
+                .type(requestDto.getType())
+                .start_date(requestDto.getStart_date())
+                .isReserve("able")
+                .build();
+    }
 }

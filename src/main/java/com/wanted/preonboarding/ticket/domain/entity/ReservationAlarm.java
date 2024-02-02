@@ -2,10 +2,7 @@ package com.wanted.preonboarding.ticket.domain.entity;
 
 
 import com.wanted.preonboarding.ticket.domain.dto.SubscriberPerformanceRequestDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,18 +17,21 @@ public class ReservationAlarm {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private UUID performanceId;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "performance_id")
+    private Performance performance;
+
     private String receiver;
 
     @Builder
-    public ReservationAlarm(UUID performanceId, String receiver) {
-        this.performanceId = performanceId;
+    public ReservationAlarm(Performance performance, String receiver) {
+        this.performance = performance;
         this.receiver = receiver;
     }
 
-    public static ReservationAlarm of(SubscriberPerformanceRequestDto requestDto){
+    public static ReservationAlarm of(SubscriberPerformanceRequestDto requestDto,Performance performance){
         return ReservationAlarm.builder()
-            .performanceId(requestDto.getPerformanceId())
+            .performance(performance)
             .receiver(requestDto.getReceiver())
             .build();
 

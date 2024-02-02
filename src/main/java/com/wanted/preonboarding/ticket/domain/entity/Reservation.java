@@ -33,18 +33,16 @@ public class Reservation {
     @Column(nullable = false)
     private int round;
     private int gate;
-    private char line;
-    private int seat;
+    private String seat;
 
-    public static Reservation of(ReserveInfo info) {
+    public static Reservation of(ReserveInfo info,PerformanceSeatInfo seatInfo) {
         return Reservation.builder()
             .performanceId(info.getPerformanceId())
             .name(info.getReservationName())
             .phoneNumber(info.getReservationPhoneNumber())
             .round(info.getRound())
             .gate(1)
-            .line(info.getLine())
-            .seat(info.getSeat())
+            .seat(seatInfo.getSeatNumber())
             .build();
     }
 

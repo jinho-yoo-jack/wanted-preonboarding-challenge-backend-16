@@ -17,7 +17,6 @@ public class ResponseReserveInfo {
     private String reservationName;
     private String reservationPhoneNumber;
     private int round;
-    private char line;
     private int seat;
     private int gate;
 
@@ -29,7 +28,6 @@ public class ResponseReserveInfo {
                 .performanceName(performance.getName())
                 .performanceId(performance.getId())
                 .round(entity.getRound())
-                .line(entity.getLine())
                 .seat(entity.getSeat())
                 .gate(entity.getGate())
                 .build();
