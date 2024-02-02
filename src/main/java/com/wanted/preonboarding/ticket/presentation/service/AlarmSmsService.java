@@ -67,7 +67,7 @@ public class AlarmSmsService {
 
         isSendReserveExist(dto);
 
-        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findByUUID(dto.getPerformanceId())
+        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findByPerformanceIdAndIsReserve(dto.getPerformanceId(), "cancel")
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
 
         Performance performance = performanceRepository.findById(dto.getPerformanceId())
