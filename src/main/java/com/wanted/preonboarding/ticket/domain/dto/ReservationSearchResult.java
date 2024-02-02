@@ -23,7 +23,7 @@ public class ReservationSearchResult {
             .round(entity.getPerformance().getRound())
             .line(entity.getLine())
             .seat(entity.getSeat())
-            .startDate(entity.getPerformance().getStart_date())
+            .startDate(entity.getPerformance().getStartDate())
             .createAt(entity.getCreatedAt())
             .build();
     }

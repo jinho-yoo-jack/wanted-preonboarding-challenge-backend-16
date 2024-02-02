@@ -20,7 +20,7 @@ import java.util.UUID;
  * private int price;  // 가격
  * private int round;  // 공연/전시 회차
  * private int type;   // 공연 타입 ('NONE, CONCERT, EXHIBITION')
- * private Date start_date;    // 공연 일시
+ * private Date startDate;    // 공연 일시
  * private String isReserve;   // 예약 여부
  */
 @Entity
@@ -46,7 +46,7 @@ public class Performance {
     @Column(nullable = false)
     private int type;   // 공연 타입 ('NONE, CONCERT, EXHIBITION')
     @Column(nullable = false)
-    private LocalDateTime start_date;    // 공연 일시
+    private LocalDateTime startDate;    // 공연 일시
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;   // 예약 여부
     @Column(nullable = false, columnDefinition = "DATETIME DEFAULT NOW()")

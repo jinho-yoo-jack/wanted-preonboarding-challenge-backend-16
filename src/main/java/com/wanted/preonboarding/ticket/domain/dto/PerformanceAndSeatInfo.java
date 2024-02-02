@@ -1,9 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
-import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +34,7 @@ public class PerformanceAndSeatInfo {
             .performanceName(entity.getPerformance().getName())
             .performancePrice(entity.getPerformance().getPrice())
             .performanceRound(entity.getPerformance().getRound())
-            .startDate(entity.getPerformance().getStart_date())
+            .startDate(entity.getPerformance().getStartDate())
             .isReserve(entity.getIsReserve())
             .seat(entity.getSeat())
             .line(entity.getLine())

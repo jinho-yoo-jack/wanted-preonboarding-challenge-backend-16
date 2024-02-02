@@ -24,7 +24,7 @@ public class PerformanceInfo {
             .performanceName(entity.getName())
             .performanceType(convertCodeToName(entity.getType()))
             .performanceRound(entity.getRound())
-            .startDate(entity.getStart_date().toLocalDate())
+            .startDate(entity.getStartDate().toLocalDate())
             .isReserve(entity.getIsReserve())
             .build();
     }
