@@ -1,9 +1,9 @@
-package com.wanted.preonboarding.ticket.application.alarm;
+package com.wanted.preonboarding.ticket.application.notification;
 
-import com.wanted.preonboarding.ticket.domain.performance.PerformanceAlarm;
-import com.wanted.preonboarding.ticket.domain.performance.PerformanceAlarmRepository;
+import com.wanted.preonboarding.ticket.domain.notification.Notification;
+import com.wanted.preonboarding.ticket.domain.notification.NotificationRepository;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceRepository;
-import com.wanted.preonboarding.ticket.dto.response.alarm.AlarmResponse;
+import com.wanted.preonboarding.ticket.dto.response.alarm.NotificationResponse;
 import com.wanted.preonboarding.ticket.exception.notfound.NotFoundException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
-public class PerformanceAlarmService implements AlarmService {
+public class PerformanceNotificationRegister implements NotificationRegister {
 
     private final PerformanceRepository performanceRepository;
-    private final PerformanceAlarmRepository alarmRepository;
+    private final NotificationRepository alarmRepository;
 
     @Override
     public boolean isTargetExist(final String targetId) {
@@ -26,15 +26,15 @@ public class PerformanceAlarmService implements AlarmService {
 
     @Transactional
     @Override
-    public AlarmResponse post(final String targetId, final String name, final String phone) {
+    public NotificationResponse register(final String targetId, final String name, final String phone) {
         if (!isTargetExist(targetId)) throw new NotFoundException("알람 대상을 찾을 수 없습니다.");
 
-        PerformanceAlarm alarm = PerformanceAlarm.builder()
-            .performanceId(UUID.fromString(targetId))
+        Notification notification = Notification.builder()
+            .targetId(targetId)
             .name(name)
             .phoneNumber(phone)
             .build();
 
-        return AlarmResponse.of(alarmRepository.save(alarm));
+        return NotificationResponse.of(alarmRepository.save(notification));
     }
 }

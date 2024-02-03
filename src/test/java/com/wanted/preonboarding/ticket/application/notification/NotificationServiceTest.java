@@ -1,21 +1,18 @@
-package com.wanted.preonboarding.ticket.application.alarm;
+package com.wanted.preonboarding.ticket.application.notification;
 
 import static com.wanted.preonboarding.ticket.domain.performance.model.PerformanceType.CONCERT;
 import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.ENABLE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
+import com.wanted.preonboarding.ticket.domain.notification.Notification;
 import com.wanted.preonboarding.ticket.domain.performance.Performance;
-import com.wanted.preonboarding.ticket.domain.performance.PerformanceAlarm;
-import com.wanted.preonboarding.ticket.domain.performance.PerformanceAlarmRepository;
+import com.wanted.preonboarding.ticket.domain.notification.NotificationRepository;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceRepository;
-import com.wanted.preonboarding.ticket.domain.performance.model.ReserveState;
-import com.wanted.preonboarding.ticket.dto.response.alarm.AlarmResponse;
+import com.wanted.preonboarding.ticket.dto.response.alarm.NotificationResponse;
 import com.wanted.preonboarding.ticket.exception.notfound.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,16 +21,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
 @SpringBootTest
-class PerformanceAlarmServiceTest {
+class NotificationServiceTest {
 
     @Autowired
-    PerformanceAlarmService alarmService;
+    PerformanceNotificationRegister alarmService;
 
     @Autowired
     PerformanceRepository performanceRepository;
 
     @Autowired
-    PerformanceAlarmRepository alarmRepository;
+    NotificationRepository alarmRepository;
 
     @BeforeEach
     void setUp() {
@@ -76,10 +73,10 @@ class PerformanceAlarmServiceTest {
         final String phone = "01012345678";
 
         // when
-        AlarmResponse response = alarmService.post(performanceId, name, phone);
+        NotificationResponse response = alarmService.register(performanceId, name, phone);
 
         // then
-        PerformanceAlarm alarm = alarmRepository.findById(response.id()).orElseThrow();
+        Notification alarm = alarmRepository.findById(response.id()).orElseThrow();
         assertThat(alarm.getName()).isEqualTo(name);
         assertThat(alarm.getPhoneNumber()).isEqualTo(phone);
     }
@@ -93,7 +90,7 @@ class PerformanceAlarmServiceTest {
         final String phone = "01012345678";
 
         // when & then
-        assertThatThrownBy(() -> alarmService.post(invalidId, name, phone))
+        assertThatThrownBy(() -> alarmService.register(invalidId, name, phone))
             .isInstanceOf(NotFoundException.class);
     }
 
@@ -105,10 +102,10 @@ class PerformanceAlarmServiceTest {
         final String name = "기우";
         final String phone = "01012345678";
 
-        alarmService.post(invalidId, name, phone);
+        alarmService.register(invalidId, name, phone);
 
         // when & then
-        assertThatThrownBy(() -> alarmService.post(invalidId, name, phone))
+        assertThatThrownBy(() -> alarmService.register(invalidId, name, phone))
             .isInstanceOf(DataIntegrityViolationException.class);
     }
 
