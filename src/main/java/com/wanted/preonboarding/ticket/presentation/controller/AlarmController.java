@@ -2,11 +2,9 @@ package com.wanted.preonboarding.ticket.presentation.controller;
 
 
 import com.wanted.preonboarding.ticket.domain.dto.ReservePossibleAlarmCustomerInfoDto;
-import com.wanted.preonboarding.ticket.aop.dto.BaseResDto;
-import com.wanted.preonboarding.ticket.presentation.service.AlarmSmsService;
+import com.wanted.preonboarding.ticket.presentation.service.AlarmMailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -15,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/alarm")
 @RequiredArgsConstructor
 public class AlarmController {
-
-    private final AlarmSmsService alarmSmsService;
+    private final AlarmMailService alarmMailService;
 
     /**
      * 예약 가능 알림 서비스
@@ -25,10 +22,8 @@ public class AlarmController {
      * @param dto
      * @return
      */
-    @PostMapping("/customer/performance-seat/new")
-    public ResponseEntity<BaseResDto> createAlarm(@RequestBody ReservePossibleAlarmCustomerInfoDto dto) {
-        log.info("AlarmController sendMessagePerformanceCancelCameout");
-        BaseResDto baseResDto = alarmSmsService.createAlarmPerformance(dto);
-        return ResponseEntity.ok(baseResDto);
+    @PostMapping("/send")
+    public void createAlarm(@RequestBody ReservePossibleAlarmCustomerInfoDto dto) {
+        alarmMailService.createAlarmPerformance(dto);
     }
 }

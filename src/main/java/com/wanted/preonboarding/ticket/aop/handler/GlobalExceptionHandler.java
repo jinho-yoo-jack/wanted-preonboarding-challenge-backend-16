@@ -11,6 +11,8 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindException;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -97,5 +99,17 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public BaseResDto exception(JsonProcessingException e) {
         return BaseResDto.of(ResultCode.JSON_PROCESSING.getResultCode(), ResultCode.JSON_PROCESSING.getResultMessage());
+    }
+
+    @ExceptionHandler(AddressException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public BaseResDto exception(AddressException e) {
+        return BaseResDto.of(ResultCode.EMAIL_ADDRESS_INVALID.getResultCode(), ResultCode.EMAIL_ADDRESS_INVALID.getResultMessage());
+    }
+
+    @ExceptionHandler(MessagingException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public BaseResDto exception(MessagingException e) {
+        return BaseResDto.of(ResultCode.EMAIL_SENDING.getResultCode(), ResultCode.EMAIL_SENDING.getResultMessage());
     }
 }

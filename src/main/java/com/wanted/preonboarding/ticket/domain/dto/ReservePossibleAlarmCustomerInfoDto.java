@@ -14,4 +14,5 @@ public class ReservePossibleAlarmCustomerInfoDto {
     private UUID performanceId; //공연ID
     private String reservationName; //이름
     private String reservationPhoneNumber; //연락처
+    private String reservationEmail; //이메일
 }

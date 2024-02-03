@@ -20,7 +20,9 @@ public enum ResultCode {
     URI_SYNTAX(400, ResultMessage.URI_SYNTAX),
     INVALID_KEY(500, ResultMessage.INVALID_KEY),
     JSON_PROCESSING(400, ResultMessage.JSON_PROCESSING),
-    RESERVE_NOT_VALID(400, ResultMessage.RESERVE_NOT_VALID);
+    RESERVE_NOT_VALID(400, ResultMessage.RESERVE_NOT_VALID),
+    EMAIL_SENDING(500, ResultMessage.EMAIL_SENDING),
+    EMAIL_ADDRESS_INVALID(400, ResultMessage.EMAIL_ADDRESS_INVALID);
 
     private final int resultCode;
     private final String resultMessage;
@@ -59,5 +61,7 @@ public enum ResultCode {
         String JSON_PROCESSING = "JSON 처리 중 오류가 발생했습니다.";
         String ALREADY_EXISTS = "이미 존재하는 데이터입니다.";
         String RESERVE_NOT_VALID = "예약이 불가능한 공연입니다.";
+        String EMAIL_SENDING = "이메일 전송 중 문제가 발생했습니다.";
+        String EMAIL_ADDRESS_INVALID = "이메일 주소 형식이 잘못되었습니다.";
     }
 }
