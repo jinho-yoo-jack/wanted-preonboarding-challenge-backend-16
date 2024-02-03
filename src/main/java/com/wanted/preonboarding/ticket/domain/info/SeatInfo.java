@@ -17,8 +17,9 @@ public class SeatInfo {
 	private char line;
 	@Column(nullable = false)
 	private int seat;
-	public static SeatInfo of(char line, int seat){
-		return new SeatInfo(line,seat);
+
+	public static SeatInfo of(char line, int seat) {
+		return new SeatInfo(line, seat);
 	}
 
 	@Override

@@ -23,13 +23,13 @@ public class Reservation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-    @Column(columnDefinition = "VARBINARY(16)", nullable = false, name = "performance_id")
-    private UUID performanceId;
-    @Embedded
+	@Column(columnDefinition = "VARBINARY(16)", nullable = false, name = "performance_id")
+	private UUID performanceId;
+	@Embedded
 	private UserInfo userInfo;
-    @Column(nullable = false)
-    private int round;
-    private int gate;
+	@Column(nullable = false)
+	private int round;
+	private int gate;
 	@Embedded
 	private SeatInfo seatInfo;
 	@Enumerated(EnumType.STRING)
@@ -37,17 +37,18 @@ public class Reservation {
 	@Column(nullable = false)
 	private int rate;
 
-    public static Reservation from(ReservationInfo info) {
-        return Reservation.builder()
-            .performanceId(info.getPerformanceId())
-			.userInfo(UserInfo.of(info.getUserInfo().getReservationName(), info.getUserInfo().getReservationPhoneNumber()))
-            .round(info.getRound())
-            .gate(1)
+	public static Reservation from(ReservationInfo info) {
+		return Reservation.builder()
+			.performanceId(info.getPerformanceId())
+			.userInfo(
+				UserInfo.of(info.getUserInfo().getReservationName(), info.getUserInfo().getReservationPhoneNumber()))
+			.round(info.getRound())
+			.gate(1)
 			.seatInfo(SeatInfo.of(info.getSeatInfo().getLine(), info.getSeatInfo().getSeat()))
 			.rate(info.getRate())
 			.reservationStatus(info.getReservationStatus())
-            .build();
-    }
+			.build();
+	}
 
 	public int refund() {
 		return rate;

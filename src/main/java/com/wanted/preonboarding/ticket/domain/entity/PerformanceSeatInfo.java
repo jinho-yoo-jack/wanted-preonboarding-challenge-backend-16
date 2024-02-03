@@ -10,7 +10,7 @@ import com.wanted.preonboarding.common.exception.NotReservedStateException;
 import com.wanted.preonboarding.ticket.domain.info.SeatInfo;
 
 @Table(name = "performance_seat_info",
-	uniqueConstraints = { @UniqueConstraint(name = "performance_seat_info_unique",
+	uniqueConstraints = {@UniqueConstraint(name = "performance_seat_info_unique",
 		columnNames = {"performance_id", "round", "line", "seat"})})
 @Entity
 @Getter

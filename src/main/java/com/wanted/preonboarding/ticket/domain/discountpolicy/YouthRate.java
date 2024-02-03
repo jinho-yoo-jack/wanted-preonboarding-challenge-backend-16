@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.discountpolicy;
 
-public class YouthRate implements DiscountPolicy{
+public class YouthRate implements DiscountPolicy {
 	@Override
 	public boolean checkAge(int age) {
 		return age < 13 && age > 0;

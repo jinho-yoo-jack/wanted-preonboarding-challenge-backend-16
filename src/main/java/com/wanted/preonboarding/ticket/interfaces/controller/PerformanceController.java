@@ -6,6 +6,7 @@ import com.wanted.preonboarding.ticket.domain.info.PerformanceInfo;
 import com.wanted.preonboarding.ticket.interfaces.dto.PerformanceResponse;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,31 +21,31 @@ import java.util.UUID;
 @RequestMapping("/performance")
 @RequiredArgsConstructor
 public class PerformanceController {
-    private final PerformanceService performanceService;
+	private final PerformanceService performanceService;
 
-    @GetMapping("/all")
-    public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
-        System.out.println("getAllPerformanceInfoList");
-        return ResponseEntity
-            .ok()
-            .body(ResponseHandler.<List<PerformanceInfo>>builder()
-                .message("Success")
-                .statusCode(HttpStatus.OK)
-                .data(performanceService.allPerformanceInfoList())
-                .build()
-            );
-    }
+	@GetMapping("/all")
+	public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
+		System.out.println("getAllPerformanceInfoList");
+		return ResponseEntity
+			.ok()
+			.body(ResponseHandler.<List<PerformanceInfo>>builder()
+				.message("Success")
+				.statusCode(HttpStatus.OK)
+				.data(performanceService.allPerformanceInfoList())
+				.build()
+			);
+	}
 
-    @GetMapping("")
-    public ResponseEntity<ResponseHandler<PerformanceResponse>> getPerformanceInfoDetail(
-        @RequestParam(value = "id") String id) {
-        return ResponseEntity
-            .ok()
-            .body(ResponseHandler.<PerformanceResponse>builder()
-                .message("Success")
-                .statusCode(HttpStatus.OK)
-                .data(performanceService.performanceInfoDetail(UUID.fromString(id)))
-                .build()
-            );
-    }
+	@GetMapping("")
+	public ResponseEntity<ResponseHandler<PerformanceResponse>> getPerformanceInfoDetail(
+		@RequestParam(value = "id") String id) {
+		return ResponseEntity
+			.ok()
+			.body(ResponseHandler.<PerformanceResponse>builder()
+				.message("Success")
+				.statusCode(HttpStatus.OK)
+				.data(performanceService.performanceInfoDetail(UUID.fromString(id)))
+				.build()
+			);
+	}
 }

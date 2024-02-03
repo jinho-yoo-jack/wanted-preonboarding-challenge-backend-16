@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -51,14 +52,15 @@ public class PerformanceCancelSubService implements MessageListener {
 
 	public void subscribe(ReservationCancelRequest request) {
 		PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findPerformanceSeatInfoBySeatInfoAndPerformanceId(
-			SeatInfo.of(request.line(), request.seat()), UUID.fromString(request.performanceId()))
-    		.orElseThrow(PerformanceSeatInfoNotFoundException::new);
+				SeatInfo.of(request.line(), request.seat()), UUID.fromString(request.performanceId()))
+			.orElseThrow(PerformanceSeatInfoNotFoundException::new);
 		StringBuilder stringBuilder = createCancelMessage(performanceSeatInfo);
 		Message message = new Message() {
 			@SneakyThrows
 			@Override
 			public byte[] getBody() {
-				AlarmMessage alarmMessage = AlarmMessage.of(UUID.fromString(request.performanceId()), stringBuilder.toString());
+				AlarmMessage alarmMessage = AlarmMessage.of(UUID.fromString(request.performanceId()),
+					stringBuilder.toString());
 				ObjectMapper objectMapper = new ObjectMapper();
 				String jsonString = objectMapper.writeValueAsString(alarmMessage);
 				return jsonString.getBytes(StandardCharsets.UTF_8);
@@ -66,7 +68,7 @@ public class PerformanceCancelSubService implements MessageListener {
 
 			@Override
 			public byte[] getChannel() {
-				return (request.performanceId()+"*").getBytes(StandardCharsets.UTF_8);
+				return (request.performanceId() + "*").getBytes(StandardCharsets.UTF_8);
 			}
 		};
 
@@ -76,7 +78,8 @@ public class PerformanceCancelSubService implements MessageListener {
 	private StringBuilder createCancelMessage(PerformanceSeatInfo performanceSeatInfo) {
 		log.info("reservationID {}", performanceSeatInfo.getId());
 
-		Performance performance = performanceRepository.findPerformanceByPerformanceId(performanceSeatInfo.getPerformanceId())
+		Performance performance = performanceRepository.findPerformanceByPerformanceId(
+				performanceSeatInfo.getPerformanceId())
 			.orElseThrow(EntityNotFoundException::new);
 
 		StringBuilder message = new StringBuilder();

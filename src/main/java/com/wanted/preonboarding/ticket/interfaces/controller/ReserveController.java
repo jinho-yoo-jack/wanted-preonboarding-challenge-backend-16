@@ -17,26 +17,26 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/reserve")
 @RequiredArgsConstructor
 public class ReserveController {
-    private final ReservationService reservationService;
-    private final HttpServletRequest req;
+	private final ReservationService reservationService;
+	private final HttpServletRequest req;
 
-    @PostMapping("")
-    public ResponseEntity<?> reserve(@RequestBody ReservationRequest request) {
-        System.out.println("reservation");
+	@PostMapping("")
+	public ResponseEntity<?> reserve(@RequestBody ReservationRequest request) {
+		System.out.println("reservation");
 
-        return new ResponseEntity<>(new ResponseWrapper(req, HttpStatus.OK,
-            true, "예매하였습니다.", reservationService.reserve(request)), HttpStatus.OK);
-    }
+		return new ResponseEntity<>(new ResponseWrapper(req, HttpStatus.OK,
+			true, "예매하였습니다.", reservationService.reserve(request)), HttpStatus.OK);
+	}
 
-    @PostMapping("/cancel")
-    public ResponseEntity<?> cancel(@RequestBody ReservationCancelRequest request) {
-        return new ResponseEntity<>(new ResponseWrapper(req, HttpStatus.OK,
-            true, "예매 취소하였습니다.", reservationService.cancel(request)), HttpStatus.OK);
-    }
+	@PostMapping("/cancel")
+	public ResponseEntity<?> cancel(@RequestBody ReservationCancelRequest request) {
+		return new ResponseEntity<>(new ResponseWrapper(req, HttpStatus.OK,
+			true, "예매 취소하였습니다.", reservationService.cancel(request)), HttpStatus.OK);
+	}
 
-    @PostMapping("/history")
-    public ResponseEntity<?> findReserve(@RequestBody CustomerContactRequest request) {
-        return new ResponseEntity<>(new ResponseWrapper(req, HttpStatus.OK,
-            true, "예매 내역 조회.", reservationService.getReservations(request)), HttpStatus.OK);
-    }
+	@PostMapping("/history")
+	public ResponseEntity<?> findReserve(@RequestBody CustomerContactRequest request) {
+		return new ResponseEntity<>(new ResponseWrapper(req, HttpStatus.OK,
+			true, "예매 내역 조회.", reservationService.getReservations(request)), HttpStatus.OK);
+	}
 }

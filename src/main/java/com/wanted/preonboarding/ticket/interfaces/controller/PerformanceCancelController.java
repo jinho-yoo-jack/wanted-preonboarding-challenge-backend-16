@@ -44,7 +44,7 @@ public class PerformanceCancelController {
 
 	@PostMapping("/alarm/{name}")
 	public String pushMessage(@PathVariable String name, @RequestBody AlarmMessage alarmMessage) {
-		ChannelTopic channel = channels.get(name+alarmMessage.getPerformanceId());
+		ChannelTopic channel = channels.get(name + alarmMessage.getPerformanceId());
 		redisPublisher.publish(channel, alarmMessage);
 
 		return "SUCCESS";
@@ -52,18 +52,18 @@ public class PerformanceCancelController {
 
 	@PutMapping("/alarm")
 	public String createTopic(@RequestBody ReservationCancelRequest request) {
-		ChannelTopic channel = new ChannelTopic(request.performanceId()+request.reservationName());
+		ChannelTopic channel = new ChannelTopic(request.performanceId() + request.reservationName());
 		redisMessageListener.addMessageListener(redisSubscriber, channel);
-		channels.put(request.performanceId()+request.reservationName(), channel);
+		channels.put(request.performanceId() + request.reservationName(), channel);
 
 		return "SUCCESS";
 	}
 
 	@DeleteMapping("/alarm")
 	public String deleteTopic(@RequestBody ReservationCancelRequest request) {
-		ChannelTopic channel = channels.get(request.performanceId()+request.reservationName());
+		ChannelTopic channel = channels.get(request.performanceId() + request.reservationName());
 		redisMessageListener.removeMessageListener(redisSubscriber, channel);
-		channels.remove(request.performanceId()+request.reservationName());
+		channels.remove(request.performanceId() + request.reservationName());
 
 		return "SUCCESS";
 	}

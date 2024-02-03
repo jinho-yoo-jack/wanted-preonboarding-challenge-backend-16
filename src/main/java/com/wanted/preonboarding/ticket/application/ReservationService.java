@@ -43,7 +43,8 @@ public class ReservationService {
 	@Transactional
 	public ReservationResponse reserve(ReservationRequest request) {
 		log.info("request ID => {}", request.performanceId());
-		Performance performance = performanceRepository.findPerformanceByPerformanceId(UUID.fromString(request.performanceId()))
+		Performance performance = performanceRepository.findPerformanceByPerformanceId(
+				UUID.fromString(request.performanceId()))
 			.orElseThrow(PerformanceNotFoundException::new);
 		ReservationInfo reservationInfo = ReservationInfo.of(request, 0);
 		totalAmount = reservationInfo.getAmount();
@@ -55,14 +56,15 @@ public class ReservationService {
 		reservationRepository.save(Reservation.from(reservationInfo));
 
 		PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findByPerformanceIdAndRoundAndSeatInfo(
-			reservationInfo.getPerformanceId(),
-			reservationInfo.getRound(), reservationInfo.getSeatInfo()).orElseThrow(PerformanceSeatInfoNotFoundException::new);
+				reservationInfo.getPerformanceId(),
+				reservationInfo.getRound(), reservationInfo.getSeatInfo())
+			.orElseThrow(PerformanceSeatInfoNotFoundException::new);
 		performanceSeatInfo.reserved();
 		performanceSeatInfoRepository.save(performanceSeatInfo);
 
 		List<PerformanceSeatInfo> performanceSeatInfos = performanceSeatInfoRepository.findPerformanceSeatInfosByPerformanceIdAndReservedIsFalse(
 			reservationInfo.getPerformanceId());
-		if(performanceSeatInfos.isEmpty()) {
+		if (performanceSeatInfos.isEmpty()) {
 			performance.reserved();
 			performanceRepository.save(performance);
 		}
@@ -72,13 +74,15 @@ public class ReservationService {
 
 	public List<ReservationResponse> getReservations(CustomerContactRequest request) {
 		UserInfo userInfo = UserInfo.of(request.reservationName(), request.reservationPhoneNumber());
-		List<Reservation> reservations = reservationRepository.findByUserInfoAndReservationStatus(userInfo, ReservationStatus.RESERVE);
+		List<Reservation> reservations = reservationRepository.findByUserInfoAndReservationStatus(userInfo,
+			ReservationStatus.RESERVE);
 
 		List<ReservationInfo> reservationInfos = reservations
 			.stream()
 			.map(reservation ->
-				ReservationInfo.from(reservation, performanceRepository.findPerformanceByPerformanceId(reservation.getPerformanceId())
-					.orElseThrow(PerformanceNotFoundException::new).getPeformanceName())
+				ReservationInfo.from(reservation,
+					performanceRepository.findPerformanceByPerformanceId(reservation.getPerformanceId())
+						.orElseThrow(PerformanceNotFoundException::new).getPeformanceName())
 			).toList();
 
 		return reservationInfos.stream()
@@ -96,11 +100,12 @@ public class ReservationService {
 	@Transactional
 	public String cancel(ReservationCancelRequest request) {
 		Reservation reservation = reservationRepository.findReservationByPerformanceIdAndSeatInfo(
-				UUID.fromString(request.performanceId()), SeatInfo.of(request.line(), request.seat()));
+			UUID.fromString(request.performanceId()), SeatInfo.of(request.line(), request.seat()));
 		totalAmount -= reservation.cancel();
 
-		PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findByPerformanceIdAndRoundAndSeatInfo(reservation.getPerformanceId(),
-			reservation.getRound(), reservation.getSeatInfo())
+		PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findByPerformanceIdAndRoundAndSeatInfo(
+				reservation.getPerformanceId(),
+				reservation.getRound(), reservation.getSeatInfo())
 			.orElseThrow(PerformanceSeatInfoNotFoundException::new);
 
 		performanceSeatInfo.cancel();

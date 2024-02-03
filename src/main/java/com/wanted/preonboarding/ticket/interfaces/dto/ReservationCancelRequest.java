@@ -6,7 +6,6 @@ public record ReservationCancelRequest(
 	String performanceId,
 	char line,
 	int seat
-)
-{
+) {
 
 }

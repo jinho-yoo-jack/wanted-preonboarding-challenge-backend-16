@@ -11,8 +11,9 @@ import com.wanted.preonboarding.ticket.domain.info.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
-    List<Reservation> findByUserInfoAndReservationStatus(UserInfo userInfo, ReservationStatus reservationStatus);
-    boolean existsReservationByPerformanceIdAndSeatInfo(UUID performanceId, SeatInfo seatInfo);
+	List<Reservation> findByUserInfoAndReservationStatus(UserInfo userInfo, ReservationStatus reservationStatus);
 
-    Reservation findReservationByPerformanceIdAndSeatInfo(UUID performanceId, SeatInfo seatInfo);
+	boolean existsReservationByPerformanceIdAndSeatInfo(UUID performanceId, SeatInfo seatInfo);
+
+	Reservation findReservationByPerformanceIdAndSeatInfo(UUID performanceId, SeatInfo seatInfo);
 }
