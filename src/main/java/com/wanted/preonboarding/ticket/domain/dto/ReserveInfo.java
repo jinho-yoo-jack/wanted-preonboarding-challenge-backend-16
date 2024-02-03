@@ -20,4 +20,16 @@ public class ReserveInfo {
     private int round;
     private char line;
     private int seat;
+
+    public UUID getPerformanceId() {
+        return performanceId;
+    }
+
+    public Object getAmount() {
+        return amount;
+    }
+
+    public void setAmount(long amount) {
+        this.amount = amount;
+    }
 }
