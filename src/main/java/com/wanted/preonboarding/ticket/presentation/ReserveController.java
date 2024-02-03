@@ -8,8 +8,12 @@ import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/reserve")
@@ -18,36 +22,29 @@ public class ReserveController {
     private final TicketSeller ticketSeller;
 
 
-    //TODO: 공연 자리 예약 요청
-    @Transactional
+    //공연 자리 예약 요청
     @PostMapping
-    public boolean reservation(@RequestBody ReserveInfo reserveInfo) {
-
-        reserveInfo.setReserveInfo("Requested");
-
-        return ticketSeller.reserve(reserveInfo);
-
-
+    public ResponseEntity<ReserveInfo> reservation(@RequestBody ReserveInfo reserveInfo) {
+        ReserveInfo result = ticketSeller.reserve(reserveInfo);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 
-    //TODO: 예약 확인 조회
+    //예약 확인 조회
     @PostMapping("/checkReservation")
-    public ResponseEntity<Reservation> checkReservation(@RequestBody CheckReserveRequest checkReserveRequest) {
-        Reservation reservation = ticketSeller.checkReservation(checkReserveRequest);
-
-        return new ResponseEntity<>(reservation, HttpStatus.OK);
+    public ResponseEntity<List<Reservation>> checkReservation(@RequestBody CheckReserveRequest checkReserveRequest) {
+        List<Reservation> reservations = ticketSeller.checkReservation(checkReserveRequest);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
-    //TODO: 예약 취소
-    @PostMapping("/cancleReservation")
-    public boolean CancleReservation(@RequestBody CancelReserveRequest cancelReserveRequest) {
+    // 예약 취소
+    @PostMapping("/cancelReservation")
+    public boolean CancelReservation(@RequestBody CancelReserveRequest cancelReserveRequest) {
         boolean result = ticketSeller.cancleReserve(cancelReserveRequest);
 
         return result;
 
     }
-
 
 
     //TODO: 알림 서비스 :
