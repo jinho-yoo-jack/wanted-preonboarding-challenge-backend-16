@@ -59,7 +59,7 @@ public class TicketSeller {
             return getResponseReserveInfos(reserveInfo, performanceInfo);
 
         } catch (Exception e) {
-            throw new IllegalStateException("예약에 실패하였습니다.", e);
+            throw new IllegalStateException("예약에 실패 하였습니다.", e);
         }
     }
 
@@ -91,6 +91,13 @@ public class TicketSeller {
 
     public List<ResponseReserveInfo> getReserveInfo(GetReservationRequestDto requestDto){
         List<Reservation> reservations = reservationRepository.findByNameAndPhoneNumber(requestDto.getReservationName(), requestDto.getReservationPhoneNumber());
+
+        List<ResponseReserveInfo> responseReserveInfos = toResponseReserveInfos(reservations);
+
+        return responseReserveInfos;
+    }
+
+    private List<ResponseReserveInfo> toResponseReserveInfos(List<Reservation> reservations) {
         List<ResponseReserveInfo> responseReserveInfos = new ArrayList<>();
 
         for (Reservation reservation : reservations) {
@@ -101,7 +108,6 @@ public class TicketSeller {
 
             responseReserveInfos.add(new ResponseReserveInfo(reservation,performance,seatInfo));
         }
-
         return responseReserveInfos;
     }
 
