@@ -28,8 +28,6 @@ import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepo
 public class performanceControllerTests {
 	@Autowired
 	private MockMvc mvc;
-	@Autowired
-	private PerformanceRepository performanceRepository;
 
 	@Test
 	@DisplayName("GET /performance는 예매 가능/불가능 여부로 필터링한 공연 목록을 보여준다. 페이지 크기는 5")

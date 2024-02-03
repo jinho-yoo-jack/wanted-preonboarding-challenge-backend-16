@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.presentation;
 
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -7,8 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +20,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wanted.preonboarding.base.event.EventCancleTicket;
@@ -65,16 +63,18 @@ public class reserveControllerTests {
 	void t1() throws Exception {
 		// When
 		mvc.perform(post("/reserve")
-				.content("{"
-					+ "\"performanceId\": \"" + testPerformanceId1 + "\","
-					+ "\"reservationName\": \"유진호\","
-					+ "\"reservationPhoneNumber\": \"010-1234-1234\","
-					+ "\"reservationStatus\": \"reserve\","
-					+ "\"amount\": \"200000\","
-					+ "\"round\" : \"1\","
-					+ "\"line\" : \"A\","
-					+ "\"seat\" : 1"
-					+ "}")
+				.content("""
+					{
+						  "performanceId": "$id",
+						  "reservationName": "홍길동",
+						  "reservationPhoneNumber": "010-1234-1234",
+						  "reservationStatus": "reserve",
+						  "amount": "200000",
+						  "round" : "1",
+						  "line" : "A",
+						  "seat" : "1"
+					}
+					""".replace("$id", testPerformanceId1.toString()).stripIndent())
 				.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)))
 
 			.andDo(print())
@@ -88,16 +88,18 @@ public class reserveControllerTests {
 	void t2() throws Exception {
 		// When
 		mvc.perform(post("/reserve")
-				.content("{"
-					+ "\"performanceId\": \"" + testPerformanceId2 + "\","
-					+ "\"reservationName\": \"유진호\","
-					+ "\"reservationPhoneNumber\": \"010-1234-1234\","
-					+ "\"reservationStatus\": \"reserve\","
-					+ "\"amount\": \"200000\","
-					+ "\"round\" : \"1\","
-					+ "\"line\" : \"F\","
-					+ "\"seat\" : 18"
-					+ "}")
+				.content("""
+					{
+						  "performanceId": "$id",
+						  "reservationName": "홍길동",
+						  "reservationPhoneNumber": "010-1234-1234",
+						  "reservationStatus": "reserve",
+						  "amount": "200000",
+						  "round" : "1",
+						  "line" : "F",
+						  "seat" : "18"
+					}
+					""".replace("$id", testPerformanceId2.toString()).stripIndent())
 				.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)))
 
 			.andDo(print())
@@ -111,16 +113,18 @@ public class reserveControllerTests {
 	void t3() throws Exception {
 		// When
 		mvc.perform(post("/reserve")
-				.content("{"
-					+ "\"performanceId\": \"" + testPerformanceId2 + "\","
-					+ "\"reservationName\": \"유진호\","
-					+ "\"reservationPhoneNumber\": \"010-1234-1234\","
-					+ "\"reservationStatus\": \"reserve\","
-					+ "\"amount\": \"200000\","
-					+ "\"round\" : \"1\","
-					+ "\"line\" : \"A\","
-					+ "\"seat\" : 18"
-					+ "}")
+				.content("""
+					{
+						  "performanceId": "$id",
+						  "reservationName": "홍길동",
+						  "reservationPhoneNumber": "010-1234-1234",
+						  "reservationStatus": "reserve",
+						  "amount": "200000",
+						  "round" : "1",
+						  "line" : "A",
+						  "seat" : "18"
+					}
+					""".replace("$id", testPerformanceId2.toString()).stripIndent())
 				.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)))
 
 			.andDo(print())
@@ -134,23 +138,25 @@ public class reserveControllerTests {
 	void t4() throws Exception {
 		// When
 		mvc.perform(post("/reserve")
-				.content("{"
-					+ "\"performanceId\": \"" + testPerformanceId2 + "\","
-					+ "\"reservationName\": \"유진호\","
-					+ "\"reservationPhoneNumber\": \"010-1234-1234\","
-					+ "\"reservationStatus\": \"reserve\","
-					+ "\"amount\": \"200000\","
-					+ "\"round\" : \"1\","
-					+ "\"line\" : \"A\","
-					+ "\"seat\" : 1"
-					+ "}")
+				.content("""
+					{
+						  "performanceId": "$id",
+						  "reservationName": "홍길동",
+						  "reservationPhoneNumber": "010-1234-1234",
+						  "reservationStatus": "reserve",
+						  "amount": "200000",
+						  "round" : "1",
+						  "line" : "A",
+						  "seat" : "1"
+					}
+					""".replace("$id", testPerformanceId2.toString()).stripIndent())
 				.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)))
 
 			.andDo(print())
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(jsonPath("$.resultCode").value(startsWith("S-")))
 			.andExpect(jsonPath("$.msg").value("예매 성공"))
-			.andExpect(jsonPath("$.data.reservationName").value("유진호"));
+			.andExpect(jsonPath("$.data.reservationName").value("홍길동"));
 	}
 
 	@Test
@@ -158,16 +164,18 @@ public class reserveControllerTests {
 	void t5() throws Exception {
 		// When
 		mvc.perform(post("/reserve")
-				.content("{"
-					+ "\"performanceId\": \"" + testPerformanceId2 + "\","
-					+ "\"reservationName\": \"유진호\","
-					+ "\"reservationPhoneNumber\": \"010-1234-1234\","
-					+ "\"reservationStatus\": \"reserve\","
-					+ "\"amount\": \"60000\","
-					+ "\"round\" : \"1\","
-					+ "\"line\" : \"A\","
-					+ "\"seat\" : 1"
-					+ "}")
+				.content("""
+					{
+						  "performanceId": "$id",
+						  "reservationName": "홍길동",
+						  "reservationPhoneNumber": "010-1234-1234",
+						  "reservationStatus": "reserve",
+						  "amount": "60000",
+						  "round" : "1",
+						  "line" : "A",
+						  "seat" : "1"
+					}
+					""".replace("$id", testPerformanceId2.toString()).stripIndent())
 				.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)))
 
 			.andDo(print())
@@ -212,25 +220,29 @@ public class reserveControllerTests {
 	@DisplayName("POST /reserve는 마지막 자리를 예매하면 공연의 상태가 예약 불가능하게 변경된다.")
 	void t8() throws Exception {
 		String before = testPerformance.getIsReserve(); // equals("enable");
+
 		// When
 		mvc.perform(post("/reserve")
-				.content("{"
-					+ "\"performanceId\": \"" + testPerformance.getId() + "\","
-					+ "\"reservationName\": \"유진호\","
-					+ "\"reservationPhoneNumber\": \"010-1234-1234\","
-					+ "\"reservationStatus\": \"reserve\","
-					+ "\"amount\": \"100000\","
-					+ "\"round\" : \"1\","
-					+ "\"line\" : \"A\","
-					+ "\"seat\" : 4"
-					+ "}")
+				// UUID를 문자열 변환하기 위해 toString() 메서드 필요
+				.content("""
+					{
+						  "performanceId": "$id",
+						  "reservationName": "홍길동",
+						  "reservationPhoneNumber": "010-1234-1234",
+						  "reservationStatus": "reserve",
+						  "amount": "100000",
+						  "round" : "1",
+						  "line" : "A",
+						  "seat" : "4"
+					}
+					""".replace("$id", testPerformance.getId().toString()).stripIndent())
 				.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)))
 
 			.andDo(print())
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(jsonPath("$.resultCode").value(startsWith("S-")))
 			.andExpect(jsonPath("$.msg").value("예매 성공"))
-			.andExpect(jsonPath("$.data.reservationName").value("유진호"));
+			.andExpect(jsonPath("$.data.reservationName").value("홍길동"));
 
 		testPerformance = performanceRepository.findByName("테스트용공연");
 		String after = testPerformance.getIsReserve(); // equals("disable");
@@ -245,25 +257,27 @@ public class reserveControllerTests {
 		String before = testPerformance.getIsReserve(); // equals("enable");
 		// When
 		mvc.perform(post("/reserve")
-				.content("{"
-					+ "\"performanceId\": \"" + testPerformance.getId() + "\","
-					+ "\"reservationName\": \"유진호\","
-					+ "\"reservationPhoneNumber\": \"010-1234-1234\","
-					+ "\"reservationStatus\": \"reserve\","
-					+ "\"amount\": \"100000\","
-					+ "\"round\" : \"1\","
-					+ "\"line\" : \"A\","
-					+ "\"seat\" : 4"
-					+ "}")
+				.content("""
+					{
+						  "performanceId": "$id",
+						  "reservationName": "홍길동",
+						  "reservationPhoneNumber": "010-1234-1234",
+						  "reservationStatus": "reserve",
+						  "amount": "100000",
+						  "round" : "1",
+						  "line" : "A",
+						  "seat" : "4"
+					}
+					""".replace("$id", testPerformance.getId().toString()).stripIndent())
 				.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)))
 
 			.andDo(print())
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(jsonPath("$.resultCode").value(startsWith("S-")))
 			.andExpect(jsonPath("$.msg").value("예매 성공"))
-			.andExpect(jsonPath("$.data.reservationName").value("유진호"));
+			.andExpect(jsonPath("$.data.reservationName").value("홍길동"));
 
-		Reservation reservation = reservationRepository.findByNameAndPhoneNumber("유진호", "010-1234-1234").get(0);
+		Reservation reservation = reservationRepository.findByNameAndPhoneNumber("홍길동", "010-1234-1234").get(0);
 
 		testPerformance = performanceRepository.findByName("테스트용공연");
 		String after = testPerformance.getIsReserve(); // equals("disable");
@@ -275,17 +289,19 @@ public class reserveControllerTests {
 		// 예매 취소 후에 이메일 발송 되는지 테스트
 		// 예매 취소
 		mvc.perform(delete("/reserve")
-				.content("{"
-					+ "\"id\": " + reservation.getId() + ","
-					+ "\"name\": \"유진호\","
-					+ "\"phoneNumber\": \"010-1234-1234\""
-					+ "}")
+				.content("""
+					{
+						  "id": "$id",
+						  "name": "홍길동",
+						  "phoneNumber": "010-1234-1234"
+					}
+					""".replace("$id", String.valueOf(reservation.getId()).stripIndent()).stripIndent())
 				.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)))
 			.andDo(print())
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(jsonPath("$.resultCode").value(startsWith("S-")))
-			.andExpect(jsonPath("$.msg").value("유진호님의 예매 내역 삭제 성공"))
-			.andExpect(jsonPath("$.data.name").value("유진호"));
+			.andExpect(jsonPath("$.msg").value("홍길동님의 예매 내역 삭제 성공"))
+			.andExpect(jsonPath("$.data.name").value("홍길동"));
 
 		// 공연 예매 상태로 변경되었는지 확인
 		testPerformance = performanceRepository.findByName("테스트용공연");
@@ -293,7 +309,7 @@ public class reserveControllerTests {
 		assertThat(after, is("enable"));
 
 		// 알림 설정한 사람들에게 이메일 발송 테스트를 하기 위해 이벤트가 발행됐는지 테스트
-		int count = (int) events.stream(EventCancleTicket.class).count();
+		int count = (int)events.stream(EventCancleTicket.class).count();
 		assertThat(count, is(1));
 	}
 
