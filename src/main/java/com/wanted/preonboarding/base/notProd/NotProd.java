@@ -34,7 +34,7 @@ public class NotProd {
 				.price(100_000)
 				.round(1)
 				.type(0)
-				.start_date(LocalDateTime.of(2024, 1, 20, 19, 30))
+				.startDate(LocalDateTime.of(2024, 1, 20, 19, 30))
 				.isReserve("disable")
 				.build();
 
@@ -45,7 +45,7 @@ public class NotProd {
 				.price(100_000)
 				.round(1)
 				.type(0)
-				.start_date(LocalDateTime.of(2024, 1, 21, 19, 30))
+				.startDate(LocalDateTime.of(2024, 1, 21, 19, 30))
 				.isReserve("enable")
 				.build();
 			performanceList.add(performance2);
@@ -56,7 +56,7 @@ public class NotProd {
 					.price(100_000)
 					.round(1)
 					.type(0)
-					.start_date(LocalDateTime.of(2024, 1, 21, 19, 30))
+					.startDate(LocalDateTime.of(2024, 1, 21, 19, 30))
 					.isReserve("enable")
 					.build();
 				performanceList.add(performance3);
@@ -66,7 +66,7 @@ public class NotProd {
 					.price(100_000)
 					.round(1)
 					.type(0)
-					.start_date(LocalDateTime.of(2024, 1, 21, 19, 30))
+					.startDate(LocalDateTime.of(2024, 1, 21, 19, 30))
 					.isReserve("disable")
 					.build();
 				performanceList.add(performance3);
@@ -132,7 +132,7 @@ public class NotProd {
 				.price(100_000)
 				.round(1)
 				.type(0)
-				.start_date(LocalDateTime.of(2024, 1, 22, 19, 30))
+				.startDate(LocalDateTime.of(2024, 1, 22, 19, 30))
 				.isReserve("enable")
 				.build();
 

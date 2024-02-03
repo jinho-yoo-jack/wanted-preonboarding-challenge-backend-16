@@ -66,7 +66,7 @@ public class PerformanceController {
 			return ResponseShow.builder()
 				.name(performance.getName())
 				.round(performance.getRound())
-				.startDate(performance.getStart_date())
+				.startDate(performance.getStartDate())
 				.status(performance.getIsReserve())
 				.build();
 		}
