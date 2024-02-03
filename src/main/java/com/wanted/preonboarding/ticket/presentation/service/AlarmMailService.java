@@ -59,6 +59,7 @@ public class AlarmMailService {
     @Transactional
     public void sendAlarmPerformance(ReservePossibleAlarmCustomerInfoDto dto) {
 
+        Alarm alarm = getAlarm(dto);
         Performance performance = getPerformance(dto);
         PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto, CANCEL);
 
@@ -67,6 +68,15 @@ public class AlarmMailService {
         sendMessagePerformanceSeatInfoDto.updateStartDate(performance.getStart_date());
 
         messageBody(dto.getReservationEmail(), sendMessagePerformanceSeatInfoDto);
+    }
+
+    private Alarm getAlarm(ReservePossibleAlarmCustomerInfoDto dto) {
+        return alarmRepository.findByPerformanceIdAndNameAndPhoneNumberAndEmail(
+                dto.getPerformanceId(),
+                dto.getReservationName(),
+                dto.getReservationPhoneNumber(),
+                dto.getReservationEmail())
+                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
     }
 
 
