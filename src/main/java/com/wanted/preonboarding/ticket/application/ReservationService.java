@@ -1,6 +1,5 @@
 package com.wanted.preonboarding.ticket.application;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.ApplicationEventPublisher;
@@ -36,22 +35,11 @@ public class ReservationService {
 		if (reservationList.isEmpty()) {
 			return RsData.of("F-1", "예매 내역이 없습니다.");
 		}
-
-		List<ReserveResult> results = new ArrayList<>();
 		// 여러 공연 예매했을 수도 있으니 여러 응답용 객체 생성
-		for (Reservation rs : reservationList) {
-			results.add(ReserveResult.builder()
-				.round(rs.getRound())
-				.performanceName(rs.getPerformance().getName())
-				.performanceId(rs.getPerformance().getId())
-				.gate(rs.getGate())
-				.line(rs.getLine())
-				.seat(rs.getSeat())
-				.gate(rs.getGate())
-				.reservationPhoneNumber(phoneNumber)
-				.reservationName(name)
-				.build());
-		}
+		List<ReserveResult> results = reservationList.stream()
+			.map(ReserveResult::of)
+			.toList();
+
 		return RsData.of("S-1", "예매 내역 조회 성공", results);
 	}
 
