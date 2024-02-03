@@ -23,16 +23,19 @@ public class Alarm extends BaseEntity {
     private int id;
     @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
     private UUID performanceId;//공연ID
-    private String reservationName; //이름
-    private String reservationPhoneNumber; //연락처
-    private String reservationEmail; //이메일
+    @Column(nullable = false)
+    private String name; //이름
+    @Column(nullable = false)
+    private String phoneNumber; //연락처
+    @Column(nullable = false)
+    private String email; //이메일
 
     public static Alarm of (PerformanceSeatInfo performanceSeatInfo, ReservePossibleAlarmCustomerInfoDto dto) {
         return Alarm.builder()
                 .performanceId(performanceSeatInfo.getPerformanceId())
-                .reservationName(dto.getReservationName())
-                .reservationPhoneNumber(dto.getReservationPhoneNumber())
-                .reservationEmail(dto.getReservationEmail())
+                .name(dto.getReservationName())
+                .phoneNumber(dto.getReservationPhoneNumber())
+                .email(dto.getReservationEmail())
                 .build();
     }
 }

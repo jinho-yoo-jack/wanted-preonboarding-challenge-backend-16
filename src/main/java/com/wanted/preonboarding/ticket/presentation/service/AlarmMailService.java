@@ -46,9 +46,9 @@ public class AlarmMailService {
         Performance performance = getPerformance(dto);
         if(performance.getIsReserve().equalsIgnoreCase(ENABLE)) {
             PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto, DISABLE);
-
+            log.info("1");
             Alarm alarm = Alarm.of(performanceSeatInfo, dto);
-
+            log.info("2");
             alarmRepository.save(alarm);
         } else {
             throw new ServiceException(ResultCode.BAD_REQUEST);
