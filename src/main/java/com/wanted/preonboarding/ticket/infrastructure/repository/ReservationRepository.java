@@ -5,8 +5,8 @@ import java.util.UUID;
 
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.enumeration.ReservationStatus;
-import com.wanted.preonboarding.ticket.domain.dto.SeatInfo;
-import com.wanted.preonboarding.ticket.domain.dto.UserInfo;
+import com.wanted.preonboarding.ticket.domain.vo.SeatInfo;
+import com.wanted.preonboarding.ticket.domain.vo.UserInfo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

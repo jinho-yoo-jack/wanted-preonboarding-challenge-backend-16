@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceDTO;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.interfaces.dto.PerformanceResponse;
 
@@ -21,10 +21,10 @@ public class PerformanceService {
 	private final PerformanceRepository performanceRepository;
 	private long totalAmount = 0L;
 
-	public List<PerformanceInfo> allPerformanceInfoList() {
+	public List<PerformanceDTO> allPerformanceInfoList() {
 		return performanceRepository.findPerformancesByReservedIsFalse()
 			.stream()
-			.map(PerformanceInfo::of)
+			.map(PerformanceDTO::of)
 			.toList();
 	}
 

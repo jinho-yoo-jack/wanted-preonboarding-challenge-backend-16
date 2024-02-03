@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 import com.wanted.preonboarding.ticket.domain.enumeration.ReservationStatus;
-import com.wanted.preonboarding.ticket.domain.dto.ReservationInfo;
-import com.wanted.preonboarding.ticket.domain.dto.SeatInfo;
-import com.wanted.preonboarding.ticket.domain.dto.UserInfo;
+import com.wanted.preonboarding.ticket.domain.dto.ReservationDTO;
+import com.wanted.preonboarding.ticket.domain.vo.SeatInfo;
+import com.wanted.preonboarding.ticket.domain.vo.UserInfo;
 
 @Entity
 @Table
@@ -37,7 +37,7 @@ public class Reservation {
 	@Column(nullable = false)
 	private int rate;
 
-	public static Reservation from(ReservationInfo info) {
+	public static Reservation from(ReservationDTO info) {
 		return Reservation.builder()
 			.performanceId(info.getPerformanceId())
 			.userInfo(

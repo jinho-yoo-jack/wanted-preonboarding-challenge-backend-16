@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 import com.wanted.preonboarding.common.exception.NotReservedStateException;
-import com.wanted.preonboarding.ticket.domain.dto.SeatInfo;
+import com.wanted.preonboarding.ticket.domain.vo.SeatInfo;
 
 @Table(name = "performance_seat_info",
 	uniqueConstraints = {@UniqueConstraint(name = "performance_seat_info_unique",

@@ -13,10 +13,10 @@ import com.wanted.preonboarding.ticket.domain.discountpolicy.DiscountPolicies;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.enumeration.ReservationStatus;
-import com.wanted.preonboarding.ticket.domain.dto.ReservationInfo;
+import com.wanted.preonboarding.ticket.domain.dto.ReservationDTO;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.domain.dto.SeatInfo;
-import com.wanted.preonboarding.ticket.domain.dto.UserInfo;
+import com.wanted.preonboarding.ticket.domain.vo.SeatInfo;
+import com.wanted.preonboarding.ticket.domain.vo.UserInfo;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
@@ -46,30 +46,30 @@ public class ReservationService {
 		Performance performance = performanceRepository.findPerformanceByPerformanceId(
 				UUID.fromString(request.performanceId()))
 			.orElseThrow(PerformanceNotFoundException::new);
-		ReservationInfo reservationInfo = ReservationInfo.of(request, 0);
-		totalAmount = reservationInfo.getAmount();
-		validateReservation(reservationInfo);
+		ReservationDTO reservationDTO = ReservationDTO.of(request, 0);
+		totalAmount = reservationDTO.getAmount();
+		validateReservation(reservationDTO);
 
 		int price = performance.getPrice();
 		DiscountPolicies discountPolicies = new DiscountPolicies();
-		reservationInfo = ReservationInfo.of(request, discountPolicies.calculateRate(request.age(), price));
-		reservationRepository.save(Reservation.from(reservationInfo));
+		reservationDTO = ReservationDTO.of(request, discountPolicies.calculateRate(request.age(), price));
+		reservationRepository.save(Reservation.from(reservationDTO));
 
 		PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findByPerformanceIdAndRoundAndSeatInfo(
-				reservationInfo.getPerformanceId(),
-				reservationInfo.getRound(), reservationInfo.getSeatInfo())
+				reservationDTO.getPerformanceId(),
+				reservationDTO.getRound(), reservationDTO.getSeatInfo())
 			.orElseThrow(PerformanceSeatInfoNotFoundException::new);
 		performanceSeatInfo.reserved();
 		performanceSeatInfoRepository.save(performanceSeatInfo);
 
 		List<PerformanceSeatInfo> performanceSeatInfos = performanceSeatInfoRepository.findPerformanceSeatInfosByPerformanceIdAndReservedIsFalse(
-			reservationInfo.getPerformanceId());
+			reservationDTO.getPerformanceId());
 		if (performanceSeatInfos.isEmpty()) {
 			performance.reserved();
 			performanceRepository.save(performance);
 		}
 
-		return ReservationResponse.of(reservationInfo);
+		return ReservationResponse.of(reservationDTO);
 	}
 
 	public List<ReservationResponse> getReservations(CustomerContactRequest request) {
@@ -77,22 +77,22 @@ public class ReservationService {
 		List<Reservation> reservations = reservationRepository.findByUserInfoAndReservationStatus(userInfo,
 			ReservationStatus.RESERVE);
 
-		List<ReservationInfo> reservationInfos = reservations
+		List<ReservationDTO> reservationDTOs = reservations
 			.stream()
 			.map(reservation ->
-				ReservationInfo.from(reservation,
+				ReservationDTO.from(reservation,
 					performanceRepository.findPerformanceByPerformanceId(reservation.getPerformanceId())
 						.orElseThrow(PerformanceNotFoundException::new).getPeformanceName())
 			).toList();
 
-		return reservationInfos.stream()
+		return reservationDTOs.stream()
 			.map(ReservationResponse::of)
 			.collect(Collectors.toList());
 	}
 
-	private void validateReservation(ReservationInfo reservationInfo) {
-		if (reservationRepository.existsReservationByPerformanceIdAndSeatInfo(reservationInfo.getPerformanceId(),
-			reservationInfo.getSeatInfo())) {
+	private void validateReservation(ReservationDTO reservationDTO) {
+		if (reservationRepository.existsReservationByPerformanceIdAndSeatInfo(reservationDTO.getPerformanceId(),
+			reservationDTO.getSeatInfo())) {
 			throw new ReservationAlreadyExistsException();
 		}
 	}

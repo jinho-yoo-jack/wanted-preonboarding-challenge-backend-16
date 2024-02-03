@@ -2,7 +2,7 @@ package com.wanted.preonboarding.ticket.interfaces.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.PerformanceService;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceDTO;
 import com.wanted.preonboarding.ticket.interfaces.dto.PerformanceResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -24,11 +24,11 @@ public class PerformanceController {
 	private final PerformanceService performanceService;
 
 	@GetMapping("/all")
-	public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
+	public ResponseEntity<ResponseHandler<List<PerformanceDTO>>> getAllPerformanceInfoList() {
 		System.out.println("getAllPerformanceInfoList");
 		return ResponseEntity
 			.ok()
-			.body(ResponseHandler.<List<PerformanceInfo>>builder()
+			.body(ResponseHandler.<List<PerformanceDTO>>builder()
 				.message("Success")
 				.statusCode(HttpStatus.OK)
 				.data(performanceService.allPerformanceInfoList())

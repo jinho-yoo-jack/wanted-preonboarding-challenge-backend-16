@@ -8,11 +8,13 @@ import java.util.UUID;
 
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.enumeration.ReservationStatus;
+import com.wanted.preonboarding.ticket.domain.vo.SeatInfo;
+import com.wanted.preonboarding.ticket.domain.vo.UserInfo;
 import com.wanted.preonboarding.ticket.interfaces.dto.ReservationRequest;
 
 @Getter
 @Builder
-public class ReservationInfo {
+public class ReservationDTO {
 	// 공연 및 전시 정보 + 예약자 정보
 	private UUID performanceId;
 	private String performanceName;
@@ -26,8 +28,8 @@ public class ReservationInfo {
 	private int age;
 	private int rate;
 
-	public static ReservationInfo of(ReservationRequest request, double price) {
-		return ReservationInfo.builder()
+	public static ReservationDTO of(ReservationRequest request, double price) {
+		return ReservationDTO.builder()
 			.performanceId(UUID.fromString(request.performanceId()))
 			.performanceName(request.performanceName())
 			.userInfo(UserInfo.of(request.reservationName(), request.reservationPhoneNumber()))
@@ -40,8 +42,8 @@ public class ReservationInfo {
 			.build();
 	}
 
-	public static ReservationInfo from(Reservation reservation, String performanceName) {
-		return ReservationInfo.builder()
+	public static ReservationDTO from(Reservation reservation, String performanceName) {
+		return ReservationDTO.builder()
 			.performanceId(reservation.getPerformanceId())
 			.performanceName(performanceName)
 			.userInfo(UserInfo.of(reservation.getUserInfo().getReservationName(),

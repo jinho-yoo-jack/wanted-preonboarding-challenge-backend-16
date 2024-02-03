@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
-import com.wanted.preonboarding.ticket.domain.dto.SeatInfo;
+import com.wanted.preonboarding.ticket.domain.vo.SeatInfo;
 
 public interface PerformanceSeatInfoRepository extends JpaRepository<PerformanceSeatInfo, Integer> {
 	Optional<PerformanceSeatInfo> findById(int id);

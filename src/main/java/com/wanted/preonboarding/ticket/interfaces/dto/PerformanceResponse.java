@@ -3,7 +3,7 @@ package com.wanted.preonboarding.ticket.interfaces.dto;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceDTO;
 
 import lombok.Builder;
 
@@ -15,14 +15,13 @@ public record PerformanceResponse(
 	LocalDate startDate,
 	boolean reserved
 ) {
-	public static PerformanceResponse of(PerformanceInfo performanceInfo) {
+	public static PerformanceResponse of(PerformanceDTO performanceDTO) {
 		return new PerformanceResponse(
-			//convertUuidToString(performanceInfo.getPerformanceId()),
-			performanceInfo.getPerformanceId(),
-			performanceInfo.getPerformanceName(),
-			performanceInfo.getRound(),
-			performanceInfo.getStartDate(),
-			performanceInfo.isReserved()
+			performanceDTO.getPerformanceId(),
+			performanceDTO.getPerformanceName(),
+			performanceDTO.getRound(),
+			performanceDTO.getStartDate(),
+			performanceDTO.isReserved()
 		);
 	}
 }

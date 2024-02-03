@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class PerformanceInfo {
+public class PerformanceDTO {
 	private UUID performanceId;
 	private String performanceName;
 	private String performanceType;
@@ -20,8 +20,8 @@ public class PerformanceInfo {
 	private boolean reserved;
 	private int round;
 
-	public static PerformanceInfo of(Performance entity) {
-		return PerformanceInfo.builder()
+	public static PerformanceDTO of(Performance entity) {
+		return PerformanceDTO.builder()
 			.performanceId(entity.getPerformanceId())
 			.performanceName(entity.getPeformanceName())
 			.performanceType(convertCodeToName(entity.getType()))

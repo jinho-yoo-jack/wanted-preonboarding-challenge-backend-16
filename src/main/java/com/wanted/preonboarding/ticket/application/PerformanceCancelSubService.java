@@ -5,7 +5,7 @@ import com.wanted.preonboarding.common.exception.PerformanceSeatInfoNotFoundExce
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.dto.AlarmMessage;
-import com.wanted.preonboarding.ticket.domain.dto.SeatInfo;
+import com.wanted.preonboarding.ticket.domain.vo.SeatInfo;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.interfaces.dto.ReservationCancelRequest;
