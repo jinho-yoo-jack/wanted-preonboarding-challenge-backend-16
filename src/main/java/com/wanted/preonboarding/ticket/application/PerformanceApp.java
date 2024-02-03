@@ -24,9 +24,11 @@ public class PerformanceApp {
     public void createdPerformance(CreatedPerformanceRequestDto requestDto){
         Performance performance = Performance.of(requestDto);
         List<PerformanceSeatInfo> performanceSeatInfoList = new ArrayList<>();
+
         for (int i = 0; i > requestDto.getSeatCount(); i++){
             performanceSeatInfoList.add(PerformanceSeatInfo.of(performance,String.valueOf(i)));
         }
+
         performanceSeatRepository.saveAll(performanceSeatInfoList);
         performanceRepository.save(performance);
     }

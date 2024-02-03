@@ -1,9 +1,12 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
+import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -17,19 +20,20 @@ public class ResponseReserveInfo {
     private String reservationName;
     private String reservationPhoneNumber;
     private int round;
-    private int seat;
+    private ResponsePerformanceSeatInfoDto seatInfo;
     private int gate;
 
 
-    public ResponseReserveInfo (Reservation entity, Performance performance){
+    public ResponseReserveInfo (Reservation reservation, Performance performance, PerformanceSeatInfo performanceSeatInfo){
+
         ResponseReserveInfo.builder()
-                .reservationName(entity.getName())
-                .reservationPhoneNumber(entity.getPhoneNumber())
+                .reservationName(reservation.getName())
+                .reservationPhoneNumber(reservation.getPhoneNumber())
                 .performanceName(performance.getName())
                 .performanceId(performance.getId())
-                .round(entity.getRound())
-                .seat(entity.getSeat())
-                .gate(entity.getGate())
+                .round(reservation.getRound())
+                .seatInfo(performanceSeatInfo.convertResponseDto())
+                .gate(reservation.getGate())
                 .build();
     }
 

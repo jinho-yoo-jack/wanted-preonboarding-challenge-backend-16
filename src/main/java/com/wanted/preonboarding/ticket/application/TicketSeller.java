@@ -39,17 +39,16 @@ public class TicketSeller {
     public List<ResponseReserveInfo> reserve(ReserveInfo reserveInfo) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
 
-        List<ResponseReserveInfo> reserveInfos = new ArrayList<>();
-        Performance info = performanceRepository.findById(reserveInfo.getPerformanceId())
+        Performance performanceInfo = performanceRepository.findById(reserveInfo.getPerformanceId())
             .orElseThrow(EntityNotFoundException::new);
 
-        if (!"enable".equals(info.getIsReserve())) {
+        if (!"enable".equals(performanceInfo.getIsReserve())) {
             throw new IllegalStateException("예약에 실패 하였습니다.");
         }
 
         try {
             // 1. 결제
-            int price = info.getPrice();
+            int price = performanceInfo.getPrice();
             long discountedPrice = applyDiscount(price, reserveInfo.getDiscountPolicy());
             if (reserveInfo.getAmount() < discountedPrice) {
                 throw new IllegalStateException("잔액이 부족 합니다.");
@@ -57,18 +56,28 @@ public class TicketSeller {
 
             // 2. 예매 진행
             reserveInfo.setAmount(reserveInfo.getAmount() - discountedPrice);
-            for (String seat : reserveInfo.getSeats()) {
-                PerformanceSeatInfo personalSeatInfo = performanceSeatRepository.findBySeatNumber(seat)
-                        .orElseThrow(()->new IllegalArgumentException("이미 예약된 좌석 입니다"));
-                personalSeatInfo.disable();
-                Reservation reservation = reservationRepository.save(Reservation.of(reserveInfo, personalSeatInfo));
-                reserveInfos.add(new ResponseReserveInfo(reservation,info));
-            }
-            return reserveInfos;
+            return getResponseReserveInfos(reserveInfo, performanceInfo);
 
         } catch (Exception e) {
             throw new IllegalStateException("예약에 실패하였습니다.", e);
         }
+    }
+
+    private List<ResponseReserveInfo> getResponseReserveInfos(ReserveInfo reserveInfo, Performance performanceInfo) {
+        List<String> seatInfo = reserveInfo.getSeats();
+        List<ResponseReserveInfo> reserveInfos = new ArrayList<>();
+
+        for (String seat: seatInfo) {
+            PerformanceSeatInfo convertSeatInfo = PerformanceSeatInfo.convertSeatInfo(seat);
+            PerformanceSeatInfo reserveSeatInfo = performanceSeatRepository
+                    .findByPerformanceNameAndSeatLineAndSeatNumber(performanceInfo.getName(),convertSeatInfo.getSeatLine(),convertSeatInfo.getSeatNumber())
+                    .orElseThrow(()-> new IllegalArgumentException("해당 좌석은 없는 좌석 입니다."));
+
+            Reservation reservation = reservationRepository.save(Reservation.of(reserveInfo, reserveSeatInfo));
+            reserveInfos.add(new ResponseReserveInfo(reservation, performanceInfo,reserveSeatInfo));
+        }
+
+        return reserveInfos;
     }
 
     private long applyDiscount(int originalPrice, String discountPolicyString) {
@@ -87,12 +96,14 @@ public class TicketSeller {
         for (Reservation reservation : reservations) {
             Performance performance = performanceRepository.findById(reservation.getPerformanceId())
                     .orElseThrow(EntityNotFoundException::new);
-            responseReserveInfos.add(new ResponseReserveInfo(reservation,performance));
+            PerformanceSeatInfo seatInfo = performanceSeatRepository.findByPerformanceNameAndSeatLineAndSeatNumber(performance.getName(),reservation.getLine(),reservation.getSeat())
+                    .orElseThrow(()->new IllegalArgumentException("해당 예매는 예약된 예매가 아닙니다."));
+
+            responseReserveInfos.add(new ResponseReserveInfo(reservation,performance,seatInfo));
         }
 
         return responseReserveInfos;
     }
-
 
     public PerformanceInfo getPerformanceInfoDetail(String name) {
         Performance performance = performanceRepository.findByName(name)
@@ -101,14 +112,15 @@ public class TicketSeller {
     }
 
     public void cancelReservation(CancelReservationRequestDto requestDto) {
-        List<Reservation> reservations = reservationRepository.findByNameAndPhoneNumber(requestDto.getReservationName(), requestDto.getReservationPhoneNumber());
+        PerformanceSeatInfo performanceSeatInfo = performanceSeatRepository.findByPerformanceNameAndSeatLineAndSeatNumber(requestDto.getPerformanceName(),requestDto.getLine(),requestDto.getSeat())
+                .orElseThrow(()->new IllegalArgumentException("예매 내역이 존재하지 않습니다"));
+        Performance performance = performanceRepository.findByName(requestDto.getPerformanceName())
+                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 공연 입니다."));
 
-        for (Reservation reservation : reservations) {
-            performanceRepository.deleteById(reservation.getPerformanceId());
-        }
-        if (!reservations.isEmpty()) {
-            alarmApp.sendAlarm(reservations.get(0).getPerformanceId());
-        }
+        //좌석 닫기
+        performanceSeatInfo.closedSeat();
+        //알람 보내기
+        alarmApp.sendAlarm(performance.getId());
     }
 
 

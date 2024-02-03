@@ -8,6 +8,9 @@ import lombok.Setter;
 @Setter
 @Builder
 public class CancelReservationRequestDto {
+    private String performanceName;
+    private char line;
+    private int seat;
     private String reservationName;
     private String reservationPhoneNumber;
 }

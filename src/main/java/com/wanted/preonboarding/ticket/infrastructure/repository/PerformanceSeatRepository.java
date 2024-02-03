@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface PerformanceSeatRepository extends JpaRepository<PerformanceSeatInfo,Long> {
 
-    Optional<PerformanceSeatInfo> findBySeatNumber(String seatNum);
+    Optional<PerformanceSeatInfo> findByPerformanceNameAndSeatLineAndSeatNumber(String performanceName,char seatLine, int seatNumber);
 }

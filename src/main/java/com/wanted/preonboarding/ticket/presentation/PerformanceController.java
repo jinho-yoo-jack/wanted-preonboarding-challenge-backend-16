@@ -1,17 +1,14 @@
 package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.ticket.application.TicketSeller;
-import com.wanted.preonboarding.ticket.domain.dto.CancelReservationRequestDto;
-import com.wanted.preonboarding.ticket.domain.dto.GetReservationRequestDto;
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
-import com.wanted.preonboarding.ticket.domain.dto.ResponseReserveInfo;
+import com.wanted.preonboarding.ticket.domain.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
-@RequestMapping("/reserve")
+@RequestMapping("/performance")
 @RequiredArgsConstructor
 public class PerformanceController {
     private final TicketSeller ticketSeller;
@@ -32,7 +29,11 @@ public class PerformanceController {
         return ticketSeller.reserve(reserveInfo);
     }
     @GetMapping("/")
-    public List<ResponseReserveInfo> getState(GetReservationRequestDto requestDto){
+    public PerformanceInfo getPerformanceDetail(String performanceName){
+        return ticketSeller.getPerformanceInfoDetail(performanceName);
+    }
+    @GetMapping("/reserve")
+    public List<ResponseReserveInfo> getReserveInfo(GetReservationRequestDto requestDto){
         return ticketSeller.getReserveInfo(requestDto);
     }
 
