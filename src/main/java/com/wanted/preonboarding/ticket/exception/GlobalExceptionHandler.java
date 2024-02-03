@@ -1,5 +1,7 @@
 package com.wanted.preonboarding.ticket.exception;
 
+import com.wanted.preonboarding.ticket.exception.customException.InsufficientBalanceException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -44,6 +46,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PropertyValueException.class)
     public ResponseEntity<ExceptionResponse> PropertyValueException(PropertyValueException exception) {
         ExceptionResponse exceptionResponse = ExceptionResponse.builder().exceptionMessage(exception.getMessage()).httpStatus(HttpStatus.CONFLICT).build();
+        return new ResponseEntity<>(exceptionResponse, exceptionResponse.httpStatus);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> EntityNotFoundException(EntityNotFoundException exception) {
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder().exceptionMessage(exception.getMessage()).httpStatus(HttpStatus.NOT_FOUND).build();
+        return new ResponseEntity<>(exceptionResponse, exceptionResponse.httpStatus);
+    }
+
+    @ExceptionHandler(InsufficientBalanceException.class)
+    public ResponseEntity<ExceptionResponse> InsufficientBalanceException(InsufficientBalanceException exception) {
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder().exceptionMessage(exception.getMessage()).httpStatus(HttpStatus.BAD_REQUEST).build();
         return new ResponseEntity<>(exceptionResponse, exceptionResponse.httpStatus);
     }
 }
