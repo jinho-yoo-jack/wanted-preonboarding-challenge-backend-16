@@ -15,7 +15,7 @@ public class PerformanceSeatInfo {
     @GeneratedValue
     private Long Id;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "performance_id")
     private Performance performance;
 
