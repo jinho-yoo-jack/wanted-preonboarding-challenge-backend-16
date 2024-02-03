@@ -49,7 +49,7 @@ public class PerformanceCancelSubService implements MessageListener {
 		}
 	}
 
-	public void createAlarmMessage(ReservationCancelRequest request) {
+	public void subscribe(ReservationCancelRequest request) {
 		PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findPerformanceSeatInfoBySeatInfoAndPerformanceId(
 			SeatInfo.of(request.line(), request.seat()), UUID.fromString(request.performanceId()))
     		.orElseThrow(PerformanceSeatInfoNotFoundException::new);

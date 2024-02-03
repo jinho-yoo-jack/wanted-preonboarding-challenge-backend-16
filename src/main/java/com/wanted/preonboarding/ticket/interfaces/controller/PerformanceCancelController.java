@@ -7,7 +7,6 @@ import java.util.Set;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -71,7 +70,7 @@ public class PerformanceCancelController {
 
 	@PostMapping("/alarm")
 	public String subscribeMessage(@RequestBody ReservationCancelRequest request) {
-		redisSubscriber.createAlarmMessage(request);
+		redisSubscriber.subscribe(request);
 
 		return "SUCCESS";
 	}
