@@ -31,33 +31,21 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
 
-    // TODO: 예약
 
+    // TODO: 예약
     @Transactional
     public ReserveCreateResponse reserve(ReserveCreateRequest request) {
         log.info("ReservationService.reserve");
         Performance performance = findPerformance(request);
-        PerformanceSeatInfo seatInfo = performanceSeatInfoRepository.findByPerformanceIdAndRoundAndSeatAndLine(
-                request.getPerformanceId(), request.getRound(),
-                request.getSeat(), request.getLine()        //TODO: String 상수화 및 분리
-        ).orElseThrow(() -> new PerformanceSeatInfoNotFound("좌석 정보가 존재하지 않습니다."));
-        //TODO: 분리
-        if (seatInfo.getIsReserve().equalsIgnoreCase("disable")) {
-            throw new SeatAlreadyReservedException("좌석이 매진되었습니다.");
-        }
+        PerformanceSeatInfo seatInfo = findSeatInfo(request);
+        checkReservationAvailable(seatInfo);
         //TODO: 할인 정책 확인 및 구매 가능한지 확인
 //        DiscountService.discount();
+//      Discount만 하는가? 근데 service에 있어야 하지 않을까 reservationServic에 있는 것이 좋을거같은데
 
-        //TODO: 예매 진행
+        //예매 진행 및 반환
         Reservation save = reservationRepository.save(Reservation.of(request, performance));
-
-        //TODO: ReserveCreateResponse 반환
         return save.toReserveCreateResponse();
-    }
-
-    private Performance findPerformance(ReserveCreateRequest reserveCreateRequest) {
-        return performanceRepository.findById(reserveCreateRequest.getPerformanceId())
-                .orElseThrow(() -> new PerformanceNotFoundException("공연 정보가 존재하지 않습니다.")); //TODO: 분리 및 상수화
     }
 
     @Transactional(readOnly = true)
@@ -71,6 +59,28 @@ public class ReservationService {
     }
 
     //TODO: 취소
+
+
+    private Performance findPerformance(ReserveCreateRequest reserveCreateRequest) {
+        return performanceRepository.findById(reserveCreateRequest.getPerformanceId())
+                .orElseThrow(() -> new PerformanceNotFoundException("공연 정보가 존재하지 않습니다.")); //TODO: 분리 및 상수화
+    }
+
+    private static void checkReservationAvailable(PerformanceSeatInfo seatInfo) {
+        if (seatInfo.getIsReserve().equalsIgnoreCase("disable")) {
+            throw new SeatAlreadyReservedException("좌석이 매진되었습니다.");
+        }
+    }
+
+    private PerformanceSeatInfo findSeatInfo(ReserveCreateRequest request) {
+        return performanceSeatInfoRepository.findByPerformanceIdAndRoundAndSeatAndLine(
+                request.getPerformanceId(),
+                request.getRound(),
+                request.getSeat(),
+                request.getLine()        //TODO: String 상수화 및 분리
+        ).orElseThrow(() -> new PerformanceSeatInfoNotFound("좌석 정보가 존재하지 않습니다."));
+    }
+
 
 
 }
