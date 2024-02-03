@@ -18,7 +18,7 @@ public class AlarmService {
 	private final ReservationRepository reservationRepository;
     
 	/**
-	 * 
+	 * 알람 확인 후 전송 서비스
 	 * @param reserveInfo
 	 * @return
 	 */
@@ -26,6 +26,21 @@ public class AlarmService {
 		/** 기존 예약 여부에 따른 예약상태 설정*/
     	List<Reservation> reservationList = reservationRepository.findByPerformanceIdAndRoundAndLineAndSeatAndType(reserveInfo.getPerformanceId(), reserveInfo.getRound(), reserveInfo.getLine(), reserveInfo.getSeat(),ReservationStateType.WAITING.getCategory());
     	
-		return false;
+    	
+    	
+		return sendMessage(reservationList);
 	};
+	
+	/**
+	 * 메세지 전송 서비스
+	 * @param reservationList
+	 * @return
+	 */
+	private boolean sendMessage(List<Reservation> reservationList) {
+		/**
+		 * 조회 후 서비스 구현
+		 * 
+		 * */
+		return true;
+	}
 }

@@ -49,9 +49,5 @@ public class PerformanceService {
     			.toList();
     	return selectPerformanceInfoList;
     }
-	/*
-	 * public PerformanceInfo getPerformanceInfoDetail(String name) { return
-	 * PerformanceInfo.enablePerformance(performanceRepository.findByName(name)); }
-	 */
 
 }

@@ -21,12 +21,22 @@ import lombok.RequiredArgsConstructor;
 public class ReserveController {
     private final ReservationService reservationService;
     
+    /**
+     * 예약 확인 컨트롤러
+     * @param reserveInfo
+     * @return
+     */
     @PostMapping("/check")
     public ResponseEntity<List<ReserveInfo>> selectReserveInfo(@RequestBody @Validated(ReserveGroupOrder.selectReserveInfo.class) ReserveInfo reserveInfo) {
     	
         return ResponseEntity.ok(reservationService.selectReserveInfo(reserveInfo));
     }
     
+    /**
+     * 예약 컨트롤러
+     * @param reserveInfo
+     * @return
+     */
     @PostMapping("/reserve")
     public ResponseEntity<ReserveInfo> reservation(
     		@RequestBody @Validated(ReserveGroupOrder.reservation.class
@@ -34,6 +44,11 @@ public class ReserveController {
     	return ResponseEntity.ok(reservationService.saveReservation(reserveInfo));
     }
     
+    /**
+     * 예약 취소 컨트롤러
+     * @param reserveInfo
+     * @return
+     */
     @PostMapping("/cancel")
     public ResponseEntity<ReserveInfo> cancleReservation(
     		@RequestBody @Validated(ReserveGroupOrder.reservation.class
