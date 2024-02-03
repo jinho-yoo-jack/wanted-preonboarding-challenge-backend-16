@@ -32,15 +32,7 @@ public class PerformanceController {
     public PerformanceInfo getPerformanceDetail(String performanceName){
         return ticketSeller.getPerformanceInfoDetail(performanceName);
     }
-    @GetMapping("/reserve")
-    public List<ResponseReserveInfo> getReserveInfo(GetReservationRequestDto requestDto){
-        return ticketSeller.getReserveInfo(requestDto);
-    }
 
-    @PatchMapping("/")
-    public void cancelReservation(CancelReservationRequestDto requestDto) {
-        ticketSeller.cancelReservation(requestDto);
-    }
 
 
 }

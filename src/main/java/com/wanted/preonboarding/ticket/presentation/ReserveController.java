@@ -33,7 +33,7 @@ public class ReserveController {
         return ticketSeller.reserve(reserveInfo);
     }
     @GetMapping("/")
-    public List<ResponseReserveInfo> getState(GetReservationRequestDto requestDto){
+    public List<ResponseReserveInfo> getReserveInfo(GetReservationRequestDto requestDto){
         return ticketSeller.getReserveInfo(requestDto);
     }
 
