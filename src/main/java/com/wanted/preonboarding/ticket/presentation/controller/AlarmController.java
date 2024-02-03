@@ -27,4 +27,8 @@ public class AlarmController {
         alarmMailService.sendAlarmPerformance(dto);
     }
 
+    @PostMapping("/create")
+    public void createAlarm(@RequestBody ReservePossibleAlarmCustomerInfoDto dto) {
+        alarmMailService.createAlarmPerformance(dto);
+    }
 }

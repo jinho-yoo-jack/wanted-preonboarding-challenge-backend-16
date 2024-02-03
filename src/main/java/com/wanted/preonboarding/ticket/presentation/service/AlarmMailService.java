@@ -3,8 +3,10 @@ package com.wanted.preonboarding.ticket.presentation.service;
 import com.wanted.preonboarding.ticket.aop.ResultCode;
 import com.wanted.preonboarding.ticket.aop.exception.ServiceException;
 import com.wanted.preonboarding.ticket.domain.dto.*;
+import com.wanted.preonboarding.ticket.domain.entity.Alarm;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
+import com.wanted.preonboarding.ticket.infrastructure.repository.AlarmRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -31,14 +34,33 @@ public class AlarmMailService {
     private String password;
     private final PerformanceRepository performanceRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
+    private final AlarmRepository alarmRepository;
 
     private static final String CANCEL = "cancel";
+    private static final String DISABLE = "disable";
+    private static final String ENABLE = "enable";
+
+    @Transactional
+    public void createAlarmPerformance(ReservePossibleAlarmCustomerInfoDto dto) {
+
+        Performance performance = getPerformance(dto);
+        if(performance.getIsReserve().equalsIgnoreCase(ENABLE)) {
+            PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto, DISABLE);
+
+            Alarm alarm = Alarm.of(performanceSeatInfo, dto);
+
+            alarmRepository.save(alarm);
+        } else {
+            throw new ServiceException(ResultCode.BAD_REQUEST);
+        }
+
+    }
 
     @Transactional
     public void sendAlarmPerformance(ReservePossibleAlarmCustomerInfoDto dto) {
 
         Performance performance = getPerformance(dto);
-        PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfo(dto);
+        PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto, CANCEL);
 
         SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto = SendMessagePerformanceSeatInfoDto.from(performanceSeatInfo);
         sendMessagePerformanceSeatInfoDto.updatePerformanceName(performance.getName());
@@ -75,8 +97,8 @@ public class AlarmMailService {
             throw new ServiceException(ResultCode.EMAIL_SENDING);
         }
     }
-    private PerformanceSeatInfo getPerformanceSeatInfo(ReservePossibleAlarmCustomerInfoDto dto) {
-        return performanceSeatInfoRepository.findByPerformanceIdAndIsReserve(dto.getPerformanceId(), CANCEL)
+    private PerformanceSeatInfo getPerformanceSeatInfoAndStatus(ReservePossibleAlarmCustomerInfoDto dto, String status) {
+        return performanceSeatInfoRepository.findByPerformanceIdAndIsReserve(dto.getPerformanceId(), status)
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
     }
 
