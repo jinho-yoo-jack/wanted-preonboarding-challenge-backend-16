@@ -2,7 +2,7 @@ package com.wanted.preonboarding.ticket.interfaces.dto;
 
 import java.util.UUID;
 
-import com.wanted.preonboarding.ticket.domain.info.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.info.ReservationInfo;
 
 import lombok.Builder;
 
@@ -16,15 +16,15 @@ public record ReservationResponse(
 	String reservationName,
 	String reservationPhoneNumber
 ) {
-	public static ReservationResponse of(ReserveInfo reserveInfo) {
+	public static ReservationResponse of(ReservationInfo reservationInfo) {
 		return ReservationResponse.builder()
-			.round(reserveInfo.getRound())
-			.performanceName(reserveInfo.getPerformanceName())
-			.line(reserveInfo.getSeatInfo().getLine())
-			.seat(reserveInfo.getSeatInfo().getSeat())
-			.performanceId(reserveInfo.getPerformanceId())
-			.reservationName(reserveInfo.getUserInfo().getReservationName())
-			.reservationPhoneNumber(reserveInfo.getUserInfo().getReservationPhoneNumber())
+			.round(reservationInfo.getRound())
+			.performanceName(reservationInfo.getPerformanceName())
+			.line(reservationInfo.getSeatInfo().getLine())
+			.seat(reservationInfo.getSeatInfo().getSeat())
+			.performanceId(reservationInfo.getPerformanceId())
+			.reservationName(reservationInfo.getUserInfo().getReservationName())
+			.reservationPhoneNumber(reservationInfo.getUserInfo().getReservationPhoneNumber())
 			.build();
 	}
 }

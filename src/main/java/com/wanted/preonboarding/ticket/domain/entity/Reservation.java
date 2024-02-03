@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 import com.wanted.preonboarding.ticket.domain.info.ReservationStatus;
-import com.wanted.preonboarding.ticket.domain.info.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.info.ReservationInfo;
 import com.wanted.preonboarding.ticket.domain.info.SeatInfo;
 import com.wanted.preonboarding.ticket.domain.info.UserInfo;
 
@@ -37,7 +37,7 @@ public class Reservation {
 	@Column(nullable = false)
 	private int rate;
 
-    public static Reservation from(ReserveInfo info) {
+    public static Reservation from(ReservationInfo info) {
         return Reservation.builder()
             .performanceId(info.getPerformanceId())
 			.userInfo(UserInfo.of(info.getUserInfo().getReservationName(), info.getUserInfo().getReservationPhoneNumber()))

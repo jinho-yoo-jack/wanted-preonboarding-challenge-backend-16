@@ -13,7 +13,7 @@ import com.wanted.preonboarding.ticket.interfaces.dto.ReservationRequest;
 @Getter
 @Setter
 @Builder
-public class ReserveInfo {
+public class ReservationInfo {
     // 공연 및 전시 정보 + 예약자 정보
     private UUID performanceId;
     private String performanceName;
@@ -27,8 +27,8 @@ public class ReserveInfo {
     private int age;
     private int rate;
 
-    public static ReserveInfo of(ReservationRequest request, double price) {
-        return ReserveInfo.builder()
+    public static ReservationInfo of(ReservationRequest request, double price) {
+        return ReservationInfo.builder()
             .performanceId(UUID.fromString(request.performanceId()))
             .performanceName(request.performanceName())
             .userInfo(UserInfo.of(request.reservationName(), request.reservationPhoneNumber()))
@@ -41,8 +41,8 @@ public class ReserveInfo {
             .build();
     }
 
-    public static ReserveInfo from(Reservation reservation, String performanceName) {
-        return ReserveInfo.builder()
+    public static ReservationInfo from(Reservation reservation, String performanceName) {
+        return ReservationInfo.builder()
             .performanceId(reservation.getPerformanceId())
             .performanceName(performanceName)
             .userInfo(UserInfo.of(reservation.getUserInfo().getReservationName(), reservation.getUserInfo().getReservationPhoneNumber()))
