@@ -18,6 +18,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,13 +47,12 @@ public class Performance {
 	private int round;
 	@Column(nullable = false)
 	private int type;
-	@CreatedDate
 	@NotNull
-	private LocalDateTime start_date;
+	private LocalDateTime startDate;
 
 	@LastModifiedDate
 	@NotNull
-	private LocalDateTime update_date;
+	private LocalDateTime updateDate;
 	@Column(nullable = false, name = "is_reserve", columnDefinition = "varchar(255) default 'disable'")
 	private String isReserve;
 
@@ -64,5 +64,10 @@ public class Performance {
 	 */
 	public void updateIsReserve(String status) {
 		this.isReserve = status;
+	}
+
+	@PrePersist
+	public void prePersist() {
+		this.updateDate = null;
 	}
 }
