@@ -35,4 +35,11 @@ public class Performance {
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;
 
+    public String getIsReserve() {
+        return isReserve;
+    }
+
+    public int getPrice() {
+        return price;
+    }
 }

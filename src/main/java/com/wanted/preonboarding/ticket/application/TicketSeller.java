@@ -40,7 +40,7 @@ public class TicketSeller {
         if (enableReserve.equalsIgnoreCase("enable")) {
             // 1. 결제
             int price = info.getPrice();
-            reserveInfo.setAmount(reserveInfo.getAmount() - price);
+            reserveInfo.setAmount((long) reserveInfo.getAmount() - price);
             // 2. 예매 진행
             reservationRepository.save(Reservation.of(reserveInfo));
             return true;
