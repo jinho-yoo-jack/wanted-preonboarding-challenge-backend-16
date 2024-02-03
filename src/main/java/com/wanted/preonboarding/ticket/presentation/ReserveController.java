@@ -35,7 +35,7 @@ public class ReserveController {
 	/*
 	   기능 1. 공연 예매
 	 */
-	@PostMapping("")
+	@PostMapping
 	public RsData reservation(@RequestBody ReserveInfo reserveInfo) {
 		RsData reserveResult = ticketSeller.reserve(reserveInfo);
 		if (reserveResult.isFail())
@@ -44,7 +44,7 @@ public class ReserveController {
 		return reserveResult;
 	}
 
-	@GetMapping("")
+	@GetMapping
 	public RsData search(@ModelAttribute @Valid SearchRequest searchRequest, BindingResult bindingResult) {
 		// 요청 객체에서 입력하지 않은 부분이 있다면 메세지를 담아서 RsData 객체 바로 리턴
 		if (bindingResult.hasErrors()) {
@@ -60,7 +60,7 @@ public class ReserveController {
 		return rsData;
 	}
 
-	@DeleteMapping("")
+	@DeleteMapping
 	public RsData cancleTicket(@RequestBody @Valid CancleRequest cancleRequest, BindingResult bindingResult) {
 		// 요청 객체에서 입력하지 않은 부분이 있다면 메세지를 담아서 RsData 객체 바로 리턴
 		if (bindingResult.hasErrors()) {

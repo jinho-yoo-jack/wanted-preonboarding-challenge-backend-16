@@ -27,7 +27,7 @@ public class PerformanceController {
 	/*
    		기능 3. 공연 및 전시 정보 조회(목록, 상세 조회)
  	*/
-	@GetMapping("")
+	@GetMapping
 	public RsData showList(@RequestParam(name = "status", defaultValue = "enable") String status,
 		@RequestParam(name = "page", defaultValue = "0") int page) {
 

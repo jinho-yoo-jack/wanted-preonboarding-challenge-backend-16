@@ -26,7 +26,7 @@ public class NotificationController {
 	/*
 		특정 공연 자리 나면 알림 오게하는 설정 저장 API
 	 */
-	@PostMapping("")
+	@PostMapping
 	public RsData createNotification(@RequestBody @Valid RequestNotification requestNotification,
 		BindingResult bindingResult) {
 		// 요청 객체에서 입력하지 않은 부분이 있다면 메세지를 담아서 RsData 객체 바로 리턴

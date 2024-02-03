@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
-@EnableAsync
 public class AsyncConfig {
 	// core 사이즈 만큼 일 처리
 	// 기본 스레드가 처리할 수 있는 작업량 넘어설 경우 큐에서 대기
