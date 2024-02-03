@@ -39,9 +39,9 @@ public class ReservationService {
         Performance performance = findPerformance(request);
         PerformanceSeatInfo seatInfo = findSeatInfo(request);
         checkReservationAvailable(seatInfo);
-        //TODO: 할인 정책 확인 및 구매 가능한지 확인
-//        DiscountService.discount();
-//      Discount만 하는가? 근데 service에 있어야 하지 않을까 reservationServic에 있는 것이 좋을거같은데
+
+//      DiscountService.discount(); //TODO: 할인 정책 확인 및 할인
+//      isAffordable(); //TODO: 구매 가능한지 확인
 
         //예매 진행 및 반환
         Reservation save = reservationRepository.save(Reservation.of(request, performance));
