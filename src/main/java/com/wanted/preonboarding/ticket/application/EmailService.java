@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmailService {
 	private final JavaMailSender mailSender;
-	private final String ADMIN_ADDRESS = "r4560798@naver.com";
+	private static final String ADMIN_ADDRESS = "r4560798@naver.com";
 
 	@Async("taskExecutor1")
 	public void sendEmail(List<String> recipients, String subject, String message) throws MessagingException {
