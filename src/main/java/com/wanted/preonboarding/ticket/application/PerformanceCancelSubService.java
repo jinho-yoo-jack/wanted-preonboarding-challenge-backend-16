@@ -66,7 +66,7 @@ public class PerformanceCancelSubService implements MessageListener {
 
 			@Override
 			public byte[] getChannel() {
-				return request.performanceId().getBytes(StandardCharsets.UTF_8);
+				return (request.performanceId()+"*").getBytes(StandardCharsets.UTF_8);
 			}
 		};
 

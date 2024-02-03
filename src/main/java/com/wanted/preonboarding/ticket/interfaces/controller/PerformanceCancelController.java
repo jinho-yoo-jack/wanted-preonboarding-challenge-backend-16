@@ -53,18 +53,18 @@ public class PerformanceCancelController {
 
 	@PutMapping("/alarm")
 	public String createTopic(@RequestBody ReservationCancelRequest request) {
-		ChannelTopic channel = new ChannelTopic(request.reservationName()+request.performanceId());
+		ChannelTopic channel = new ChannelTopic(request.performanceId()+request.reservationName());
 		redisMessageListener.addMessageListener(redisSubscriber, channel);
-		channels.put(request.reservationName()+request.performanceId(), channel);
+		channels.put(request.performanceId()+request.reservationName(), channel);
 
 		return "SUCCESS";
 	}
 
 	@DeleteMapping("/alarm")
 	public String deleteTopic(@RequestBody ReservationCancelRequest request) {
-		ChannelTopic channel = channels.get(request.reservationName()+request.performanceId());
+		ChannelTopic channel = channels.get(request.performanceId()+request.reservationName());
 		redisMessageListener.removeMessageListener(redisSubscriber, channel);
-		channels.remove(request.reservationName()+request.performanceId());
+		channels.remove(request.performanceId()+request.reservationName());
 
 		return "SUCCESS";
 	}
