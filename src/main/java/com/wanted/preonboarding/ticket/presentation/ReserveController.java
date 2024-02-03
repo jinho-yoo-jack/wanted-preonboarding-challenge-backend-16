@@ -70,7 +70,7 @@ public class ReserveController {
 				.collect(Collectors.toList());
 			return RsData.of("F-1", errorMessages.get(0));
 		}
-		RsData reserveResult = reservationService.cancle(cancleRequest.getId(), cancleRequest.getName(),
+		RsData reserveResult = reservationService.cancel(cancleRequest.getId(), cancleRequest.getName(),
 			cancleRequest.getPhoneNumber());
 		return reserveResult;
 	}

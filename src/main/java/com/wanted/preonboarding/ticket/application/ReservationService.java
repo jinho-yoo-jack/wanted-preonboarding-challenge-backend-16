@@ -51,7 +51,7 @@ public class ReservationService {
 	 */
 
 	@Transactional
-	public RsData cancle(Long reservationId, String name, String phoneNumber) {
+	public RsData cancel(Long reservationId, String name, String phoneNumber) {
 		Reservation reservation = reservationRepository.findById(reservationId).get();
 		if (reservation == null) {
 			return RsData.of("F-1", "이미 삭제되었거나 존재하지 않는 예매 내역입니다.");
