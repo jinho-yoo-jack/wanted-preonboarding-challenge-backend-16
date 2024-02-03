@@ -16,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class PerformanceService {
 	private final PerformanceRepository performanceRepository;
+	private static final int PAGE_SIZE = 5;
+	private static final String CAN_RESERVE = "예매 가능한 공연";
+	private static final String CANT_RESERVE = "예매 불가능한 공연";
 
 	/*
 		기능 3 : 공연 및 전시 정보 조회(목록, 상세 조회)
@@ -23,10 +26,10 @@ public class PerformanceService {
 			- Response Message: 예매 가능한 공연 리스트(정보: 공연명, 회차, 시작 일시, 예매 가능 여부)
 	 */
 	public RsData getList(String status, int page) {
-		PageRequest pageable = PageRequest.of(page, 5);
+		PageRequest pageable = PageRequest.of(page, PAGE_SIZE);
 		Page<Performance> result = performanceRepository.findByIsReserve(status, pageable);
 
-		String msg = status.equals("enable") ? "예매 가능한 공연" : "예매 불가능한 공연";
+		String msg = status.equals("enable") ? CAN_RESERVE : CANT_RESERVE;
 
 		if (result.isEmpty()) {
 			return RsData.of("F-1", msg + "이 없습니다.");
