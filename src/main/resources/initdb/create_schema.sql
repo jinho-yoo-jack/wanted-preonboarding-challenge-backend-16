@@ -39,8 +39,9 @@ CREATE TABLE IF NOT EXISTS `reservation`
     `gate`           INT                    NOT NULL COMMENT '입장 게이트',
     `line`           CHAR                   NOT NULL COMMENT '좌석 열',
     `seat`           INT                    NOT NULL COMMENT '좌석 행',
+    `type`       	 INT                    NOT NULL COMMENT 'RESERVATION,WAITING,CANCELLATION,NOT_ENOUGH_MONEY',
     `created_at`     DATETIME DEFAULT NOW() NOT NULL,
     `updated_at`     DATETIME DEFAULT NOW() NOT NUll,
     PRIMARY KEY (id),
-    UNIQUE KEY reservation_round_row_seat (performance_id, round, `line`, seat)
+    UNIQUE KEY reservation_round_row_seat (performance_id, round,`name`,phone_number, `line`, seat)
 );
