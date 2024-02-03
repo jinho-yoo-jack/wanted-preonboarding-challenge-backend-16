@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.info.PerformanceInfo;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
-import com.wanted.preonboarding.ticket.interfaces.controller.dto.PerformanceResponse;
+import com.wanted.preonboarding.ticket.interfaces.dto.PerformanceResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

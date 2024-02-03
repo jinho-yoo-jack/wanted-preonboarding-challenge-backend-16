@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.interfaces.controller.dto.ReservationRequest;
+import com.wanted.preonboarding.ticket.interfaces.dto.ReservationRequest;
 
 @Getter
 @Setter

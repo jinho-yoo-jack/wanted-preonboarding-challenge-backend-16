@@ -2,9 +2,9 @@ package com.wanted.preonboarding.ticket.interfaces.controller;
 
 import com.wanted.preonboarding.common.util.ResponseWrapper;
 import com.wanted.preonboarding.ticket.application.ReservationService;
-import com.wanted.preonboarding.ticket.interfaces.controller.dto.CustomerContactRequest;
-import com.wanted.preonboarding.ticket.interfaces.controller.dto.ReservationCancelRequest;
-import com.wanted.preonboarding.ticket.interfaces.controller.dto.ReservationRequest;
+import com.wanted.preonboarding.ticket.interfaces.dto.CustomerContactRequest;
+import com.wanted.preonboarding.ticket.interfaces.dto.ReservationCancelRequest;
+import com.wanted.preonboarding.ticket.interfaces.dto.ReservationRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

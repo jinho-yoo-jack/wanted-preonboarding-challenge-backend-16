@@ -12,7 +12,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import com.wanted.preonboarding.ticket.application.PerformanceCancelSubService;
-import com.wanted.preonboarding.ticket.domain.vo.AlarmMessage;
+import com.wanted.preonboarding.ticket.domain.info.AlarmMessage;
 
 @Configuration
 public class RedisConfig {
@@ -32,24 +32,22 @@ public class RedisConfig {
 		return redisTemplate;
 	}
 
-	//리스너어댑터 설정
-	@Bean
-	MessageListenerAdapter messageListenerAdapter() {
-		return new MessageListenerAdapter(new PerformanceCancelSubService());
-	}
+	// @Bean
+	// MessageListenerAdapter messageListenerAdapter() {
+	// 	return new MessageListenerAdapter(new PerformanceCancelSubService());
+	// }
 
-	//컨테이너 설정
+	// @Bean
+	// public StringRedisSerializer stringRedisSerializer() {
+	// 	return new StringRedisSerializer();
+	// }
+
 	@Bean
-	RedisMessageListenerContainer redisContainer() {
+	public RedisMessageListenerContainer redisMessageListener(
+		RedisConnectionFactory connectionFactory) {
 		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-		container.setConnectionFactory(redisConnectionFactory());
-		container.addMessageListener(messageListenerAdapter(), topic());
-		return container;
-	}
+		container.setConnectionFactory(connectionFactory);
 
-	//pub/sub 토픽 설정
-	@Bean
-	ChannelTopic topic() {
-		return new ChannelTopic("topic1");
+		return container;
 	}
 }

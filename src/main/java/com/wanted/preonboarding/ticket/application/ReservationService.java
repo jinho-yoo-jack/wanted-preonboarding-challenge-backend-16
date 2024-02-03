@@ -20,14 +20,14 @@ import com.wanted.preonboarding.ticket.domain.info.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.info.SeatInfo;
 import com.wanted.preonboarding.ticket.domain.info.UserInfo;
-import com.wanted.preonboarding.ticket.domain.vo.AlarmMessage;
+import com.wanted.preonboarding.ticket.domain.info.AlarmMessage;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
-import com.wanted.preonboarding.ticket.interfaces.controller.dto.CustomerContactRequest;
-import com.wanted.preonboarding.ticket.interfaces.controller.dto.ReservationCancelRequest;
-import com.wanted.preonboarding.ticket.interfaces.controller.dto.ReservationRequest;
-import com.wanted.preonboarding.ticket.interfaces.controller.dto.ReservationResponse;
+import com.wanted.preonboarding.ticket.interfaces.dto.CustomerContactRequest;
+import com.wanted.preonboarding.ticket.interfaces.dto.ReservationCancelRequest;
+import com.wanted.preonboarding.ticket.interfaces.dto.ReservationRequest;
+import com.wanted.preonboarding.ticket.interfaces.dto.ReservationResponse;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -109,62 +109,9 @@ public class ReservationService {
 			.orElseThrow(PerformanceSeatInfoNotFoundException::new);
 
 		performanceSeatInfo.cancel();
-		StringBuilder stringBuilder = reservationCancelMessage(performanceSeatInfo);
-		Message message = new Message() {
-			@SneakyThrows
-			@Override
-			public byte[] getBody() {
-				AlarmMessage alarmMessage = AlarmMessage.of(UUID.fromString(request.performanceId()), stringBuilder.toString());
-				ObjectMapper objectMapper = new ObjectMapper();
-				String jsonString = objectMapper.writeValueAsString(alarmMessage);
-				return jsonString.getBytes(StandardCharsets.UTF_8);
-					//stringBuilderToByteArray(message, StandardCharsets.UTF_8);
-			}
 
-			@Override
-			public byte[] getChannel() {
-				return "topic1".getBytes(StandardCharsets.UTF_8);
-			}
-		};
-		performanceCancelSubService.onMessage(message, message.getChannel());
+		reservationRepository.delete(reservation);
 
 		return "SUCCESS";
 	}
-
-	private StringBuilder reservationCancelMessage(PerformanceSeatInfo performanceSeatInfo) {
-		log.info("reservationID {}", performanceSeatInfo.getId());
-
-		Performance performance = performanceRepository.findPerformanceByPerformanceId(performanceSeatInfo.getPerformanceId())
-			.orElseThrow(EntityNotFoundException::new);
-
-		StringBuilder message = new StringBuilder();
-		message
-			.append("Performance ID: ").append(performance.getId()).append("\n")
-			.append("Performance Name: ").append(performance.getPeformanceName()).append("\n")
-			.append("Round: ").append(performance.getRound()).append("\n")
-			.append("StartDate: ").append(performance.getStart_date()).append("\n")
-			.append("Available SeatInfo: ")
-			.append(performanceSeatInfo.getSeatInfo().getLine()).append("Line").append(" ")
-			.append(performanceSeatInfo.getSeatInfo().getSeat()).append("Seat").append("\n");
-		return message;
-	}
-
-	// private byte[] stringBuilderToByteArray(StringBuilder stringBuilder, Charset charset) {
-	// 	CharBuffer charBuffer = CharBuffer.wrap(stringBuilder);
-	//
-	// 	CharsetEncoder charsetEncoder = charset.newEncoder();
-	//
-	// 	ByteBuffer byteBuffer;
-	// 	try {
-	// 		byteBuffer = charsetEncoder.encode(charBuffer);
-	// 	} catch (Exception e) {
-	// 		e.printStackTrace();
-	// 		return new byte[0];
-	// 	}
-	//
-	// 	byte[] byteArray = new byte[byteBuffer.remaining()];
-	// 	byteBuffer.get(byteArray);
-	//
-	// 	return byteArray;
-	// }
 }

@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.interfaces.controller.dto;
+package com.wanted.preonboarding.ticket.interfaces.dto;
 
 import java.util.UUID;
 

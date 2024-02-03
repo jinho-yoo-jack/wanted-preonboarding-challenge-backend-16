@@ -3,7 +3,7 @@ package com.wanted.preonboarding.ticket.interfaces.controller;
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.PerformanceService;
 import com.wanted.preonboarding.ticket.domain.info.PerformanceInfo;
-import com.wanted.preonboarding.ticket.interfaces.controller.dto.PerformanceResponse;
+import com.wanted.preonboarding.ticket.interfaces.dto.PerformanceResponse;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
