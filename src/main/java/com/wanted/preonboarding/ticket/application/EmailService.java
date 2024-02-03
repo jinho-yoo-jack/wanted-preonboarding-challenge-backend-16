@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.application;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -15,7 +16,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmailService {
 	private final JavaMailSender mailSender;
-	private static final String ADMIN_ADDRESS = "r4560798@naver.com";
+	private static String ADMIN_ADDRESS;
+
+	@Value("${spring.mail.username}")
+	public void setAdminAddress(String adminAddress) {
+		ADMIN_ADDRESS = adminAddress;
+	}
 
 	@Async("taskExecutor1")
 	public void sendEmail(List<String> recipients, String subject, String message) throws MessagingException {
