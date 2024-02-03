@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.reservation.domain.dto;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,11 +11,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 공연 및 전시 정보 + 예약자 정보
  */
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -23,18 +26,35 @@ public class ReserveInfo {
 	
 	@NotNull(groups = ReserveGroupOrder.reservation.class)
     private UUID performanceId;
+	
     @NotNull(groups = ReserveGroupOrder.selectReserveInfo.class)
+    @NotNull(groups = ReserveGroupOrder.reservation.class)
 	private String reservationName;
+    
     @NotNull(groups = ReserveGroupOrder.selectReserveInfo.class)
+    @NotNull(groups = ReserveGroupOrder.reservation.class)
     private String reservationPhoneNumber;
     
-    private char line;
-    private int seat;
+    @NotNull(groups = ReserveGroupOrder.reservation.class)
+    private String line;
     
-    private int round;
+    @NotNull(groups = ReserveGroupOrder.reservation.class)
+    private Integer  seat;
+    
+    @NotNull(groups = ReserveGroupOrder.reservation.class)
+    private Integer  round;
+    
     private int gate;
     
-    private String reservationStatus; // 예약; 취소;
+    private String type;
+    
+    @NotNull(groups = ReserveGroupOrder.reservation.class)
+    private Integer  amount;
+    
+    private String reservationType;
+    private String message;
+    
+    private int reservationStatus; // 예약; 취소;
     
     public static ReserveInfo selectReserveInfo(Reservation entity){
     	return ReserveInfo.builder()
@@ -45,8 +65,20 @@ public class ReserveInfo {
     			.seat(entity.getSeat())
     			.round(entity.getRound())
     			.gate(entity.getGate())
+    			.type(convertReservationStateToName(entity.getType()))
     			.build();
     }
     
+    /**
+     * 예약상태 타입 맵핑
+     * @param code
+     * @return
+     */
+    private static String convertReservationStateToName(int code){
+        return Arrays.stream(ReservationStateType.values()).filter(value -> value.getCategory() == code)
+            .findFirst()
+            .orElse(ReservationStateType.CANCELLATION)
+            .name();
+    }
     
 }

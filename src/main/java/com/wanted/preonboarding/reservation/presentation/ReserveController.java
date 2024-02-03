@@ -28,17 +28,16 @@ public class ReserveController {
     }
     
     @PostMapping("/reserve")
-    public void reservation(@RequestBody @Validated(ReserveGroupOrder.reservation.class) ReserveInfo reserveInfo) {
-    	
-    	//return ResponseEntity.ok(reservationService.saveReserve(reserveInfo));
-		/*
-		 * return ticketSeller.reserve(ReserveInfo.builder()
-		 * .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
-		 * .reservationName("유진호") .reservationPhoneNumber("010-1234-1234")
-		 * .reservationStatus("reserve") .amount(200000) .round(1) .line('A') .seat(1)
-		 * .build() );
-		 */
+    public ResponseEntity<ReserveInfo> reservation(
+    		@RequestBody @Validated(ReserveGroupOrder.reservation.class
+    				) ReserveInfo reserveInfo) {
+    	return ResponseEntity.ok(reservationService.saveReservation(reserveInfo));
     }
     
-    
+    @PostMapping("/cancel")
+    public ResponseEntity<ReserveInfo> cancleReservation(
+    		@RequestBody @Validated(ReserveGroupOrder.reservation.class
+    				) ReserveInfo reserveInfo) {
+    	return ResponseEntity.ok(reservationService.cancelReservation(reserveInfo));
+    }
 }

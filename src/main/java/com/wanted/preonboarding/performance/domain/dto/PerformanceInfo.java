@@ -74,7 +74,7 @@ public class PerformanceInfo {
     
     
     /**
-     * 공연 타입 맵핑
+     * 예약 타입 맵핑
      * @param code
      * @return
      */

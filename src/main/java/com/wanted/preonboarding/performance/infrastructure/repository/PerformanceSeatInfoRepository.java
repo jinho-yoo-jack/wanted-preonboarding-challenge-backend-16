@@ -9,4 +9,5 @@ import com.wanted.preonboarding.performance.domain.entity.PerformanceSeatInfo;
 
 public interface PerformanceSeatInfoRepository extends JpaRepository<PerformanceSeatInfo, Integer> {
     List<PerformanceSeatInfo> findByPerformanceId(UUID performanceId);
+    PerformanceSeatInfo findByPerformanceIdAndRoundAndLineAndSeat(UUID performanceId,Integer round,String line, Integer seat);
 }

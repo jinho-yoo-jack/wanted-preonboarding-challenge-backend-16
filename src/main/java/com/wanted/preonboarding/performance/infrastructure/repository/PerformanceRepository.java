@@ -10,4 +10,5 @@ import com.wanted.preonboarding.performance.domain.entity.Performance;
 public interface PerformanceRepository extends JpaRepository<Performance, UUID> {
     List<Performance> findByIsReserve(String isReserve);
     Performance findByName(String name);
+    Performance findByPerformanceId(UUID performanceId);
 }
