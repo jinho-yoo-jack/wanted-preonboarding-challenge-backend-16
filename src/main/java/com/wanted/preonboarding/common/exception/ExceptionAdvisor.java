@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.common.exception;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import com.wanted.preonboarding.common.exception.custom.CustomNullPointerException;
 
 /**
  * 익셉션 별 코드,메세지 관리
@@ -49,6 +52,36 @@ public class ExceptionAdvisor {
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ExceptionMessageInfo> processNoResourceFoundError(NoResourceFoundException noResourceFoundException) {
     	return ResponseEntity.badRequest().body(exceptionService.selectNoResourceFoundExceptionMessage(noResourceFoundException));
+    }
+    /**
+     * 조회조건이 없는 경우
+     * errorcode : 8404
+     * @param nullPointerException
+     * @return
+     */
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ExceptionMessageInfo> nullPointerExceptionError(NullPointerException nullPointerException) {
+    	return ResponseEntity.badRequest().body(exceptionService.selectNullPointerExceptionMessage(nullPointerException));
+    }
+    /**
+     * 중복 예약일 경우
+     * errorcode : 8405
+     * @param dataIntegrityViolationException
+     * @return
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ExceptionMessageInfo> dataIntegrityViolationExceptionError(DataIntegrityViolationException dataIntegrityViolationException) {
+    	return ResponseEntity.badRequest().body(exceptionService.selectDataIntegrityViolationExceptionMessage(dataIntegrityViolationException));
+    }
+    /**
+     * 중복 예약일 경우
+     * errorcode : 8405
+     * @param dataIntegrityViolationException
+     * @return
+     */
+    @ExceptionHandler(CustomNullPointerException.class)
+    public ResponseEntity<ExceptionMessageInfo> customNullPointerExceptionError(CustomNullPointerException customNullPointerException) {
+    	return ResponseEntity.badRequest().body(exceptionService.selectCustomNullPointerExceptionMessage(customNullPointerException));
     }
     /**
      * 기본 오류 메세지
