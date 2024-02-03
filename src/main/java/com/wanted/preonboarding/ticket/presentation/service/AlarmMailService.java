@@ -35,7 +35,7 @@ public class AlarmMailService {
     private static final String CANCEL = "cancel";
 
     @Transactional
-    public void createAlarmPerformance(ReservePossibleAlarmCustomerInfoDto dto) {
+    public void sendAlarmPerformance(ReservePossibleAlarmCustomerInfoDto dto) {
 
         Performance performance = getPerformance(dto);
         PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfo(dto);
