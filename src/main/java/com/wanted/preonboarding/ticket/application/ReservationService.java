@@ -1,18 +1,15 @@
 package com.wanted.preonboarding.ticket.application;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.springframework.data.redis.connection.Message;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wanted.preonboarding.common.exception.PerformanceNotFoundException;
 import com.wanted.preonboarding.common.exception.PerformanceSeatInfoNotFoundException;
 import com.wanted.preonboarding.common.exception.ReservationAlreadyExistsException;
-import com.wanted.preonboarding.ticket.domain.discountPolicy.DiscountPolicies;
+import com.wanted.preonboarding.ticket.domain.discountpolicy.DiscountPolicies;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.info.ReservationStatus;
@@ -20,7 +17,6 @@ import com.wanted.preonboarding.ticket.domain.info.ReserveInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.info.SeatInfo;
 import com.wanted.preonboarding.ticket.domain.info.UserInfo;
-import com.wanted.preonboarding.ticket.domain.info.AlarmMessage;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
@@ -31,9 +27,7 @@ import com.wanted.preonboarding.ticket.interfaces.dto.ReservationResponse;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -43,7 +37,6 @@ public class ReservationService {
 	private final ReservationRepository reservationRepository;
 	private final PerformanceRepository performanceRepository;
 	private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
-	private final PerformanceCancelSubService performanceCancelSubService;
 
 	private double totalAmount = 0L;
 

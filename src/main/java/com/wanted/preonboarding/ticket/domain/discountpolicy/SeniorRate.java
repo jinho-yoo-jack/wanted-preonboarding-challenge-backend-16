@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain.discountPolicy;
+package com.wanted.preonboarding.ticket.domain.discountpolicy;
 
 public class SeniorRate implements DiscountPolicy{
 
