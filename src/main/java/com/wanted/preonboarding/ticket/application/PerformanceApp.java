@@ -23,12 +23,14 @@ public class PerformanceApp {
 
     public void createdPerformance(CreatedPerformanceRequestDto requestDto){
         Performance performance = Performance.of(requestDto);
+        List<String> stringSeatInfo = requestDto.generateCombinations();
         List<PerformanceSeatInfo> performanceSeatInfoList = new ArrayList<>();
 
-        for (int i = 0; i > requestDto.getSeatCount(); i++){
-            performanceSeatInfoList.add(PerformanceSeatInfo.of(performance,String.valueOf(i)));
+        for (String stringSeat : stringSeatInfo) {
+            PerformanceSeatInfo seatInfo = PerformanceSeatInfo.convertSeatInfo(stringSeat);
+            seatInfo.setPerformance(performance);
+            performanceSeatInfoList.add(seatInfo);
         }
-
         performanceSeatRepository.saveAll(performanceSeatInfoList);
         performanceRepository.save(performance);
     }
