@@ -1,12 +1,10 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
@@ -46,5 +44,13 @@ public class Performance {
 //        this.type = performanceType.getCategory();
 //
 //    }
+
+    public void setEnableReservation() {
+        this.isReserve = "enable";
+    }
+
+    public void setDisableReservation() {
+        this.isReserve = "disable";
+    }
 
 }
