@@ -33,11 +33,7 @@ public class NotificationService {
 	 */
 	@Transactional
 	public RsData create(RequestNotification requestNotification) {
-		Performance performance = performanceRepository.findById(requestNotification.getPerformanceId()).get();
-
-		if (performance == null) {
-			return RsData.of("F-1", "존재하지 않는 공연입니다.");
-		}
+		Performance performance = performanceRepository.findById(requestNotification.getPerformanceId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 공연입니다."));
 
 		Notification notification = Notification.builder()
 			.email(requestNotification.getEmail())
@@ -80,7 +76,7 @@ public class NotificationService {
 		int gate = performanceSeatInfo.getGate();
 		String line = performanceSeatInfo.getLine();
 		int seat = performanceSeatInfo.getSeat();
-		LocalDateTime time = performance.getStart_date();
+		LocalDateTime time = performance.getStartDate();
 
 		return "<html>\n"
 			+ "<head>\n"
