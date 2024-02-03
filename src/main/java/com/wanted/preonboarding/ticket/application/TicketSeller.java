@@ -3,6 +3,7 @@ package com.wanted.preonboarding.ticket.application;
 import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
+import com.wanted.preonboarding.ticket.exception.customException.InsufficientBalanceException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -89,58 +90,47 @@ public class TicketSeller {
 
     }
 
-    public boolean reserve(ReserveInfo reserveInfo) {
-        log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
-        log.info("performanceRepository.findById ID => {}", performanceRepository.findById(reserveInfo.getPerformanceId()));
+    //TODO: User테이블에 잔고,예약상태저장,
 
-        Performance info = performanceRepository.findById(reserveInfo.getPerformanceId())
-                .orElseThrow(EntityNotFoundException::new);
+    //예약하기
+    // 예약할 공연 정보를 예약 테이블에 저장
+    // 공연 id는 유니크
+    // 예약하고자 하는 공연id로 예약 가능한지 확인
+    // 예약 가능하면 예약신청하기
 
-        String enableReserve = info.getIsReserve();
+    public ReserveInfo reserve(ReserveInfo reserveInfo) {
 
-        if (enableReserve.equalsIgnoreCase("enable")) {
+        Performance performance = performanceRepository.findById(reserveInfo.getPerformanceId())
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 공연을 찾을 수 없습니다."));
 
-            reserveInfo.setReserveInfo("Pending");
+        int price = performance.getPrice();
+        // 계산 결과
+        boolean calculated = reserveInfo.CalculateAmount(price);
 
-            try {
-
-                // 1. 결제
-                //공연가격
-                int price = info.getPrice();
-                // 가진 amount 돈 양
-                reserveInfo.setAmount(reserveInfo.getAmount() - price);
-                // 2. 예매 진행
-                reservationRepository.save(Reservation.of(reserveInfo));
-
-
-            } catch (Exception e) {
-                reserveInfo.setReserveInfo("Rejected");
-                reserveInfo.setAmount(reserveInfo.getAmount());
-
-
-            }
-
-            updatePerformance(info.getId());
-            reserveInfo.setReserveInfo("Pending");
-
-
-            return true;
-
-        } else {
-            reserveInfo.setReserveInfo("Approved");
-
-            return false;
+        if (!calculated) {
+            throw new InsufficientBalanceException("보유하고 있는 돈이 부족합니다");
         }
+        //  예매 진행
+        try {
+            reservationRepository.save(Reservation.of(reserveInfo));
+            reserveInfo.setReservationStatusToAPPROVED();
+
+        } catch (DataIntegrityViolationException e) {
+
+            reserveInfo.setReservationStatusToREJECTED();
+            throw new DataIntegrityViolationException("이미 예약된 공연입니다");
+        }
+        performance.setDisableReservation();
+        performanceRepository.save(performance);
+
+        return reserveInfo;
+
+
     }
 
-    @Transactional
-    public void updatePerformance(UUID performanceId) {
-        performanceRepository.updateIsReserveStatus(performanceId, "disable");
-    }
-
 
     @Transactional
-    public Reservation checkReservation(CheckReserveRequest checkReserveRequest) {
+    public List<Reservation> checkReservation(CheckReserveRequest checkReserveRequest) {
         return reservationRepository.findByNameAndPhoneNumber(checkReserveRequest.getName(), checkReserveRequest.getPhoneNumber()).orElseThrow(
                 () -> new NoResultException("해당하는 데이터를 찾을 수 없습니다."));
 
