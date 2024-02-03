@@ -24,12 +24,16 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
     private UUID performanceId;
+
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false, name = "phone_number")
     private String phoneNumber;
+
     @Column(nullable = false)
     private int round;
     private int gate;

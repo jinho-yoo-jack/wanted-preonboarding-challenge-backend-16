@@ -1,10 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
 import com.wanted.preonboarding.ticket.domain.dto.ResponseAlarmDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +15,11 @@ public class Alarm {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
+
     private String memberName;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "performance_id")
     private Performance performance;
 
     private Alarm(String memberName,Performance performance) {

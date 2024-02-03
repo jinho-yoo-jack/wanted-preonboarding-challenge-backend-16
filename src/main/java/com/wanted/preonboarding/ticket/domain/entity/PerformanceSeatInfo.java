@@ -14,9 +14,11 @@ public class PerformanceSeatInfo {
     @Id
     @GeneratedValue
     private Long Id;
+
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "performance_id")
     private Performance performance;
+
     private char seatLine;
     private int seatNumber;
     private boolean isReserve = true;
