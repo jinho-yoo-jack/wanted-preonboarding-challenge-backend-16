@@ -6,7 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 
-import com.wanted.preonboarding.ticket.domain.info.AlarmMessage;
+import com.wanted.preonboarding.ticket.domain.dto.AlarmMessage;
 
 @Service
 @RequiredArgsConstructor

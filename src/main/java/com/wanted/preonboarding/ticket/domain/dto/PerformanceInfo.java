@@ -1,6 +1,7 @@
-package com.wanted.preonboarding.ticket.domain.info;
+package com.wanted.preonboarding.ticket.domain.dto;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
+import com.wanted.preonboarding.ticket.domain.enumeration.PerformanceType;
 
 import lombok.Builder;
 import lombok.Data;
@@ -36,5 +37,4 @@ public class PerformanceInfo {
 			.orElse(PerformanceType.NONE)
 			.name();
 	}
-
 }

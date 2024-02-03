@@ -1,17 +1,16 @@
-package com.wanted.preonboarding.ticket.domain.info;
+package com.wanted.preonboarding.ticket.domain.dto;
 
 import jakarta.persistence.Embedded;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.UUID;
 
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
+import com.wanted.preonboarding.ticket.domain.enumeration.ReservationStatus;
 import com.wanted.preonboarding.ticket.interfaces.dto.ReservationRequest;
 
 @Getter
-@Setter
 @Builder
 public class ReservationInfo {
 	// 공연 및 전시 정보 + 예약자 정보

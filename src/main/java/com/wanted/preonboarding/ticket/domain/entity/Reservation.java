@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-import com.wanted.preonboarding.ticket.domain.info.ReservationStatus;
-import com.wanted.preonboarding.ticket.domain.info.ReservationInfo;
-import com.wanted.preonboarding.ticket.domain.info.SeatInfo;
-import com.wanted.preonboarding.ticket.domain.info.UserInfo;
+import com.wanted.preonboarding.ticket.domain.enumeration.ReservationStatus;
+import com.wanted.preonboarding.ticket.domain.dto.ReservationInfo;
+import com.wanted.preonboarding.ticket.domain.dto.SeatInfo;
+import com.wanted.preonboarding.ticket.domain.dto.UserInfo;
 
 @Entity
 @Table

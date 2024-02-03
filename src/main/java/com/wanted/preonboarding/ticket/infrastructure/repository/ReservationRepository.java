@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.UUID;
 
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.domain.info.ReservationStatus;
-import com.wanted.preonboarding.ticket.domain.info.SeatInfo;
-import com.wanted.preonboarding.ticket.domain.info.UserInfo;
+import com.wanted.preonboarding.ticket.domain.enumeration.ReservationStatus;
+import com.wanted.preonboarding.ticket.domain.dto.SeatInfo;
+import com.wanted.preonboarding.ticket.domain.dto.UserInfo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain.info;
+package com.wanted.preonboarding.ticket.domain.dto;
 
 import java.util.UUID;
 

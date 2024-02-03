@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain.info;
+package com.wanted.preonboarding.ticket.domain.enumeration;
 
 public enum PerformanceType {
 	NONE(0),
@@ -14,5 +14,4 @@ public enum PerformanceType {
 	public int getCategory() {
 		return category;
 	}
-
 }

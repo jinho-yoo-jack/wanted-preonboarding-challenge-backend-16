@@ -2,7 +2,7 @@ package com.wanted.preonboarding.ticket.interfaces.dto;
 
 import java.util.UUID;
 
-import com.wanted.preonboarding.ticket.domain.info.ReservationInfo;
+import com.wanted.preonboarding.ticket.domain.dto.ReservationInfo;
 
 import lombok.Builder;
 

@@ -3,7 +3,7 @@ package com.wanted.preonboarding.ticket.interfaces.dto;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.wanted.preonboarding.ticket.domain.info.PerformanceInfo;
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 
 import lombok.Builder;
 

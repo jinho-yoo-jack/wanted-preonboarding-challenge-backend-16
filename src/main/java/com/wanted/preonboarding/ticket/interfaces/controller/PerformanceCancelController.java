@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wanted.preonboarding.ticket.application.PerformanceCancelPubService;
 import com.wanted.preonboarding.ticket.application.PerformanceCancelSubService;
-import com.wanted.preonboarding.ticket.domain.info.AlarmMessage;
+import com.wanted.preonboarding.ticket.domain.dto.AlarmMessage;
 import com.wanted.preonboarding.ticket.interfaces.dto.ReservationCancelRequest;
 
 @RestController
