@@ -29,9 +29,10 @@ public class AlarmMailService {
     private String username;
     @Value("${spring.mail.password}")
     private String password;
-
     private final PerformanceRepository performanceRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
+
+    private static final String CANCEL = "cancel";
 
     @Transactional
     public void createAlarmPerformance(ReservePossibleAlarmCustomerInfoDto dto) {
@@ -75,7 +76,7 @@ public class AlarmMailService {
         }
     }
     private PerformanceSeatInfo getPerformanceSeatInfo(ReservePossibleAlarmCustomerInfoDto dto) {
-        return performanceSeatInfoRepository.findByPerformanceIdAndIsReserve(dto.getPerformanceId(), "cancel")
+        return performanceSeatInfoRepository.findByPerformanceIdAndIsReserve(dto.getPerformanceId(), CANCEL)
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
     }
 

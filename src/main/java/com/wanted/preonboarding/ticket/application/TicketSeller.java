@@ -24,9 +24,10 @@ public class TicketSeller {
     private final ReservationRepository reservationRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private long totalAmount = 0L;
+    private static final String ENABLE = "enable";
 
     public List<ResponsePerformanceInfo> readAllPerformances() {
-        return performanceRepository.findByIsReserve("enable")
+        return performanceRepository.findByIsReserve(ENABLE)
             .stream()
             .map(ResponsePerformanceInfo::from)
             .toList();
@@ -54,7 +55,7 @@ public class TicketSeller {
     public boolean reserve(ReserveInfo reserveInfo) {
         Performance performance = getPerformance(reserveInfo.getPerformanceId(), reserveInfo.getRound());
         String enableReserve = performance.getIsReserve();
-        if (enableReserve.equalsIgnoreCase("enable")) {
+        if (enableReserve.equalsIgnoreCase(ENABLE)) {
             // 1. 결제
             int price = performance.getPrice();
             reserveInfo.setAmount(reserveInfo.getAmount() - price);
