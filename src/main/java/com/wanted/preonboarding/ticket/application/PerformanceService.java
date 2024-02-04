@@ -1,13 +1,16 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.ticket.application.dto.PerformanceDto;
+import com.wanted.preonboarding.ticket.application.dto.PerformanceSearchCondition;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.exception.NotFoundException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -17,8 +20,8 @@ public class PerformanceService {
 
     private final PerformanceRepository performanceRepository;
 
-    public List<Performance> getPerformances() {
-        return performanceRepository.findAll();
+    public Page<PerformanceDto> getPerformances(PerformanceSearchCondition condition, Pageable pageable) {
+        return performanceRepository.searchPage(condition, pageable);
     }
 
     public Performance getPerformance(final UUID id) {

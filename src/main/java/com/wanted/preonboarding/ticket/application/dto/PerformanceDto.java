@@ -1,28 +1,30 @@
-package com.wanted.preonboarding.ticket.presentation.dto;
+package com.wanted.preonboarding.ticket.application.dto;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import lombok.Builder;
-import lombok.Getter;
+import com.wanted.preonboarding.ticket.domain.entity.PerformanceType;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
 @Builder
-public class PerformanceResponse {
+@NoArgsConstructor
+@AllArgsConstructor
+public class PerformanceDto {
     private UUID performanceId;
     private String name;
     private Integer round;
-    private String type;
+    private PerformanceType type;
     private LocalDateTime startDate;
     private Boolean isReservable;
 
-    public static PerformanceResponse of(Performance entity) {
-        return PerformanceResponse.builder()
+    public static PerformanceDto of(Performance entity) {
+        return PerformanceDto.builder()
                 .performanceId(entity.getId())
                 .name(entity.getName())
                 .round(entity.getRound())
-                .type(entity.getType().name())
+                .type(entity.getType())
                 .startDate(entity.getStartDate())
                 .isReservable(entity.getIsReservable())
                 .build();

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface PerformanceRepository extends JpaRepository<Performance, UUID> {
-    List<Performance> findAll();
+public interface PerformanceRepository extends JpaRepository<Performance, UUID>, PerformanceRepositoryCustom {
     Optional<Performance> findById(UUID id);
 }
