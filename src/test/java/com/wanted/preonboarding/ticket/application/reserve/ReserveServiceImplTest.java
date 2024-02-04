@@ -9,6 +9,8 @@ import static org.assertj.core.groups.Tuple.tuple;
 import com.wanted.preonboarding.ticket.domain.discount.Discount;
 import com.wanted.preonboarding.ticket.domain.discount.DiscountRepository;
 import com.wanted.preonboarding.ticket.domain.discount.model.DiscountType;
+import com.wanted.preonboarding.ticket.domain.notification.Notification;
+import com.wanted.preonboarding.ticket.domain.notification.NotificationRepository;
 import com.wanted.preonboarding.ticket.domain.performance.Performance;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceRepository;
 import com.wanted.preonboarding.ticket.domain.reservation.Reservation;
@@ -16,6 +18,7 @@ import com.wanted.preonboarding.ticket.domain.reservation.ReservationRepository;
 import com.wanted.preonboarding.ticket.dto.request.reservation.ReservationRequest;
 import com.wanted.preonboarding.ticket.dto.response.page.PageResponse;
 import com.wanted.preonboarding.ticket.dto.response.reservation.ReservationInfo;
+import com.wanted.preonboarding.ticket.dto.result.CancelReservationInfo;
 import com.wanted.preonboarding.ticket.dto.result.ReservationModel;
 import com.wanted.preonboarding.ticket.exception.argument.InvalidArgumentException;
 import com.wanted.preonboarding.ticket.exception.badrequest.BadRequestException;
@@ -50,6 +53,9 @@ class ReserveServiceImplTest {
 
     @Autowired
     ReservationRepository reservationRepository;
+
+    @Autowired
+    NotificationRepository notificationRepository;
 
     String performanceId;
 
@@ -322,33 +328,63 @@ class ReserveServiceImplTest {
                     tuple("Hola", 1, "A", 1, name, phoneNumber)
                 );
         }
+    }
 
+    @DisplayName("예약 취소 테스트")
+    @Nested
+    class Cancel {
+        @DisplayName("예약 취소에 성공한다.")
+        @Test
+        void cancel_success() {
+            // given
+            UUID performanceId = savePerformance();
+            int reservationId = saveReservation(performanceId, "KAI", "01012345678", "A", 1);
+            saveNotification(performanceId);
 
-        private void saveReservation(UUID performanceId, String name, String phoneNumber, String line, int seat) {
-            Reservation reservation = Reservation.builder()
-                .performanceId(performanceId)
-                .name(name)
-                .phoneNumber(phoneNumber)
-                .round(1)
-                .gate(1)
-                .line(line)
-                .seat(seat)
-                .build();
-            reservationRepository.saveAndFlush(reservation);
-        }
+            // when
+            CancelReservationInfo cancel = reserveService.cancel(reservationId);
 
-        private UUID savePerformance() {
-            final LocalDateTime startDate = LocalDateTime.of(2023, 12, 31, 19, 00);
-            final Performance performance = Performance.builder()
-                .name("Hola")
-                .price(100_000)
-                .round(1)
-                .type(CONCERT)
-                .startDate(startDate)
-                .isReserve(DISABLE)
-                .build();
-            return performanceRepository.save(performance).getId();
+            // then
+            List<Reservation> findAll = reservationRepository.findAll();
+            assertThat(findAll).isEmpty();
+            assertThat(cancel)
+                .extracting("performanceId", "name", "round", "line", "seat")
+                .containsExactly(performanceId, "Hola", 1, "A", 1);
         }
     }
 
+    private void saveNotification(UUID performanceId) {
+        Notification notification = Notification.builder()
+            .targetId(performanceId.toString())
+            .name("기우")
+            .phoneNumber("01012345678")
+            .build();
+        notificationRepository.save(notification);
+    }
+
+    private int saveReservation(UUID performanceId, String name, String phoneNumber, String line, int seat) {
+        Reservation reservation = Reservation.builder()
+            .performanceId(performanceId)
+            .name(name)
+            .phoneNumber(phoneNumber)
+            .round(1)
+            .gate(1)
+            .line(line)
+            .seat(seat)
+            .build();
+        return reservationRepository.saveAndFlush(reservation).getId();
+    }
+
+    private UUID savePerformance() {
+        final LocalDateTime startDate = LocalDateTime.of(2023, 12, 31, 19, 00);
+        final Performance performance = Performance.builder()
+            .name("Hola")
+            .price(100_000)
+            .round(1)
+            .type(CONCERT)
+            .startDate(startDate)
+            .isReserve(DISABLE)
+            .build();
+        return performanceRepository.save(performance).getId();
+    }
 }
