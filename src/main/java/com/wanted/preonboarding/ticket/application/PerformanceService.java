@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.ticket.application.dto.PerformanceDetailDto;
 import com.wanted.preonboarding.ticket.application.dto.PerformanceDto;
 import com.wanted.preonboarding.ticket.application.dto.PerformanceSearchCondition;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
@@ -24,7 +25,8 @@ public class PerformanceService {
         return performanceRepository.searchPage(condition, pageable);
     }
 
-    public Performance getPerformance(final UUID id) {
-        return performanceRepository.findById(id).orElseThrow(() -> new NotFoundException("공연이 존재하지 않습니다."));
+    public PerformanceDetailDto getPerformance(final UUID id) {
+        Performance performance =  performanceRepository.findById(id).orElseThrow(() -> new NotFoundException("공연이 존재하지 않습니다."));
+        return PerformanceDetailDto.of(performance);
     }
 }

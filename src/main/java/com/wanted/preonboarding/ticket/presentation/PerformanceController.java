@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.PerformanceService;
+import com.wanted.preonboarding.ticket.application.dto.PerformanceDetailDto;
 import com.wanted.preonboarding.ticket.application.dto.PerformanceSearchCondition;
 import com.wanted.preonboarding.ticket.application.dto.PerformanceDto;
 import lombok.RequiredArgsConstructor;
@@ -36,13 +37,13 @@ public class PerformanceController {
     }
 
     @GetMapping("/{performanceId}")
-    public ResponseEntity<ResponseHandler<PerformanceDto>> getPerformance(@PathVariable final UUID performanceId){
+    public ResponseEntity<ResponseHandler<PerformanceDetailDto>> getPerformance(@PathVariable final UUID performanceId){
         return ResponseEntity
                 .ok()
-                .body(ResponseHandler.<PerformanceDto>builder()
+                .body(ResponseHandler.<PerformanceDetailDto>builder()
                         .statusCode(HttpStatus.OK)
                         .message("Success")
-                        .data(PerformanceDto.of(performanceService.getPerformance(performanceId)))
+                        .data(performanceService.getPerformance(performanceId))
                         .build()
                 );
     }
