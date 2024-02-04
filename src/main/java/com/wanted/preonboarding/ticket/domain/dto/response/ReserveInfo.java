@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain.dto;
+package com.wanted.preonboarding.ticket.domain.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +15,7 @@ public class ReserveInfo {
     private UUID performanceId;
     private String reservationName;
     private String reservationPhoneNumber;
-    private String reservationStatus; // 예약; 취소;
+     // 예약; 취소;
     private long amount;
     private int round;
     private char line;
