@@ -1,18 +1,18 @@
-package com.wanted.preonboarding.ticket.dto.response.alarm;
+package com.wanted.preonboarding.ticket.dto.response.notification;
 
 import com.wanted.preonboarding.ticket.domain.notification.Notification;
 import lombok.Builder;
 
 @Builder
-public record NotificationResponse(
+public record NotificationRegisterResponse(
     int id,
     String targetId,
     String name,
     String phone
 ) {
 
-    public static NotificationResponse of(final Notification notification) {
-        return NotificationResponse.builder()
+    public static NotificationRegisterResponse of(final Notification notification) {
+        return NotificationRegisterResponse.builder()
             .id(notification.getId())
             .targetId(notification.getTargetId())
             .name(notification.getName())

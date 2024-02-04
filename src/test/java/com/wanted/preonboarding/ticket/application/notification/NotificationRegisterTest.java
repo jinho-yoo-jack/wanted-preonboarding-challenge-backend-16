@@ -9,7 +9,7 @@ import com.wanted.preonboarding.ticket.domain.notification.Notification;
 import com.wanted.preonboarding.ticket.domain.performance.Performance;
 import com.wanted.preonboarding.ticket.domain.notification.NotificationRepository;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceRepository;
-import com.wanted.preonboarding.ticket.dto.response.alarm.NotificationResponse;
+import com.wanted.preonboarding.ticket.dto.response.notification.NotificationRegisterResponse;
 import com.wanted.preonboarding.ticket.exception.notfound.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -21,7 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
 @SpringBootTest
-class NotificationServiceTest {
+class NotificationRegisterTest {
 
     @Autowired
     PerformanceNotificationRegister alarmService;
@@ -73,7 +73,7 @@ class NotificationServiceTest {
         final String phone = "01012345678";
 
         // when
-        NotificationResponse response = alarmService.register(performanceId, name, phone);
+        NotificationRegisterResponse response = alarmService.register(performanceId, name, phone);
 
         // then
         Notification alarm = alarmRepository.findById(response.id()).orElseThrow();

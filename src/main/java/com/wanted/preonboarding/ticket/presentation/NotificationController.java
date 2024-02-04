@@ -2,7 +2,7 @@ package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.ticket.application.notification.PerformanceNotificationRegister;
 import com.wanted.preonboarding.ticket.dto.request.notification.PerformanceNotificationRegisterRequest;
-import com.wanted.preonboarding.ticket.dto.response.alarm.NotificationResponse;
+import com.wanted.preonboarding.ticket.dto.response.notification.NotificationRegisterResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +18,8 @@ public class NotificationController {
     private final PerformanceNotificationRegister performanceNotificationRegister;
 
     @PostMapping("/performance")
-    public ResponseEntity<NotificationResponse> postPerformanceAlarm(@RequestBody PerformanceNotificationRegisterRequest request) {
-        NotificationResponse result = performanceNotificationRegister.register(request.performanceId(), request.name(), request.phone());
+    public ResponseEntity<NotificationRegisterResponse> postPerformanceAlarm(@RequestBody PerformanceNotificationRegisterRequest request) {
+        NotificationRegisterResponse result = performanceNotificationRegister.register(request.performanceId(), request.name(), request.phone());
         return ResponseEntity.ok(result);
     }
 

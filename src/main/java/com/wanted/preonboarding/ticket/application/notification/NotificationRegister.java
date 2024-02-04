@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.application.notification;
 
-import com.wanted.preonboarding.ticket.dto.response.alarm.NotificationResponse;
+import com.wanted.preonboarding.ticket.dto.response.notification.NotificationRegisterResponse;
 
 public interface NotificationRegister {
 
@@ -8,5 +8,5 @@ public interface NotificationRegister {
     boolean isTargetExist(String targetId);
 
     // 공연 & 전시 알람 등록
-    NotificationResponse register(String targetId, String name, String phone);
+    NotificationRegisterResponse register(String targetId, String name, String phone);
 }
