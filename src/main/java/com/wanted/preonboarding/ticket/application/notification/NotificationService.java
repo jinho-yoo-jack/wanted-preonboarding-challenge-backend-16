@@ -4,6 +4,7 @@ import com.wanted.preonboarding.ticket.domain.notification.Notification;
 import com.wanted.preonboarding.ticket.domain.notification.NotificationRepository;
 import com.wanted.preonboarding.ticket.dto.request.notification.NotificationHolder;
 import com.wanted.preonboarding.ticket.dto.request.notification.SimpleTarget;
+import com.wanted.preonboarding.ticket.support.Retry;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -18,6 +19,7 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
 
     // COMMIT 후 알림 전송 (비동기)
+    @Retry
     @Async
     @TransactionalEventListener
     public void sendNotification(NotificationHolder holder) {
