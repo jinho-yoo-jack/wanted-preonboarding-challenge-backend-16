@@ -1,7 +1,5 @@
 package com.wanted.preonboarding.ticket.application.reserve;
 
-import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveState.DISABLE;
-
 import com.wanted.preonboarding.ticket.application.discount.DiscountManager;
 import com.wanted.preonboarding.ticket.domain.performance.Performance;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceRepository;
@@ -17,7 +15,6 @@ import com.wanted.preonboarding.ticket.dto.result.CancelReservationInfo;
 import com.wanted.preonboarding.ticket.dto.result.ReservationModel;
 import com.wanted.preonboarding.ticket.exception.argument.InvalidSeatException;
 import com.wanted.preonboarding.ticket.exception.badrequest.AmountNotEnoughException;
-import com.wanted.preonboarding.ticket.exception.badrequest.SeatAlreadyReservedException;
 import com.wanted.preonboarding.ticket.exception.notfound.PerformanceNotFoundException;
 import com.wanted.preonboarding.ticket.exception.notfound.ReservationNotFoundException;
 import java.time.LocalDateTime;
@@ -92,8 +89,8 @@ public class ReserveServiceImpl implements ReserveService {
             .build();
     }
 
-    private void validateReservation(final PerformanceSeatInfo seatInfo, final ReservationRequest request, int discountedPrice) {
-        if (seatInfo.getIsReserved() == DISABLE) throw new SeatAlreadyReservedException();
+    private void validateReservation(final PerformanceSeatInfo seatInfo, final ReservationRequest request, final int discountedPrice) {
+        seatInfo.validatedReservation();
         if (request.costAmount() < discountedPrice) throw new AmountNotEnoughException();
     }
 

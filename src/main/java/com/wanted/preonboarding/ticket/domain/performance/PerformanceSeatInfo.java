@@ -5,6 +5,7 @@ import static com.wanted.preonboarding.ticket.domain.performance.model.ReserveSt
 import com.wanted.preonboarding.ticket.domain.base.BaseTimeEntity;
 import com.wanted.preonboarding.ticket.domain.performance.model.ReserveState;
 import com.wanted.preonboarding.ticket.domain.performance.model.ReserveStateConverter;
+import com.wanted.preonboarding.ticket.exception.badrequest.SeatAlreadyReservedException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -59,5 +60,9 @@ public class PerformanceSeatInfo extends BaseTimeEntity {
 
     public void reserve() {
         this.isReserved = DISABLE;
+    }
+
+    public void validatedReservation() {
+        if (this.isReserved == DISABLE) throw new SeatAlreadyReservedException();
     }
 }

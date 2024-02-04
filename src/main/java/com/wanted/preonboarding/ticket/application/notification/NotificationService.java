@@ -22,7 +22,7 @@ public class NotificationService {
     @Retry
     @Async
     @TransactionalEventListener
-    public void sendNotification(NotificationHolder holder) {
+    public void sendNotification(final NotificationHolder holder) {
         // 알림 메시지 생성
         String message = holder.getMessage();
 

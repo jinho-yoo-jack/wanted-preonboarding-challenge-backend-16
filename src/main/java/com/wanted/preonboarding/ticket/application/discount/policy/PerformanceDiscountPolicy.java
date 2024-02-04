@@ -36,7 +36,7 @@ public class PerformanceDiscountPolicy implements DiscountPolicy {
         return totalDiscountAmount;
     }
 
-    private double applyDiscount(final Discount discount, int originPrice) {
+    private double applyDiscount(final Discount discount, final int originPrice) {
         if (discount.getType() == null) return originPrice;
         if (discount.getType() == PERCENT) return applyPercentDiscount(originPrice, discount.getAmount());
         return discount.getAmount();
