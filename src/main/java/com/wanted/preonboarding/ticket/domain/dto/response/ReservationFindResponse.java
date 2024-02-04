@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Getter
 @Builder
-public class ReserveCreateResponse {
+public class ReservationFindResponse {
     private UUID performanceId;
     private String performanceName;
     private int round;
@@ -16,6 +16,5 @@ public class ReserveCreateResponse {
 
     //예매자 정보
     private String reservationName;
-    private String reservationPhoneNumber;
-
+    private String phoneNumber;
 }

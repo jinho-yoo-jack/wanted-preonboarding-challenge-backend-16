@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Getter
 @Builder
-public class ReserveCreateRequest {
+public class ReservationCreateRequest {
     private UUID performanceId;
     private String reservationName; //고객 이름
     private String reservationPhoneNumber;

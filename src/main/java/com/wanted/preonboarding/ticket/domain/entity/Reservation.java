@@ -1,8 +1,8 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.request.ReserveCreateRequest;
-import com.wanted.preonboarding.ticket.domain.dto.response.ReserveCreateResponse;
-import com.wanted.preonboarding.ticket.domain.dto.response.ReserveFindResponse;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReservationCreateRequest;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationCreateResponse;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationFindResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -46,7 +46,7 @@ public class Reservation extends AuditInformation {
     @Comment("좌석 행")
     private int seat;
 
-    public static Reservation of(ReserveCreateRequest reserveCreateRequest, Performance performance) {
+    public static Reservation of(ReservationCreateRequest reserveCreateRequest, Performance performance) {
         return Reservation.builder()
                 .performance(performance)
                 .name(reserveCreateRequest.getReservationName())
@@ -58,8 +58,8 @@ public class Reservation extends AuditInformation {
                 .build();
     }
 
-    public ReserveFindResponse toReserveFindResponse() {
-        return ReserveFindResponse.builder()
+    public ReservationFindResponse toReservationFindResponse() {
+        return ReservationFindResponse.builder()
                 .performanceId(this.performance.getId())
                 .performanceName(this.performance.getName())
                 .round(this.round)
@@ -70,8 +70,8 @@ public class Reservation extends AuditInformation {
                 .build();
     }
 
-    public ReserveCreateResponse toReserveCreateResponse() {
-        return ReserveCreateResponse.builder()
+    public ReservationCreateResponse toReservationCreateResponse() {
+        return ReservationCreateResponse.builder()
                 .performanceId(this.performance.getId())
                 .performanceName(this.performance.getName())
                 .round(this.round)

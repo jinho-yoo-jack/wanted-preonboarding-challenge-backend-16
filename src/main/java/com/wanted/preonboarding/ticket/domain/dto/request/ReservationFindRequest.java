@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ReserveFindRequest {
+public class ReservationFindRequest {
     private String reservationName;
     private String reservationPhoneNumber;
 }

@@ -27,5 +27,4 @@ public class PerformanceService {
                     .collect(Collectors.toList());
         }
     }
-
 }

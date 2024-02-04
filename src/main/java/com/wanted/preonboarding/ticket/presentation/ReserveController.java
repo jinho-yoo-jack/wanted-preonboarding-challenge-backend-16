@@ -2,10 +2,10 @@ package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.ReservationService;
-import com.wanted.preonboarding.ticket.domain.dto.request.ReserveCreateRequest;
-import com.wanted.preonboarding.ticket.domain.dto.request.ReserveFindRequest;
-import com.wanted.preonboarding.ticket.domain.dto.response.ReserveCreateResponse;
-import com.wanted.preonboarding.ticket.domain.dto.response.ReserveFindResponse;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReservationCreateRequest;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReservationFindRequest;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationCreateResponse;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationFindResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class ReserveController {
     private final ReservationService reservationService;
 
     @PostMapping("/")
-    public ResponseEntity<ResponseHandler<ReserveCreateResponse>> reservation(@RequestBody ReserveCreateRequest request) {
+    public ResponseEntity<ResponseHandler<ReservationCreateResponse>> reserve(@RequestBody ReservationCreateRequest request) {
         System.out.println("reservation");
 /*      //테스트용
         ReserveCreateResponse reserve = reservationService.reserve(ReserveCreateRequest.builder()
@@ -33,9 +33,9 @@ public class ReserveController {
                 .seat(1)
                 .build());
 */
-        ReserveCreateResponse reserve = reservationService.reserve(request);
+        ReservationCreateResponse reserve = reservationService.reserve(request);
         return ResponseEntity.ok()
-                .body(ResponseHandler.<ReserveCreateResponse>builder()
+                .body(ResponseHandler.<ReservationCreateResponse>builder()
                         .statusCode(HttpStatus.CREATED)
                         .message("Created")
                         .data(reserve)
@@ -44,12 +44,12 @@ public class ReserveController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<ResponseHandler<List<ReserveFindResponse>>> findReservation(@RequestBody ReserveFindRequest request) {
+    public ResponseEntity<ResponseHandler<List<ReservationFindResponse>>> findReservation(@RequestBody ReservationFindRequest request) {
         System.out.println("ReserveController.findReservation");    //TODO: 나중에 제거
-        List<ReserveFindResponse> reservation = reservationService.findReservation(request);
+        List<ReservationFindResponse> reservation = reservationService.findReservation(request);
 
         return ResponseEntity.ok()
-                .body(ResponseHandler.<List<ReserveFindResponse>>builder()
+                .body(ResponseHandler.<List<ReservationFindResponse>>builder()
                         .message("Success")
                         .statusCode(HttpStatus.OK)
                         .data(reservation)

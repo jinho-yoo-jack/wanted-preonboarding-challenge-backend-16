@@ -11,6 +11,7 @@ import org.hibernate.annotations.Comment;
 @Table
 @Entity
 public class PerformanceSeatInfo extends AuditInformation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,4 +42,15 @@ public class PerformanceSeatInfo extends AuditInformation {
     @Comment("예약 여부")
     private String isReserve;
 
+    //TODO: 파라미터로 status를 받을지 생각
+
+    private static final String RESERVE_ENABLE = "enable";
+    private static final String RESERVE_DISABLE = "disable";
+    public void changeIsReserveStatus(){
+        if (this.isReserve.equalsIgnoreCase(RESERVE_DISABLE)){
+            isReserve = RESERVE_ENABLE;
+        } else {
+            isReserve = RESERVE_DISABLE;
+        }
+    }
 }

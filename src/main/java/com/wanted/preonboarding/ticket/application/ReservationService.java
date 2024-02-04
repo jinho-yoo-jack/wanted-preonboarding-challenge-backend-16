@@ -1,10 +1,10 @@
 package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.dto.request.DiscountRequest;
-import com.wanted.preonboarding.ticket.domain.dto.request.ReserveCreateRequest;
-import com.wanted.preonboarding.ticket.domain.dto.request.ReserveFindRequest;
-import com.wanted.preonboarding.ticket.domain.dto.response.ReserveCreateResponse;
-import com.wanted.preonboarding.ticket.domain.dto.response.ReserveFindResponse;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReservationCreateRequest;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReservationFindRequest;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationCreateResponse;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationFindResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
@@ -30,52 +30,67 @@ public class ReservationService {
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private final DiscountService discountService;
 
-    // TODO: 예약
+    // 예약
     @Transactional
-    public ReserveCreateResponse reserve(ReserveCreateRequest request) {
+    public ReservationCreateResponse reserve(ReservationCreateRequest request) {
         log.info("ReservationService.reserve");
         Performance performance = findPerformance(request);
         PerformanceSeatInfo seatInfo = findSeatInfo(request);
         checkReservationAvailable(seatInfo);
 
         //할인된 가격 가져오기
-        DiscountRequest discountRequest = getDiscountRequest(request, performance);
+        DiscountRequest discountRequest = getDiscountRequest(performance);
         int discountedPrice = discountService.discountPrice(discountRequest);
 
         //예약 가능한지 확인
         isAffordable(request, discountedPrice);
 
-        //예매 진행 및 반환
+        //예매 진행 및 좌석 상태 변경
         Reservation save = reservationRepository.save(Reservation.of(request, performance));
-        return save.toReserveCreateResponse();
+        changeSeatStatus(seatInfo);
+        return save.toReservationCreateResponse();
     }
 
-    private void isAffordable(ReserveCreateRequest request, int discountedPrice) {
+    private static void changeSeatStatus(PerformanceSeatInfo seatInfo) {
+        seatInfo.changeIsReserveStatus();
+    }
+
+    // 조회
+    @Transactional(readOnly = true)
+    public List<ReservationFindResponse> findReservation(ReservationFindRequest request) {
+        List<Reservation> reservations = reservationRepository.findByNameAndPhoneNumber(request.getReservationName(), request.getReservationPhoneNumber());
+        if (reservations.isEmpty()) {
+            throw new ReservationNotFoundException("예매된 공연이 없습니다.");  //TODO: 상수로 변경
+        } else {
+            return reservations.stream().map(Reservation::toReservationFindResponse).collect(Collectors.toList());
+        }
+    }
+
+    //TODO: 취소
+    // 1. 좌석 가져오기 및 있는지 확인
+    // 2. 좌석 정보 변경
+    // 3. 취소된 좌석과 관련된 알림이 있는지 확인
+    // 4. 알림 보내기
+//    @Transactional
+//    public CancelReservationResponse cancelReservation(CancelReservationRequest request){
+//
+//    }
+
+
+    private void isAffordable(ReservationCreateRequest request, int discountedPrice) {
         if (request.getBalance() < discountedPrice) {
             throw new NotEnoughBalanceException("잔고가 부족합니다.");
         }
     }
 
-    private static DiscountRequest getDiscountRequest(ReserveCreateRequest request, Performance performance) {
+    private static DiscountRequest getDiscountRequest(Performance performance) {
         LocalDateTime reserveDateTime = LocalDateTime.now();
-        return performance.toDiscountRequest(request, reserveDateTime);
+        return performance.toDiscountRequest(reserveDateTime);
     }
 
-    // 조회
-    @Transactional(readOnly = true)
-    public List<ReserveFindResponse> findReservation(ReserveFindRequest request) {
-        List<Reservation> reservations = reservationRepository.findByNameAndPhoneNumber(request.getReservationName(), request.getReservationPhoneNumber());
-        if (reservations.isEmpty()) {
-            throw new ReservationNotFoundException("예매된 공연이 없습니다.");  //TODO: 상수로 변경
-        } else {
-            return reservations.stream().map(Reservation::toReserveFindResponse).collect(Collectors.toList());
-        }
-    }
-
-    //TODO: 취소
 
 
-    private Performance findPerformance(ReserveCreateRequest reserveCreateRequest) {
+    private Performance findPerformance(ReservationCreateRequest reserveCreateRequest) {
         return performanceRepository.findById(reserveCreateRequest.getPerformanceId())
                 .orElseThrow(() -> new PerformanceNotFoundException("공연 정보가 존재하지 않습니다.")); //TODO: 분리 및 상수화
     }
@@ -86,7 +101,7 @@ public class ReservationService {
         }
     }
 
-    private PerformanceSeatInfo findSeatInfo(ReserveCreateRequest request) {
+    private PerformanceSeatInfo findSeatInfo(ReservationCreateRequest request) {
         return performanceSeatInfoRepository.findByPerformanceIdAndRoundAndSeatAndLine(
                 request.getPerformanceId(),
                 request.getRound(),
