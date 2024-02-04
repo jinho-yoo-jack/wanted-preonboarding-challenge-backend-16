@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.wanted.preonboarding.common.exception.PerformanceNotFoundException;
 import com.wanted.preonboarding.common.exception.PerformanceSeatInfoNotFoundException;
 import com.wanted.preonboarding.common.exception.ReservationAlreadyExistsException;
+import com.wanted.preonboarding.common.util.ResponseType;
 import com.wanted.preonboarding.ticket.domain.discountpolicy.DiscountPolicies;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
@@ -98,7 +99,7 @@ public class ReservationService {
 	}
 
 	@Transactional
-	public String cancel(ReservationCancelRequest request) {
+	public ResponseType cancel(ReservationCancelRequest request) {
 		Reservation reservation = reservationRepository.findReservationByPerformanceIdAndSeatInfo(
 			UUID.fromString(request.performanceId()), SeatInfo.of(request.line(), request.seat()));
 		totalAmount -= reservation.cancel();
@@ -112,6 +113,6 @@ public class ReservationService {
 
 		reservationRepository.delete(reservation);
 
-		return "SUCCESS";
+		return ResponseType.SUCCESS;
 	}
 }

@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.interfaces.controller;
 
+import com.wanted.preonboarding.common.util.ResponseType;
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.PerformanceService;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceDTO;
@@ -25,12 +26,11 @@ public class PerformanceController {
 
 	@GetMapping("/all")
 	public ResponseEntity<ResponseHandler<List<PerformanceDTO>>> getAllPerformanceInfoList() {
-		System.out.println("getAllPerformanceInfoList");
 		return ResponseEntity
 			.ok()
 			.body(ResponseHandler.<List<PerformanceDTO>>builder()
-				.message("Success")
-				.statusCode(HttpStatus.OK)
+				.message("예매 가능한 공연/전시를 조회했습니다.")
+				.statusCode(HttpStatus.valueOf(ResponseType.SUCCESS.getStatusCode()))
 				.data(performanceService.allPerformanceInfoList())
 				.build()
 			);
@@ -42,8 +42,8 @@ public class PerformanceController {
 		return ResponseEntity
 			.ok()
 			.body(ResponseHandler.<PerformanceResponse>builder()
-				.message("Success")
-				.statusCode(HttpStatus.OK)
+				.message("공연/전시 정보를 조회했습니다.")
+				.statusCode(HttpStatus.valueOf(ResponseType.SUCCESS.getStatusCode()))
 				.data(performanceService.performanceInfoDetail(UUID.fromString(id)))
 				.build()
 			);
