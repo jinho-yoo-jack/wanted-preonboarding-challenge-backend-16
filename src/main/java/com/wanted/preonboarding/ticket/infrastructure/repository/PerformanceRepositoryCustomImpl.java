@@ -29,6 +29,7 @@ public class PerformanceRepositoryCustomImpl implements PerformanceRepositoryCus
                 .select(Projections.constructor(PerformanceDto.class,
                                 performance.id.as("performanceId"),
                         performance.name,
+                        performance.price,
                         performance.round,
                         performance.type,
                         performance.startDate,

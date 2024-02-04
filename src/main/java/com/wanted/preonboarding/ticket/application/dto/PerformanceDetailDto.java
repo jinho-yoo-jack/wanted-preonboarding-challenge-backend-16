@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class PerformanceDetailDto {
     private UUID performanceId;
     private String name;
+    private Integer price;
     private Integer round;
     private PerformanceType type;
     private LocalDateTime startDate;
@@ -29,6 +30,7 @@ public class PerformanceDetailDto {
         return PerformanceDetailDto.builder()
                 .performanceId(entity.getId())
                 .name(entity.getName())
+                .price(entity.getPrice())
                 .round(entity.getRound())
                 .type(entity.getType())
                 .startDate(entity.getStartDate())

@@ -14,6 +14,7 @@ import java.util.UUID;
 public class PerformanceDto {
     private UUID performanceId;
     private String name;
+    private Integer price;
     private Integer round;
     private PerformanceType type;
     private LocalDateTime startDate;
@@ -23,6 +24,7 @@ public class PerformanceDto {
         return PerformanceDto.builder()
                 .performanceId(entity.getId())
                 .name(entity.getName())
+                .price(entity.getPrice())
                 .round(entity.getRound())
                 .type(entity.getType())
                 .startDate(entity.getStartDate())
