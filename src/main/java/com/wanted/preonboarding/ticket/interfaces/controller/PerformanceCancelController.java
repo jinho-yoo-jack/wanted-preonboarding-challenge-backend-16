@@ -44,12 +44,20 @@ public class PerformanceCancelController {
 	}
 
 	@GetMapping("/alarms")
-	public Set<String> getTopicAll() {
-		return channels.keySet();
+	public ResponseEntity<ResponseHandler<Set<String>>> getTopicAll() {
+		return ResponseEntity
+			.ok()
+			.body(ResponseHandler.<Set<String>>builder()
+				.statusCode(HttpStatus.valueOf(ResponseType.SUCCESS.getStatusCode()))
+				.message("모든 토픽 조회")
+				.data(channels.keySet())
+				.build()
+			);
 	}
 
 	@PostMapping("/alarm/{name}")
-	public ResponseEntity<ResponseHandler<ResponseType>> pushMessage(@PathVariable String name, @RequestBody AlarmMessage alarmMessage) {
+	public ResponseEntity<ResponseHandler<ResponseType>> pushMessage(@PathVariable String name,
+		@RequestBody AlarmMessage alarmMessage) {
 		ChannelTopic channel = channels.get(name + alarmMessage.getPerformanceId());
 
 		return ResponseEntity
@@ -95,7 +103,8 @@ public class PerformanceCancelController {
 	}
 
 	@PostMapping("/alarm")
-	public ResponseEntity<ResponseHandler<ResponseType>> subscribeMessage(@RequestBody ReservationCancelRequest request) {
+	public ResponseEntity<ResponseHandler<ResponseType>> subscribeMessage(
+		@RequestBody ReservationCancelRequest request) {
 		redisSubscriber.subscribe(request);
 
 		return ResponseEntity
