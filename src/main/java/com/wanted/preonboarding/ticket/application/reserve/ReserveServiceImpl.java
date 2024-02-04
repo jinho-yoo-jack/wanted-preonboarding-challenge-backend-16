@@ -9,17 +9,21 @@ import com.wanted.preonboarding.ticket.domain.performance.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.reservation.Reservation;
 import com.wanted.preonboarding.ticket.domain.reservation.ReservationRepository;
 import com.wanted.preonboarding.ticket.dto.request.discount.PaymentInfo;
+import com.wanted.preonboarding.ticket.dto.request.notification.ReservationCancelEvent;
 import com.wanted.preonboarding.ticket.dto.request.reservation.ReservationRequest;
 import com.wanted.preonboarding.ticket.dto.response.page.PageResponse;
 import com.wanted.preonboarding.ticket.dto.response.reservation.ReservationInfo;
+import com.wanted.preonboarding.ticket.dto.result.CancelReservationInfo;
 import com.wanted.preonboarding.ticket.dto.result.ReservationModel;
 import com.wanted.preonboarding.ticket.exception.argument.InvalidSeatException;
 import com.wanted.preonboarding.ticket.exception.badrequest.AmountNotEnoughException;
 import com.wanted.preonboarding.ticket.exception.badrequest.SeatAlreadyReservedException;
 import com.wanted.preonboarding.ticket.exception.notfound.PerformanceNotFoundException;
+import com.wanted.preonboarding.ticket.exception.notfound.ReservationNotFoundException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,6 +37,7 @@ public class ReserveServiceImpl implements ReserveService {
     private final ReservationRepository reservationRepository;
     private final PerformanceRepository performanceRepository;
     private final DiscountManager discountManager;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     @Override
@@ -58,6 +63,21 @@ public class ReserveServiceImpl implements ReserveService {
     public PageResponse<ReservationModel> findReservation(final String name, final String phone, final Pageable pageable) {
         Page<ReservationModel> reservationModel = reservationRepository.findReservationModel(name, phone, pageable);
         return PageResponse.of(reservationModel);
+    }
+
+    @Transactional
+    @Override
+    public CancelReservationInfo cancel(final int reservationId) {
+        // 취소할 예약 정보 조회
+        CancelReservationInfo cancelInfo = reservationRepository.findInfoForCancel(reservationId)
+            .orElseThrow(ReservationNotFoundException::new);
+
+        // 예약 정보 삭제
+        reservationRepository.deleteById(reservationId);
+
+        // 이벤트 발행 (알림 전송)
+        eventPublisher.publishEvent(new ReservationCancelEvent(cancelInfo));
+        return cancelInfo;
     }
 
     private Reservation createReservation(final PerformanceSeatInfo seatInfo, final String name, final String phoneNumber) {
