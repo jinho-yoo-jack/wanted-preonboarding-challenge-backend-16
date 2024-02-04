@@ -9,6 +9,6 @@ import java.time.LocalDateTime;
 @Getter
 public class DiscountRequest {
     private int performancePrice;
-    private LocalDateTime reserveDate;
+    private LocalDateTime reserveDateTime;
     private LocalDateTime performanceDateTime;
 }

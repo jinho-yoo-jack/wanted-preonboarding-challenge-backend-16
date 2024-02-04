@@ -1,5 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.domain.dto.request.DiscountRequest;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReserveCreateRequest;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceFindResponse;
 import jakarta.persistence.*;
 import lombok.*;
@@ -46,6 +48,14 @@ public class Performance extends AuditInformation {
                 .round(this.round)
                 .dateTime(this.start_date)
                 .isReserve(this.isReserve)
+                .build();
+    }
+
+    public DiscountRequest toDiscountRequest(ReserveCreateRequest request, LocalDateTime reserveDateTime) {
+        return DiscountRequest.builder()
+                .performancePrice(this.price)
+                .performanceDateTime(this.start_date)
+                .reserveDateTime(reserveDateTime)
                 .build();
     }
 }

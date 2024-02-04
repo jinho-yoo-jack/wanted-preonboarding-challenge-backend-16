@@ -33,8 +33,7 @@ public class PreorderDiscountPolicy implements DiscountPolicy {
     }
 
     private static long calculateDays(DiscountRequest request) {
-        Duration between = Duration.between(request.getReserveDate(), request.getPerformanceDateTime());
+        Duration between = Duration.between(request.getReserveDateTime(), request.getPerformanceDateTime());
         return between.toDays();
     }
-
 }

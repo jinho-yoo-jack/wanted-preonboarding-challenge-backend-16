@@ -46,7 +46,6 @@ public class Reservation extends AuditInformation {
     @Comment("좌석 행")
     private int seat;
 
-    // TODO: performance를 넣어도 되는것일까
     public static Reservation of(ReserveCreateRequest reserveCreateRequest, Performance performance) {
         return Reservation.builder()
                 .performance(performance)

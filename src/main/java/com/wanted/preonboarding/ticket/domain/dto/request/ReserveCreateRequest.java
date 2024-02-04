@@ -9,8 +9,8 @@ import java.util.UUID;
 @Builder
 public class ReserveCreateRequest {
     private UUID performanceId;
-    private String ReservationName; //고객 이름
-    private String ReservationPhoneNumber;
+    private String reservationName; //고객 이름
+    private String reservationPhoneNumber;
     private int balance;
     private int round;
     private int seat;

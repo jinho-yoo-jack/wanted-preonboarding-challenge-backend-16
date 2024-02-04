@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ThresholdDiscountPolicy implements DiscountPolicy {
     private static final String POLICY_NAME = "특정 금액 이상의 공연 가격 할인";
-    private static final int THRESHOLD = 100000;
+    private static final int THRESHOLD = 50000;
     private static final double DISCOUNT_RATE = 10;   // 10이면 10%
 
     @Override

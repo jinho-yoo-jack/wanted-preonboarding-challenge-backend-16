@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.ticket.domain.dto.request.DiscountRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReserveCreateRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReserveFindRequest;
 import com.wanted.preonboarding.ticket.domain.dto.response.ReserveCreateResponse;
@@ -7,10 +8,7 @@ import com.wanted.preonboarding.ticket.domain.dto.response.ReserveFindResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.exception.PerformanceNotFoundException;
-import com.wanted.preonboarding.ticket.exception.PerformanceSeatInfoNotFound;
-import com.wanted.preonboarding.ticket.exception.ReservationNotFoundException;
-import com.wanted.preonboarding.ticket.exception.SeatAlreadyReservedException;
+import com.wanted.preonboarding.ticket.exception.*;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
@@ -19,18 +17,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-
 public class ReservationService {
     private final PerformanceRepository performanceRepository;
     private final ReservationRepository reservationRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
-
+    private final DiscountService discountService;
 
     // TODO: 예약
     @Transactional
@@ -40,14 +38,30 @@ public class ReservationService {
         PerformanceSeatInfo seatInfo = findSeatInfo(request);
         checkReservationAvailable(seatInfo);
 
-//      DiscountService.discount(); //TODO: 할인 정책 확인 및 할인
-//      isAffordable(); //TODO: 구매 가능한지 확인
+        //할인된 가격 가져오기
+        DiscountRequest discountRequest = getDiscountRequest(request, performance);
+        int discountedPrice = discountService.discountPrice(discountRequest);
+
+        //예약 가능한지 확인
+        isAffordable(request, discountedPrice);
 
         //예매 진행 및 반환
         Reservation save = reservationRepository.save(Reservation.of(request, performance));
         return save.toReserveCreateResponse();
     }
 
+    private void isAffordable(ReserveCreateRequest request, int discountedPrice) {
+        if (request.getBalance() < discountedPrice) {
+            throw new NotEnoughBalanceException("잔고가 부족합니다.");
+        }
+    }
+
+    private static DiscountRequest getDiscountRequest(ReserveCreateRequest request, Performance performance) {
+        LocalDateTime reserveDateTime = LocalDateTime.now();
+        return performance.toDiscountRequest(request, reserveDateTime);
+    }
+
+    // 조회
     @Transactional(readOnly = true)
     public List<ReserveFindResponse> findReservation(ReserveFindRequest request) {
         List<Reservation> reservations = reservationRepository.findByNameAndPhoneNumber(request.getReservationName(), request.getReservationPhoneNumber());
@@ -80,7 +94,4 @@ public class ReservationService {
                 request.getLine()        //TODO: String 상수화 및 분리
         ).orElseThrow(() -> new PerformanceSeatInfoNotFound("좌석 정보가 존재하지 않습니다."));
     }
-
-
-
 }
