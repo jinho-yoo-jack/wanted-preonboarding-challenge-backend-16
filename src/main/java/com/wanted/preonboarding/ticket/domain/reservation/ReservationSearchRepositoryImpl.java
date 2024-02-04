@@ -10,8 +10,10 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.wanted.preonboarding.ticket.domain.base.OrderByNull;
+import com.wanted.preonboarding.ticket.dto.result.CancelReservationInfo;
 import com.wanted.preonboarding.ticket.dto.result.ReservationModel;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,6 +61,26 @@ public class ReservationSearchRepositoryImpl implements ReservationSearchReposit
                 reservation.phoneNumber.eq(phoneNumber));
 
         return PageableExecutionUtils.getPage(reservationModels, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Optional<CancelReservationInfo> findInfoForCancel(int reservationId) {
+        return Optional.of(
+            queryFactory
+                .select(Projections.constructor(CancelReservationInfo.class,
+                    performance.id.as("performanceId"),
+                    performance.name,
+                    reservation.round,
+                    reservation.line,
+                    reservation.seat,
+                    performance.startDate,
+                    performance.price
+                ))
+                .from(reservation)
+                .join(performance).on(performance.id.eq(reservation.performanceId))
+                .where(reservation.id.eq(reservationId))
+                .fetchFirst()
+        );
     }
 
     private OrderSpecifier<?> getOrderSpecifier(final Pageable pageable, final String propertyName, final Expression<?> target) {
