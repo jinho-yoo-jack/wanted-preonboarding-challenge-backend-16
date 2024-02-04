@@ -1,74 +1,158 @@
-# wanted-preonboarding-challenge-backend-16
-원티드 프리온보딩 백엔드 챌린지 사전과제
+## 🧑🏻‍💻 구현한 기능
+- 공연 예약
+- 공연 정보 조회
+- 공연 취소 (알림 전송)
+- 예약 정보 조회
 
-## 프로젝트 필수 패키지 및 버전 정보
-### 버전 정보
-- Spring Boot; 3.2.1
-- JDK(Java Development Kit); Java 17 이상
-  - Intellij에서 JDK 버전 변경하는 방법(참고 URL: https://inpa.tistory.com/entry/IntelliJ-%F0%9F%92%BD-%EC%9E%90%EB%B0%94-JDK-%EB%B2%84%EC%A0%84-%EB%B3%80%EA%B2%BD-%EB%B0%A9%EB%B2%95)
-### 필수 설치 패키지
-- Docker Desktop
+## 🧩 Table
+<img width="1100" alt="image" src="https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/assets/99247279/40660099-28c9-4b8d-bca9-090e9da9f2db">
 
-## 과제1 - 필수
-- 고객의 요구사항: 빠르게 변화는 고객의 니즈를 빠른 시간 내에 적용할 수 있는 Wanted Ticket 서비스를 아래와 같이 개발 해주세요.
-- 비즈니스 요구사항:
-  - 예약 시스템
-    - Request Message: 고객의 이름, 휴대 전화, 결제 가능한 금액(잔고), 예약을 원하는 공연 또는 전시회ID, 회차, 좌석 정보
-    - Response Message: 예매가 완료된 공연의 정보(회차, 공연명, 좌석정보, 공연ID) + 예매자 정보(이름, 연락처)
-    - 특이사항: 예약 결제 시, 다양한 할인 정책이 적용될 수 있음.
-  - 예약 조회 시스템
-    - Request Message: 고객의 이름, 휴대 전화
-    - Response Message: 예매가 완료된 공연의 정보(회차, 공연명, 좌석정보, 공연ID) + 예매자 정보(이름, 연락처)
-  - 공연 및 전시 정보 조회(목록, 상세 조회)
-    - Request Message: 예매 가능 여부
-    - Response Message: 예매 가능한 공연 리스트(정보: 공연명, 회차, 시작 일시, 예매 가능 여부)
-  - 예약 가능 알림 서비스
-    - 특정 공연에 대해서 취소 건이 발생하는 경우, 알림 신청을 해놓은 고객에게 취소된 예약이 있다는 사실을 알리는 알림 서비스
-    - Send Message: 공연ID, 공연명, 회차, 시작 일시 예매 가능한 좌석 정보 
-    
-- 기초 과제
-  1. 위에서 이야기 하고 있는 비즈니스 요구사항을 만족하는 Application을 만들어주세요.
-     - 개발 실력 브실골 이하: 기존에 작성 되어 있는 코드를 삭제 하지 않고! 기존 코드 위에 코드를 작성해주세요!
-     - 다이아 이상: ticket 패키지를 삭제하고 새롭게 패키지를 만든 후에 Application을 개발해주세요!
-  2. 데이터베이스는 MySQL를 사용 해주시고 프로젝트 내에 docker-compose.yml를 이용하여 MySQL 서비스를 Running 시키면 됩니다.
-     - DB의 데이터를 저장하는 경로(`/Users/black/dev/mysql_docker/data`)와 DB 초기화 쿼리 파일의 경로(`/Users/black/IdeaProjects/backend-preonboarding/src/main/resources/initd`)는 개인의 환경에 맞게 수정 해주세요!
-  3. 스키마 정보 및 테스트 데이터는 "./resources/initdb"에 디렉토리에 *.sql 확장자로 정의 되어 있습니다. Application의 DTO와 Entity를 구성할 때 참고 해주세요!
-     - Application 개발 중 새로운 테이블이 필요하다면 테이블을 추가는 마음대로 하셔도 됩니다.
-- 심화 과제
-  1. Application을 모두 작성 했다면! 코드를 읽는 동료가 코드를 쉽게 이해할 수 있도록 코드를 리팩토링 해주세요!
-  2. 리팩토링을 진행할 때는! 기술 위주가 아니라! "변경"에 쉽게 적응할 수 있는 코드 구조로 리팩토링 해주세요!
+- 2개의 테이블을 추가하였습니다.
+- ***DISCOUNT***
+  - 공연에 대한 할인 정보를 담는 테이블입니다. 
+  - 하나의 공연에 여러가지 할인이 적용될 수 있다고 생각하여 일대다 관계를 설정하였습니다.
+- ***NOTIFICATION***
+  - 공연에 대한 알림 정보를 담는 테이블입니다. 
+  - 알림은 공연말고도 다양한 도메인에서 사용될 수 있을것이라 생각하여 targetId로 설정한 도메인에 이벤트가 발생한다면 알림을 전송할 수 있도록 하였습니다.
 
-### 환경 설정과 Github에 대한 궁금증이 있다면! Issues에 등록해주시면 답변 드리겠습니다.
-- https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/issues
-- 참고 URL: https://devlog-wjdrbs96.tistory.com/227
-       
+&nbsp;
 
-## 과제2 - 선택사항
-- 다른 사람의 PR 염탐하기!
-- **백문이 불여일견**이라고 했습니다! 다른 사람의 코드를 보고 궁금한 점이나 코드 작성의 의도를 물어봐 주세요! 또는 코드에 대해서 자신의 생각을 코멘트로 달아주세요! 
-- 코드 리뷰를 통해서 내가 놓친 부분이나 미처 생각 하지 못했던 부분을 깨닫을 수 있고, 좋은 코드와 나쁜 코드가 무엇인지 경험할 수 있습니다!
-- PR에 코멘트를 달아도! 잔디가 심어진다는 사실 알고 계신가요?!!!!
-- 과제2의 베네핏
-  1. 질 높은 코드 리뷰를 진행 주신 분들은 수업의 마지막 날에 진행 되는 커피챗 및 맥주챗 뽑기 진행 시, 이름을 3개 더 넣어 드리도록 하겠습니다.
-  2. 열심히 코드 리뷰 활동을 하시는 분의 PR은 제가 무조건 처음부터 끝까지 코드 리뷰를 진행하도록 하겠습니다!!
+## 💰 할인
+```java
+public interface DiscountManager {
+    double applyDiscount(PaymentInfo paymentInfo);
+}
+```
 
-## 과제 제출 방법
-1. master 브랜치로 프로젝트를 clone 해주세요.
-2. 로컬 레파지토리에 `feature/이름or닉네임`으로 피쳐 브랜치를 생성해주세요.
-4. 이제부터 사전과제를 풀어봅니다.
-5. 모든 사전과제를 풀었다면 이제 원격 레파지토리에 commit 및 push 후 PR을 올려 해주세요.
-6. Example
-   ```shell
-    1. git checkout -b feature/migration2TcAsMasterSlaveStructure
-    # 브랜치를 생성하고 해당 브랜치로 checkout.
-    # feature의 브랜치명은 내부적으로 관리하는 issues번호나 프로젝트 관리도구에의 ID 값을 이용
-    2. git add .
-    # 모든 변경사항을 tracking 되는 상태로 변경할거에요.
-    3. git commit -m “Commit Messsage for Modify Information”
-    # git commit를 수행하고 작업내용을 팀 내부 규약대로 작성
-    3-1. git push --set-upstream origin feature/migration2TcAsMasterSlaveStructure
-    # 해당 내용을 remote repository로 push
-    4. push하면 gitlab/github에 Pull Request나 Merge Request 생성하는 버튼이 활성화
-    5. Merge Request 버튼을 클릭 후, 숙제에 관한 내용 작성 후 PR 요청을 보내면 끝
-    6. Merge 승인이되면 WEB UI화면에서 merge 버튼이 활성화 됨.
-   ```
+```java
+@RequiredArgsConstructor
+@Service
+public class DefaultDiscountManager implements DiscountManager {
+
+    private final List<DiscountPolicy> discountPolicies;
+
+    @Override
+    public double applyDiscount(final PaymentInfo paymentInfo) {
+        int originPrice = paymentInfo.price();
+
+        for (DiscountPolicy policy : discountPolicies) {
+            // 할인 로직 적용
+        }
+        return originPrice;
+    }
+
+}
+```
+
+- 할인 로직을 구현하기 위해 다음의 인터페이스를 선언하였습니다.
+  - **DiscountManager**: 초기 금액에서 할인이 적용된 금액을 반환받음
+  - **DiscountPolicy**: 각 할인 정책에 따라 할인 금액을 반환
+- 다양한 할인 정책이 적용될 수 있기때문에 DiscountManager는 주입받은 여러 DiscountPolicy 구현체의 할인 로직을 적용시켜 최종적으로 할인이 적용된 금액을 반환합니다.
+
+&nbsp;
+
+## 🔔 알림
+```java
+/*
+* getMessage() -> 알림 메시지
+* getTargetId() -> 알림 targetId (ex - performanceId)
+* */
+public interface NotificationHolder {
+    String getMessage();
+    String getTargetId();
+}
+```
+
+```java
+/*
+* 예약 취소 이벤트 (알림 이벤트)
+*/
+public record ReservationCancelEvent(CancelReservationInfo reservationInfo) implements NotificationHolder {
+
+    @Override
+    public String getMessage() {
+        return NotificationMessageFormat.getEmptyPerformanceMessage(reservationInfo);
+    }
+
+    @Override
+    public String getTargetId() {
+        return reservationInfo.performanceId().toString();
+    }
+}
+```
+
+- 알림 메시지를 생성하는데 필요한 데이터는 다양한 형태가 될 수 있을 것이라 판단하여 메시지를 가져오는 부분을 NotificationHolder 인터페이스로 추상화하였습니다.
+
+&nbsp;
+
+```java
+// 이벤트 발행 (알림 전송)
+eventPublisher.publishEvent(new ReservationCancelEvent(cancelInfo));
+```
+
+- 서비스 로직의 의존성을 분리하기위해 Spring Event를 사용하여 알림을 전송하도록 하였습니다.
+- @TransactionalEventListener 를 사용하여 예약 취소가 성공적으로 반영된 후 알림을 전송하도록 하였습니다.
+  - @TransactionalEventListener의 기본 phase 값은 AFTER_COMMIT 입니다
+
+&nbsp;
+
+```java
+// COMMIT 후 알림 전송 (비동기)
+@Retry
+@Async
+@TransactionalEventListener
+public void sendNotification(final NotificationHolder holder) {
+    // 알림 메시지 생성
+    String message = holder.getMessage();
+
+    // 알림 대상 조회
+    String targetId = holder.getTargetId();
+    // 대상(target) 조회 로직
+
+    // 알림 전송
+    notificationSender.send(message, target);
+}
+```
+
+- 특정 데이터 타입이 아닌 **NotificationHolder**에 의존하고있기 때문에 내부적으로 어떤 데이터를 가지고있는지 전혀 신경쓰지않고 알림 메시지를 반환받을 수 있습니다.
+
+&nbsp;
+
+```java
+@Slf4j
+@Aspect
+public class RetryAspect {
+
+    @Around("@annotation(retry)")
+    public Object retry(ProceedingJoinPoint joinPoint, Retry retry) throws Throwable {
+        int maxRetry = retry.time();
+        Exception exceptionHolder = null;
+
+        for (int count = 1; count < maxRetry; count++) {
+            try {
+                return joinPoint.proceed();
+            } catch (Exception exception) {
+                log.warn("[retry] Exception has occurred (count: {})", count);
+                exceptionHolder = exception;
+            }
+        }
+        throw Objects.requireNonNull(exceptionHolder);
+    }
+}
+```
+
+- AOP를 통해 알림 전송 도중 문제가 발생했다면 지정된 횟수만큼 다시 시도하도록 구현하였습니다.
+
+&nbsp;
+<img width="500" alt="image" src="https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/assets/99247279/f7a951dc-7757-4932-bd27-8fffee4c968f">
+
+
+## 테스트코드
+<img width="1451" alt="image" src="https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/assets/99247279/0689e198-4f1a-469c-b274-2005753ca816">
+
+- Service Layer Test는 @SpringBootTest, Repository Layer Test는 @DataJpaTest를 사용하여 테스트하였습니다.
+- QueryDSL 관련 설정 정보를 Import하는 @Repository 커스텀 어노테이션을 생성하여 사용하였습니다.
+- 47개의 테스트를 작성하였습니다.
+
+## 아쉬웠던점
+- Naming convention을 제대로 지키지 못한 것이 아쉽습니다. 그때그때 필요한 클래스를 생성하다보니 반환되는 Dto postfix 가 Info인 것도 있고 Model인 것도 있네요. 명확한 기준을 통한 네이밍 컨벤션이 필요하다고 느꼈습니다.

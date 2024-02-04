@@ -4,8 +4,8 @@ server:
 spring:
   datasource:
     url: jdbc:mysql://localhost:13306/wanted
-    username: wanted
-    password: backend
+    username: root
+    password: preonboarding
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   # JPA 설정
@@ -18,6 +18,9 @@ spring:
         globally_quoted_identifiers: false
         format_sql: true     # 쿼리 로그 포맷 (정렬)
         show_sql: true       # 쿼리 로그 출력
+  sql:
+    init:
+      mode: always
 
 logging:
   level:

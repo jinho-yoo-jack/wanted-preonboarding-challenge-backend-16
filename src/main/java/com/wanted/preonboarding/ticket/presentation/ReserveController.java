@@ -1,32 +1,52 @@
 package com.wanted.preonboarding.ticket.presentation;
 
-import com.wanted.preonboarding.ticket.application.TicketSeller;
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+
+import com.wanted.preonboarding.ticket.application.reserve.ReserveService;
+import com.wanted.preonboarding.ticket.dto.request.reservation.ReservationDeleteRequest;
+import com.wanted.preonboarding.ticket.dto.request.reservation.ReservationInfoRequest;
+import com.wanted.preonboarding.ticket.dto.request.reservation.ReservationRequest;
+import com.wanted.preonboarding.ticket.dto.response.page.PageResponse;
+import com.wanted.preonboarding.ticket.dto.response.reservation.ReservationInfo;
+import com.wanted.preonboarding.ticket.dto.result.CancelReservationInfo;
+import com.wanted.preonboarding.ticket.dto.result.ReservationModel;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
 
-@RestController
-@RequestMapping("/reserve")
 @RequiredArgsConstructor
+@RequestMapping("/v1/app/reserve")
+@RestController
 public class ReserveController {
-    private final TicketSeller ticketSeller;
 
-    @PostMapping("/")
-    public boolean reservation() {
-        System.out.println("reservation");
+    private final ReserveService reserveService;
 
-        return ticketSeller.reserve(ReserveInfo.builder()
-            .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
-            .reservationName("유진호")
-            .reservationPhoneNumber("010-1234-1234")
-            .reservationStatus("reserve")
-            .amount(200000)
-            .round(1)
-            .line('A')
-            .seat(1)
-            .build()
-        );
+    @PostMapping
+    public ResponseEntity<ReservationInfo> reservePerformance(@RequestBody ReservationRequest request) {
+        LocalDateTime requestTime = LocalDateTime.now();
+        ReservationInfo reservationInfo = reserveService.reserve(request, requestTime);
+        return ResponseEntity.ok(reservationInfo);
+    }
+
+    @GetMapping
+    public ResponseEntity<PageResponse<ReservationModel>> findReservation(@RequestBody ReservationInfoRequest request,
+                                                                          @PageableDefault(sort = "createAt", direction = DESC) Pageable pageable) {
+        PageResponse<ReservationModel> result = reserveService.findReservation(request.name(), request.phone(), pageable);
+        return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<CancelReservationInfo> deleteReservation(@RequestBody ReservationDeleteRequest request) {
+        CancelReservationInfo cancel = reserveService.cancel(request.reservationId());
+        return ResponseEntity.ok(cancel);
     }
 }
