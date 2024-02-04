@@ -55,7 +55,7 @@ public class PerformanceCancelController {
 		return ResponseEntity
 			.ok()
 			.body(ResponseHandler.<ResponseType>builder()
-				.message(ResponseType.SUCCESS.getMessage())
+				.message("메세지 발행")
 				.statusCode(HttpStatus.valueOf(ResponseType.SUCCESS.getStatusCode()))
 				.data(redisPublisher.publish(channel, alarmMessage))
 				.build()
@@ -71,7 +71,7 @@ public class PerformanceCancelController {
 		return ResponseEntity
 			.ok()
 			.body(ResponseHandler.<ResponseType>builder()
-				.message(ResponseType.SUCCESS.getMessage())
+				.message("토픽 생성")
 				.statusCode(HttpStatus.valueOf(ResponseType.SUCCESS.getStatusCode()))
 				.data(ResponseType.SUCCESS)
 				.build()
@@ -87,7 +87,7 @@ public class PerformanceCancelController {
 		return ResponseEntity
 			.ok()
 			.body(ResponseHandler.<ResponseType>builder()
-				.message(ResponseType.SUCCESS.getMessage())
+				.message("토픽 제거")
 				.statusCode(HttpStatus.valueOf(ResponseType.SUCCESS.getStatusCode()))
 				.data(ResponseType.SUCCESS)
 				.build()
@@ -101,7 +101,7 @@ public class PerformanceCancelController {
 		return ResponseEntity
 			.ok()
 			.body(ResponseHandler.<ResponseType>builder()
-				.message(ResponseType.SUCCESS.getMessage())
+				.message("구독")
 				.statusCode(HttpStatus.valueOf(ResponseType.SUCCESS.getStatusCode()))
 				.data(ResponseType.SUCCESS)
 				.build()
