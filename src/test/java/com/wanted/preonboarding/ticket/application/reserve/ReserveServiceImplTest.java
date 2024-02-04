@@ -13,6 +13,9 @@ import com.wanted.preonboarding.ticket.domain.notification.Notification;
 import com.wanted.preonboarding.ticket.domain.notification.NotificationRepository;
 import com.wanted.preonboarding.ticket.domain.performance.Performance;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceRepository;
+import com.wanted.preonboarding.ticket.domain.performance.PerformanceSeatInfo;
+import com.wanted.preonboarding.ticket.domain.performance.PerformanceSeatInfoRepository;
+import com.wanted.preonboarding.ticket.domain.performance.model.ReserveState;
 import com.wanted.preonboarding.ticket.domain.reservation.Reservation;
 import com.wanted.preonboarding.ticket.domain.reservation.ReservationRepository;
 import com.wanted.preonboarding.ticket.dto.request.reservation.ReservationRequest;
@@ -23,6 +26,7 @@ import com.wanted.preonboarding.ticket.dto.result.ReservationModel;
 import com.wanted.preonboarding.ticket.exception.argument.InvalidArgumentException;
 import com.wanted.preonboarding.ticket.exception.badrequest.BadRequestException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,13 +61,11 @@ class ReserveServiceImplTest {
     @Autowired
     NotificationRepository notificationRepository;
 
-    String performanceId;
+    @Autowired
+    PerformanceSeatInfoRepository seatInfoRepository;
 
     @BeforeEach
     void setUp() {
-        List<Performance> all = performanceRepository.findAll();
-        performanceId = all.get(0).getId().toString();
-
         performanceRepository.deleteAllInBatch();
         discountRepository.deleteAllInBatch();
         reservationRepository.deleteAllInBatch();
@@ -76,6 +78,7 @@ class ReserveServiceImplTest {
         @Test
         void reserve_success() {
             // given
+            String performanceId = savePerformanceAndSeats().toString();
             ReservationRequest request = ReservationRequest.builder()
                 .name("KAI")
                 .phone("01012345678")
@@ -86,12 +89,14 @@ class ReserveServiceImplTest {
                 .line("A")
                 .seat(1)
                 .build();
-            LocalDateTime requestTime = LocalDateTime.of(2024, 1, 30, 12, 00);
+            LocalDateTime requestTime = LocalDateTime.of(2024, 1, 30, 12, 0);
 
             // when
             ReservationInfo reservationInfo = reserveService.reserve(request, requestTime);
 
             // then
+            Reservation reservation = reservationRepository.findAll().get(0);
+            assertThat(reservation.getName()).isEqualTo("KAI");
             assertThat(reservationInfo).isNotNull()
                 .extracting("performanceRound", "performanceId", "line", "seat", "name", "phone")
                 .containsExactly(1, performanceId, "A", 1,"KAI","01012345678");
@@ -101,6 +106,7 @@ class ReserveServiceImplTest {
         @Test
         void reserve_fail_already_exist() {
             // given
+            String performanceId = savePerformanceAndSeats().toString();
             ReservationRequest requestAlreadyExistSeat = ReservationRequest.builder()
                 .name("KAI")
                 .phone("01012345678")
@@ -122,6 +128,7 @@ class ReserveServiceImplTest {
         @Test
         void reserve_fail_seat_not_exist() {
             // given
+            String performanceId = savePerformanceAndSeats().toString();
             ReservationRequest requestAlreadyExistSeat = ReservationRequest.builder()
                 .name("KAI")
                 .phone("01012345678")
@@ -143,6 +150,7 @@ class ReserveServiceImplTest {
         @Test
         void reserve_fail_seat_disable() {
             // given
+            String performanceId = savePerformanceAndSeats().toString();
             ReservationRequest requestAlreadyExistSeat = ReservationRequest.builder()
                 .name("KAI")
                 .phone("01012345678")
@@ -166,6 +174,7 @@ class ReserveServiceImplTest {
         @ParameterizedTest
         void reserve_fail_no_money(int amount) {
             // given
+            String performanceId = savePerformanceAndSeats().toString();
             ReservationRequest requestAlreadyExistSeat = ReservationRequest.builder()
                 .name("KAI")
                 .phone("01012345678")
@@ -191,6 +200,7 @@ class ReserveServiceImplTest {
             @Test
             void reserve_discount() {
                 // given
+                String performanceId = savePerformanceAndSeats().toString();
                 LocalDateTime endDate = LocalDateTime.of(2099, 12, 31, 11, 59);
                 Discount discount = Discount.builder()
                     .performanceId(UUID.fromString(performanceId))
@@ -225,6 +235,7 @@ class ReserveServiceImplTest {
             @Test
             void reserve_with_several_discount() {
                 // given
+                String performanceId = savePerformanceAndSeats().toString();
                 LocalDateTime endDate = LocalDateTime.of(2099, 12, 31, 11, 59);
                 Discount discount1 = Discount.builder()
                     .performanceId(UUID.fromString(performanceId))
@@ -267,6 +278,7 @@ class ReserveServiceImplTest {
             @ParameterizedTest
             void reserve_discounted_price_with_less_money(int amount) {
                 // given
+                String performanceId = savePerformanceAndSeats().toString();
                 LocalDateTime endDate = LocalDateTime.of(2099, 12, 31, 11, 59);
                 Discount discount = Discount.builder()
                     .performanceId(UUID.fromString(performanceId))
@@ -386,5 +398,47 @@ class ReserveServiceImplTest {
             .isReserve(DISABLE)
             .build();
         return performanceRepository.save(performance).getId();
+    }
+
+    /*
+    *(DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 1, 'enable', DEFAULT, DEFAULT)
+    ,(DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 2, 'enable', DEFAULT, DEFAULT)
+    ,(DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 3, 'enable', DEFAULT, DEFAULT)
+    ,(DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 4, 'enable', DEFAULT, DEFAULT);
+    * */
+    private UUID savePerformanceAndSeats() {
+        final LocalDateTime startDate = LocalDateTime.of(2023, 12, 31, 19, 00);
+        final Performance performance = Performance.builder()
+            .name("Hola")
+            .price(100_000)
+            .round(1)
+            .type(CONCERT)
+            .startDate(startDate)
+            .isReserve(DISABLE)
+            .build();
+        UUID performanceId = performanceRepository.save(performance).getId();
+
+        List<PerformanceSeatInfo> seats = new ArrayList<>();
+        for (int i = 1; i <= 4; i++) {
+            seats.add(PerformanceSeatInfo.builder()
+                .performanceId(performanceId)
+                .round(1)
+                .gate(1)
+                .line("A")
+                .seat(i)
+                .isReserved(ReserveState.ENABLE)
+                .build());
+        }
+        seats.add(PerformanceSeatInfo.builder()
+            .performanceId(performanceId)
+            .round(1)
+            .gate(1)
+            .line("A")
+            .seat(5)
+            .isReserved(DISABLE)
+            .build());
+
+        seatInfoRepository.saveAll(seats);
+        return performanceId;
     }
 }

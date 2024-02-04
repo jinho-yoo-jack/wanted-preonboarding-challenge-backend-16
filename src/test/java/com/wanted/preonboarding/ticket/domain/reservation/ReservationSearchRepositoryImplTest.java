@@ -10,9 +10,11 @@ import com.wanted.preonboarding.ticket.domain.performance.Performance;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceRepository;
 import com.wanted.preonboarding.ticket.dto.result.CancelReservationInfo;
 import com.wanted.preonboarding.ticket.dto.result.ReservationModel;
+import com.wanted.preonboarding.support.ReflectionUtils;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,6 +36,9 @@ class ReservationSearchRepositoryImplTest {
 
     @Autowired
     private ReservationRepository reservationRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @BeforeEach
     void setUp() {
@@ -113,8 +118,12 @@ class ReservationSearchRepositoryImplTest {
             final String phoneNumber = "01012345678";
 
             for (int number = 1; number <= 3; number++) {
-                saveReservation(performanceId, name, phoneNumber, "A", number);
+                LocalDateTime createdAt = LocalDateTime.of(2024, number, 10, 19,0);
+                Reservation reservation = saveReservation(performanceId, name, phoneNumber, "A", number);
+                // createAt field update
+                ReflectionUtils.setSuperClassField(reservation, "createdAt", createdAt);
             }
+            entityManager.flush();
 
             final Sort sort = Sort.by(Order.desc("createAt"));
             final PageRequest pageRequest = PageRequest.of(0, 3, sort);
@@ -177,7 +186,7 @@ class ReservationSearchRepositoryImplTest {
         }
     }
 
-    private void saveReservation(UUID performanceId, String name, String phoneNumber, String line, int seat) {
+    private Reservation saveReservation(UUID performanceId, String name, String phoneNumber, String line, int seat) {
         Reservation reservation = Reservation.builder()
             .performanceId(performanceId)
             .name(name)
@@ -187,7 +196,7 @@ class ReservationSearchRepositoryImplTest {
             .line(line)
             .seat(seat)
             .build();
-        reservationRepository.saveAndFlush(reservation);
+        return reservationRepository.saveAndFlush(reservation);
     }
 
     private int saveReservation(UUID performanceId, String line, int seat) {

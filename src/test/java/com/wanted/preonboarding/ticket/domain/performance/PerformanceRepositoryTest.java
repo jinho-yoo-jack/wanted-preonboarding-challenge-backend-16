@@ -3,6 +3,7 @@ package com.wanted.preonboarding.ticket.domain.performance;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.wanted.preonboarding.support.config.RepositoryTest;
 import com.wanted.preonboarding.ticket.domain.performance.model.ReserveState;
 import java.util.List;
 import java.util.UUID;
@@ -15,8 +16,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-@DataJpaTest
+@RepositoryTest
 class PerformanceRepositoryTest {
 
     @Autowired
