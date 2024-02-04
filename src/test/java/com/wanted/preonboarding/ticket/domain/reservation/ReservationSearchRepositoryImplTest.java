@@ -8,9 +8,11 @@ import static org.assertj.core.groups.Tuple.tuple;
 import com.wanted.preonboarding.support.config.RepositoryTest;
 import com.wanted.preonboarding.ticket.domain.performance.Performance;
 import com.wanted.preonboarding.ticket.domain.performance.PerformanceRepository;
+import com.wanted.preonboarding.ticket.dto.result.CancelReservationInfo;
 import com.wanted.preonboarding.ticket.dto.result.ReservationModel;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -155,6 +157,24 @@ class ReservationSearchRepositoryImplTest {
             assertThat(models).isEmpty();
         }
 
+        @DisplayName("ID로 취소할 예약 정보를 조회할 수 있다.")
+        @Test
+        void findInfoForCancel_success() {
+            // given
+            final UUID performanceId = savePerformance();
+            final String line = "B";
+            final int seat = 2;
+            int reservationId = saveReservation(performanceId, line, seat);
+
+            // when
+            CancelReservationInfo info = reservationRepository.findInfoForCancel(reservationId)
+                .orElseThrow();
+
+            // then
+            assertThat(info)
+                .extracting("performanceId", "line", "seat")
+                .contains(performanceId, line, seat);
+        }
     }
 
     private void saveReservation(UUID performanceId, String name, String phoneNumber, String line, int seat) {
@@ -168,6 +188,19 @@ class ReservationSearchRepositoryImplTest {
             .seat(seat)
             .build();
         reservationRepository.saveAndFlush(reservation);
+    }
+
+    private int saveReservation(UUID performanceId, String line, int seat) {
+        Reservation reservation = Reservation.builder()
+            .performanceId(performanceId)
+            .name("기우")
+            .phoneNumber("01083112233")
+            .round(1)
+            .gate(1)
+            .line(line)
+            .seat(seat)
+            .build();
+        return reservationRepository.saveAndFlush(reservation).getId();
     }
 
     private UUID savePerformance() {
