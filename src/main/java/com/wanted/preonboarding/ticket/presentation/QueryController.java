@@ -1,33 +1,49 @@
 package com.wanted.preonboarding.ticket.presentation;
 
-import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.TicketSeller;
+import com.wanted.preonboarding.ticket.domain.dto.CreatePerformance;
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceIdRequest;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("query")
+@RequestMapping("performance")
 @RequiredArgsConstructor
 public class QueryController {
     private final TicketSeller ticketSeller;
 
-    @GetMapping("/all/performance")
-    public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllPerformanceInfoList() {
-        System.out.println("getAllPerformanceInfoList");
-        return ResponseEntity
-            .ok()
-            .body(ResponseHandler.<List<PerformanceInfo>>builder()
-                .message("Success")
-                .statusCode(HttpStatus.OK)
-                .data(ticketSeller.getAllPerformanceInfoList())
-                .build()
-            );
+    @GetMapping("/all")
+    public ResponseEntity<List<PerformanceInfo>> getAllPerformanceInfoList() {
+        List<PerformanceInfo> allPerformanceInfoList = ticketSeller.getAllPerformanceInfoList();
+        return new ResponseEntity<>(allPerformanceInfoList, HttpStatus.OK);
     }
+
+
+    @GetMapping("/{performanceId}")
+    public ResponseEntity<PerformanceInfo> getPerformanceById(@PathVariable(value = "performanceId") String performanceId) {
+        PerformanceInfo performanceById = ticketSeller.getPerformanceById(performanceId);
+        return new ResponseEntity<>(performanceById, HttpStatus.OK);
+    }
+
+
+    @PostMapping
+    public ResponseEntity<PerformanceInfo> putPerformanceInfo(@RequestBody CreatePerformance createPerformance) {
+        PerformanceInfo performanceInfo = ticketSeller.addPerformance(createPerformance);
+        return new ResponseEntity<>(performanceInfo, HttpStatus.OK);
+
+    }
+
+    @PostMapping("/specific")
+    public ResponseEntity<UUID> getPerformanceId(@RequestBody PerformanceIdRequest performanceIdRequest) {
+        UUID performanceId = ticketSeller.getPerformanceId(performanceIdRequest);
+        return new ResponseEntity<>(performanceId, HttpStatus.OK);
+    }
+
+
 }

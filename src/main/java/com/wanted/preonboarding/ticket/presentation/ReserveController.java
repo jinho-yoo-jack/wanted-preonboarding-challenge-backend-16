@@ -1,11 +1,19 @@
 package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.ticket.application.TicketSeller;
+import com.wanted.preonboarding.ticket.domain.dto.CancelReserveRequest;
+import com.wanted.preonboarding.ticket.domain.dto.CheckReserveRequest;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/reserve")
@@ -13,20 +21,32 @@ import java.util.*;
 public class ReserveController {
     private final TicketSeller ticketSeller;
 
-    @PostMapping("/")
-    public boolean reservation() {
-        System.out.println("reservation");
 
-        return ticketSeller.reserve(ReserveInfo.builder()
-            .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
-            .reservationName("유진호")
-            .reservationPhoneNumber("010-1234-1234")
-            .reservationStatus("reserve")
-            .amount(200000)
-            .round(1)
-            .line('A')
-            .seat(1)
-            .build()
-        );
+    //공연 자리 예약 요청
+    @PostMapping
+    public ResponseEntity<ReserveInfo> reservation(@RequestBody ReserveInfo reserveInfo) {
+        ReserveInfo result = ticketSeller.reserve(reserveInfo);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+
+    //예약 확인 조회
+    @PostMapping("/checkReservation")
+    public ResponseEntity<List<Reservation>> checkReservation(@RequestBody CheckReserveRequest checkReserveRequest) {
+        List<Reservation> reservations = ticketSeller.checkReservation(checkReserveRequest);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    // 예약 취소
+    @PostMapping("/cancelReservation")
+    public boolean CancelReservation(@RequestBody CancelReserveRequest cancelReserveRequest) {
+        boolean result = ticketSeller.cancelReserve(cancelReserveRequest);
+
+        return result;
+
+    }
+
+
+    //TODO: 알림 서비스 :
+    // 특정 공연에 대해서 취소 건이 발생하는 경우, 알림 신청을 해놓은 고객에게 취소된 예약이 있다는 사실을 알리는 알림 서비스
 }

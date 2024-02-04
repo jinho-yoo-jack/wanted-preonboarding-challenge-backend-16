@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;

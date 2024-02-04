@@ -29,10 +29,28 @@ public class Performance {
     @Column(nullable = false)
     private int round;
     @Column(nullable = false)
-    private int type;
+    private int type;  //공연 타입 PerformanceType
     @Column(nullable = false)
-    private Date start_date;
+    private Date startDate;
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;
+
+//    public PerformanceType getPerformanceType(){
+//        return PerformanceType.values()[type];
+//
+//    }
+//
+//    public void setPerformanceType(PerformanceType performanceType){
+//        this.type = performanceType.getCategory();
+//
+//    }
+
+    public void setEnableReservation() {
+        this.isReserve = "enable";
+    }
+
+    public void setDisableReservation() {
+        this.isReserve = "disable";
+    }
 
 }
