@@ -20,7 +20,7 @@ public class PerformanceDto {
     private LocalDateTime startDate;
     private Boolean isReservable;
 
-    public static PerformanceDto of(Performance entity) {
+    public static PerformanceDto of(final Performance entity) {
         return PerformanceDto.builder()
                 .performanceId(entity.getId())
                 .name(entity.getName())

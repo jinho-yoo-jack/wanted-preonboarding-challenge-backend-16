@@ -18,7 +18,7 @@ public class ReservationResponse {
     private String userName;
     private String userPhoneNumber;
 
-    public static ReservationResponse of(Reservation entity) {
+    public static ReservationResponse of(final Reservation entity) {
         return ReservationResponse.builder()
                 .id(entity.getId())
                 .performanceId(entity.getPerformanceId())

@@ -29,11 +29,11 @@ public class ReservationService {
     private final ApplicationEventPublisher eventPublisher;
     private final DiscountPolicy discountPolicy;
 
-    public List<Reservation> getReservations(String userName, String userPhoneNumber) {
+    public List<Reservation> getReservations(final String userName, final String userPhoneNumber) {
         return reservationRepository.findAllByUserInfo(UserInfo.builder().name(userName).phoneNumber(userPhoneNumber).build());
     }
 
-    public Reservation reserve(ReservationCreateParam param) {
+    public Reservation reserve(final ReservationCreateParam param) {
         Performance performance = performanceRepository.findById(param.getPerformanceId()).orElseThrow(() -> new NotFoundException("공연이 존재하지 않습니다."));
 
         performance.reserveSeat(param.getSeatInfo());
@@ -56,7 +56,7 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
-    public void cancel(ReservationCancelParam param) {
+    public void cancel(final ReservationCancelParam param) {
         Reservation reservation = reservationRepository.findById(param.getReservationId()).orElseThrow(() -> new NotFoundException("예약이 존재하지 않습니다."));
 
         if(!reservation.getUserInfo().equals(param.getUserInfo())){

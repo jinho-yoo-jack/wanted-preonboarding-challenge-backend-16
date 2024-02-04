@@ -16,7 +16,7 @@ public class SubscriptionController {
     private final SubscriptionService subscriptionService;
 
     @PostMapping("/subscribe")
-    public ResponseEntity<ResponseHandler<SubscribeResponse>> subscribe(@RequestBody SubscribeRequest request) {
+    public ResponseEntity<ResponseHandler<SubscribeResponse>> subscribe(@RequestBody final SubscribeRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(ResponseHandler.<SubscribeResponse>builder()
@@ -28,7 +28,7 @@ public class SubscriptionController {
     }
 
     @PostMapping("/unsubscribe")
-    public ResponseEntity<ResponseHandler<SubscribeResponse>> unsubscribe(@RequestBody UnsubscribeRequest request) {
+    public ResponseEntity<ResponseHandler<SubscribeResponse>> unsubscribe(@RequestBody final UnsubscribeRequest request) {
         subscriptionService.unsubscribe(request.toDto());
         return ResponseEntity.noContent().build();
     }

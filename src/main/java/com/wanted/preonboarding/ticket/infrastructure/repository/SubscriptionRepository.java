@@ -1,6 +1,5 @@
 package com.wanted.preonboarding.ticket.infrastructure.repository;
 
-import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.entity.Subscription;
 import com.wanted.preonboarding.ticket.domain.entity.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;

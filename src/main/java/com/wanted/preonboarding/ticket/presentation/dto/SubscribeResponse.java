@@ -9,7 +9,7 @@ import lombok.Getter;
 public class SubscribeResponse {
     private Integer id;
 
-    public static SubscribeResponse of(Subscription subscribe) {
+    public static SubscribeResponse of(final Subscription subscribe) {
         return SubscribeResponse.builder().id(subscribe.getId()).build();
     }
 }

@@ -25,7 +25,7 @@ public class PerformanceController {
     private final PerformanceService performanceService;
 
     @GetMapping
-    public ResponseEntity<ResponseHandler<Page<PerformanceDto>>> getPerformances(PerformanceSearchCondition condition, Pageable pageable){
+    public ResponseEntity<ResponseHandler<Page<PerformanceDto>>> getPerformances(final PerformanceSearchCondition condition, final Pageable pageable){
         return ResponseEntity
                 .ok()
                 .body(ResponseHandler.<Page<PerformanceDto>>builder()

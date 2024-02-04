@@ -19,7 +19,7 @@ public class NotificationService {
     private final SubscriptionRepository subscriptionRepository;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void notify(ReservationCanceledEvent event){
+    public void notify(final ReservationCanceledEvent event){
         List<Subscription> subscriptions = subscriptionRepository.findAllByPerformanceId(event.getPerformanceId());
         for (Subscription s : subscriptions){
             String content = s.getUserInfo().getName() + "님 예약 가능한 좌석이 생겼습니다. [공연명:" + event.getPerformanceName()
@@ -31,7 +31,7 @@ public class NotificationService {
         }
     }
 
-    private void sendMessage(String phoneNumber, String content){
+    private void sendMessage(final String phoneNumber, final String content){
         System.out.println("SEND MSG " + phoneNumber + " ===> " + content);
     }
 }

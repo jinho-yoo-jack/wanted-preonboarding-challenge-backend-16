@@ -12,7 +12,7 @@ public class PerformanceSeatInfoDto {
     private SeatInfo seatInfo;
     private Boolean isReservable;
 
-    public static PerformanceSeatInfoDto of(PerformanceSeatInfo entity) {
+    public static PerformanceSeatInfoDto of(final PerformanceSeatInfo entity) {
         return PerformanceSeatInfoDto.builder()
                 .id(entity.getId())
                 .seatInfo(entity.getSeatInfo())

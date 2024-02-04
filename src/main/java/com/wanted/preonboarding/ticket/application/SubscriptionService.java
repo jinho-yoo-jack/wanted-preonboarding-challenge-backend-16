@@ -21,7 +21,7 @@ public class SubscriptionService {
 
     private final SubscriptionRepository subscriptionRepository;
 
-    public Subscription subscribe(SubscribeParam param) {
+    public Subscription subscribe(final SubscribeParam param) {
         performanceRepository.findById(param.getPerformanceId()).orElseThrow(() -> new NotFoundException("공연이 존재하지 않습니다."));
 
         if(subscriptionRepository.existsByPerformanceIdAndUserInfo(param.getPerformanceId(), param.getUserInfo())){
@@ -35,7 +35,7 @@ public class SubscriptionService {
         return subscriptionRepository.save(subscription);
     }
 
-    public void unsubscribe(UnsubscribeParam param) {
+    public void unsubscribe(final UnsubscribeParam param) {
         Subscription subscription = subscriptionRepository.findById(param.getSubscriptionId()).orElseThrow(() -> new NotFoundException("구독이 존재하지 않습니다."));
 
         if(!subscription.getUserInfo().equals(param.getUserInfo())){

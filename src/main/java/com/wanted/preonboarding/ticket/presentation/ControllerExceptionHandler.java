@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorResponseHandler> handleNotFoundException(NotFoundException e) {
+    public ResponseEntity<ErrorResponseHandler> handleNotFoundException(final NotFoundException e) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ErrorResponseHandler.builder()
@@ -26,7 +26,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ErrorResponseHandler> handleBadRequestException(BadRequestException e) {
+    public ResponseEntity<ErrorResponseHandler> handleBadRequestException(final BadRequestException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponseHandler.builder()
@@ -38,7 +38,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(PaymentException.class)
-    public ResponseEntity<ErrorResponseHandler> handlePaymentException(PaymentException e) {
+    public ResponseEntity<ErrorResponseHandler> handlePaymentException(final PaymentException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponseHandler.builder()
@@ -50,7 +50,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<ErrorResponseHandler> handleForbiddenException(ForbiddenException e) {
+    public ResponseEntity<ErrorResponseHandler> handleForbiddenException(final ForbiddenException e) {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(ErrorResponseHandler.builder()

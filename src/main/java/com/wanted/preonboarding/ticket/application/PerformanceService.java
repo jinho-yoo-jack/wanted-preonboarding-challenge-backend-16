@@ -21,7 +21,7 @@ public class PerformanceService {
 
     private final PerformanceRepository performanceRepository;
 
-    public Page<PerformanceDto> getPerformances(PerformanceSearchCondition condition, Pageable pageable) {
+    public Page<PerformanceDto> getPerformances(final PerformanceSearchCondition condition, final Pageable pageable) {
         return performanceRepository.searchPage(condition, pageable);
     }
 

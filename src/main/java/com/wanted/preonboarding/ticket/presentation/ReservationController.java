@@ -22,7 +22,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @GetMapping
-    public ResponseEntity<ResponseHandler<List<ReservationResponse>>> getReservations(ReservationRequest request){
+    public ResponseEntity<ResponseHandler<List<ReservationResponse>>> getReservations(final ReservationRequest request){
         return ResponseEntity
                 .ok()
                 .body(ResponseHandler.<List<ReservationResponse>>builder()
@@ -36,7 +36,7 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseHandler<ReservationResponse>> reserve(@RequestBody ReservationCreateRequest request) {
+    public ResponseEntity<ResponseHandler<ReservationResponse>> reserve(@RequestBody final ReservationCreateRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(ResponseHandler.<ReservationResponse>builder()
@@ -48,7 +48,7 @@ public class ReservationController {
     }
 
     @PostMapping("/cancel")
-    public ResponseEntity<Void> cancel(@RequestBody ReservationCancelRequest request) {
+    public ResponseEntity<Void> cancel(@RequestBody final ReservationCancelRequest request) {
         reservationService.cancel(request.toDto());
         return ResponseEntity.noContent().build();
     }

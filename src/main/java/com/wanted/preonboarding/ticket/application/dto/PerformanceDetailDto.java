@@ -26,7 +26,7 @@ public class PerformanceDetailDto {
     private Boolean isReservable;
     private List<PerformanceSeatInfoDto> seats;
 
-    public static PerformanceDetailDto of(Performance entity) {
+    public static PerformanceDetailDto of(final Performance entity) {
         return PerformanceDetailDto.builder()
                 .performanceId(entity.getId())
                 .name(entity.getName())

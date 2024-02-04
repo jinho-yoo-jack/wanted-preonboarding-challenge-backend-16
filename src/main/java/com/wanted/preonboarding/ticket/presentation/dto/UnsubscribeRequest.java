@@ -4,8 +4,6 @@ import com.wanted.preonboarding.ticket.application.dto.UnsubscribeParam;
 import com.wanted.preonboarding.ticket.domain.entity.UserInfo;
 import lombok.Getter;
 
-import java.util.UUID;
-
 @Getter
 public class UnsubscribeRequest {
     private Integer subscriptionId;
