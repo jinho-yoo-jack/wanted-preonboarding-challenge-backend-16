@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain.dto;
+package com.wanted.preonboarding.ticket.domain.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;

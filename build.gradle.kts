@@ -32,6 +32,8 @@ dependencies {
     testImplementation("org.junit.vintage:junit-vintage-engine") {
         exclude("org.hamcrest", "hamcrest-core")
     }
+    // mail
+    implementation ("org.springframework.boot:spring-boot-starter-mail")
 }
 
 tasks.withType<Test> {

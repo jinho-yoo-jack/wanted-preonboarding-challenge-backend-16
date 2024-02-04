@@ -16,7 +16,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Performance {
+public class Performance extends DateBaseEntity{
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -35,4 +35,20 @@ public class Performance {
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;
 
+
+    @Builder
+    public Performance(String name,
+                       int price,
+                       int round,
+                       int type,
+                       Date start_date,
+                       String isReserve)
+    {
+        this.name = name;
+        this.price = price;
+        this.round = round;
+        this.type = type;
+        this.start_date = start_date;
+        this.isReserve = isReserve;
+    }
 }
