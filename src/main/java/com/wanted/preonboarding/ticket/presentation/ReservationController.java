@@ -33,6 +33,21 @@ public class ReservationController {
                         .build()
                 );
     }
+    @GetMapping("/{reservationId}")
+    public ResponseEntity<ResponseHandler<ReserveInfoResponse>> getReservationInfo(
+            @PathVariable int reservationId
+    )
+    {
+        return ResponseEntity
+                .ok()
+                .body(
+                        ResponseHandler.<ReserveInfoResponse>builder()
+                                .message("Success")
+                                .statusCode(HttpStatus.OK)
+                                .data(ticketSellerService.getReservationInfo(reservationId))
+                                .build()
+                );
+    }
     @PutMapping
     public ResponseEntity<ResponseHandler<Void>> cancelReservation(
             @RequestBody ReservationCancelRequest request

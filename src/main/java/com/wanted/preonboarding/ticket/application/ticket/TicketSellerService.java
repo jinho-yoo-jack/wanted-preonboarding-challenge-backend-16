@@ -13,6 +13,8 @@ import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.exception.exceptions.PerformanceDisableException;
+import com.wanted.preonboarding.ticket.domain.exception.exceptions.PerformanceNotFoundException;
+import com.wanted.preonboarding.ticket.domain.exception.exceptions.ReservationNotFountException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -96,5 +98,11 @@ public class TicketSellerService { //service
         reservationRepository.delete(reservation);
 
         reservationEventPublisher.publishReservationCancelEvent(performance, reservation);
+    }
+
+    public ReserveInfoResponse getReservationInfo(int reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(ReservationNotFountException::new);
+        Performance performance = performanceRepository.findById(reservation.getPerformanceId()).orElseThrow(PerformanceNotFoundException::new);
+        return reservationAssembler.toReserveInfoResponse(reservation, reservation.getPerformanceSeatInfo(), performance);
     }
 }
