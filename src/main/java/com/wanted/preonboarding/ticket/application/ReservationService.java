@@ -1,8 +1,10 @@
 package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.dto.request.DiscountRequest;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReservationCancelRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReservationCreateRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReservationFindRequest;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationCancelResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.ReservationCreateResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.ReservationFindResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
@@ -51,10 +53,6 @@ public class ReservationService {
         return save.toReservationCreateResponse();
     }
 
-    private static void changeSeatStatus(PerformanceSeatInfo seatInfo) {
-        seatInfo.changeIsReserveStatus();
-    }
-
     // 조회
     @Transactional(readOnly = true)
     public List<ReservationFindResponse> findReservation(ReservationFindRequest request) {
@@ -68,14 +66,49 @@ public class ReservationService {
 
     //TODO: 취소
     // 1. 좌석 가져오기 및 있는지 확인
-    // 2. 좌석 정보 변경
-    // 3. 취소된 좌석과 관련된 알림이 있는지 확인
-    // 4. 알림 보내기
-//    @Transactional
-//    public CancelReservationResponse cancelReservation(CancelReservationRequest request){
-//
-//    }
+    // 2. 공연이 disable이면 enable?
+    // 3. 좌석 정보 변경
+    // 4. 취소된 좌석과 관련된 알림이 있는지 확인
+    // 5. 알림 보내기
+    @Transactional
+    public ReservationCancelResponse cancelReservation(ReservationCancelRequest request) {
+        Reservation reservation = findReservation(request);
+        PerformanceSeatInfo seatInfo = findSeatInfoWithReservation(reservation);
 
+        //좌석정보 확인 및 좌석의 예약 상태 수정
+        checkSeatInfoReserved(seatInfo);
+        changeSeatStatus(seatInfo);
+        deleteReservation(reservation);
+        return reservation.toReservationCancelResponse();
+    }
+
+    private void deleteReservation(Reservation reservation) {
+        reservationRepository.delete(reservation);
+    }
+
+    private PerformanceSeatInfo findSeatInfoWithReservation(Reservation reservation) {
+        return performanceSeatInfoRepository.findByPerformanceIdAndRoundAndSeatAndLine(
+                reservation.getPerformance().getId(),
+                reservation.getRound(),
+                reservation.getSeat(),
+                reservation.getLine()
+        ).orElseThrow(() -> new PerformanceNotFoundException("좌석 정보가 존재하지 않습니다."));
+    }
+
+    private Reservation findReservation(ReservationCancelRequest request) {
+        return reservationRepository.findById(request.getReservationId())
+                .orElseThrow(() -> new ReservationNotFoundException("예매된 공연이 없습니다."));
+    }
+
+    private static void checkSeatInfoReserved(PerformanceSeatInfo seatInfo) {
+        if (seatInfo.getIsReserve().equalsIgnoreCase("enable")) {
+            throw new NoAvailableCancelSeatException("좌석을 취소할 수 없습니다 (예매되어있지 않는 좌석)");
+        }
+    }
+
+    private static void changeSeatStatus(PerformanceSeatInfo seatInfo) {
+        seatInfo.changeIsReserveStatus();
+    }
 
     private void isAffordable(ReservationCreateRequest request, int discountedPrice) {
         if (request.getBalance() < discountedPrice) {
@@ -87,8 +120,6 @@ public class ReservationService {
         LocalDateTime reserveDateTime = LocalDateTime.now();
         return performance.toDiscountRequest(reserveDateTime);
     }
-
-
 
     private Performance findPerformance(ReservationCreateRequest reserveCreateRequest) {
         return performanceRepository.findById(reserveCreateRequest.getPerformanceId())

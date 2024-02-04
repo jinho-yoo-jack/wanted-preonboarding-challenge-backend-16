@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
 import com.wanted.preonboarding.ticket.domain.dto.request.ReservationCreateRequest;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationCancelResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.ReservationCreateResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.ReservationFindResponse;
 import jakarta.persistence.*;
@@ -16,7 +17,7 @@ import org.hibernate.annotations.Comment;
 public class Reservation extends AuditInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
@@ -79,6 +80,15 @@ public class Reservation extends AuditInformation {
                 .line(this.line)
                 .reservationName(this.name)
                 .reservationPhoneNumber(this.phoneNumber)
+                .build();
+    }
+
+    public ReservationCancelResponse toReservationCancelResponse(){
+        return ReservationCancelResponse.builder()
+                .performanceId(this.performance.getId())
+                .round(this.round)
+                .seat(this.seat)
+                .line(this.line)
                 .build();
     }
 }
