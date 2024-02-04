@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.service;
 
+import com.wanted.preonboarding.ticket.domain.dto.IsReserveType;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,8 @@ public class PerformanceService {
 
     @Transactional(readOnly = true)
     public List<PerformanceInfo> getAblePerformance() {
-        return performanceRepository.findByIsReserve("enable")
+        IsReserveType isReserveType = IsReserveType.ENABLE;
+        return performanceRepository.findByIsReserve(isReserveType.getText())
                 .stream()
                 .map(PerformanceInfo::of)
                 .toList();

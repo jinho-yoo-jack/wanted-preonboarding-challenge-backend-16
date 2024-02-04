@@ -8,7 +8,6 @@ import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeat;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.entity.User;
-import com.wanted.preonboarding.ticket.exception.*;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
