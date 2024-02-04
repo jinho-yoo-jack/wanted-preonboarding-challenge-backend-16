@@ -40,7 +40,7 @@ public class ReserveController {
     // 예약 취소
     @PostMapping("/cancelReservation")
     public boolean CancelReservation(@RequestBody CancelReserveRequest cancelReserveRequest) {
-        boolean result = ticketSeller.cancleReserve(cancelReserveRequest);
+        boolean result = ticketSeller.cancelReserve(cancelReserveRequest);
 
         return result;
 
