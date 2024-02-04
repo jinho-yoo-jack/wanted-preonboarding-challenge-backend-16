@@ -58,7 +58,7 @@ public class TicketSeller {
 
     }
 
-
+    @Transactional(readOnly = true)
     public List<PerformanceInfo> getAllPerformanceInfoList() {
         return performanceRepository.findByIsReserve("enable")
                 .stream()
@@ -66,7 +66,7 @@ public class TicketSeller {
                 .toList();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public UUID getPerformanceId(PerformanceIdRequest performanceIdRequest) {
 
         Performance performance = performanceRepository.findByNameAndTypeAndRoundAndStartDate(
@@ -82,6 +82,7 @@ public class TicketSeller {
 
     }
 
+    @Transactional(readOnly = true)
     public PerformanceInfo getPerformanceById(String performanceId) {
         UUID uuid = UUID.fromString(performanceId);
         Performance performance = performanceRepository.findById(uuid).orElseThrow(() -> new NoResultException("해당 Id로 공연을 찾을 수 없습니다."));
@@ -98,6 +99,7 @@ public class TicketSeller {
     // 예약하고자 하는 공연id로 예약 가능한지 확인
     // 예약 가능하면 예약신청하기
 
+    @Transactional
     public ReserveInfo reserve(ReserveInfo reserveInfo) {
 
         Performance performance = performanceRepository.findById(reserveInfo.getPerformanceId())
@@ -129,15 +131,18 @@ public class TicketSeller {
     }
 
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Reservation> checkReservation(CheckReserveRequest checkReserveRequest) {
         return reservationRepository.findByNameAndPhoneNumber(checkReserveRequest.getName(), checkReserveRequest.getPhoneNumber()).orElseThrow(
                 () -> new NoResultException("해당하는 데이터를 찾을 수 없습니다."));
 
     }
 
+    //TODO 예외처리하기
+    // 예약 취소했을 때
+    // 돈 돌려주기.
     @Transactional
-    public boolean cancleReserve(CancelReserveRequest cancelReserveRequest) {
+    public boolean cancelReserve(CancelReserveRequest cancelReserveRequest) {
         try {
             reservationRepository.deleteByPerformanceIdAndNameAndPhoneNumberAndRound(
                     cancelReserveRequest.getPerformanceId(),
