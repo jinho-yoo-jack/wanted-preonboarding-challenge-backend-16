@@ -89,9 +89,8 @@ public class TicketSeller {
     }
 
     private Reservation getReservation(RequestReserveQueryDto dto) {
-        Reservation reservation = reservationRepository.findByNameAndPhoneNumber(dto.getReservationName(), dto.getReservationPhoneNumber())
+        return reservationRepository.findByNameAndPhoneNumber(dto.getReservationName(), dto.getReservationPhoneNumber())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
-        return reservation;
     }
 
 }
