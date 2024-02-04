@@ -1,14 +1,11 @@
 package com.wanted.preonboarding.ticket.interfaces.controller;
 
 import java.util.List;
-import java.util.UUID;
 
 import com.wanted.preonboarding.common.util.ResponseType;
-import com.wanted.preonboarding.common.util.ResponseWrapper;
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.ReservationService;
 import com.wanted.preonboarding.ticket.interfaces.dto.CustomerContactRequest;
-import com.wanted.preonboarding.ticket.interfaces.dto.PerformanceResponse;
 import com.wanted.preonboarding.ticket.interfaces.dto.ReservationCancelRequest;
 import com.wanted.preonboarding.ticket.interfaces.dto.ReservationRequest;
 import com.wanted.preonboarding.ticket.interfaces.dto.ReservationResponse;
