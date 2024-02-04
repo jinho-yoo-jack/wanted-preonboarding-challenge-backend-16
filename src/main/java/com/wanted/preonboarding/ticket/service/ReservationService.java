@@ -1,9 +1,6 @@
 package com.wanted.preonboarding.ticket.service;
 
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
-import com.wanted.preonboarding.ticket.domain.dto.PerformanceSeatInfo;
-import com.wanted.preonboarding.ticket.domain.dto.ReservationInfo;
-import com.wanted.preonboarding.ticket.domain.dto.UserInfo;
+import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeat;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
@@ -158,17 +155,20 @@ public class ReservationService {
         Integer reservationId = reservationRepository.save(Reservation.of(reservationInfo)).getId();
 
         // 좌석 정보 수정 (enable -> disable)
-        performanceSeatInfo.setIsReserve("disable");
+        IsReserveType enable = IsReserveType.ENABLE;
+        IsReserveType disable = IsReserveType.DISABLE;
+
+        performanceSeatInfo.setIsReserve(disable.getText());
         performanceSeatRepository.save(PerformanceSeat.of(performanceSeatInfo));
 
         // 공연 정보 수정 (모든 좌석이 disable이라면 -> disable)
         List<PerformanceSeatInfo> enablePerformanceSeatInfoList = performanceSeatRepository.findByPerformanceIdAndIsReserve(
-                reservationInfo.getPerformanceInfo().getPerformanceId(), "enable")
+                reservationInfo.getPerformanceInfo().getPerformanceId(), enable.getText())
                 .stream()
                 .map(PerformanceSeatInfo::of)
                 .toList();
         if (enablePerformanceSeatInfoList.size() == 0) {
-            reservationInfo.getPerformanceInfo().setIsReserve("disable");
+            reservationInfo.getPerformanceInfo().setIsReserve(disable.getText());
             performanceRepository.save(Performance.of(reservationInfo.getPerformanceInfo()));
         }
 
@@ -190,24 +190,26 @@ public class ReservationService {
         reservationRepository.deleteById(reservationInfo.getReservationId());
 
         // 좌석 정보 수정 (disable -> enable)
-        performanceSeatInfo.setIsReserve("enable");
+        IsReserveType enable = IsReserveType.ENABLE;
+        IsReserveType disable = IsReserveType.DISABLE;
+
+        performanceSeatInfo.setIsReserve(enable.getText());
         performanceSeatRepository.save(PerformanceSeat.of(performanceSeatInfo));
 
         // 공연 정보 수정
         // 현재 공연이 매진(disable) 상태인데, 취소로 enable 좌석이 남아있다면 -> enable
         PerformanceInfo performanceInfo = reservationInfo.getPerformanceInfo();
-        if (performanceInfo.getIsReserve().equals("disable")) {
+        if (performanceInfo.getIsReserve().equals(disable.getText())) {
             List<PerformanceSeatInfo> enablePerformanceSeatInfoList = performanceSeatRepository.findByPerformanceIdAndIsReserve(
-                            performanceInfo.getPerformanceId(), "enable")
+                            performanceInfo.getPerformanceId(), enable.getText())
                     .stream()
                     .map(PerformanceSeatInfo::of)
                     .toList();
             if (enablePerformanceSeatInfoList.size() > 0) {
-                performanceInfo.setIsReserve("enable");
+                performanceInfo.setIsReserve(enable.getText());
                 performanceRepository.save(Performance.of(performanceInfo));
             }
         }
-
 
     }
 }
