@@ -82,15 +82,15 @@ public class AlarmMailService {
 
     public void messageBody(String reservationEmail, SendMessagePerformanceSeatInfoDto dto) {
         log.info("SmsService messageBody");
-        String username = this.username;
-        String password = this.password;
+        Session session = getSession(this.username, this.password, getProperties());
 
-        Properties prop = getProperties();
-        Session session = getSession(username, password, prop);
+        sendMessageBody(session, reservationEmail, dto);
+    }
 
+    private void sendMessageBody(Session session, String reservationEmail, SendMessagePerformanceSeatInfoDto dto) {
         try {
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username));
+            message.setFrom(new InternetAddress(this.username));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(reservationEmail));
 
             // Mail Subject
@@ -107,6 +107,7 @@ public class AlarmMailService {
             throw new ServiceException(ResultCode.EMAIL_SENDING);
         }
     }
+
     private PerformanceSeatInfo getPerformanceSeatInfoAndStatus(ReservePossibleAlarmCustomerInfoDto dto, String status) {
         return performanceSeatInfoRepository.findByPerformanceIdAndIsReserve(dto.getPerformanceId(), status)
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
