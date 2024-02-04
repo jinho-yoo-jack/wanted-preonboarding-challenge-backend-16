@@ -1,7 +1,7 @@
 INSERT INTO `performance` (name, price, round, type, start_date, is_reserve)
 VALUES ('레베카', 100000, 1, 0, '2024-01-20 19:30:00', 'disable');
 INSERT INTO `performance` (name, price, round, type, start_date, is_reserve)
-VALUES ('웃는남자', 200000, 2, 0, '2024-02-30 19:30:00', 'enable');
+VALUES ('웃는남자', 200000, 2, 0, '2024-03-30 19:30:00', 'enable');
 
 INSERT INTO performance_seat_info VALUES
  (DEFAULT, (SELECT id FROM performance where name = '레베카'), 1, 1, 'A', 1, 'enable', DEFAULT, DEFAULT)
