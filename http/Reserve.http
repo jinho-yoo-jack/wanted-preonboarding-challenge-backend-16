@@ -1,3 +1,9 @@
+###
+GET http://localhost:8016/query/all/performance?isReserve=ENABLE
+Accept: application/json
+
+
+###
 GET http://localhost:8016/reserve?reservationName=유진호&reservationPhoneNumber=010-1234-1234
 Accept: application/json
 

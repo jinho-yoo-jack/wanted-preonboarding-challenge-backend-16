@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.DiscountPolicy;
+import com.wanted.preonboarding.ticket.domain.PerformanceIsReserve;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
@@ -11,6 +12,7 @@ import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepo
 import com.wanted.preonboarding.ticket.presentation.request.CreateReserveRequest;
 import com.wanted.preonboarding.ticket.presentation.request.ReadReservationRequest;
 import com.wanted.preonboarding.ticket.presentation.response.CreateReservationResponse;
+import com.wanted.preonboarding.ticket.presentation.response.GetAllPerformanceInfoListResponse;
 import com.wanted.preonboarding.ticket.presentation.response.ReadReservationResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +37,10 @@ public class TicketSeller {
             .toList();
     }
 
-    public List<PerformanceInfo> getAllPerformanceInfoList() {
-        return performanceRepository.findByIsReserve("enable")
+    public List<GetAllPerformanceInfoListResponse> getAllPerformanceInfoList(PerformanceIsReserve isReserve) {
+        return performanceRepository.findByIsReserve(isReserve.name())
             .stream()
-            .map(PerformanceInfo::of)
+            .map(GetAllPerformanceInfoListResponse::of)
             .toList();
     }
 
