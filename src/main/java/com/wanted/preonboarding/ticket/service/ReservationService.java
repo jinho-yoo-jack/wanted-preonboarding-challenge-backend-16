@@ -65,7 +65,7 @@ public class ReservationService {
 
         // 예약
         // 내역 추가, 좌석 정보 수정, (좌석 매진 시) 공연 정보 수정
-        Integer reservationId = addReservation(reservationInfo, performanceSeatInfo);
+        Integer reservationId = saveReservation(reservationInfo, performanceSeatInfo);
         reservationInfo.setReservationId(reservationId);
 
         // 예약 내역 반환
@@ -138,6 +138,49 @@ public class ReservationService {
         return reservationInfo;
     }
 
+    private Integer saveReservation(ReservationInfo reservationInfo, PerformanceSeatInfo performanceSeatInfo) {
+        // 예약 내역 추가
+        Integer reservationId = reservationRepository.save(Reservation.of(reservationInfo)).getId();
+
+        IsReserveType enable = IsReserveType.ENABLE;
+        IsReserveType disable = IsReserveType.DISABLE;
+
+        // 좌석 정보 수정 (enable -> disable)
+        updatePerformanceSeatStatus(performanceSeatInfo, disable);
+
+        // 공연 정보 수정 (모든 좌석이 disable이라면 -> disable)
+        if (checkAllPerformanceSeatDisable(reservationInfo)) {
+            updatePerformanceStatus(reservationInfo.getPerformanceInfo(), disable);
+        }
+
+        return reservationId;
+    }
+
+    private void deleteReservation(ReservationInfo reservationInfo, PerformanceSeatInfo performanceSeatInfo) {
+        // 예약 내역 삭제 (=> db 트리거로 canceledReservation 에 저장됨)
+        reservationRepository.deleteById(reservationInfo.getReservationId());
+
+        IsReserveType enable = IsReserveType.ENABLE;
+        IsReserveType disable = IsReserveType.DISABLE;
+
+        // 좌석 정보 수정 (disable -> enable)
+        updatePerformanceSeatStatus(performanceSeatInfo, enable);
+
+        // 공연 정보 수정 (disable -> enable)
+        updatePerformanceStatus(reservationInfo.getPerformanceInfo(), enable);
+
+    }
+
+    private void updatePerformanceSeatStatus(PerformanceSeatInfo performanceSeatInfo, IsReserveType isReserveType) {
+        performanceSeatInfo.setIsReserve(isReserveType.getText());
+        performanceSeatRepository.save(PerformanceSeat.of(performanceSeatInfo));
+    }
+
+    private void updatePerformanceStatus(PerformanceInfo performanceInfo, IsReserveType isReserveType) {
+        performanceInfo.setIsReserve(isReserveType.getText());
+        performanceRepository.save(Performance.of(performanceInfo));
+    }
+
     private int getFinalPrice(UserInfo userInfo, PerformanceInfo performanceInfo, ReservationInfo reservationInfo) {
         // 우선은 기본 가격 그대로 최종 가격 결정
         int performancePrice = performanceInfo.getPrice();
@@ -153,31 +196,6 @@ public class ReservationService {
         return finalPrice;
     }
 
-    private Integer addReservation(ReservationInfo reservationInfo, PerformanceSeatInfo performanceSeatInfo) {
-        // 예약 내역 추가
-        Integer reservationId = reservationRepository.save(Reservation.of(reservationInfo)).getId();
-
-        // 좌석 정보 수정 (enable -> disable)
-        IsReserveType enable = IsReserveType.ENABLE;
-        IsReserveType disable = IsReserveType.DISABLE;
-
-        performanceSeatInfo.setIsReserve(disable.getText());
-        performanceSeatRepository.save(PerformanceSeat.of(performanceSeatInfo));
-
-        // 공연 정보 수정 (모든 좌석이 disable이라면 -> disable)
-        List<PerformanceSeatInfo> enablePerformanceSeatInfoList = performanceSeatRepository.findByPerformanceIdAndIsReserve(
-                reservationInfo.getPerformanceInfo().getPerformanceId(), enable.getText())
-                .stream()
-                .map(PerformanceSeatInfo::of)
-                .toList();
-        if (enablePerformanceSeatInfoList.size() == 0) {
-            reservationInfo.getPerformanceInfo().setIsReserve(disable.getText());
-            performanceRepository.save(Performance.of(reservationInfo.getPerformanceInfo()));
-        }
-
-        return reservationId;
-    }
-
     private void checkPerformanceDateValidateForCancel(PerformanceInfo performanceInfo) {
         Timestamp startDate = performanceInfo.getStartDate();
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
@@ -188,31 +206,17 @@ public class ReservationService {
         }
     }
 
-    private void deleteReservation(ReservationInfo reservationInfo, PerformanceSeatInfo performanceSeatInfo) {
-        // 예약 내역 삭제 (=> db 트리거로 canceledReservation 에 저장됨)
-        reservationRepository.deleteById(reservationInfo.getReservationId());
-
-        // 좌석 정보 수정 (disable -> enable)
+    private boolean checkAllPerformanceSeatDisable(ReservationInfo reservationInfo) {
         IsReserveType enable = IsReserveType.ENABLE;
-        IsReserveType disable = IsReserveType.DISABLE;
 
-        performanceSeatInfo.setIsReserve(enable.getText());
-        performanceSeatRepository.save(PerformanceSeat.of(performanceSeatInfo));
+        List<PerformanceSeatInfo> enablePerformanceSeatInfoList = performanceSeatRepository.findByPerformanceIdAndIsReserve(
+                        reservationInfo.getPerformanceInfo().getPerformanceId(), enable.getText())
+                .stream()
+                .map(PerformanceSeatInfo::of)
+                .toList();
 
-        // 공연 정보 수정
-        // 현재 공연이 매진(disable) 상태인데, 취소로 enable 좌석이 남아있다면 -> enable
-        PerformanceInfo performanceInfo = reservationInfo.getPerformanceInfo();
-        if (performanceInfo.getIsReserve().equals(disable.getText())) {
-            List<PerformanceSeatInfo> enablePerformanceSeatInfoList = performanceSeatRepository.findByPerformanceIdAndIsReserve(
-                            performanceInfo.getPerformanceId(), enable.getText())
-                    .stream()
-                    .map(PerformanceSeatInfo::of)
-                    .toList();
-            if (enablePerformanceSeatInfoList.size() > 0) {
-                performanceInfo.setIsReserve(enable.getText());
-                performanceRepository.save(Performance.of(performanceInfo));
-            }
-        }
-
+        // enable 한 좌석 0 이면 = 매진 = AllDisable = true
+        // enable 한 좌석 > 0 이면 = false
+        return enablePerformanceSeatInfoList.size() == 0;
     }
 }
