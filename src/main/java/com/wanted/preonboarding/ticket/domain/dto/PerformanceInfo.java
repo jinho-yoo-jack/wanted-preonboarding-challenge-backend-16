@@ -4,8 +4,8 @@ import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import lombok.Builder;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -14,7 +14,9 @@ public class PerformanceInfo {
     private UUID performanceId;
     private String performanceName;
     private String performanceType;
-    private Date startDate;
+    private int round;
+    private int price;
+    private Timestamp startDate;
     private String isReserve;
 
     public static PerformanceInfo of(Performance entity) {
@@ -22,7 +24,9 @@ public class PerformanceInfo {
             .performanceId(entity.getId())
             .performanceName(entity.getName())
             .performanceType(convertCodeToName(entity.getType()))
-            .startDate(entity.getStart_date())
+            .round(entity.getRound())
+            .price(entity.getPrice())
+            .startDate(entity.getStartDate())
             .isReserve(entity.getIsReserve())
             .build();
     }

@@ -1,5 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.UUID;
 
 @Entity
@@ -30,9 +33,28 @@ public class Performance {
     private int round;
     @Column(nullable = false)
     private int type;
-    @Column(nullable = false)
-    private Date start_date;
-    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
+    @Column(nullable = false, name = "start_date")
+    private Timestamp startDate;
+    @Column(columnDefinition = "varchar(255) default 'disable'", nullable = false, name = "is_reserve")
     private String isReserve;
 
+    public static Performance of (PerformanceInfo info) {
+        return Performance.builder()
+                .id(info.getPerformanceId())
+                .name(info.getPerformanceName())
+                .price(info.getPrice())
+                .round(info.getRound())
+                .type(convertNameToCode(info.getPerformanceType()))
+                .startDate(info.getStartDate())
+                .isReserve(info.getIsReserve())
+                .build();
+    }
+
+    private static int convertNameToCode(String name) {
+        return Arrays.stream(PerformanceType.values())
+                .filter(value -> value.name().equals(name))
+                .findFirst()
+                .map(PerformanceType::getCategory)
+                .orElse(PerformanceType.NONE.getCategory());
+    }
 }

@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReservationInfo;
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceSeatInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,19 +10,17 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Entity
-@Table
+@Table(name = "performance_seat_info")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reservation {
+public class PerformanceSeat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
     private UUID performanceId;
-    @Column(columnDefinition = "BINARY(16)", nullable = false, name = "user_id")
-    private UUID userId;
     @Column(nullable = false)
     private int round;
     @Column(nullable = false)
@@ -31,16 +29,18 @@ public class Reservation {
     private char line;
     @Column(nullable = false)
     private int seat;
+    @Column(columnDefinition = "varchar(255) default 'disable'", nullable = false, name = "is_reserve")
+    private String isReserve;
 
-    public static Reservation of(ReservationInfo info) {
-        return Reservation.builder()
-                .performanceId(info.getPerformanceInfo().getPerformanceId())
-                .userId(info.getUserInfo().getUserId())
-                .round(info.getPerformanceInfo().getRound())
+    public static PerformanceSeat of (PerformanceSeatInfo info) {
+        return PerformanceSeat.builder()
+                .id(info.getId())
+                .performanceId(info.getPerformanceId())
+                .round(info.getRound())
                 .gate(info.getGate())
                 .line(info.getLine())
                 .seat(info.getSeat())
+                .isReserve(info.getIsReserve())
                 .build();
     }
-
 }
