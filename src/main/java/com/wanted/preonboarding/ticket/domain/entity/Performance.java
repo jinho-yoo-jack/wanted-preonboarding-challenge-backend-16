@@ -40,9 +40,12 @@ public class Performance extends BaseEntity {
     @Column(nullable = false)
     private int price;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = EnumType.ORDINAL)
     @Column(nullable = false)
     private PerformanceType type;
+
+    @Column(nullable = false)
+    private int round;
 
     @Column(nullable = false)
     private LocalDateTime start_date;
@@ -53,4 +56,8 @@ public class Performance extends BaseEntity {
 
     @OneToMany(mappedBy = "performance")
     private List<PerformanceSeatInfo> seatInfos = new ArrayList<>();
+
+    public void cancel() {
+        this.status = ReservationStatus.DISABLED;
+    }
 }
