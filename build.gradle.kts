@@ -32,6 +32,7 @@ dependencies {
     testImplementation("org.junit.vintage:junit-vintage-engine") {
         exclude("org.hamcrest", "hamcrest-core")
     }
+    testImplementation("io.rest-assured:rest-assured:5.4.0")
 }
 
 tasks.withType<Test> {
