@@ -1,0 +1,42 @@
+DELETE http://localhost:8016/reserve/9
+
+
+###
+
+POST http://localhost:8016/reserve/notification
+Content-Type: application/json
+
+{
+  "performanceId": "4a7e312e-c273-11ee-a299-0242ac180002",
+  "phoneNumber": "010-1234-1234"
+}
+
+
+###
+GET http://localhost:8016/query/all/performance?isReserve=ENABLE
+Accept: application/json
+
+
+###
+GET http://localhost:8016/reserve?reservationName=유진호&reservationPhoneNumber=010-1234-1234
+Accept: application/json
+
+
+
+###
+POST http://localhost:8016/reserve
+Content-Type: application/json
+
+{
+  "performanceId": "4a7e312e-c273-11ee-a299-0242ac180002",
+  "reservationName": "유진호",
+  "reservationPhoneNumber": "010-1234-1234",
+  "reservationStatus": "reserve",
+  "amount": 200000,
+  "round": 1,
+  "line": "A",
+  "seat": 1
+}
+
+###
+

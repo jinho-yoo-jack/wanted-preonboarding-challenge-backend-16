@@ -1,16 +1,13 @@
-package com.wanted.preonboarding.ticket.domain.dto;
+package com.wanted.preonboarding.ticket.presentation.request;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-import java.util.Date;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 @Builder
-public class ReserveInfo {
+public class CreateReserveRequest {
     // 공연 및 전시 정보 + 예약자 정보
     private UUID performanceId;
     private String reservationName;

@@ -18,7 +18,7 @@ public class PerformanceInfo {
     private String isReserve;
 
     public static PerformanceInfo of(Performance entity) {
-        return PerformanceInfo.builder()
+        return builder()
             .performanceId(entity.getId())
             .performanceName(entity.getName())
             .performanceType(convertCodeToName(entity.getType()))

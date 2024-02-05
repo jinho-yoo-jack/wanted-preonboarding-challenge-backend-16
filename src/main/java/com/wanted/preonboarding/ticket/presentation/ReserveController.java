@@ -1,11 +1,22 @@
 package com.wanted.preonboarding.ticket.presentation;
 
+import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.TicketSeller;
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.exception.AlreadyReservationException;
+import com.wanted.preonboarding.ticket.domain.exception.NotEnoughAmountException;
+import com.wanted.preonboarding.ticket.presentation.request.CreateReserveRequest;
+import com.wanted.preonboarding.ticket.presentation.request.ReadReservationRequest;
+import com.wanted.preonboarding.ticket.presentation.request.ReserveNotificationReqeust;
+import com.wanted.preonboarding.ticket.presentation.response.CreateReservationResponse;
+import com.wanted.preonboarding.ticket.presentation.response.ReadReservationResponse;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/reserve")
@@ -13,20 +24,89 @@ import java.util.*;
 public class ReserveController {
     private final TicketSeller ticketSeller;
 
-    @PostMapping("/")
-    public boolean reservation() {
+    @PostMapping("")
+    public ResponseEntity<ResponseHandler<CreateReservationResponse>> reservation(@RequestBody CreateReserveRequest createReserveRequest) {
+
         System.out.println("reservation");
 
-        return ticketSeller.reserve(ReserveInfo.builder()
-            .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
-            .reservationName("유진호")
-            .reservationPhoneNumber("010-1234-1234")
-            .reservationStatus("reserve")
-            .amount(200000)
-            .round(1)
-            .line('A')
-            .seat(1)
-            .build()
-        );
+        try {
+            CreateReservationResponse reserveResponse = ticketSeller.reserve(createReserveRequest);
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(ResponseHandler.<CreateReservationResponse>builder()
+                            .message("Success")
+                            .statusCode(HttpStatus.OK)
+                            .data(reserveResponse)
+                            .build());
+        } catch (AlreadyReservationException e) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(ResponseHandler.<CreateReservationResponse>builder()
+                            .message(e.getMessage())
+                            .statusCode(HttpStatus.CONFLICT)
+                            .data(null)
+                            .build());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ResponseHandler.<CreateReservationResponse>builder()
+                            .message(e.getMessage())
+                            .statusCode(HttpStatus.NOT_FOUND)
+                            .data(null)
+                            .build());
+        } catch (NotEnoughAmountException e) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body(ResponseHandler.<CreateReservationResponse>builder()
+                            .message(e.getMessage())
+                            .statusCode(HttpStatus.FORBIDDEN)
+                            .data(null)
+                            .build());
+        }
     }
+
+    @GetMapping("")
+    public ResponseEntity<ResponseHandler<List<ReadReservationResponse>>> readReserve(ReadReservationRequest readReservationRequest) {
+        System.out.println("readReserve");
+        return ResponseEntity
+                .ok()
+                .body(ResponseHandler.<List<ReadReservationResponse>>builder()
+                        .message("Success")
+                        .statusCode(HttpStatus.OK)
+                        .data(ticketSeller.getReservations(readReservationRequest))
+                        .build()
+                );
+    }
+
+    @PostMapping("/notification")
+    public ResponseEntity<ResponseHandler<UUID>> reserveNotification(@RequestBody ReserveNotificationReqeust reserveNotificationReqeust) {
+        System.out.println("notification");
+        return ResponseEntity
+                .ok()
+                .body(ResponseHandler.<UUID>builder()
+                        .message("Success")
+                        .statusCode(HttpStatus.OK)
+                        .data(ticketSeller.reserveNotification(reserveNotificationReqeust))
+                        .build()
+                );
+    }
+
+    @DeleteMapping("/{reservationId}")
+    public ResponseEntity<ResponseHandler<UUID>> cancelReservation(@PathVariable Integer reservationId) {
+        System.out.println("cancelReservation");
+
+        ticketSeller.cancelReservation(reservationId)
+                .forEach(reservation -> ticketSeller.sendReservationMessage(reservation));
+
+        return ResponseEntity
+                .ok()
+                .body(ResponseHandler.<UUID>builder()
+                        .message("Success")
+                        .statusCode(HttpStatus.OK)
+                        .data(null)
+                        .build()
+                );
+    }
+
 }
