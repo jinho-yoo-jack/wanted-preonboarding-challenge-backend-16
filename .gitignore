@@ -39,3 +39,4 @@ out/
 ### Docker ####
 Dockerfile_bak
 
+application-secret.yml

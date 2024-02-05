@@ -1,8 +1,8 @@
 package com.wanted.preonboarding.core.domain.response;
 
-import lombok.Builder;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
+
+import lombok.Builder;
 
 @Builder
 public record ResponseHandler<T>(HttpStatus statusCode, String message, T data) {
