@@ -2,10 +2,8 @@ package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
-import com.wanted.preonboarding.ticket.domain.entity.Alarm;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.infrastructure.repository.AlarmRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,8 +24,8 @@ public class TicketSeller {
     private final AlarmTicket alarmTicket;
     private long totalAmount = 0L;
 
-    public List<PerformanceInfo> getAllPerformanceInfoList() {
-        return performanceRepository.findByIsReserve("enable")
+    public List<PerformanceInfo> getAblePerformanceInfoList(String isReserve) {
+        return performanceRepository.findByIsReserve(isReserve)
                 .stream()
                 .map(PerformanceInfo::of)
                 .toList();
@@ -35,8 +33,9 @@ public class TicketSeller {
 
     public boolean ableReserve(String id){
         UUID uuid = UUID.fromString(id);
+        final String ENABLE = "enable";
         boolean result;
-        if(performanceRepository.findByIdAndIsReserve(uuid,"enable") == 1)
+        if(performanceRepository.findByIdAndIsReserve(uuid,ENABLE) == 1)
             result = true;
         else
             result = false;

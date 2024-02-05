@@ -1,6 +1,5 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
-import com.wanted.preonboarding.ticket.domain.entity.Alarm;
 import lombok.Builder;
 import lombok.Data;
 

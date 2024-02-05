@@ -36,7 +36,7 @@ class ReserveControllerTest {
 
     @Test
     void performanceList(){
-        ResponseEntity<ResponseHandler<List<PerformanceInfo>>> result = q.getAllPerformanceInfoList();
+        ResponseEntity<ResponseHandler<List<PerformanceInfo>>> result = q.getAblePerformanceInfoList();
         assertThat(result);
     }
 

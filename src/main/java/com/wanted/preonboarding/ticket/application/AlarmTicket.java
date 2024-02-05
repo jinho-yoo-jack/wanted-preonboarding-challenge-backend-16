@@ -19,7 +19,7 @@ import java.util.UUID;
 public class AlarmTicket {
     private final AlarmRepository alarmRepository;
 
-    void sendAlarm(UUID uuid){
+    public void sendAlarm(UUID uuid){
         List<Alarm> alarmInfoList = alarmRepository.findByPerformanceId(uuid);
 
         // 문자 보내기 coolsms API 사용
@@ -29,27 +29,29 @@ public class AlarmTicket {
         DefaultMessageService messageService =  NurigoApp.INSTANCE.initialize(apiKey, apiSecret, "https://api.coolsms.co.kr");
 
         for (Alarm alarm : alarmInfoList) {
+            sendMessage(alarm,messageService);
+        }
+    }
 
-            Message message = new Message();
+    public void sendMessage(Alarm alarm, DefaultMessageService m){
+        Message message = new Message();
 
-            String from = "01000000000";
-            String to = alarm.getPhoneNumber().replaceAll("[^0-9]", "");
-            String text = alarm.getName()+"님 "+alarm.getPerformanceName()+"("+alarm.getPerformanceId()+") 공연의 취소표가" +
-                          "발생하였습니다.";
+        String from = "01000000000";
+        String to = alarm.getPhoneNumber().replaceAll("[^0-9]", "");
+        String text = alarm.getName()+"님 "+alarm.getPerformanceName()+"("+alarm.getPerformanceId()+") 공연의 취소표가" +
+                "발생하였습니다.";
 
-            message.setFrom(from);
-            message.setTo(to);
-            message.setText(text);
+        message.setFrom(from);
+        message.setTo(to);
+        message.setText(text);
 
-            try {
-                messageService.send(message);
-            } catch (NurigoMessageNotReceivedException exception) {
-                System.out.println(exception.getFailedMessageList());
-                System.out.println(exception.getMessage());
-            } catch (Exception exception) {
-                System.out.println(exception.getMessage());
-            }
-
+        try {
+            m.send(message);
+        } catch (NurigoMessageNotReceivedException exception) {
+            System.out.println(exception.getFailedMessageList());
+            System.out.println(exception.getMessage());
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
         }
     }
 }

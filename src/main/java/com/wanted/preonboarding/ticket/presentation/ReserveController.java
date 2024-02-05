@@ -30,12 +30,12 @@ public class ReserveController {
         );
     }
 
-    @PostMapping("/able")
+    @GetMapping("/able")
     public boolean ableReservation() {
         return ticketSeller.ableReserve("4438a3e6-b01c-11ee-9426-0242ac180002");
     }
 
-    @PostMapping("/cancel")
+    @PutMapping ("/cancel")
     public boolean cancelReservation() { return ticketSeller.cancel(11); }
 
 }
