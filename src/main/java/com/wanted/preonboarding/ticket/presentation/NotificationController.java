@@ -4,13 +4,14 @@ import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.NotificationService;
 import com.wanted.preonboarding.ticket.domain.dto.request.NotificationCreateRequest;
 import com.wanted.preonboarding.ticket.domain.dto.response.NotificationCreateResponse;
+import com.wanted.preonboarding.ticket.domain.dto.response.NotificationFindResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/notification")
@@ -26,6 +27,18 @@ public class NotificationController {
                         .message("created")
                         .statusCode(HttpStatus.CREATED)
                         .data(notificationCreateResponse)
+                        .build()
+                );
+    }
+
+    @GetMapping
+    public ResponseEntity<ResponseHandler<List<NotificationFindResponse>>> findAllNotification(@RequestParam UUID performanceId) {
+        List<NotificationFindResponse> notificationFindResponseList = notificationService.findAllNotification(performanceId);
+        return ResponseEntity.ok()
+                .body(ResponseHandler.<List<NotificationFindResponse>>builder()
+                        .message("success")
+                        .statusCode(HttpStatus.OK)
+                        .data(notificationFindResponseList)
                         .build()
                 );
     }

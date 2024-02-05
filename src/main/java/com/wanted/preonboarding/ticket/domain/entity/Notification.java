@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.domain.entity;
 
 import com.wanted.preonboarding.ticket.domain.dto.request.NotificationCreateRequest;
 import com.wanted.preonboarding.ticket.domain.dto.response.NotificationCreateResponse;
+import com.wanted.preonboarding.ticket.domain.dto.response.NotificationFindResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -46,6 +47,15 @@ public class Notification extends AuditInformation {
     public NotificationCreateResponse toNotificationCreateResponse() {
         return NotificationCreateResponse.builder()
                 .name(this.name)
+                .performanceId(this.performance.getId())
+                .build();
+    }
+
+    public NotificationFindResponse toNotificationFindResponse() {
+        return NotificationFindResponse.builder()
+                .name(this.name)
+                .phoneNumber(this.phoneNumber)
+                .email(this.email)
                 .performanceId(this.performance.getId())
                 .build();
     }

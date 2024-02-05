@@ -18,13 +18,25 @@ public class PerformanceService {
     private final PerformanceRepository performanceRepository;
 
     public List<PerformanceFindResponse> findPerformances(String isReserve) {
-        List<Performance> performanceList = performanceRepository.findByIsReserve(isReserve);
+        List<Performance> performanceList = findPerformanceByIsReverse(isReserve);
+        checkPerformanceEmpty(performanceList);
+        return getPerformanceFindResponseList(performanceList);
+
+    }
+
+    private static List<PerformanceFindResponse> getPerformanceFindResponseList(List<Performance> performanceList) {
+        return performanceList.stream()
+                .map(Performance::toPerformanceFindResponse)
+                .collect(Collectors.toList());
+    }
+
+    private static void checkPerformanceEmpty(List<Performance> performanceList) {
         if (performanceList.isEmpty()) {
             throw new PerformanceNotFoundException("공연 정보가 존재하지 않습니다.");    //TODO: 분리하기, String 상수로
-        } else {
-            return performanceList.stream()
-                    .map(Performance::toPerformanceFindResponse)
-                    .collect(Collectors.toList());
         }
+    }
+
+    private List<Performance> findPerformanceByIsReverse(String isReserve) {
+        return performanceRepository.findByIsReserve(isReserve);
     }
 }
