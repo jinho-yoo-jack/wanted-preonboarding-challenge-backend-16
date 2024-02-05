@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.domain.dto.request.MailRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.NotificationCreateRequest;
 import com.wanted.preonboarding.ticket.domain.dto.response.NotificationCreateResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.NotificationFindResponse;
@@ -59,4 +60,16 @@ public class Notification extends AuditInformation {
                 .performanceId(this.performance.getId())
                 .build();
     }
+
+    public MailRequest toMailRequest(Reservation reservation){
+        return MailRequest.builder()
+                .email(this.email)
+                .performanceId(this.performance.getId())
+                .performanceName(this.performance.getName())
+                .round(reservation.getRound())
+                .line(reservation.getLine())
+                .seat(reservation.getSeat())
+                .build();
+    }
+
 }

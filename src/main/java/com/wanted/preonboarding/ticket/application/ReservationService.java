@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.ticket.application.alarm.EmailService;
 import com.wanted.preonboarding.ticket.domain.dto.request.DiscountRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReservationCancelRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReservationCreateRequest;
@@ -34,6 +35,7 @@ public class ReservationService {
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private final NotificationRepository notificationRepository;
     private final DiscountService discountService;
+    private final EmailService emailService;
 
     // 예약
     @Transactional
@@ -66,10 +68,7 @@ public class ReservationService {
         return reservations.stream().map(Reservation::toReservationFindResponse).collect(Collectors.toList());
     }
 
-    //TODO: 취소
-    // 공연이 disable이면 enable?
-    // 취소된 좌석과 관련된 알림이 있는지 확인 (NotificationService?)
-    // 알림 보내기
+    //취소
     @Transactional
     public ReservationCancelResponse cancelReservation(ReservationCancelRequest request) {
         log.info("ReservationService.cancelReservation");
@@ -82,13 +81,22 @@ public class ReservationService {
         deleteReservation(reservation);
 
         //알림 기능 추가
-        List<Notification> notificationList = notificationRepository.findAllByPerformance(reservation.getPerformance());
-        if(!notificationList.isEmpty()){
-            //알림 보내기
-        }
-
+        List<Notification> notificationList = findAllNotificationByPerformance(reservation);
+        mailIfNotificationIsNotEmpty(reservation, notificationList);
 
         return reservation.toReservationCancelResponse();
+    }
+
+    private List<Notification> findAllNotificationByPerformance(Reservation reservation) {
+        return notificationRepository.findAllByPerformance(reservation.getPerformance());
+    }
+
+    private void mailIfNotificationIsNotEmpty(Reservation reservation, List<Notification> notificationList) {
+        if (!notificationList.isEmpty()) {
+            notificationList.stream()
+                    .map(notification -> notification.toMailRequest(reservation))
+                    .forEach(emailService::sendMail);
+        }
     }
 
     private Reservation saveReservation(ReservationCreateRequest request, Performance performance) {
