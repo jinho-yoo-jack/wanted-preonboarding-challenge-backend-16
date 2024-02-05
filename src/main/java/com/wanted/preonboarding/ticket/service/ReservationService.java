@@ -61,7 +61,7 @@ public class ReservationService {
         }
 
         // 할인 정보, 최종 가격 정보 탐색
-        Integer finalPrice = getFinalPrice(userInfo, performanceInfo, reservationInfo);
+        int finalPrice = getFinalPrice(userInfo, performanceInfo, reservationInfo);
 
         // 예약
         // 내역 추가, 좌석 정보 수정, (좌석 매진 시) 공연 정보 수정
@@ -123,6 +123,9 @@ public class ReservationService {
                 dbReservationInfo.getLine(),
                 dbReservationInfo.getSeat()
         );
+        reservationInfo.setGate(performanceSeatInfo.getGate());
+        reservationInfo.setLine(performanceSeatInfo.getLine());
+        reservationInfo.setSeat(performanceSeatInfo.getSeat());
 
         // 예약
         // 내역 삭제, 좌석 정보 수정, (좌석 매진 취소 시) 공연 정보 수정
@@ -135,13 +138,13 @@ public class ReservationService {
         return reservationInfo;
     }
 
-    public Integer getFinalPrice(UserInfo userInfo, PerformanceInfo performanceInfo, ReservationInfo reservationInfo) {
+    public int getFinalPrice(UserInfo userInfo, PerformanceInfo performanceInfo, ReservationInfo reservationInfo) {
         // 우선은 기본 가격 그대로 최종 가격 결정
-        Integer performancePrice = performanceInfo.getPrice();
-        Integer discountPrice = 0;
-        Integer finalPrice = performancePrice - discountPrice;
+        int performancePrice = performanceInfo.getPrice();
+        int discountPrice = 0;
+        int finalPrice = performancePrice - discountPrice;
 
-        long userAmount = reservationInfo.getAmount();
+        int userAmount = reservationInfo.getAmount();
 
         if (finalPrice > userAmount) {
             throw new PriceOver("PriceOver : 결제 금액이 부족합니다.");

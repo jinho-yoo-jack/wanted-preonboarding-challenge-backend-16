@@ -22,13 +22,13 @@ public class PerformanceSeat {
     @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
     private UUID performanceId;
     @Column(nullable = false)
-    private Integer round;
+    private int round;
     @Column(nullable = false)
-    private Integer gate;
+    private int gate;
     @Column(nullable = false)
-    private Character line;
+    private char line;
     @Column(nullable = false)
-    private Integer seat;
+    private int seat;
     @Column(columnDefinition = "varchar(255) default 'disable'", nullable = false, name = "is_reserve")
     private String isReserve;
 

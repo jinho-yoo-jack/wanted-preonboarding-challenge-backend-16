@@ -14,8 +14,8 @@ public class PerformanceInfo {
     private UUID performanceId;
     private String performanceName;
     private String performanceType;
-    private Integer round;
-    private Integer price;
+    private int round;
+    private int price;
     private Timestamp startDate;
     private String isReserve;
 

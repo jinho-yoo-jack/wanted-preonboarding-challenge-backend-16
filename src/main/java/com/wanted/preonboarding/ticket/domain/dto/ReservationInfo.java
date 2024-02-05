@@ -11,10 +11,10 @@ public class ReservationInfo {
     private Integer reservationId;
     private PerformanceInfo performanceInfo;
     private UserInfo userInfo;
-    private Integer amount;
-    private Integer gate;
-    private Character line;
-    private Integer seat;
+    private int amount;
+    private int gate;
+    private char line;
+    private int seat;
 
     public static ReservationInfo of(Reservation entity) {
         return ReservationInfo.builder()

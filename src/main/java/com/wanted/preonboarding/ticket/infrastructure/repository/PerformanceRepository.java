@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface PerformanceRepository extends JpaRepository<Performance, UUID> {
     Optional<Performance> findById(UUID id);
-    Optional<Performance> findByNameAndRound(String name, Integer round);
+    Optional<Performance> findByNameAndRound(String name, int round);
     List<Performance> findAll();
     List<Performance> findByIsReserve(String isReserve);
 }

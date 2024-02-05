@@ -52,21 +52,21 @@ public class CommonService {
         return PerformanceInfo.of(performance);
     }
 
-    public PerformanceInfo getPerformanceInfoByNameAndRound(String performanceName, Integer round) {
+    public PerformanceInfo getPerformanceInfoByNameAndRound(String performanceName, int round) {
         Performance performance = performanceRepository.findByNameAndRound(performanceName, round)
                 .orElseThrow(NoSuchElementException::new);
 
         return PerformanceInfo.of(performance);
     }
 
-    public PerformanceSeatInfo getPerformanceSeatInfo(UUID performanceId, Integer round, Character line, Integer seat) {
+    public PerformanceSeatInfo getPerformanceSeatInfo(UUID performanceId, int round, char line, int seat) {
         PerformanceSeat performanceSeat = performanceSeatRepository.findByPerformanceIdAndRoundAndLineAndSeat(performanceId, round, line, seat)
                 .orElseThrow(NoSuchElementException::new);
 
         return PerformanceSeatInfo.of(performanceSeat);
     }
 
-    public ReservationInfo getReservationInfoById(Integer reservationId) {
+    public ReservationInfo getReservationInfoById(int reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(NoSuchElementException::new);
 

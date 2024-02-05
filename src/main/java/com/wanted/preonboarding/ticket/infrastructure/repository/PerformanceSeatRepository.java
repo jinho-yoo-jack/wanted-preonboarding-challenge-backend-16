@@ -8,6 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PerformanceSeatRepository extends JpaRepository<PerformanceSeat, Integer> {
-    Optional<PerformanceSeat> findByPerformanceIdAndRoundAndLineAndSeat(UUID performanceId, Integer round, Character line, Integer seat);
+    Optional<PerformanceSeat> findByPerformanceIdAndRoundAndLineAndSeat(UUID performanceId, int round, char line, int seat);
     List<PerformanceSeat> findByPerformanceIdAndIsReserve(UUID performanceId, String isReserve);
 }

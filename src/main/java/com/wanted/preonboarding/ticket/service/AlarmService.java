@@ -107,7 +107,7 @@ public class AlarmService {
     public String getMessage(User user, PerformanceInfo performanceInfo) {
         String userName = user.getName();
         String performanceName = performanceInfo.getPerformanceName();
-        Integer performanceRound = performanceInfo.getRound();
+        int performanceRound = performanceInfo.getRound();
 
         return "%s 님, 대기 신청하신 공연 예매 취소 안내 드립니다.\n[%s/%d회차] 취소표 발생했습니다.".formatted(userName, performanceName, performanceRound);
     }

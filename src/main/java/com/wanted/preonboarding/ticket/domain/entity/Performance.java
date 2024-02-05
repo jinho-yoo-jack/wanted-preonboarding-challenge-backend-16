@@ -28,11 +28,11 @@ public class Performance {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private Integer price;
+    private int price;
     @Column(nullable = false)
-    private Integer round;
+    private int round;
     @Column(nullable = false)
-    private Integer type;
+    private int type;
     @Column(nullable = false, name = "start_date")
     private Timestamp startDate;
     @Column(columnDefinition = "varchar(255) default 'disable'", nullable = false, name = "is_reserve")
@@ -50,7 +50,7 @@ public class Performance {
                 .build();
     }
 
-    private static Integer convertNameToCode(String name) {
+    private static int convertNameToCode(String name) {
         return Arrays.stream(PerformanceType.values())
                 .filter(value -> value.name().equals(name))
                 .findFirst()

@@ -11,10 +11,10 @@ import java.util.UUID;
 public class PerformanceSeatInfo {
     private Integer id;
     private UUID performanceId;
-    private Integer round;
-    private Integer gate;
-    private Character line;
-    private Integer seat;
+    private int round;
+    private int gate;
+    private char line;
+    private int seat;
     private String isReserve;
 
     public static PerformanceSeatInfo of(PerformanceSeat entity) {
