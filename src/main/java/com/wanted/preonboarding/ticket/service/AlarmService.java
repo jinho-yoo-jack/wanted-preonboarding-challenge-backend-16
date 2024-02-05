@@ -56,7 +56,7 @@ public class AlarmService {
         return alarmInfo;
     }
 
-    public Integer saveAlarmAndUserEmail(AlarmInfo alarmInfo) {
+    private Integer saveAlarmAndUserEmail(AlarmInfo alarmInfo) {
         // 알림 내역 추가
         Integer alarmId = alarmRepository.save(Alarm.of(alarmInfo)).getId();
 
@@ -72,7 +72,7 @@ public class AlarmService {
         return alarmId;
     }
 
-    public void checkAlarmDuplicated(AlarmInfo alarmInfo) {
+    private void checkAlarmDuplicated(AlarmInfo alarmInfo) {
         Optional<Alarm> alarm = alarmRepository.findByUserIdAndPerformanceId(
                 alarmInfo.getUserInfo().getUserId(),
                 alarmInfo.getPerformanceInfo().getPerformanceId()
@@ -104,7 +104,7 @@ public class AlarmService {
 
     }
 
-    public String getReservationCanceledMessage(User user, PerformanceInfo performanceInfo) {
+    private String getReservationCanceledMessage(User user, PerformanceInfo performanceInfo) {
         String userName = user.getName();
         String performanceName = performanceInfo.getPerformanceName();
         int performanceRound = performanceInfo.getRound();

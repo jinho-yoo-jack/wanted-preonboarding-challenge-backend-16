@@ -138,7 +138,7 @@ public class ReservationService {
         return reservationInfo;
     }
 
-    public int getFinalPrice(UserInfo userInfo, PerformanceInfo performanceInfo, ReservationInfo reservationInfo) {
+    private int getFinalPrice(UserInfo userInfo, PerformanceInfo performanceInfo, ReservationInfo reservationInfo) {
         // 우선은 기본 가격 그대로 최종 가격 결정
         int performancePrice = performanceInfo.getPrice();
         int discountPrice = 0;
@@ -153,7 +153,7 @@ public class ReservationService {
         return finalPrice;
     }
 
-    public Integer addReservation(ReservationInfo reservationInfo, PerformanceSeatInfo performanceSeatInfo) {
+    private Integer addReservation(ReservationInfo reservationInfo, PerformanceSeatInfo performanceSeatInfo) {
         // 예약 내역 추가
         Integer reservationId = reservationRepository.save(Reservation.of(reservationInfo)).getId();
 
@@ -178,7 +178,7 @@ public class ReservationService {
         return reservationId;
     }
 
-    public void checkPerformanceDateValidateForCancel(PerformanceInfo performanceInfo) {
+    private void checkPerformanceDateValidateForCancel(PerformanceInfo performanceInfo) {
         Timestamp startDate = performanceInfo.getStartDate();
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         int comparisonResult = currentTimestamp.compareTo(startDate);
@@ -188,7 +188,7 @@ public class ReservationService {
         }
     }
 
-    public void deleteReservation(ReservationInfo reservationInfo, PerformanceSeatInfo performanceSeatInfo) {
+    private void deleteReservation(ReservationInfo reservationInfo, PerformanceSeatInfo performanceSeatInfo) {
         // 예약 내역 삭제 (=> db 트리거로 canceledReservation 에 저장됨)
         reservationRepository.deleteById(reservationInfo.getReservationId());
 
