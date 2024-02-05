@@ -49,14 +49,14 @@ public class AlarmService {
 
         // 알림
         // 내역 추가, 유저 정보 내 이메일 추가
-        Integer alarmId = addAlarm(alarmInfo);
+        Integer alarmId = saveAlarmAndUserEmail(alarmInfo);
         alarmInfo.setAlarmId(alarmId);
 
         // 알림 내역 반환
         return alarmInfo;
     }
 
-    public Integer addAlarm(AlarmInfo alarmInfo) {
+    public Integer saveAlarmAndUserEmail(AlarmInfo alarmInfo) {
         // 알림 내역 추가
         Integer alarmId = alarmRepository.save(Alarm.of(alarmInfo)).getId();
 
@@ -95,7 +95,7 @@ public class AlarmService {
 
         for (User user : targetUserList) {
             // 발송 메세지 가공
-            String message = getMessage(user, performanceInfo);
+            String message = getReservationCanceledMessage(user, performanceInfo);
 
             // 알림 신청 유저에게 메일 발송
             String emailAddress = user.getEmail();
@@ -104,7 +104,7 @@ public class AlarmService {
 
     }
 
-    public String getMessage(User user, PerformanceInfo performanceInfo) {
+    public String getReservationCanceledMessage(User user, PerformanceInfo performanceInfo) {
         String userName = user.getName();
         String performanceName = performanceInfo.getPerformanceName();
         int performanceRound = performanceInfo.getRound();
