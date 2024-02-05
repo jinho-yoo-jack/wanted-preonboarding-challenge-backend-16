@@ -37,10 +37,10 @@ public class ReserveController {
 	}
 
 	@PostMapping("/cancel")
-	public ResponseEntity<ResponseHandler<ResponseType>> cancel(@RequestBody ReservationCancelRequest request) {
+	public ResponseEntity<ResponseHandler<Void>> cancel(@RequestBody ReservationCancelRequest request) {
 		return ResponseEntity
 			.ok()
-			.body(ResponseHandler.<ResponseType>builder()
+			.body(ResponseHandler.<Void>builder()
 				.message("예매를 취소하였습니다.")
 				.statusCode(HttpStatus.OK)
 				.data(reservationService.cancel(request))
@@ -53,7 +53,7 @@ public class ReserveController {
 		return ResponseEntity
 			.ok()
 			.body(ResponseHandler.<List<ReservationResponse>>builder()
-				.message("예매 내역 조회")
+				.message("예매 내역을 조회했습니다.")
 				.statusCode(HttpStatus.OK)
 				.data(reservationService.getReservations(request))
 				.build()

@@ -73,6 +73,13 @@ public class ReservationService {
 		return ReservationResponse.of(reservationDTO);
 	}
 
+	private void validateReservation(ReservationDTO reservationDTO) {
+		if (reservationRepository.existsReservationByPerformanceIdAndSeatInfo(reservationDTO.getPerformanceId(),
+			reservationDTO.getSeatInfo())) {
+			throw new ReservationAlreadyExistsException();
+		}
+	}
+
 	public List<ReservationResponse> getReservations(CustomerContactRequest request) {
 		UserInfo userInfo = UserInfo.of(request.reservationName(), request.reservationPhoneNumber());
 		List<Reservation> reservations = reservationRepository.findByUserInfoAndReservationStatus(userInfo,
@@ -91,15 +98,8 @@ public class ReservationService {
 			.collect(Collectors.toList());
 	}
 
-	private void validateReservation(ReservationDTO reservationDTO) {
-		if (reservationRepository.existsReservationByPerformanceIdAndSeatInfo(reservationDTO.getPerformanceId(),
-			reservationDTO.getSeatInfo())) {
-			throw new ReservationAlreadyExistsException();
-		}
-	}
-
 	@Transactional
-	public ResponseType cancel(ReservationCancelRequest request) {
+	public Void cancel(ReservationCancelRequest request) {
 		Reservation reservation = reservationRepository.findReservationByPerformanceIdAndSeatInfo(
 			UUID.fromString(request.performanceId()), SeatInfo.of(request.line(), request.seat()));
 		totalAmount -= reservation.cancel();
@@ -113,6 +113,6 @@ public class ReservationService {
 
 		reservationRepository.delete(reservation);
 
-		return ResponseType.SUCCESS;
+		return null;
 	}
 }

@@ -27,9 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 @Slf4j
 @RequiredArgsConstructor
-@Service
 public class PerformanceCancelSubService implements MessageListener {
 	private final PerformanceRepository performanceRepository;
 	private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
@@ -50,7 +50,7 @@ public class PerformanceCancelSubService implements MessageListener {
 		}
 	}
 
-	public void subscribe(ReservationCancelRequest request) {
+	public Void subscribe(ReservationCancelRequest request) {
 		PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findPerformanceSeatInfoBySeatInfoAndPerformanceId(
 				SeatInfo.of(request.line(), request.seat()), UUID.fromString(request.performanceId()))
 			.orElseThrow(PerformanceSeatInfoNotFoundException::new);
@@ -73,6 +73,8 @@ public class PerformanceCancelSubService implements MessageListener {
 		};
 
 		onMessage(message, message.getChannel());
+
+		return null;
 	}
 
 	private StringBuilder createCancelMessage(PerformanceSeatInfo performanceSeatInfo) {

@@ -48,8 +48,8 @@ public class PerformanceCancelController {
 		return ResponseEntity
 			.ok()
 			.body(ResponseHandler.<Set<String>>builder()
-				.statusCode(HttpStatus.valueOf(ResponseType.SUCCESS.getStatusCode()))
 				.message("모든 토픽 조회")
+				.statusCode(HttpStatus.valueOf(ResponseType.SUCCESS.getStatusCode()))
 				.data(channels.keySet())
 				.build()
 			);
@@ -103,16 +103,15 @@ public class PerformanceCancelController {
 	}
 
 	@PostMapping("/alarm")
-	public ResponseEntity<ResponseHandler<ResponseType>> subscribeMessage(
+	public ResponseEntity<ResponseHandler<Void>> subscribeMessage(
 		@RequestBody ReservationCancelRequest request) {
-		redisSubscriber.subscribe(request);
 
 		return ResponseEntity
 			.ok()
-			.body(ResponseHandler.<ResponseType>builder()
+			.body(ResponseHandler.<Void>builder()
 				.message("구독")
 				.statusCode(HttpStatus.valueOf(ResponseType.SUCCESS.getStatusCode()))
-				.data(ResponseType.SUCCESS)
+				.data(redisSubscriber.subscribe(request))
 				.build()
 			);
 	}
