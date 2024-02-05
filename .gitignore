@@ -38,4 +38,5 @@ out/
 
 ### Docker ####
 Dockerfile_bak
-
+mysql_docker
+.idea/http-requests-log.http
