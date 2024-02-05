@@ -21,7 +21,6 @@ public class PerformanceSeatInfo extends AuditInformation {
     @Comment("공연전시ID")
     private Performance performance;
 
-    // TODO: JoinColumn으로 할지 결정
     @Column(nullable = false)
     @Comment("회차")
     private int round;

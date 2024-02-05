@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `performance`
     `name`       varchar(255)                             NOT NULL COMMENT '공연/전시 이름',
     `price`      INT                                      NOT NULL COMMENT '가격',
     `round`      INT                                      NOT NULL COMMENT '회차',
-    `type`       INT                                      NOT NULL COMMENT 'NONE, CONCERT, EXHIBITION',
+    `type`       varchar(255)                             NOT NULL COMMENT 'NONE, CONCERT, EXHIBITION',
     `start_date` datetime                                 NOT NULL COMMENT '공연 일시',
     `is_reserve` varchar(255)                             NOT NULL DEFAULT 'disable',
     `created_at` DATETIME   DEFAULT NOW()                 NOT NULL,
