@@ -111,13 +111,10 @@ public class TicketSeller {
         return responseReserveInfos;
     }
 
-    public PerformanceInfo getPerformanceInfoDetail(String name) {
-        Performance performance = performanceRepository.findByName(name)
-                .orElseThrow(EntityNotFoundException::new);
-        return PerformanceInfo.of(performance);
-    }
 
-    public void cancelReservation(CancelReservationRequestDto requestDto) {
+
+
+    public void cancel(CancelReservationRequestDto requestDto) {
         PerformanceSeatInfo performanceSeatInfo = performanceSeatRepository.findByPerformanceNameAndSeatLineAndSeatNumber(requestDto.getPerformanceName(),requestDto.getLine(),requestDto.getSeat())
                 .orElseThrow(()->new IllegalArgumentException("예매 내역이 존재하지 않습니다"));
         Performance performance = performanceRepository.findByName(requestDto.getPerformanceName())

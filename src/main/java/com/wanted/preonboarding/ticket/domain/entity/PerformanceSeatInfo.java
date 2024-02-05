@@ -4,12 +4,14 @@ import com.wanted.preonboarding.ticket.domain.dto.ResponsePerformanceSeatInfoDto
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
 @Entity
 @Getter
 @AllArgsConstructor
+@ToString
 public class PerformanceSeatInfo {
     @Id
     @GeneratedValue
@@ -56,5 +58,5 @@ public class PerformanceSeatInfo {
     }
     public ResponsePerformanceSeatInfoDto convertResponseDto(){
         return new ResponsePerformanceSeatInfoDto(this.getSeatLine(),this.getSeatNumber());
-    };
+    }
 }

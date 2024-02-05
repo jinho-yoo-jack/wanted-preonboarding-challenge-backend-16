@@ -28,13 +28,16 @@ public class CreatedPerformanceRequestDto {
     @Column(nullable = false)
     private String seatRange;
 
+
     public List<String> generateCombinations() {
         List<String> combinations = new ArrayList<>();
 
         if (lineRange != null && seatRange != null) {
             String[] lines = lineRange.split("~");
-            int startSeat = Integer.parseInt(seatRange.substring(0, 1));
-            int endSeat = Integer.parseInt(seatRange.substring(1));
+            String[] seatRangeParts = seatRange.split("~");
+
+            int startSeat = Integer.parseInt(seatRangeParts[0]);
+            int endSeat = Integer.parseInt(seatRangeParts[1]);
 
             for (String line : lines) {
                 for (int i = startSeat; i <= endSeat; i++) {
@@ -42,8 +45,6 @@ public class CreatedPerformanceRequestDto {
                 }
             }
         }
-
         return combinations;
     }
-
 }

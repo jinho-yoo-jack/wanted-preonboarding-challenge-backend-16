@@ -41,7 +41,7 @@ public class ReserveController {
 
     @PatchMapping("/")
     public void cancelReservation(CancelReservationRequestDto requestDto) {
-        ticketSeller.cancelReservation(requestDto);
+        ticketSeller.cancel(requestDto);
     }
 
 

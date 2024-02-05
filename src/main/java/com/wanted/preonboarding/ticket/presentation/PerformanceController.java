@@ -1,36 +1,27 @@
 package com.wanted.preonboarding.ticket.presentation;
 
-import com.wanted.preonboarding.ticket.application.TicketSeller;
-import com.wanted.preonboarding.ticket.domain.dto.*;
+import com.wanted.preonboarding.ticket.application.PerformanceApp;
+import com.wanted.preonboarding.ticket.domain.dto.CreatedPerformanceRequestDto;
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/performance")
 @RequiredArgsConstructor
 public class PerformanceController {
-    private final TicketSeller ticketSeller;
+    private final PerformanceApp performanceApp;
 
     @PostMapping("/")
-    public List<ResponseReserveInfo> createdPerformance() throws Exception {
-        List<String> seats = Arrays.asList("A1", "A2");
-        ReserveInfo reserveInfo = ReserveInfo.builder()
-                .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
-                .reservationName("유진호")
-                .reservationPhoneNumber("010-1234-1234")
-                .reservationStatus("reserve")
-                .amount(200000)
-                .round(1)
-                .seats(seats)
-                .build();
-
-        return ticketSeller.reserve(reserveInfo);
+    public void createdPerformance(CreatedPerformanceRequestDto requestDto){
+        performanceApp.create(requestDto);
     }
     @GetMapping("/")
     public PerformanceInfo getPerformanceDetail(String performanceName){
-        return ticketSeller.getPerformanceInfoDetail(performanceName);
+        return performanceApp.getDetail(performanceName);
     }
 
 

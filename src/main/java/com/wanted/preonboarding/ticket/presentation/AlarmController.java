@@ -16,12 +16,12 @@ public class AlarmController {
     private final AlarmApp alarmApp;
 
     @PostMapping("/")
-    public void subscribeAlarm(SubscriberPerformanceRequestDto requestDto) throws Exception {
+    public void subscribeAlarm(SubscriberPerformanceRequestDto requestDto){
         alarmApp.subscribeReservation(requestDto);
     }
 
     @GetMapping("/")
-    public ResponseAlarmDto getAlarm(String memberName) throws Exception {
+    public ResponseAlarmDto getAlarm(String memberName){
         return alarmApp.getAlarm(memberName);
     }
 
