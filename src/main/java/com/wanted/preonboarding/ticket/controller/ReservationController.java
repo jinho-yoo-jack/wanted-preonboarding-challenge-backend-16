@@ -16,7 +16,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     /** 공연/전시 예약 **/
-    @PostMapping(value = "")
+    @PostMapping
     public ResponseEntity<ReservationInfo> reservation(@RequestBody ReservationInfo reservationInfo) {
         return ResponseEntity
                 .ok()
@@ -24,7 +24,7 @@ public class ReservationController {
     }
 
     /** 특정 유저 공연/전시 예약 조회 **/
-    @GetMapping(value = "")
+    @GetMapping
     public ResponseEntity<List<ReservationInfo>> getUserReservation(@RequestBody UserInfo userInfo) {
         return ResponseEntity
                 .ok()
@@ -32,7 +32,7 @@ public class ReservationController {
     }
 
     /** 특정 유저 공연/전시 예약 취소 **/
-    @DeleteMapping(value = "")
+    @DeleteMapping
     public ResponseEntity<ReservationInfo> cancelReservation(@RequestBody ReservationInfo reservationInfo) {
         return ResponseEntity
                 .ok()

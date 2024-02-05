@@ -16,7 +16,7 @@ public class AlarmController {
     private final AlarmService alarmService;
 
     /** 특정 공연에 대한 취소 알림 등록 **/
-    @PostMapping(value = "")
+    @PostMapping
     public ResponseEntity<AlarmInfo> registAlarm(@RequestBody AlarmInfo alarmInfo) {
         return ResponseEntity
                 .ok()

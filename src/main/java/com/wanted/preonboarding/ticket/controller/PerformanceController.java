@@ -17,7 +17,7 @@ public class PerformanceController {
     private final PerformanceService performanceService;
 
     /** 공연/전시 전체 내역 조회 **/
-    @GetMapping(value = "")
+    @GetMapping
     public ResponseEntity<List<PerformanceInfo>> getAllPerformance() {
         return ResponseEntity
                 .ok()
