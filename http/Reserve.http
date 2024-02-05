@@ -1,3 +1,17 @@
+DELETE http://localhost:8016/reserve/9
+
+
+###
+
+POST http://localhost:8016/reserve/notification
+Content-Type: application/json
+
+{
+  "performanceId": "4a7e312e-c273-11ee-a299-0242ac180002",
+  "phoneNumber": "010-1234-1234"
+}
+
+
 ###
 GET http://localhost:8016/query/all/performance?isReserve=ENABLE
 Accept: application/json

@@ -6,6 +6,7 @@ import com.wanted.preonboarding.ticket.domain.exception.AlreadyReservationExcept
 import com.wanted.preonboarding.ticket.domain.exception.NotEnoughAmountException;
 import com.wanted.preonboarding.ticket.presentation.request.CreateReserveRequest;
 import com.wanted.preonboarding.ticket.presentation.request.ReadReservationRequest;
+import com.wanted.preonboarding.ticket.presentation.request.ReserveNotificationReqeust;
 import com.wanted.preonboarding.ticket.presentation.response.CreateReservationResponse;
 import com.wanted.preonboarding.ticket.presentation.response.ReadReservationResponse;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/reserve")
@@ -73,6 +75,36 @@ public class ReserveController {
                         .message("Success")
                         .statusCode(HttpStatus.OK)
                         .data(ticketSeller.getReservations(readReservationRequest))
+                        .build()
+                );
+    }
+
+    @PostMapping("/notification")
+    public ResponseEntity<ResponseHandler<UUID>> reserveNotification(@RequestBody ReserveNotificationReqeust reserveNotificationReqeust) {
+        System.out.println("notification");
+        return ResponseEntity
+                .ok()
+                .body(ResponseHandler.<UUID>builder()
+                        .message("Success")
+                        .statusCode(HttpStatus.OK)
+                        .data(ticketSeller.reserveNotification(reserveNotificationReqeust))
+                        .build()
+                );
+    }
+
+    @DeleteMapping("/{reservationId}")
+    public ResponseEntity<ResponseHandler<UUID>> cancelReservation(@PathVariable Integer reservationId) {
+        System.out.println("cancelReservation");
+
+        ticketSeller.cancelReservation(reservationId)
+                .forEach(reservation -> ticketSeller.sendReservationMessage(reservation));
+
+        return ResponseEntity
+                .ok()
+                .body(ResponseHandler.<UUID>builder()
+                        .message("Success")
+                        .statusCode(HttpStatus.OK)
+                        .data(null)
                         .build()
                 );
     }

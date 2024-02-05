@@ -44,3 +44,16 @@ CREATE TABLE IF NOT EXISTS `reservation`
     PRIMARY KEY (id),
     UNIQUE KEY reservation_round_row_seat (performance_id, round, `line`, seat)
 );
+
+
+CREATE TABLE IF NOT EXISTS `notification`
+(
+    `id`             BINARY(16)          default (uuid_to_bin(uuid())) NOT NULL COMMENT '알림 ID',
+    `performance_id` BINARY(16) NOT NULL COMMENT '공연전시ID',
+    `phone_number`  varchar(255) NOT NULL COMMENT '예약자 휴대전화 번호',
+    `is_send`          BIT(1)     NOT NULL default false COMMENT '메시지 송신 여부',
+    PRIMARY KEY (id),
+    UNIQUE KEY notification_performance_id_phone_number (performance_id, phone_number)
+);
+
+
