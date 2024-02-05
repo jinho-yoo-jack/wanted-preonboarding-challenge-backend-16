@@ -10,17 +10,15 @@ import org.springframework.stereotype.Component;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.RequiredArgsConstructor;
 
 @Component
-@RequiredArgsConstructor
 public class EmailService {
 	private final JavaMailSender mailSender;
-	private static String ADMIN_ADDRESS;
+	private final String ADMIN_ADDRESS;
 
-	@Value("${spring.mail.username}")
-	public void setAdminAddress(String adminAddress) {
-		ADMIN_ADDRESS = adminAddress;
+	public EmailService(JavaMailSender mailSender, @Value("${spring.mail.username}") String ADMIN_ADDRESS) {
+		this.mailSender = mailSender;
+		this.ADMIN_ADDRESS = ADMIN_ADDRESS;
 	}
 
 	@Async("taskExecutor1")
