@@ -2,10 +2,13 @@ package com.wanted.preonboarding.ticket.presentation;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.TicketSeller;
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.exception.AlreadyReservationException;
 import com.wanted.preonboarding.ticket.domain.exception.NotEnoughAmountException;
 import com.wanted.preonboarding.ticket.presentation.request.CreateReserveRequest;
+import com.wanted.preonboarding.ticket.presentation.request.ReadReservationRequest;
 import com.wanted.preonboarding.ticket.presentation.response.CreateReservationResponse;
+import com.wanted.preonboarding.ticket.presentation.response.ReadReservationResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -61,4 +64,18 @@ public class ReserveController {
                             .build());
         }
     }
+
+    @GetMapping("")
+    public ResponseEntity<ResponseHandler<List<ReadReservationResponse>>> readReserve(ReadReservationRequest readReservationRequest) {
+        System.out.println("readReserve");
+        return ResponseEntity
+                .ok()
+                .body(ResponseHandler.<List<ReadReservationResponse>>builder()
+                        .message("Success")
+                        .statusCode(HttpStatus.OK)
+                        .data(ticketSeller.getReservations(readReservationRequest))
+                        .build()
+                );
+    }
+
 }

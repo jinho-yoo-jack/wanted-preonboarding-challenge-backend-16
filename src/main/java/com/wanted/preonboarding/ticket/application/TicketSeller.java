@@ -9,7 +9,9 @@ import com.wanted.preonboarding.ticket.domain.exception.NotEnoughAmountException
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import com.wanted.preonboarding.ticket.presentation.request.CreateReserveRequest;
+import com.wanted.preonboarding.ticket.presentation.request.ReadReservationRequest;
 import com.wanted.preonboarding.ticket.presentation.response.CreateReservationResponse;
+import com.wanted.preonboarding.ticket.presentation.response.ReadReservationResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,13 @@ public class TicketSeller {
     private final ReservationRepository reservationRepository;
     private final DiscountPolicy discountPolicy;
     private long totalAmount = 0L;
+
+    public List<ReadReservationResponse> getReservations(ReadReservationRequest readReservationRequest) {
+        return reservationRepository.findReservationAndPerformance(readReservationRequest.getReservationName(), readReservationRequest.getReservationPhoneNumber())
+            .stream()
+            .map(ReadReservationResponse::of)
+            .toList();
+    }
 
     public List<PerformanceInfo> getAllPerformanceInfoList() {
         return performanceRepository.findByIsReserve("enable")
