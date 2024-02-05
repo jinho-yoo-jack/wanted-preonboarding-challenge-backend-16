@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.util.UUID;
 
 @Entity
@@ -14,20 +13,18 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PerformanceSeatInfo {
+public class Alarm {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
     private UUID performanceId;
     @Column(nullable = false)
-    private int round;
+    private String performanceName;
+    @Column(nullable = false, name = "phone_number")
+    private String phoneNumber;
     @Column(nullable = false)
-    private char line;
-    @Column(nullable = false)
-    private int seat;
-    @Column(nullable = false)
-    private int gate;
-    @Column(nullable = false, name = "is_reserve")
-    private String reserve;
+    private String name;
+
 }
