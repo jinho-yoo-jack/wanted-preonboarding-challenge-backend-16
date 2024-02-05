@@ -7,10 +7,12 @@ import com.wanted.preonboarding.ticket.domain.dto.request.ReservationFindRequest
 import com.wanted.preonboarding.ticket.domain.dto.response.ReservationCancelResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.ReservationCreateResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.ReservationFindResponse;
+import com.wanted.preonboarding.ticket.domain.entity.Notification;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.exception.*;
+import com.wanted.preonboarding.ticket.infrastructure.repository.NotificationRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
@@ -30,6 +32,7 @@ public class ReservationService {
     private final PerformanceRepository performanceRepository;
     private final ReservationRepository reservationRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
+    private final NotificationRepository notificationRepository;
     private final DiscountService discountService;
 
     // 예약
@@ -48,30 +51,28 @@ public class ReservationService {
         isAffordable(request, discountedPrice);
 
         //예매 진행 및 좌석 상태 변경
-        Reservation save = reservationRepository.save(Reservation.of(request, performance));
+        Reservation save = saveReservation(request, performance);
         changeSeatStatus(seatInfo);
         return save.toReservationCreateResponse();
     }
 
     // 조회
+
     @Transactional(readOnly = true)
     public List<ReservationFindResponse> findReservation(ReservationFindRequest request) {
+        log.info("ReservationService.findReservation");
         List<Reservation> reservations = reservationRepository.findByNameAndPhoneNumber(request.getReservationName(), request.getReservationPhoneNumber());
-        if (reservations.isEmpty()) {
-            throw new ReservationNotFoundException("예매된 공연이 없습니다.");  //TODO: 상수로 변경
-        } else {
-            return reservations.stream().map(Reservation::toReservationFindResponse).collect(Collectors.toList());
-        }
+        checkReservationListNotEmpty(reservations);
+        return reservations.stream().map(Reservation::toReservationFindResponse).collect(Collectors.toList());
     }
 
     //TODO: 취소
-    // 1. 좌석 가져오기 및 있는지 확인
-    // 2. 공연이 disable이면 enable?
-    // 3. 좌석 정보 변경
-    // 4. 취소된 좌석과 관련된 알림이 있는지 확인
-    // 5. 알림 보내기
+    // 공연이 disable이면 enable?
+    // 취소된 좌석과 관련된 알림이 있는지 확인 (NotificationService?)
+    // 알림 보내기
     @Transactional
     public ReservationCancelResponse cancelReservation(ReservationCancelRequest request) {
+        log.info("ReservationService.cancelReservation");
         Reservation reservation = findReservation(request);
         PerformanceSeatInfo seatInfo = findSeatInfoWithReservation(reservation);
 
@@ -79,7 +80,25 @@ public class ReservationService {
         checkSeatInfoReserved(seatInfo);
         changeSeatStatus(seatInfo);
         deleteReservation(reservation);
+
+        //알림 기능 추가
+        List<Notification> notificationList = notificationRepository.findAllByPerformance(reservation.getPerformance());
+        if(!notificationList.isEmpty()){
+            //알림 보내기
+        }
+
+
         return reservation.toReservationCancelResponse();
+    }
+
+    private Reservation saveReservation(ReservationCreateRequest request, Performance performance) {
+        return reservationRepository.save(Reservation.of(request, performance));
+    }
+
+    private static void checkReservationListNotEmpty(List<Reservation> reservations) {
+        if (reservations.isEmpty()) {
+            throw new ReservationNotFoundException("예매된 공연이 없습니다.");  //TODO: 상수로 변경
+        }
     }
 
     private void deleteReservation(Reservation reservation) {

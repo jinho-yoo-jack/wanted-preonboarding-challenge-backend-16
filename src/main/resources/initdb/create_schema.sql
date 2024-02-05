@@ -44,3 +44,15 @@ CREATE TABLE IF NOT EXISTS `reservation`
     PRIMARY KEY (id),
     UNIQUE KEY reservation_round_row_seat (performance_id, round, `line`, seat)
 );
+
+CREATE TABLE IF NOT EXISTS `notification`
+(
+    `id`             INT(10)                NOT NULL AUTO_INCREMENT,
+    `name`           varchar(255)           NOT NULL COMMENT '알림 신청자 이름',
+    `phone_number`   varchar(255)           NOT NULL COMMENT '신청자 휴대전화 번호',
+    `email`          varchar(255)           NOT NULL COMMENT '신청자 이메일 주소',
+    `performance_id` BINARY(16)             NOT NULL COMMENT '공연전시ID',
+    `created_at`     DATETIME DEFAULT NOW() NOT NULL,
+    `updated_at`     DATETIME DEFAULT NOW() NOT NUll,
+    PRIMARY KEY (id)
+);
