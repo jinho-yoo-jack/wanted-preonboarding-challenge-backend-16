@@ -23,13 +23,13 @@ public class QueryController {
     public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAblePerformanceInfoList() {
         System.out.println("getAllPerformanceInfoList");
         return ResponseEntity
-            .ok()
-            .body(ResponseHandler.<List<PerformanceInfo>>builder()
-                .message("Success")
-                .statusCode(HttpStatus.OK)
-                .data(ticketSeller.getAblePerformanceInfoList("enable"))
-                .build()
-            );
+                .ok()
+                .body(ResponseHandler.<List<PerformanceInfo>>builder()
+                        .message("Success")
+                        .statusCode(HttpStatus.OK)
+                        .data(ticketSeller.getAblePerformanceInfoList("enable"))
+                        .build()
+                );
     }
 
     @GetMapping("/reservationInfo")
