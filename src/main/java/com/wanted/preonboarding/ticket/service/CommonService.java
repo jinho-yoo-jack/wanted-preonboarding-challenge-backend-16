@@ -30,7 +30,7 @@ public class CommonService {
 
     public UserInfo getUserInfo(String name, String phoneNumber) {
         User user = userRepository.findByNameAndPhoneNumber(name, phoneNumber)
-                .orElse(saveNewUser(name, phoneNumber));
+                .orElseGet(() -> saveNewUser(name, phoneNumber));
 
         return UserInfo.of(user);
     }
