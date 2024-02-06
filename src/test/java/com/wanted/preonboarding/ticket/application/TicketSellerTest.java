@@ -71,15 +71,14 @@ public class TicketSellerTest {
                 .build();
 
         //when
-        boolean flag = ticketSeller.reserve(info);
+        ticketSeller.reserve(info);
 
 
-        if(flag) {
-            //then
-            Performance resultPerformance = performanceRepository.findByIdAndRound(performance.getId(), performance.getRound()).get();
-            Reservation resultReservation = reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(performance.getId(),performance.getRound(), info.getLine(), info.getSeat()).get();;
-            assertThat(resultPerformance.getId()).isEqualTo(resultReservation.getPerformanceId());
-        }
+        //then
+        Performance resultPerformance = performanceRepository.findByIdAndRound(performance.getId(), performance.getRound()).get();
+        Reservation resultReservation = reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(performance.getId(),performance.getRound(), info.getLine(), info.getSeat()).get();;
+        assertThat(resultPerformance.getId()).isEqualTo(resultReservation.getPerformanceId());
+
     }
 
 

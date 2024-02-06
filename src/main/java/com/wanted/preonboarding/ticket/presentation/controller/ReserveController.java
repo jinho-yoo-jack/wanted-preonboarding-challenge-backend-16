@@ -28,10 +28,8 @@ public class ReserveController {
     @PostMapping
     public ResponseEntity<BaseResDto> createReservation(@RequestBody ReserveInfo info) {
         log.info("ReserveController reservation");
-        if(ticketSeller.reserve(info)) {
-            return ResponseEntity.ok(ticketSeller.getPerformanceInfoDetail(info));
-        } else {
-            throw new ServiceException(ResultCode.RESERVE_NOT_VALID);
-        }
+        ticketSeller.reserve(info);
+        return ResponseEntity.ok(ticketSeller.getPerformanceInfoDetail(info));
     }
 }
+
