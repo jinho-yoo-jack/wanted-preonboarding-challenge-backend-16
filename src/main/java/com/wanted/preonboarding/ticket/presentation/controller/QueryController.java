@@ -49,8 +49,7 @@ public class QueryController {
     @GetMapping("/customer/reservation")
     public ResponseEntity<BaseResDto> readReservation(@RequestBody RequestReserveQueryDto dto) {
         log.info("QueryController getReserveInfo");
-        BaseResDto baseResDto = ticketSeller.getReserveInfoDetail(dto);
-        return ResponseEntity.ok(baseResDto);
+        return ResponseEntity.ok(ticketSeller.getReserveInfoDetail(dto));
     }
 
 }
