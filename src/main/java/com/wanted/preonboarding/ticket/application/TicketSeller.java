@@ -51,26 +51,6 @@ public class TicketSeller {
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
     }
 
-//    @Transactional
-//    public boolean reserve(ReserveInfo reserveInfo) {
-//        Performance performance = getPerformance(reserveInfo.getPerformanceId(), reserveInfo.getRound());
-//        String enableReserve = performance.getIsReserve();
-//        if (enableReserve.equalsIgnoreCase(ENABLE)) {
-//            // 1. 결제
-//            int price = performance.getPrice();
-//            reserveInfo.setAmount(reserveInfo.getAmount() - price);
-//
-//            // 2. 예매 된 좌석인지 확인
-//            checkIsReserved(reserveInfo);
-//
-//            // 3. 예매 진행
-//            reservationRepository.save(Reservation.from(reserveInfo));
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
     @Transactional
     public void reserve(ReserveInfo reserveInfo) {
         Performance performance = getPerformance(reserveInfo.getPerformanceId(), reserveInfo.getRound());
