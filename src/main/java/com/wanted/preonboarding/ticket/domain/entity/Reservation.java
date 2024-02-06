@@ -1,50 +1,58 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
-
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import lombok.*;
 import java.util.UUID;
 
 @Entity
 @Table
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
-    private UUID performanceId;
-    @Column(nullable = false)
-    private String name;
-    @Column(nullable = false, name = "phone_number")
-    private String phoneNumber;
-    @Column(nullable = false)
-    private int round;
-    private int gate;
-    private char line;
-    private int seat;
+    private Long id; // 예약 ID
 
-    public static Reservation of(ReserveInfo info) {
+    @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
+    private UUID performanceId; // 공연 정보 ID
+
+    @Column(nullable = false)
+    private String name; // 예약자 이름
+
+    @Column(nullable = false, name = "phone_number")
+    private String phoneNumber; // 핸드폰 번호
+
+    @Column(nullable = false)
+    private int round; // 공연 회차
+
+    private int gate; // 공연 입구
+    private char line; // 줄
+    private int seat; // 좌석 번호
+
+    @Builder
+    private Reservation(Long id, UUID performanceId, String name, String phoneNumber, int round,
+                       int gate, char line, int seat) {
+        this.id = id;
+        this.performanceId = performanceId;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.round = round;
+        this.gate = gate;
+        this.line = line;
+        this.seat = seat;
+    }
+
+    public static Reservation createReservation(User user, PerformanceSeatInfo performanceSeatInfo) {
         return Reservation.builder()
-            .performanceId(info.getPerformanceId())
-            .name(info.getReservationName())
-            .phoneNumber(info.getReservationPhoneNumber())
-            .round(info.getRound())
-            .gate(1)
-            .line(info.getLine())
-            .seat(info.getSeat())
-            .build();
+                .performanceId(performanceSeatInfo.getPerformanceId())
+                .name(user.getName())
+                .phoneNumber(user.getPhoneNumber())
+                .round(performanceSeatInfo.getRound())
+                .gate(performanceSeatInfo.getGate())
+                .line(performanceSeatInfo.getLine())
+                .seat(performanceSeatInfo.getSeat())
+                .build();
     }
 
 }

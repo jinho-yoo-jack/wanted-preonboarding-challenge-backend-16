@@ -39,3 +39,8 @@ out/
 ### Docker ####
 Dockerfile_bak
 
+### custom ###
+data/
+
+### http-log
+.idea/httpRequests/*.http

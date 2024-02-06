@@ -1,12 +1,16 @@
 package com.wanted.preonboarding.ticket.infrastructure.repository;
 
-import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.wanted.preonboarding.ticket.infrastructure.dto.ReserveQueryResponse;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
-public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
-    Reservation findByNameAndPhoneNumber(String name, String phoneNumber);
+public interface ReservationRepository {
+
+    Reservation save(Reservation reservation);
+
+    Optional<Reservation> findById(Long reservationId);
+
+    List<ReserveQueryResponse> findByNameAndPhoneNumber(String name, String phoneNumber);
 }
