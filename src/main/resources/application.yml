@@ -8,6 +8,17 @@ spring:
     password: backend
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.trust: smtp.naver.com
+      mail.smtp.starttls.enable: true
+
   # JPA 설정
   jpa:
     hibernate:

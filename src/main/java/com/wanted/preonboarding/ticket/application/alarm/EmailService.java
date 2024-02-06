@@ -22,6 +22,7 @@ public class EmailService {
 
     @Async
     public void sendMail(MailRequest request) {
+        log.info("EmailService.request");
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");

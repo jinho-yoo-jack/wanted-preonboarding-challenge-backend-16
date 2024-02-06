@@ -5,8 +5,6 @@ services:
     ports:
       - 13306:3306
     volumes:
-#      - /Users/black/dev/mysql_docker/data:/var/lib/mysql:rw
-#      - /Users/black/IdeaProjects/backend-preonboarding/src/main/resources/initdb:/docker-entrypoint-initdb.d
       - C:/Users/Hwan/docker/mysql_docker/data:/var/lib/mysql:rw
       - E:/JooHwan/Intellij/wanted/wanted-preonboarding-challenge-backend-16/src/main/resources/initdb:/docker-entrypoint-initdb.d
     command:
