@@ -1,7 +1,7 @@
 -- schema.sql
 CREATE TABLE IF NOT EXISTS `performance`
 (
-    `id`         BINARY(16) default (uuid_to_bin(uuid())) NOT NULL COMMENT '공연/전시 ID',
+    `performance_id`         BINARY(16) default (uuid_to_bin(uuid())) NOT NULL COMMENT '공연/전시 ID',
     `name`       varchar(255)                             NOT NULL COMMENT '공연/전시 이름',
     `price`      INT                                      NOT NULL COMMENT '가격',
     `round`      INT                                      NOT NULL COMMENT '회차',
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `performance`
 
 CREATE TABLE IF NOT EXISTS `performance_seat_info`
 (
-    `id`             INT(10)                NOT NULL AUTO_INCREMENT,
+    `performance_seat_id`             INT(10)                NOT NULL AUTO_INCREMENT,
     `performance_id` BINARY(16)             NOT NULL COMMENT '공연전시ID',
     `round`          INT                    NOT NULL COMMENT '회차(FK)',
     `gate`           INT                    NOT NULL COMMENT '입장 게이트',
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `performance_seat_info`
 
 CREATE TABLE IF NOT EXISTS `reservation`
 (
-    `id`             INT(10)                NOT NULL AUTO_INCREMENT,
+    `reservation_id`             INT(10)                NOT NULL AUTO_INCREMENT,
     `performance_id` BINARY(16)             NOT NULL COMMENT '공연전시ID',
     `name`           varchar(255)           NOT NULL COMMENT '예약자명',
     `phone_number`   varchar(255)           NOT NULL COMMENT '예약자 휴대전화 번호',
@@ -39,8 +39,9 @@ CREATE TABLE IF NOT EXISTS `reservation`
     `gate`           INT                    NOT NULL COMMENT '입장 게이트',
     `line`           CHAR                   NOT NULL COMMENT '좌석 열',
     `seat`           INT                    NOT NULL COMMENT '좌석 행',
+    `type`       	 INT                    NOT NULL COMMENT 'RESERVATION,WAITING,CANCELLATION,NOT_ENOUGH_MONEY',
     `created_at`     DATETIME DEFAULT NOW() NOT NULL,
     `updated_at`     DATETIME DEFAULT NOW() NOT NUll,
     PRIMARY KEY (id),
-    UNIQUE KEY reservation_round_row_seat (performance_id, round, `line`, seat)
+    UNIQUE KEY reservation_round_row_seat (performance_id, round,`name`,phone_number, `line`, seat)
 );
