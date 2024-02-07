@@ -63,7 +63,7 @@ public class TicketSeller {
             checkIsReservedPerformanceSeat(createReservationRequest);
 
             //3. 결제 가능한지 확인
-            performance.checkHasEnoughBalance(createReservationRequest);
+            performance.checkHasEnoughBalance(createReservationRequest.getBalance());
 
             //4. 예약
             reservationRepository.save(Reservation.from(createReservationRequest));

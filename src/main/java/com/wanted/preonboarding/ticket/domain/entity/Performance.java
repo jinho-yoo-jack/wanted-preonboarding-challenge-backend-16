@@ -45,8 +45,8 @@ public class Performance extends BaseEntity {
         return this.isReserve.equalsIgnoreCase(status.getValue());
     }
 
-    public void checkHasEnoughBalance(CreateReservationRequest createReservationRequest) {
-        if(createReservationRequest.getBalance() - this.price < 0) {
+    public void checkHasEnoughBalance(long balance) {
+        if(balance - this.price < 0) {
             throw new ServiceException(ResultCode.NOT_ENOUGH_BALANCE);
         }
     }
