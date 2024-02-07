@@ -3,25 +3,34 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:13306/wanted
-    username: wanted
-    password: backend
+    url: jdbc:mysql://localhost:13306/wanted?serverTimezone=Asia/Seoul
+    username: root
+    password: preonboarding
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   # JPA 설정
   jpa:
     hibernate:
-      ddl-auto: none        # DB 초기화 전략 (none, create, create-drop, update, validate)
+      ddl-auto: create        # DB 초기화 전략 (none, create, create-drop, update, validate)
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
         auto_quote_keyword: false
         globally_quoted_identifiers: false
         format_sql: true     # 쿼리 로그 포맷 (정렬)
         show_sql: true       # 쿼리 로그 출력
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
 logging:
   level:
     org:
+      springframework:
+        boot:
+          autoconfigure: ERROR
       hibernate:
         type:
           descriptor:
