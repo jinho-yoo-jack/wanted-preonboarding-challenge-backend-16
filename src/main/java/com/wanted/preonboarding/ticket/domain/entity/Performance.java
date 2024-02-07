@@ -41,8 +41,10 @@ public class Performance extends BaseEntity {
     private String isReserve;
 
 
-    public boolean isReserve(ReserveStatus status) {
-        return this.isReserve.equalsIgnoreCase(status.getValue());
+    public void isReserve(ReserveStatus status) {
+        if(!this.isReserve.equalsIgnoreCase(status.getValue())) {
+            throw new ServiceException(ResultCode.RESERVE_NOT_VALID);
+        }
     }
 
     public void checkHasEnoughBalance(long balance) {

@@ -40,20 +40,17 @@ public class AlarmMailService {
     @Transactional
     public void createAlarmPerformanceSeat(CreateAlarmPerformanceSeatRequest createAlarmPerformanceSeatRequest) {
 
-        //1. 알림 가능한 공연인지 확인
         Performance performance = getPerformance(createAlarmPerformanceSeatRequest);
-        if(performance.isReserve(ReserveStatus.ENABLE)) {
 
-            //2. 알림 가능한 공연 좌석인지 확인
-            PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(createAlarmPerformanceSeatRequest, ReserveStatus.DISABLE.getValue());
+        //1. 알림 가능한 공연인지 확인
+        performance.isReserve(ReserveStatus.ENABLE);
 
-            Alarm alarm = Alarm.of(performanceSeatInfo, createAlarmPerformanceSeatRequest);
+        //2. 알림 가능한 공연 좌석인지 확인
+        PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(createAlarmPerformanceSeatRequest, ReserveStatus.DISABLE.getValue());
 
-            alarmRepository.save(alarm);
-        } else {
-            throw new ServiceException(ResultCode.BAD_REQUEST);
-        }
+        Alarm alarm = Alarm.of(performanceSeatInfo, createAlarmPerformanceSeatRequest);
 
+        alarmRepository.save(alarm);
     }
 
     @Transactional

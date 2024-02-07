@@ -52,21 +52,18 @@ public class TicketSeller {
         Performance performance = getPerformance(createReservationRequest.getPerformanceId(), createReservationRequest.getRound());
 
         //1. 예약 가능한 공연인지 확인
-        if(performance.isReserve(ReserveStatus.ENABLE)) {
+        performance.isReserve(ReserveStatus.ENABLE);
 
-            //2. 예매 된 좌석인지 확인
-            checkIsReservedPerformanceSeat(createReservationRequest);
+        //2. 예매 된 좌석인지 확인
+        checkIsReservedPerformanceSeat(createReservationRequest);
 
-            //3. 결제 가능한지 확인
-            performance.checkHasEnoughBalance(createReservationRequest.getBalance());
+        //3. 결제 가능한지 확인
+        performance.checkHasEnoughBalance(createReservationRequest.getBalance());
 
-            //4. 예약
-            Reservation reservation = reservationRepository.save(Reservation.from(createReservationRequest));
+        //4. 예약
+        Reservation reservation = reservationRepository.save(Reservation.from(createReservationRequest));
 
-            return CreateReservationResponse.of(performance, reservation);
-        } else {
-            throw new ServiceException(ResultCode.RESERVE_NOT_VALID);
-        }
+        return CreateReservationResponse.of(performance, reservation);
     }
 
 
