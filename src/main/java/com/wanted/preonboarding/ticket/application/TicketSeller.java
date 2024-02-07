@@ -3,6 +3,7 @@ package com.wanted.preonboarding.ticket.application;
 import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReadReservationRequest;
+import com.wanted.preonboarding.ticket.domain.dto.response.CreateReservationResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.aop.dto.BaseResDto;
@@ -62,7 +63,7 @@ public class TicketSeller {
             //4. 예약
             Reservation reservation = reservationRepository.save(Reservation.from(createReservationRequest));
 
-            return ResponseReserveQueryDto.of(performance, reservation);
+            return CreateReservationResponse.of(performance, reservation);
         } else {
             throw new ServiceException(ResultCode.RESERVE_NOT_VALID);
         }
@@ -83,7 +84,7 @@ public class TicketSeller {
     public BaseResDto readReservation(ReadReservationRequest readReservationRequest) {
         Reservation reservation = getReservation(readReservationRequest);
         Performance performance = getPerformance(reservation.getPerformanceId(), reservation.getRound());
-        return ResponseReserveQueryDto.of(performance, reservation);
+        return CreateReservationResponse.of(performance, reservation);
     }
 
     private Reservation getReservation(ReadReservationRequest readReservationRequest) {
