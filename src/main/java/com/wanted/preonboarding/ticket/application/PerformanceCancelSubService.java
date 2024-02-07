@@ -86,7 +86,7 @@ public class PerformanceCancelSubService implements MessageListener {
 
 		StringBuilder message = new StringBuilder();
 		message
-			.append("공연 ID: ").append(performance.getId()).append("\n")
+			.append("공연 ID: ").append(performance.getPerformanceId()).append("\n")
 			.append("공연명: ").append(performance.getPeformanceName()).append("\n")
 			.append("회차: ").append(performance.getRound()).append("\n")
 			.append("시작일: ").append(performance.getStart_date()).append("\n")

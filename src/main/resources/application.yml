@@ -28,6 +28,9 @@ spring:
 logging:
   level:
     org:
+      springframework:
+        boot:
+          autoconfigure: ERROR
       hibernate:
         type:
           descriptor:

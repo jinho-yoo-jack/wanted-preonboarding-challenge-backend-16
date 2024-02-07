@@ -19,8 +19,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Performance {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@Column(columnDefinition = "VARBINARY(16)", name = "performance_id")
