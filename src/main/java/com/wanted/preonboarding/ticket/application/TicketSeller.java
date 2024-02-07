@@ -54,8 +54,11 @@ public class TicketSeller {
         //1. 예약 가능한 공연인지 확인
         performance.isReserve(ReserveStatus.ENABLE);
 
-        //2. 예매 된 좌석인지 확인
-        checkIsReservedPerformanceSeat(createReservationRequest);
+        //2. 예매된 좌석인지 확인
+        checkIsReservedPerformanceSeat(createReservationRequest.getPerformanceId()
+                                        ,createReservationRequest.getRound()
+                                        ,createReservationRequest.getLine()
+                                        ,createReservationRequest.getSeat());
 
         //3. 결제 가능한지 확인
         performance.checkHasEnoughBalance(createReservationRequest.getBalance());
@@ -67,12 +70,8 @@ public class TicketSeller {
     }
 
 
-    private void checkIsReservedPerformanceSeat(CreateReservationRequest createReservationRequest) {
-        reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
-                                        createReservationRequest.getPerformanceId(),
-                                        createReservationRequest.getRound(),
-                                        createReservationRequest.getLine(),
-                                        createReservationRequest.getSeat())
+    private void checkIsReservedPerformanceSeat(UUID performanceId, int round, char line, int seat) {
+        reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(performanceId, round, line, seat)
                 .ifPresent(reservation -> {
                 throw new ServiceException(ResultCode.ALREADY_EXISTS_RESERVATION);
                 });
