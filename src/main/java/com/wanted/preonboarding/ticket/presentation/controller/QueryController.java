@@ -2,8 +2,7 @@ package com.wanted.preonboarding.ticket.presentation.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.TicketSeller;
-import com.wanted.preonboarding.ticket.domain.dto.*;
-import com.wanted.preonboarding.ticket.aop.dto.BaseResDto;
+import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,10 +25,10 @@ public class QueryController {
      * @return
      */
     @GetMapping("/all/performance")
-    public ResponseEntity<ResponseHandler<List<ResponsePerformanceInfo>>> readAllPerformances() {
+    public ResponseEntity<ResponseHandler<List<PerformanceInfoResponse>>> readAllPerformances() {
         return ResponseEntity
             .ok()
-            .body(ResponseHandler.<List<ResponsePerformanceInfo>>builder()
+            .body(ResponseHandler.<List<PerformanceInfoResponse>>builder()
                 .message("Success")
                 .statusCode(HttpStatus.OK)
                 .data(ticketSeller.readAllPerformances())

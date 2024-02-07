@@ -1,9 +1,9 @@
 package com.wanted.preonboarding.ticket.application;
 
-import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReadReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.response.CreateReservationResponse;
+import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceInfoResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.aop.StatusCode;
@@ -28,10 +28,10 @@ public class TicketSeller {
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private long totalAmount = 0L;
 
-    public List<ResponsePerformanceInfo> readAllPerformances() {
+    public List<PerformanceInfoResponse> readAllPerformances() {
         return performanceRepository.findByIsReserve(ReserveStatus.ENABLE.getValue())
             .stream()
-            .map(ResponsePerformanceInfo::from)
+            .map(PerformanceInfoResponse::from)
             .toList();
     }
 

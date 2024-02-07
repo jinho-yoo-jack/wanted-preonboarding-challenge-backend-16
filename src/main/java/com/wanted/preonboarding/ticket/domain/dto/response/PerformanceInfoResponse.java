@@ -1,8 +1,8 @@
-package com.wanted.preonboarding.ticket.domain.dto;
+package com.wanted.preonboarding.ticket.domain.dto.response;
 
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceType;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Getter @Setter
 @Builder
-public class ResponsePerformanceInfo {
+public class PerformanceInfoResponse {
     private UUID performanceId;
     private String performanceName; // 공연명
     private String performanceType;
@@ -20,8 +20,8 @@ public class ResponsePerformanceInfo {
     private String isReserve;
     private int round;
 
-    public static ResponsePerformanceInfo from (Performance entity) {
-        return ResponsePerformanceInfo.builder()
+    public static PerformanceInfoResponse from (Performance entity) {
+        return PerformanceInfoResponse.builder()
                 .performanceId(entity.getId())
                 .performanceName(entity.getName())
                 .performanceType(convertCodeToName(entity.getType()))
