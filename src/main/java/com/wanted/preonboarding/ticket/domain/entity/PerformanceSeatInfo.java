@@ -20,7 +20,6 @@ public class PerformanceSeatInfo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "performance_id")
     private Performance performance;
-
     private char seatLine;
     private int seatNumber;
     private boolean isReserve = true;
@@ -56,6 +55,7 @@ public class PerformanceSeatInfo {
 
         return new PerformanceSeatInfo(line, seatNumber);
     }
+
     public ResponsePerformanceSeatInfoDto convertResponseDto(){
         return new ResponsePerformanceSeatInfoDto(this.getSeatLine(),this.getSeatNumber());
     }

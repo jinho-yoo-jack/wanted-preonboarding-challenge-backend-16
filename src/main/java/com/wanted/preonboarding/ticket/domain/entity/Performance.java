@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.CreatedPerformanceRequestDto;
+import com.wanted.preonboarding.ticket.domain.dto.CreatePerformanceRequestDto;
+import com.wanted.preonboarding.ticket.domain.dto.PerformanceType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +11,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Date;
 import java.util.UUID;
+
+import static com.wanted.preonboarding.ticket.domain.dto.PerformanceType.fromCategory;
 
 @Entity
 @Table
@@ -30,20 +33,20 @@ public class Performance {
     @Column(nullable = false)
     private int round;
     @Column(nullable = false)
-    private int type;
+    private PerformanceType type;
     @Column(nullable = false)
     private Date start_date;
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;
 
-    public static Performance of(CreatedPerformanceRequestDto requestDto){
+    public static Performance of(CreatePerformanceRequestDto requestDto){
         return new PerformanceBuilder()
                 .name(requestDto.getPerformanceName())
                 .price(requestDto.getPrice())
                 .round(requestDto.getRound())
-                .type(requestDto.getType())
+                .type(fromCategory(requestDto.getType()))
                 .start_date(requestDto.getStart_date())
-                .isReserve("able")
+                .isReserve("enable")
                 .build();
     }
 }

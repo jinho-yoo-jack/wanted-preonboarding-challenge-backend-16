@@ -34,7 +34,7 @@ class AlarmAppTest {
     @InjectMocks
     private AlarmApp alarmApp;
     private SubscriberPerformanceRequestDto requestDto;
-    private Performance performance = mock(Performance.class);
+    private final Performance performance = mock(Performance.class);
     private UUID testUUID;
     @BeforeEach
     void setUp() {

@@ -15,8 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+
+import static com.wanted.preonboarding.ticket.domain.dto.DiscountPolicy.valueOfDiscountRate;
 
 @Service
 @Slf4j
@@ -27,7 +28,6 @@ public class TicketSeller {
     private final ReservationRepository reservationRepository;
     private final PerformanceSeatRepository performanceSeatRepository;
     private final AlarmApp alarmApp;
-    private long totalAmount = 0L;
 
     public List<PerformanceInfo> getAllPerformanceInfoList() {
         return performanceRepository.findByIsReserve("enable")
@@ -56,74 +56,68 @@ public class TicketSeller {
 
             // 2. 예매 진행
             reserveInfo.setAmount(reserveInfo.getAmount() - discountedPrice);
-            return getResponseReserveInfos(reserveInfo, performanceInfo);
+            return getResponseReserveInfoList(reserveInfo, performanceInfo);
 
         } catch (Exception e) {
             throw new IllegalStateException("예약에 실패 하였습니다.", e);
         }
     }
 
-    private List<ResponseReserveInfo> getResponseReserveInfos(ReserveInfo reserveInfo, Performance performanceInfo) {
+    private List<ResponseReserveInfo> getResponseReserveInfoList(ReserveInfo reserveInfo, Performance performanceInfo) {
         List<String> seatInfo = reserveInfo.getSeats();
-        List<ResponseReserveInfo> reserveInfos = new ArrayList<>();
+        List<ResponseReserveInfo> reserveInfoList = new ArrayList<>();
 
         for (String seat: seatInfo) {
-            PerformanceSeatInfo convertSeatInfo = PerformanceSeatInfo.convertSeatInfo(seat);
-            PerformanceSeatInfo reserveSeatInfo = performanceSeatRepository
-                    .findByPerformanceNameAndSeatLineAndSeatNumber(performanceInfo.getName(),convertSeatInfo.getSeatLine(),convertSeatInfo.getSeatNumber())
-                    .orElseThrow(()-> new IllegalArgumentException("해당 좌석은 없는 좌석 입니다."));
+            PerformanceSeatInfo createdSeatInfo = findSeatInfo(performanceInfo.getId(),seat);
 
-            Reservation reservation = reservationRepository.save(Reservation.of(reserveInfo, reserveSeatInfo));
-            reserveInfos.add(new ResponseReserveInfo(reservation, performanceInfo,reserveSeatInfo));
+            Reservation reservation = reservationRepository.save(Reservation.of(reserveInfo, createdSeatInfo));
+            reserveInfoList.add(ResponseReserveInfo.of(reservation,createdSeatInfo));
         }
+        return reserveInfoList;
+    }
 
-        return reserveInfos;
+    private PerformanceSeatInfo findSeatInfo(UUID performanceId, String seat){
+        PerformanceSeatInfo convertSeatInfo = PerformanceSeatInfo.convertSeatInfo(seat);
+        return performanceSeatRepository
+                .findByPerformanceIdAndSeatLineAndSeatNumber(performanceId ,convertSeatInfo.getSeatLine(),convertSeatInfo.getSeatNumber())
+                .orElseThrow(()-> new IllegalArgumentException("해당 좌석은 없는 좌석 입니다."));
     }
 
     private long applyDiscount(int originalPrice, String discountPolicyString) {
         if (discountPolicyString == null) {
             return (long) (originalPrice * (1 - DiscountPolicy.DEFAULT.getDiscountRate()));
         }
-
-        DiscountPolicy discountPolicy = DiscountPolicy.valueOf(discountPolicyString);
+        DiscountPolicy discountPolicy = valueOfDiscountRate(discountPolicyString);
         return (long) (originalPrice * (1 - discountPolicy.getDiscountRate()));
     }
 
     public List<ResponseReserveInfo> getReserveInfo(GetReservationRequestDto requestDto){
         List<Reservation> reservations = reservationRepository.findByNameAndPhoneNumber(requestDto.getReservationName(), requestDto.getReservationPhoneNumber());
-
-        List<ResponseReserveInfo> responseReserveInfos = toResponseReserveInfos(reservations);
-
-        return responseReserveInfos;
+        if (reservations.isEmpty()){
+            throw new IllegalArgumentException("예약이 존재 하지 않습니다");
+        }
+        return toResponseReserveInfoList(reservations);
     }
 
-    private List<ResponseReserveInfo> toResponseReserveInfos(List<Reservation> reservations) {
-        List<ResponseReserveInfo> responseReserveInfos = new ArrayList<>();
+    private List<ResponseReserveInfo> toResponseReserveInfoList(List<Reservation> reservations) {
+        List<ResponseReserveInfo> responseReserveInfoList = new ArrayList<>();
 
         for (Reservation reservation : reservations) {
-            Performance performance = performanceRepository.findById(reservation.getPerformanceId())
-                    .orElseThrow(EntityNotFoundException::new);
-            PerformanceSeatInfo seatInfo = performanceSeatRepository.findByPerformanceNameAndSeatLineAndSeatNumber(performance.getName(),reservation.getLine(),reservation.getSeat())
+            PerformanceSeatInfo seatInfo = performanceSeatRepository.findByPerformanceIdAndSeatLineAndSeatNumber(reservation.getPerformanceId(),reservation.getLine(),reservation.getSeat())
                     .orElseThrow(()->new IllegalArgumentException("해당 예매는 예약된 예매가 아닙니다."));
-
-            responseReserveInfos.add(new ResponseReserveInfo(reservation,performance,seatInfo));
+            ResponseReserveInfo responseReserveInfo = ResponseReserveInfo.of(reservation,seatInfo);
+            responseReserveInfoList.add(responseReserveInfo);
         }
-        return responseReserveInfos;
+        return responseReserveInfoList;
     }
 
-
-
-
     public void cancel(CancelReservationRequestDto requestDto) {
-        PerformanceSeatInfo performanceSeatInfo = performanceSeatRepository.findByPerformanceNameAndSeatLineAndSeatNumber(requestDto.getPerformanceName(),requestDto.getLine(),requestDto.getSeat())
+        PerformanceSeatInfo performanceSeatInfo = performanceSeatRepository.findByPerformanceIdAndSeatLineAndSeatNumber(requestDto.getPerformanceId(),requestDto.getLine(),requestDto.getSeat())
                 .orElseThrow(()->new IllegalArgumentException("예매 내역이 존재하지 않습니다"));
-        Performance performance = performanceRepository.findByName(requestDto.getPerformanceName())
-                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 공연 입니다."));
-
         //좌석 닫기
         performanceSeatInfo.closedSeat();
         //알람 보내기
-        alarmApp.sendAlarm(performance.getId());
+        alarmApp.sendAlarm(performanceSeatInfo.getPerformance().getId());
     }
 
 

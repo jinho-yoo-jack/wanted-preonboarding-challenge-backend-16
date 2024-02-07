@@ -39,6 +39,7 @@ public class Reservation {
     private int gate;
     private char line;
     private int seat;
+    private long amount;
 
     public static Reservation of(ReserveInfo info,PerformanceSeatInfo seatInfo) {
         return Reservation.builder()
@@ -49,6 +50,7 @@ public class Reservation {
             .gate(1)
             .line(seatInfo.getSeatLine())
             .seat(seatInfo.getSeatNumber())
+            .amount(info.getAmount())
             .build();
     }
 

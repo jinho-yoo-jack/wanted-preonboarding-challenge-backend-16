@@ -4,11 +4,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Builder
 public class CancelReservationRequestDto {
-    private String performanceName;
+    private UUID performanceId;
     private char line;
     private int seat;
     private String reservationName;

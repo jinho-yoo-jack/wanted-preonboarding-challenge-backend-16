@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.application;
 
-import com.wanted.preonboarding.ticket.domain.dto.CreatedPerformanceRequestDto;
+import com.wanted.preonboarding.ticket.domain.dto.CreatePerformanceRequestDto;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
@@ -23,7 +23,7 @@ public class PerformanceApp {
     private final PerformanceRepository performanceRepository;
     private final PerformanceSeatRepository performanceSeatRepository;
 
-    public void create(CreatedPerformanceRequestDto requestDto){
+    public void create(CreatePerformanceRequestDto requestDto){
         Performance performance = Performance.of(requestDto);
         List<String> stringSeatInfo = requestDto.generateCombinations();
         List<PerformanceSeatInfo> performanceSeatInfoList = new ArrayList<>();

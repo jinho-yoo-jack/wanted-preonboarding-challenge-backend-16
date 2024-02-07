@@ -21,7 +21,7 @@ public class PerformanceInfo {
         return PerformanceInfo.builder()
             .performanceId(entity.getId())
             .performanceName(entity.getName())
-            .performanceType(convertCodeToName(entity.getType()))
+            .performanceType(convertCodeToName(entity.getType().getCategory()))
             .startDate(entity.getStart_date())
             .isReserve(entity.getIsReserve())
             .build();

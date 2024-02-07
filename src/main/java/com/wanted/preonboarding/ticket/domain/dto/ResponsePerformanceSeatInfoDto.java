@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-
 public class ResponsePerformanceSeatInfoDto {
     private char seatLine;
     private int seatNumber;

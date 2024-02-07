@@ -7,12 +7,15 @@ import lombok.Setter;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Getter
 @Setter
 @Builder
-public class CreatedPerformanceRequestDto {
+public class CreatePerformanceRequestDto {
     @Column(nullable = false)
     private String performanceName;
     @Column(nullable = false)
@@ -30,8 +33,6 @@ public class CreatedPerformanceRequestDto {
 
 
     public List<String> generateCombinations() {
-        List<String> combinations = new ArrayList<>();
-
         if (lineRange != null && seatRange != null) {
             String[] lines = lineRange.split("~");
             String[] seatRangeParts = seatRange.split("~");
@@ -39,12 +40,11 @@ public class CreatedPerformanceRequestDto {
             int startSeat = Integer.parseInt(seatRangeParts[0]);
             int endSeat = Integer.parseInt(seatRangeParts[1]);
 
-            for (String line : lines) {
-                for (int i = startSeat; i <= endSeat; i++) {
-                    combinations.add(line + i);
-                }
-            }
+            return Arrays.stream(lines)
+                    .flatMap(line -> IntStream.rangeClosed(startSeat, endSeat).mapToObj(seat -> line + seat))
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
         }
-        return combinations;
     }
 }

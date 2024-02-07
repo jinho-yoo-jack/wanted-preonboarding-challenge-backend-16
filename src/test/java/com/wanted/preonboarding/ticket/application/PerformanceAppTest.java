@@ -1,15 +1,11 @@
 package com.wanted.preonboarding.ticket.application;
 
-import com.wanted.preonboarding.ticket.domain.dto.CreatedPerformanceRequestDto;
+import com.wanted.preonboarding.ticket.domain.dto.CreatePerformanceRequestDto;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatRepository;
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityNotFoundException;
-import org.aspectj.lang.annotation.RequiredTypes;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +14,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,12 +32,12 @@ class PerformanceAppTest {
     @Mock
     private PerformanceRepository performanceRepository;
 
-    CreatedPerformanceRequestDto requestDto;
+    CreatePerformanceRequestDto requestDto;
     Performance performance ;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        requestDto = CreatedPerformanceRequestDto.builder()
+        requestDto = CreatePerformanceRequestDto.builder()
                         .performanceName("testPerformanceName")
                         .price(10000)
                         .round(1)

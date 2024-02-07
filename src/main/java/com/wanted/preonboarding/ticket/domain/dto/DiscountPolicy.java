@@ -14,4 +14,13 @@ public enum DiscountPolicy {
     public double getDiscountRate() {
         return discountRate;
     }
+
+    public static DiscountPolicy valueOfDiscountRate(String discountPolicyString) {
+        return switch (discountPolicyString) {
+            case "0.1" -> TEN_PERCENT;
+            case "0.3" -> THIRTY_PERCENT;
+            default -> DEFAULT;
+        };
+    }
+
 }
