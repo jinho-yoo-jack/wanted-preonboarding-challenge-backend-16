@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticket.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,7 +32,7 @@ public class Reservation extends BaseEntity {
     private char line;
     private int seat;
 
-    public static Reservation from(ReserveInfo info) {
+    public static Reservation from(CreateReservationRequest info) {
         return Reservation.builder()
             .performanceId(info.getPerformanceId())
             .name(info.getReservationName())

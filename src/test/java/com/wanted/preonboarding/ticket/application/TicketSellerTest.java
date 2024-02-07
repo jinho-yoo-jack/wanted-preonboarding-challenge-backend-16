@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.dto.RequestReserveQueryDto;
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.sql.Date;
-import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -58,7 +57,7 @@ public class TicketSellerTest {
                 .build();
         performanceRepository.save(performance);
 
-        ReserveInfo info = ReserveInfo.builder()
+        CreateReservationRequest info = CreateReservationRequest.builder()
                 .performanceId(performance.getId())
                 .reservationName("이곰돌") // 고객의 이름
                 .reservationPhoneNumber("010-2222-2222") // 휴대 전화
@@ -71,7 +70,7 @@ public class TicketSellerTest {
                 .build();
 
         //when
-        ticketSeller.reserve(info);
+        ticketSeller.createReservation(info);
 
 
         //then

@@ -8,6 +8,6 @@ import lombok.Setter;
 @Builder
 public class ReserveSystemDto {
 //    private PerformanceInfo performanceInfo;
-//    private ReserveInfo reserveInfo;
+//    private CreateReservationRequest reserveInfo;
     private ResponseReserveQueryDto responseQueryDto;
 }
