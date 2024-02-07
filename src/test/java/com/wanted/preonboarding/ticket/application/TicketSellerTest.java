@@ -62,7 +62,7 @@ public class TicketSellerTest {
                 .reservationName("이곰돌") // 고객의 이름
                 .reservationPhoneNumber("010-2222-2222") // 휴대 전화
                 .reservationStatus("enable") // 예약; 취소;
-                .amount(10000) // 결제 가능한 금액(잔고)
+                .balance(10000) // 결제 가능한 금액(잔고)
                 .gate(1)
                 .round(2) // 회차
                 .line('A') // 좌석 정보

@@ -62,8 +62,8 @@ public class TicketSeller {
             //2. 예매 된 좌석인지 확인
             checkIsReservedPerformanceSeat(createReservationRequest);
 
-            //3. 결제
-            paymentProcess(performance, createReservationRequest);
+            //3. 결제 가능한지 확인
+            performance.checkHasEnoughBalance(createReservationRequest);
 
             //4. 예약
             reservePerformance(createReservationRequest);
@@ -74,15 +74,6 @@ public class TicketSeller {
         }
     }
 
-    private void paymentProcess(Performance performance, CreateReservationRequest createReservationRequest) {
-        int price = performance.getPrice();
-        if(createReservationRequest.getAmount() - price >= 0) {
-            createReservationRequest.payAmount(createReservationRequest.getAmount() - price);
-        } else {
-            throw new ServiceException(ResultCode.NOT_ENOUGH_AMOUNT);
-        }
-
-    }
 
     private void reservePerformance(CreateReservationRequest createReservationRequest) {
         reservationRepository.save(Reservation.from(createReservationRequest));

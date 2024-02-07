@@ -1,10 +1,12 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.aop.ResultCode;
+import com.wanted.preonboarding.ticket.aop.exception.ServiceException;
+import com.wanted.preonboarding.ticket.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticket.global.common.BaseEntity;
 import com.wanted.preonboarding.ticket.global.common.ReserveStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -41,5 +43,11 @@ public class Performance extends BaseEntity {
 
     public boolean isReserve(ReserveStatus status) {
         return this.isReserve.equalsIgnoreCase(status.getValue());
+    }
+
+    public void checkHasEnoughBalance(CreateReservationRequest createReservationRequest) {
+        if(createReservationRequest.getBalance() - this.price < 0) {
+            throw new ServiceException(ResultCode.NOT_ENOUGH_BALANCE);
+        }
     }
 }

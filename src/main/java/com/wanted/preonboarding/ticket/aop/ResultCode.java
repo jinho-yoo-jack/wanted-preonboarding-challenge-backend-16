@@ -25,7 +25,7 @@ public enum ResultCode {
     RESERVE_NOT_VALID(400, ResultMessage.RESERVE_NOT_VALID),
     EMAIL_SENDING(500, ResultMessage.EMAIL_SENDING),
     EMAIL_ADDRESS_INVALID(400, ResultMessage.EMAIL_ADDRESS_INVALID),
-    NOT_ENOUGH_AMOUNT(400, ResultMessage.NOT_ENOUGH_AMOUNT);
+    NOT_ENOUGH_BALANCE(400, ResultMessage.NOT_ENOUGH_BALANCE);
 
     private final int resultCode;
     private final String resultMessage;
@@ -67,6 +67,6 @@ public enum ResultCode {
         String EMAIL_SENDING = "이메일 전송 중 문제가 발생했습니다.";
         String EMAIL_ADDRESS_INVALID = "이메일 주소 형식이 잘못되었습니다.";
         String ALREADY_EXISTS_RESERVATION = "이미 예약된 좌석입니다.";
-        String NOT_ENOUGH_AMOUNT = "결재 가능한 금액을 초과했습니다.";
+        String NOT_ENOUGH_BALANCE = "결재 가능한 금액을 초과했습니다.";
     }
 }

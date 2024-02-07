@@ -11,7 +11,7 @@ import java.util.UUID;
 public class CreateReservationRequest {
     private String reservationName; // 고객의 이름
     private String reservationPhoneNumber; // 휴대 전화
-    private long amount; // 결제 가능한 금액(잔고)
+    private long balance; // 결제 가능한 금액(잔고)
     private UUID performanceId; // 예약을 원하는 공연 또는 전시회ID
     private int round; // 회차
     private int gate; // 좌석 정보
@@ -19,7 +19,4 @@ public class CreateReservationRequest {
     private int seat; // 좌석 정보
     private String reservationStatus; // 예약; 취소;
 
-    public void payAmount(long amount) {
-        this.amount = this.amount - amount;
-    }
 }
