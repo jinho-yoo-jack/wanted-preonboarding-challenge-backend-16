@@ -66,7 +66,7 @@ public class TicketSeller {
             performance.checkHasEnoughBalance(createReservationRequest);
 
             //4. 예약
-            reservePerformance(createReservationRequest);
+            reservationRepository.save(Reservation.from(createReservationRequest));
 
             return getPerformanceInfoDetail(createReservationRequest);
         } else {
@@ -74,10 +74,6 @@ public class TicketSeller {
         }
     }
 
-
-    private void reservePerformance(CreateReservationRequest createReservationRequest) {
-        reservationRepository.save(Reservation.from(createReservationRequest));
-    }
 
     private void checkIsReservedPerformanceSeat(CreateReservationRequest createReservationRequest) {
         reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
