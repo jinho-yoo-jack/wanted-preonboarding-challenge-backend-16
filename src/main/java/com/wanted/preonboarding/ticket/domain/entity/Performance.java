@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
 import com.wanted.preonboarding.ticket.global.common.BaseEntity;
+import com.wanted.preonboarding.ticket.global.common.ReserveStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,4 +38,8 @@ public class Performance extends BaseEntity {
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;
 
+
+    public boolean isReserve(ReserveStatus status) {
+        return this.isReserve.equalsIgnoreCase(status.getValue());
+    }
 }

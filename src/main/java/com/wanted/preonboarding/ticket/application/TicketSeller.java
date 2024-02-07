@@ -57,8 +57,7 @@ public class TicketSeller {
         Performance performance = getPerformance(createReservationRequest.getPerformanceId(), createReservationRequest.getRound());
 
         //1. 예약 가능한 공연인지 확인
-        String enableReserve = performance.getIsReserve();
-        if (enableReserve.equalsIgnoreCase(ReserveStatus.ENABLE.getValue())) {
+        if(performance.isReserve(ReserveStatus.ENABLE)) {
 
             //2. 예매 된 좌석인지 확인
             checkIsReservedPerformanceSeat(createReservationRequest);
