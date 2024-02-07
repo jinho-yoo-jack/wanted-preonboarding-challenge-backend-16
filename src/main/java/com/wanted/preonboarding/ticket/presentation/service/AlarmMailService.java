@@ -6,6 +6,7 @@ import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.domain.entity.Alarm;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
+import com.wanted.preonboarding.ticket.global.common.ReserveStatus;
 import com.wanted.preonboarding.ticket.infrastructure.repository.AlarmRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
@@ -36,16 +37,12 @@ public class AlarmMailService {
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private final AlarmRepository alarmRepository;
 
-    private static final String CANCEL = "cancel";
-    private static final String DISABLE = "disable";
-    private static final String ENABLE = "enable";
-
     @Transactional
     public void createAlarmPerformance(ReservePossibleAlarmCustomerInfoDto dto) {
 
         Performance performance = getPerformance(dto);
-        if(performance.getIsReserve().equalsIgnoreCase(ENABLE)) {
-            PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto, DISABLE);
+        if(performance.getIsReserve().equalsIgnoreCase(ReserveStatus.ENABLE.getValue())) {
+            PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto, ReserveStatus.DISABLE.getValue());
 
             Alarm alarm = Alarm.of(performanceSeatInfo, dto);
 
@@ -61,7 +58,7 @@ public class AlarmMailService {
 
         Alarm alarm = getAlarm(dto);
         Performance performance = getPerformance(dto);
-        PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto, CANCEL);
+        PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto, ReserveStatus.CANCEL.getValue());
 
         SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto = SendMessagePerformanceSeatInfoDto.from(performanceSeatInfo);
         sendMessagePerformanceSeatInfoDto.updatePerformanceName(performance.getName());

@@ -3,8 +3,6 @@ package com.wanted.preonboarding.ticket.presentation.controller;
 import com.wanted.preonboarding.ticket.application.TicketSeller;
 import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.aop.dto.BaseResDto;
-import com.wanted.preonboarding.ticket.aop.ResultCode;
-import com.wanted.preonboarding.ticket.aop.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

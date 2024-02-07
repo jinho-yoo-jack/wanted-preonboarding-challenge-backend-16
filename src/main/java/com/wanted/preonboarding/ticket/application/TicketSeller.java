@@ -6,6 +6,7 @@ import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.aop.dto.BaseResDto;
 import com.wanted.preonboarding.ticket.aop.ResultCode;
 import com.wanted.preonboarding.ticket.aop.exception.ServiceException;
+import com.wanted.preonboarding.ticket.global.common.ReserveStatus;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
@@ -24,10 +25,9 @@ public class TicketSeller {
     private final ReservationRepository reservationRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private long totalAmount = 0L;
-    private static final String ENABLE = "enable";
 
     public List<ResponsePerformanceInfo> readAllPerformances() {
-        return performanceRepository.findByIsReserve(ENABLE)
+        return performanceRepository.findByIsReserve(ReserveStatus.ENABLE.getValue())
             .stream()
             .map(ResponsePerformanceInfo::from)
             .toList();
@@ -55,7 +55,7 @@ public class TicketSeller {
     public void reserve(ReserveInfo reserveInfo) {
         Performance performance = getPerformance(reserveInfo.getPerformanceId(), reserveInfo.getRound());
         String enableReserve = performance.getIsReserve();
-        if (enableReserve.equalsIgnoreCase(ENABLE)) {
+        if (enableReserve.equalsIgnoreCase(ReserveStatus.ENABLE.getValue())) {
             // 1. 결제
             int price = performance.getPrice();
             reserveInfo.setAmount(reserveInfo.getAmount() - price);
