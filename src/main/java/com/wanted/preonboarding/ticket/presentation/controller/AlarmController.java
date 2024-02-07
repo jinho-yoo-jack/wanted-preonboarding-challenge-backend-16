@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.presentation.controller;
 
 
-import com.wanted.preonboarding.ticket.domain.dto.ReservePossibleAlarmCustomerInfoDto;
+import com.wanted.preonboarding.ticket.domain.dto.request.CreateAlarmPerformanceSeatRequest;
 import com.wanted.preonboarding.ticket.presentation.service.AlarmMailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +23,12 @@ public class AlarmController {
      * @return
      */
     @PostMapping("/send")
-    public void sendAlarm(@RequestBody ReservePossibleAlarmCustomerInfoDto dto) {
+    public void sendAlarm(@RequestBody CreateAlarmPerformanceSeatRequest dto) {
         alarmMailService.sendAlarmPerformance(dto);
     }
 
     @PostMapping("/create")
-    public void createAlarm(@RequestBody ReservePossibleAlarmCustomerInfoDto dto) {
-        alarmMailService.createAlarmPerformance(dto);
+    public void createAlarPerformanceSeat(@RequestBody CreateAlarmPerformanceSeatRequest createAlarmPerformanceSeatRequest) {
+        alarmMailService.createAlarmPerformanceSeat(createAlarmPerformanceSeatRequest);
     }
 }

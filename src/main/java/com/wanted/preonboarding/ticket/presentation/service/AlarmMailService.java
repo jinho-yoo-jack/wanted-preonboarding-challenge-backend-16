@@ -3,6 +3,7 @@ package com.wanted.preonboarding.ticket.presentation.service;
 import com.wanted.preonboarding.ticket.aop.ResultCode;
 import com.wanted.preonboarding.ticket.aop.exception.ServiceException;
 import com.wanted.preonboarding.ticket.domain.dto.*;
+import com.wanted.preonboarding.ticket.domain.dto.request.CreateAlarmPerformanceSeatRequest;
 import com.wanted.preonboarding.ticket.domain.entity.Alarm;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
@@ -21,7 +22,6 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -38,13 +38,16 @@ public class AlarmMailService {
     private final AlarmRepository alarmRepository;
 
     @Transactional
-    public void createAlarmPerformance(ReservePossibleAlarmCustomerInfoDto dto) {
+    public void createAlarmPerformanceSeat(CreateAlarmPerformanceSeatRequest createAlarmPerformanceSeatRequest) {
 
-        Performance performance = getPerformance(dto);
+        //1. 알림 가능한 공연인지 확인
+        Performance performance = getPerformance(createAlarmPerformanceSeatRequest);
         if(performance.isReserve(ReserveStatus.ENABLE)) {
-            PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto, ReserveStatus.DISABLE.getValue());
 
-            Alarm alarm = Alarm.of(performanceSeatInfo, dto);
+            //2. 알림 가능한 공연 좌석인지 확인
+            PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(createAlarmPerformanceSeatRequest, ReserveStatus.DISABLE.getValue());
+
+            Alarm alarm = Alarm.of(performanceSeatInfo, createAlarmPerformanceSeatRequest);
 
             alarmRepository.save(alarm);
         } else {
@@ -54,7 +57,7 @@ public class AlarmMailService {
     }
 
     @Transactional
-    public void sendAlarmPerformance(ReservePossibleAlarmCustomerInfoDto dto) {
+    public void sendAlarmPerformance(CreateAlarmPerformanceSeatRequest dto) {
 
         Alarm alarm = getAlarm(dto);
         Performance performance = getPerformance(dto);
@@ -67,7 +70,7 @@ public class AlarmMailService {
         messageBody(dto.getReservationEmail(), sendMessagePerformanceSeatInfoDto);
     }
 
-    private Alarm getAlarm(ReservePossibleAlarmCustomerInfoDto dto) {
+    private Alarm getAlarm(CreateAlarmPerformanceSeatRequest dto) {
         return alarmRepository.findByPerformanceIdAndNameAndPhoneNumberAndEmail(
                 dto.getPerformanceId(),
                 dto.getReservationName(),
@@ -104,12 +107,12 @@ public class AlarmMailService {
         }
     }
 
-    private PerformanceSeatInfo getPerformanceSeatInfoAndStatus(ReservePossibleAlarmCustomerInfoDto dto, String status) {
+    private PerformanceSeatInfo getPerformanceSeatInfoAndStatus(CreateAlarmPerformanceSeatRequest dto, String status) {
         return performanceSeatInfoRepository.findByPerformanceIdAndIsReserve(dto.getPerformanceId(), status)
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
     }
 
-    private Performance getPerformance(ReservePossibleAlarmCustomerInfoDto dto) {
+    private Performance getPerformance(CreateAlarmPerformanceSeatRequest dto) {
         return performanceRepository.findById(dto.getPerformanceId())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
     }

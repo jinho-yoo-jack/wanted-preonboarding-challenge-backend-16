@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReservePossibleAlarmCustomerInfoDto;
+import com.wanted.preonboarding.ticket.domain.dto.request.CreateAlarmPerformanceSeatRequest;
 import com.wanted.preonboarding.ticket.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class Alarm extends BaseEntity {
     @Column(nullable = false)
     private String email; //이메일
 
-    public static Alarm of (PerformanceSeatInfo performanceSeatInfo, ReservePossibleAlarmCustomerInfoDto dto) {
+    public static Alarm of (PerformanceSeatInfo performanceSeatInfo, CreateAlarmPerformanceSeatRequest dto) {
         return Alarm.builder()
                 .performanceId(performanceSeatInfo.getPerformanceId())
                 .name(dto.getReservationName())
