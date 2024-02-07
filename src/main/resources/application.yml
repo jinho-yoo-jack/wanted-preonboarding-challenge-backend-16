@@ -1,5 +1,7 @@
 server:
   port: 8016
+  error:
+    path: /error
 
 spring:
   datasource:
