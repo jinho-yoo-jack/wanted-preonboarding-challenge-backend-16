@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.domain.dto.request.CreateReservationRequest;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReadReservationRequest;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.aop.dto.BaseResDto;
@@ -35,7 +36,6 @@ public class TicketSeller {
     }
 
     public BaseResDto getPerformanceInfoDetail(CreateReservationRequest createReservationRequest) {
-        log.info("getPerformanceInfoDetail");
         Performance performance = getPerformance(createReservationRequest.getPerformanceId(), createReservationRequest.getRound());
         Reservation reservation = getReservation(createReservationRequest, performance);
         return ResponseReserveQueryDto.of(performance, reservation);
@@ -99,14 +99,14 @@ public class TicketSeller {
                 });
     }
 
-    public BaseResDto getReserveInfoDetail(RequestReserveQueryDto dto) {
-        Reservation reservation = getReservation(dto);
+    public BaseResDto readReservation(ReadReservationRequest readReservationRequest) {
+        Reservation reservation = getReservation(readReservationRequest);
         Performance performance = getPerformance(reservation.getPerformanceId(), reservation.getRound());
         return ResponseReserveQueryDto.of(performance, reservation);
     }
 
-    private Reservation getReservation(RequestReserveQueryDto dto) {
-        return reservationRepository.findByNameAndPhoneNumber(dto.getReservationName(), dto.getReservationPhoneNumber())
+    private Reservation getReservation(ReadReservationRequest readReservationRequest) {
+        return reservationRepository.findByNameAndPhoneNumber(readReservationRequest.getReservationName(), readReservationRequest.getReservationPhoneNumber())
                 .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
     }
 

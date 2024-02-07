@@ -78,7 +78,6 @@ public class AlarmMailService {
 
 
     public void messageBody(String reservationEmail, SendMessagePerformanceSeatInfoDto dto) {
-        log.info("SmsService messageBody");
         Session session = getSession(this.username, this.password, getProperties());
 
         sendMessageBody(session, reservationEmail, dto);

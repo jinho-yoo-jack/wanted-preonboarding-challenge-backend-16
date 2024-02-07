@@ -1,19 +1,17 @@
-package com.wanted.preonboarding.ticket.domain.dto;
+package com.wanted.preonboarding.ticket.domain.dto.request;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
 @Getter @Setter
 @Builder
-public class RequestReserveQueryDto {
+public class ReadReservationRequest {
     private String reservationName;
     private String reservationPhoneNumber;
 
-    public static RequestReserveQueryDto of(String reservationName, String reservationPhoneNumber) {
-        return RequestReserveQueryDto.builder()
+    public static ReadReservationRequest of(String reservationName, String reservationPhoneNumber) {
+        return ReadReservationRequest.builder()
                 .reservationName(reservationName)
                 .reservationPhoneNumber(reservationPhoneNumber)
                 .build();

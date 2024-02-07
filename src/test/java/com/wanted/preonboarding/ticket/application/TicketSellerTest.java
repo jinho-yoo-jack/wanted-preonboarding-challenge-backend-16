@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.application;
 
-import com.wanted.preonboarding.ticket.domain.dto.RequestReserveQueryDto;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReadReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
@@ -102,7 +102,7 @@ public class TicketSellerTest {
                 .phoneNumber("010-2222-2222")
                 .build();
         reservationRepository.save(reservation);
-        RequestReserveQueryDto dto = RequestReserveQueryDto.of(reservation.getName(), reservation.getPhoneNumber());
+        ReadReservationRequest dto = ReadReservationRequest.of(reservation.getName(), reservation.getPhoneNumber());
 
 
         //when
