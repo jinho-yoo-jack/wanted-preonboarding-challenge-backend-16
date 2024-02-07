@@ -86,7 +86,6 @@ class PerformanceAppTest {
 
         //then
         assertEquals(performanceInfo.getPerformanceName(),"testPerformanceName");
-
     }
 
 }

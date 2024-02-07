@@ -3,6 +3,7 @@ package com.wanted.preonboarding.ticket.domain.entity;
 import com.wanted.preonboarding.ticket.domain.dto.ResponseAlarmDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class Alarm {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
