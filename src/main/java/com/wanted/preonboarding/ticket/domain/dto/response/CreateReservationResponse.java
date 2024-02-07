@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Getter @Setter
 @SuperBuilder
-public class CreateReservationResponse extends BaseResDto {
+public class CreateReservationResponse {
 
     private UUID performanceId; //공연ID
     private int round; //회차

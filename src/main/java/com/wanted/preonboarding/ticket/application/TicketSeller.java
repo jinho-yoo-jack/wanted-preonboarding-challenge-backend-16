@@ -6,8 +6,7 @@ import com.wanted.preonboarding.ticket.domain.dto.request.ReadReservationRequest
 import com.wanted.preonboarding.ticket.domain.dto.response.CreateReservationResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.aop.dto.BaseResDto;
-import com.wanted.preonboarding.ticket.aop.ResultCode;
+import com.wanted.preonboarding.ticket.aop.StatusCode;
 import com.wanted.preonboarding.ticket.aop.exception.ServiceException;
 import com.wanted.preonboarding.ticket.global.common.ReserveStatus;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
@@ -39,16 +38,16 @@ public class TicketSeller {
     private Reservation getReservation(CreateReservationRequest reserveInfo, Performance performance) {
         return reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
                 performance.getId(), performance.getRound(), reserveInfo.getLine(), reserveInfo.getSeat())
-                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
+                .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
     }
 
     private Performance getPerformance(UUID id, int round) {
         return performanceRepository.findByIdAndRound(id, round)
-                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
+                .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
     }
 
     @Transactional
-    public BaseResDto createReservation(CreateReservationRequest createReservationRequest) {
+    public CreateReservationResponse createReservation(CreateReservationRequest createReservationRequest) {
         Performance performance = getPerformance(createReservationRequest.getPerformanceId(), createReservationRequest.getRound());
 
         //1. 예약 가능한 공연인지 확인
@@ -73,11 +72,11 @@ public class TicketSeller {
     private void checkIsReservedPerformanceSeat(UUID performanceId, int round, char line, int seat) {
         reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(performanceId, round, line, seat)
                 .ifPresent(reservation -> {
-                throw new ServiceException(ResultCode.ALREADY_EXISTS_RESERVATION);
+                throw new ServiceException(StatusCode.ALREADY_EXISTS_RESERVATION);
                 });
     }
 
-    public BaseResDto readReservation(ReadReservationRequest readReservationRequest) {
+    public CreateReservationResponse readReservation(ReadReservationRequest readReservationRequest) {
         Reservation reservation = getReservation(readReservationRequest);
         Performance performance = getPerformance(reservation.getPerformanceId(), reservation.getRound());
         return CreateReservationResponse.of(performance, reservation);
@@ -85,7 +84,7 @@ public class TicketSeller {
 
     private Reservation getReservation(ReadReservationRequest readReservationRequest) {
         return reservationRepository.findByNameAndPhoneNumber(readReservationRequest.getReservationName(), readReservationRequest.getReservationPhoneNumber())
-                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
+                .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
     }
 
 }

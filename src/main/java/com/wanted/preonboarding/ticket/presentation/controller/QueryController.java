@@ -33,8 +33,7 @@ public class QueryController {
                 .message("Success")
                 .statusCode(HttpStatus.OK)
                 .data(ticketSeller.readAllPerformances())
-                .build()
-            );
+                .build());
     }
 
 }

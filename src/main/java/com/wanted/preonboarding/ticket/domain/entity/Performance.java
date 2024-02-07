@@ -1,8 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.aop.ResultCode;
+import com.wanted.preonboarding.ticket.aop.StatusCode;
 import com.wanted.preonboarding.ticket.aop.exception.ServiceException;
-import com.wanted.preonboarding.ticket.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticket.global.common.BaseEntity;
 import com.wanted.preonboarding.ticket.global.common.ReserveStatus;
 import jakarta.persistence.*;
@@ -43,13 +42,13 @@ public class Performance extends BaseEntity {
 
     public void isReserve(ReserveStatus status) {
         if(!this.isReserve.equalsIgnoreCase(status.getValue())) {
-            throw new ServiceException(ResultCode.RESERVE_NOT_VALID);
+            throw new ServiceException(StatusCode.RESERVE_NOT_VALID);
         }
     }
 
     public void checkHasEnoughBalance(long balance) {
         if(balance - this.price < 0) {
-            throw new ServiceException(ResultCode.NOT_ENOUGH_BALANCE);
+            throw new ServiceException(StatusCode.NOT_ENOUGH_BALANCE);
         }
     }
 }

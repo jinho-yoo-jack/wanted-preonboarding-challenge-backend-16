@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.presentation.service;
 
-import com.wanted.preonboarding.ticket.aop.ResultCode;
+import com.wanted.preonboarding.ticket.aop.StatusCode;
 import com.wanted.preonboarding.ticket.aop.exception.ServiceException;
 import com.wanted.preonboarding.ticket.domain.dto.*;
 import com.wanted.preonboarding.ticket.domain.dto.request.CreateAlarmPerformanceSeatRequest;
@@ -71,7 +71,7 @@ public class AlarmMailService {
                 dto.getReservationName(),
                 dto.getReservationPhoneNumber(),
                 dto.getReservationEmail())
-                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
+                .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
     }
 
 
@@ -96,20 +96,20 @@ public class AlarmMailService {
             // Send the message
             Transport.send(message);
         } catch (AddressException e) {
-            throw new ServiceException(ResultCode.EMAIL_ADDRESS_INVALID);
+            throw new ServiceException(StatusCode.EMAIL_ADDRESS_INVALID);
         } catch (MessagingException e) {
-            throw new ServiceException(ResultCode.EMAIL_SENDING);
+            throw new ServiceException(StatusCode.EMAIL_SENDING);
         }
     }
 
     private PerformanceSeatInfo getPerformanceSeatInfoAndStatus(CreateAlarmPerformanceSeatRequest dto, String status) {
         return performanceSeatInfoRepository.findByPerformanceIdAndIsReserve(dto.getPerformanceId(), status)
-                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
+                .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
     }
 
     private Performance getPerformance(CreateAlarmPerformanceSeatRequest dto) {
         return performanceRepository.findById(dto.getPerformanceId())
-                .orElseThrow(() -> new ServiceException(ResultCode.NOT_FOUND));
+                .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
     }
 
 

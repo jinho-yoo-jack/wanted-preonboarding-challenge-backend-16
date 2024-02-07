@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Getter @Setter
 @SuperBuilder
-public class PerformanceInfo extends BaseResDto {
+public class PerformanceInfo {
     private UUID performanceId;
     private String performanceName; // 공연명
     private String performanceType;

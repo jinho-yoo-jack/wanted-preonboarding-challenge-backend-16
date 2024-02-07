@@ -1,49 +1,49 @@
 package com.wanted.preonboarding.ticket.aop;
 
-public enum ResultCode {
-    SUCCESS(200, ResultMessage.SUCCESS),
-    UNAUTHORIZED(401, ResultMessage.UNAUTHORIZED),
-    NO_AUTH(403, ResultMessage.NO_AUTH),
-    BAD_REQUEST(404, ResultMessage.BAD_REQUEST),
-    NOT_FOUND(405, ResultMessage.NOT_FOUND),
-    ALREADY_EXISTS(409, ResultMessage.ALREADY_EXISTS),
-    ALREADY_EXISTS_RESERVATION(409, ResultMessage.ALREADY_EXISTS_RESERVATION),
+public enum StatusCode {
+    SUCCESS(200, Message.SUCCESS),
+    UNAUTHORIZED(401, Message.UNAUTHORIZED),
+    NO_AUTH(403, Message.NO_AUTH),
+    BAD_REQUEST(404, Message.BAD_REQUEST),
+    NOT_FOUND(405, Message.NOT_FOUND),
+    ALREADY_EXISTS(409, Message.ALREADY_EXISTS),
+    ALREADY_EXISTS_RESERVATION(409, Message.ALREADY_EXISTS_RESERVATION),
 
-    INTERNAL_ERROR(500, ResultMessage.INTERNAL_ERROR),
-    VALID_NOT_PHONE_NUM(1_007, ResultMessage.VALID_NOT_PHONE_NUM),
-    VALID_NOT_PASSWORD(1_008, ResultMessage.VALID_NOT_PASSWORD),
-    MEMBER_NOT_EXIST(1_012, ResultMessage.MEMBER_NOT_EXIST),
-    LOGIN_REQUIRED(1_019, ResultMessage.LOGIN_REQUIRED),
-    PARAM_NOT_VALID(400, ResultMessage.PARAM_NOT_VALID),
-    VALID_NOT_NULL(400, ResultMessage.VALID_NOT_NULL),
-    VALID_NOT_REGEXP(400, ResultMessage.VALID_NOT_REGEXP),
-    UNSUPPORTED_ENCODING(400, ResultMessage.UNSUPPORTED_ENCODING),
-    NO_SUCH_ALGORITHM(500, ResultMessage.NO_SUCH_ALGORITHM),
-    URI_SYNTAX(400, ResultMessage.URI_SYNTAX),
-    INVALID_KEY(500, ResultMessage.INVALID_KEY),
-    JSON_PROCESSING(400, ResultMessage.JSON_PROCESSING),
-    RESERVE_NOT_VALID(400, ResultMessage.RESERVE_NOT_VALID),
-    EMAIL_SENDING(500, ResultMessage.EMAIL_SENDING),
-    EMAIL_ADDRESS_INVALID(400, ResultMessage.EMAIL_ADDRESS_INVALID),
-    NOT_ENOUGH_BALANCE(400, ResultMessage.NOT_ENOUGH_BALANCE);
+    INTERNAL_ERROR(500, Message.INTERNAL_ERROR),
+    VALID_NOT_PHONE_NUM(1_007, Message.VALID_NOT_PHONE_NUM),
+    VALID_NOT_PASSWORD(1_008, Message.VALID_NOT_PASSWORD),
+    MEMBER_NOT_EXIST(1_012, Message.MEMBER_NOT_EXIST),
+    LOGIN_REQUIRED(1_019, Message.LOGIN_REQUIRED),
+    PARAM_NOT_VALID(400, Message.PARAM_NOT_VALID),
+    VALID_NOT_NULL(400, Message.VALID_NOT_NULL),
+    VALID_NOT_REGEXP(400, Message.VALID_NOT_REGEXP),
+    UNSUPPORTED_ENCODING(400, Message.UNSUPPORTED_ENCODING),
+    NO_SUCH_ALGORITHM(500, Message.NO_SUCH_ALGORITHM),
+    URI_SYNTAX(400, Message.URI_SYNTAX),
+    INVALID_KEY(500, Message.INVALID_KEY),
+    JSON_PROCESSING(400, Message.JSON_PROCESSING),
+    RESERVE_NOT_VALID(400, Message.RESERVE_NOT_VALID),
+    EMAIL_SENDING(500, Message.EMAIL_SENDING),
+    EMAIL_ADDRESS_INVALID(400, Message.EMAIL_ADDRESS_INVALID),
+    NOT_ENOUGH_BALANCE(400, Message.NOT_ENOUGH_BALANCE);
 
-    private final int resultCode;
-    private final String resultMessage;
+    private final int statusCode;
+    private final String message;
 
-    ResultCode(int resultCode, String resultMessage) {
-        this.resultCode = resultCode;
-        this.resultMessage = resultMessage;
+    StatusCode(int statusCode, String message) {
+        this.statusCode = statusCode;
+        this.message = message;
     }
 
-    public int getResultCode() {
-        return resultCode;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public String getResultMessage() {
-        return resultMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public interface ResultMessage {
+    public interface Message {
         String SUCCESS = "완료 되었습니다.";
         String UNAUTHORIZED = "인증에 실패하였습니다.";
         String NO_AUTH = "접근 권한이 없습니다.";

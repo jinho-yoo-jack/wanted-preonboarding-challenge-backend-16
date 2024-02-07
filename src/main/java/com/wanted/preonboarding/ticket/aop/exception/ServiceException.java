@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.aop.exception;
 
-import com.wanted.preonboarding.ticket.aop.ResultCode;
+import com.wanted.preonboarding.ticket.aop.StatusCode;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -9,30 +9,30 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public class ServiceException extends RuntimeException {
-    private final int resultCode;
-    private final String resultMessage;
+    private final int statusCode;
+    private final String message;
 
-    public ServiceException(@NonNull ResultCode resultCodeEnum) {
-        this.resultCode = resultCodeEnum.getResultCode();
-        this.resultMessage = resultCodeEnum.getResultMessage();
+    public ServiceException(@NonNull StatusCode statusCode) {
+        this.statusCode = statusCode.getStatusCode();
+        this.message = statusCode.getMessage();
     }
 
-    public ServiceException(@NonNull ResultCode resultCodeEnum, @NonNull Map<String, Object> params) {
-        this.resultCode = resultCodeEnum.getResultCode();
-        String messageTemplate = resultCodeEnum.getResultMessage();
+    public ServiceException(@NonNull StatusCode statusCode, @NonNull Map<String, Object> params) {
+        this.statusCode = statusCode.getStatusCode();
+        String messageTemplate = statusCode.getMessage();
 
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             messageTemplate = messageTemplate.replaceAll(String.format("\\$\\{%s\\}", entry.getKey()), String.valueOf(entry.getValue()));
         }
 
-        this.resultMessage = messageTemplate;
+        this.message = messageTemplate;
     }
 
-    public int getResultCode() {
-        return resultCode;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public String getResultMessage() {
-        return resultMessage;
+    public String getMessage() {
+        return message;
     }
 }

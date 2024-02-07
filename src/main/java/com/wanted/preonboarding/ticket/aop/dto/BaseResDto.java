@@ -8,13 +8,13 @@ import lombok.experimental.SuperBuilder;
 @Getter @Setter
 @SuperBuilder
 public class BaseResDto {
-    private int resultCode;
-    private String resultMessage;
+    private int statusCode;
+    private String message;
 
-    public static BaseResDto of(int resultCode, String resultMessage) {
+    public static BaseResDto of(int statusCode, String message) {
         return BaseResDto.builder()
-                .resultCode(resultCode)
-                .resultMessage(resultMessage)
+                .statusCode(statusCode)
+                .message(message)
                 .build();
     }
 }
