@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 할인은 중복 가능하다는 전제 하에 적용
+ */
 public class Discount {
     private int price;
     private List<DiscountPolicy> policyList = new ArrayList<>();
@@ -24,7 +27,6 @@ public class Discount {
         for(int i = 0; i < policyList.size(); i++){
             policyList.get(i).setPrice(price);
             price = policyList.get(i).discount();
-            System.out.println(price);
         }
         return price;
     }

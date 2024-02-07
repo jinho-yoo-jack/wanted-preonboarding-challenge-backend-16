@@ -26,7 +26,7 @@ public class QueryController {
      */
     @GetMapping(value = "/reservable/performance")
     public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllReservablePerformanceInfoList() {
-        System.out.println("getAllPerformanceInfoList");
+
         return ResponseEntity
             .ok()
             .body(ResponseHandler.<List<PerformanceInfo>>builder()
@@ -43,7 +43,7 @@ public class QueryController {
      */
     @GetMapping(value = "/disable/performance")
     public ResponseEntity<ResponseHandler<List<PerformanceInfo>>> getAllDisablePerformanceInfoList() {
-        System.out.println("getAllPerformanceInfoList");
+
         return ResponseEntity
             .ok()
             .body(ResponseHandler.<List<PerformanceInfo>>builder()

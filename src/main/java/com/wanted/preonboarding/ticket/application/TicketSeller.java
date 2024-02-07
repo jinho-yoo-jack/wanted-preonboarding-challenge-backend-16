@@ -206,7 +206,8 @@ public class TicketSeller {
             .filter(card -> card.getId().equals(user.getDefaultPaymentCode()))
             .findAny()
             .orElseThrow(EntityNotFoundException::new);
-        PerformanceSeatInfo seatInfo = performanceSeatInfoRepository.findBySeatAndLineAndPerformance_idAndPerformance_round(reservation.getSeat(), reservation.getLine(), performance
+        PerformanceSeatInfo seatInfo = performanceSeatInfoRepository
+            .findBySeatAndLineAndPerformance_idAndPerformance_round(reservation.getSeat(), reservation.getLine(), performance
             .getId(), performance.getRound())
             .orElseThrow(EntityNotFoundException::new);
         seatInfo.cancel();

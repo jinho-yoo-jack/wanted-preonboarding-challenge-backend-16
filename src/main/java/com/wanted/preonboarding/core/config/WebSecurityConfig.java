@@ -38,28 +38,24 @@ public class WebSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web -> web.ignoring()
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-        );  // static 경로에 대한 스프링 시큐리티 기능 비활성화
-    }//"/static/**",
+        );
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests((authorize) -> authorize
-            .requestMatchers("/", "/login", "/signup", "/performance", "/query/**").permitAll()    // 매개변수의 URL에 대한 엑세스 전부 허용으로 설정
-            .anyRequest().authenticated()   // 그 외 요청 경로는 인증된 상태에서만 접근할 수 있도록 설정
+            .requestMatchers("/", "/login", "/signup", "/performance", "/query/**").permitAll()
+            .anyRequest().authenticated()
             )
             .formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/")
-                //.successForwardUrl("/")   -> Forward 요청에 대해서는 permitAll을 안해줘서 그랬던 것 같음
-//                .failureUrl("/logian")
-            )    // 폼 로그인 형식 로그인 설정
+            )
             .logout(logout -> logout
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
-            );   // 로그아웃 설정
-        // .httpBasic(HttpBasicConfigurer::disable) 일단 주석처리
+            );
         return http.build();
     }
 

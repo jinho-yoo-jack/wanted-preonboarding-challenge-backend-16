@@ -54,22 +54,16 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;  // 예약 정보 ID (PK)
-//    @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
-//    private UUID performanceId; // 공연전시ID
-//    @Column(nullable = false)
-//    private int round;  // 회차(FK)
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(name = "performance_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)),
         @JoinColumn(name = "round", referencedColumnName = "round", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    })  //(when an association has multiple '@JoinColumn's, they must each specify their 'referencedColumnName')
+    })
     private Performance performance;
 
     @Column(nullable = false)
     private String name;    // 예약자명
-
-//    @Column(nullable = false, name = "phone_number")
-//    private String phoneNumber; // 예약자 휴대전화 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "phone_number", referencedColumnName = "phoneNumber", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))

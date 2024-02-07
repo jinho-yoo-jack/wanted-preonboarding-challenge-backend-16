@@ -67,7 +67,7 @@ public class PerformanceSeatInfo {
     @JoinColumns({
         @JoinColumn(name = "performance_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)),
         @JoinColumn(name = "round", referencedColumnName = "round", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    })  //(when an association has multiple '@JoinColumn's, they must each specify their 'referencedColumnName')
+    })
     private Performance performance;
 
     @Column(nullable = false)
@@ -93,10 +93,4 @@ public class PerformanceSeatInfo {
     }
 
 }
-/*
-not-null property references a null or transient value
-@DynamicInsert 지정했고 columnDefinition 속성 지정했음에도 저러면 nullable = true 줘버리기
 
-@ForeignKey(ConstraintMode.NO_CONSTRAINT) -> DB에서 FK 안 주는 대신 어플리케이션 레벨에서 연관관게를 맺음
-좌석은 가로로 A~F, 세로로 1~15
- */

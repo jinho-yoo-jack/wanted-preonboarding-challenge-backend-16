@@ -26,7 +26,7 @@ public abstract class Payment {
     private Long id;    // 결제 수단 ID
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_uuid", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private User userInfo;  // ManyToOne 양방향으로 설정 // 유저 정보
+    private User userInfo;  // 유저 정보
     @Column(nullable = false)
     private Long balanceAmount;    // 결제 수단 잔액
 

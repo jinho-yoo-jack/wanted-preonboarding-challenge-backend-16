@@ -84,8 +84,7 @@ public class PageController {
     public String reservationPage(@PathVariable String performanceId, @PathVariable int round, @ModelAttribute ReserveInfo reserveInfo, RedirectAttributes redirectAttributes){
         ReservationId reservationId = new ReservationId(0);
         boolean result = ticketSeller.reserve(reserveInfo, reservationId);
-        System.out.println("RESULT IS " + result);
-        System.out.println("reservationId IS " + reservationId.getReservationId());
+
         if(result) {
             redirectAttributes.addAttribute("reservationId", reservationId.getReservationId());
             return "redirect:/reservation/{reservationId}";
