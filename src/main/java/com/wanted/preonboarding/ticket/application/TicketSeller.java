@@ -83,14 +83,14 @@ public class TicketSeller {
         reservationRepository.save(Reservation.from(createReservationRequest));
     }
 
-    private void checkIsReservedPerformanceSeat(CreateReservationRequest reserveInfo) {
+    private void checkIsReservedPerformanceSeat(CreateReservationRequest createReservationRequest) {
         reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
-                                        reserveInfo.getPerformanceId(),
-                                        reserveInfo.getRound(),
-                                        reserveInfo.getLine(),
-                                        reserveInfo.getSeat())
+                                        createReservationRequest.getPerformanceId(),
+                                        createReservationRequest.getRound(),
+                                        createReservationRequest.getLine(),
+                                        createReservationRequest.getSeat())
                 .ifPresent(reservation -> {
-                throw new ServiceException(ResultCode.ALREADY_EXISTS);
+                throw new ServiceException(ResultCode.ALREADY_EXISTS_RESERVATION);
                 });
     }
 

@@ -7,6 +7,8 @@ public enum ResultCode {
     BAD_REQUEST(404, ResultMessage.BAD_REQUEST),
     NOT_FOUND(405, ResultMessage.NOT_FOUND),
     ALREADY_EXISTS(409, ResultMessage.ALREADY_EXISTS),
+    ALREADY_EXISTS_RESERVATION(409, ResultMessage.ALREADY_EXISTS_RESERVATION),
+
     INTERNAL_ERROR(500, ResultMessage.INTERNAL_ERROR),
     VALID_NOT_PHONE_NUM(1_007, ResultMessage.VALID_NOT_PHONE_NUM),
     VALID_NOT_PASSWORD(1_008, ResultMessage.VALID_NOT_PASSWORD),
@@ -63,5 +65,6 @@ public enum ResultCode {
         String RESERVE_NOT_VALID = "예약이 불가능한 공연입니다.";
         String EMAIL_SENDING = "이메일 전송 중 문제가 발생했습니다.";
         String EMAIL_ADDRESS_INVALID = "이메일 주소 형식이 잘못되었습니다.";
+        String ALREADY_EXISTS_RESERVATION = "이미 예약된 좌석입니다.";
     }
 }
