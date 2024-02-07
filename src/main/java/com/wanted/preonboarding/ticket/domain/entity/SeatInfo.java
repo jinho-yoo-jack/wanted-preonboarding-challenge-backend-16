@@ -37,6 +37,9 @@ public class SeatInfo {
   @Column(name = "seat")
   private int     seat;
 
+  @Column(name = "is_reserve")
+  private String  isReserve;
+
   @ManyToOne
   @JoinColumn(name = "performance_id")
   private Performance performance;

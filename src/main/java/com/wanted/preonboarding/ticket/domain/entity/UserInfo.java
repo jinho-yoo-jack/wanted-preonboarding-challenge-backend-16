@@ -36,6 +36,5 @@ public class UserInfo {
   private String phoneNumber;
 
   @OneToMany(mappedBy = "userInfo")
-  @JsonBackReference
   private List<Reservation> reservations;
 }

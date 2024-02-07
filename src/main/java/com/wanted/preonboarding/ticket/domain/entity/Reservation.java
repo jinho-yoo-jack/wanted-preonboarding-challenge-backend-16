@@ -36,12 +36,10 @@ public class Reservation {
 
   @ManyToOne
   @JoinColumn(name = "user_id", columnDefinition = "bigint")
-  @JsonManagedReference
   private UserInfo userInfo;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "seat_id")
-  @JsonManagedReference
   private SeatInfo seatInfo;
 
   /**
