@@ -32,15 +32,15 @@ public class Reservation extends BaseEntity {
     private char line;
     private int seat;
 
-    public static Reservation from(CreateReservationRequest info) {
+    public static Reservation from(CreateReservationRequest createReservationRequest) {
         return Reservation.builder()
-            .performanceId(info.getPerformanceId())
-            .name(info.getReservationName())
-            .phoneNumber(info.getReservationPhoneNumber())
-            .round(info.getRound())
-            .gate(info.getGate())
-            .line(info.getLine())
-            .seat(info.getSeat())
+            .performanceId(createReservationRequest.getPerformanceId())
+            .name(createReservationRequest.getReservationName())
+            .phoneNumber(createReservationRequest.getReservationPhoneNumber())
+            .round(createReservationRequest.getRound())
+            .gate(createReservationRequest.getGate())
+            .line(createReservationRequest.getLine())
+            .seat(createReservationRequest.getSeat())
             .build();
     }
 

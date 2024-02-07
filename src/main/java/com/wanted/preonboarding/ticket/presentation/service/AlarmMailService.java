@@ -41,7 +41,7 @@ public class AlarmMailService {
     public void createAlarmPerformance(ReservePossibleAlarmCustomerInfoDto dto) {
 
         Performance performance = getPerformance(dto);
-        if(performance.getIsReserve().equalsIgnoreCase(ReserveStatus.ENABLE.getValue())) {
+        if(performance.isReserve(ReserveStatus.ENABLE)) {
             PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto, ReserveStatus.DISABLE.getValue());
 
             Alarm alarm = Alarm.of(performanceSeatInfo, dto);
