@@ -54,17 +54,15 @@ public class AlarmMailService {
     }
 
     @Transactional
-    public void sendAlarmPerformance(CreateAlarmPerformanceSeatRequest dto) {
+    public void sendAlarmPerformanceSeat(CreateAlarmPerformanceSeatRequest dto) {
 
         Alarm alarm = getAlarm(dto);
         Performance performance = getPerformance(dto);
         PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto, ReserveStatus.CANCEL.getValue());
 
-        SendMessagePerformanceSeatInfoDto sendMessagePerformanceSeatInfoDto = SendMessagePerformanceSeatInfoDto.from(performanceSeatInfo);
-        sendMessagePerformanceSeatInfoDto.updatePerformanceName(performance.getName());
-        sendMessagePerformanceSeatInfoDto.updateStartDate(performance.getStart_date());
+        SendMessagePerformanceSeat sendMessagePerformanceSeat = SendMessagePerformanceSeat.of(performance, performanceSeatInfo);
 
-        messageBody(dto.getReservationEmail(), sendMessagePerformanceSeatInfoDto);
+        messageBody(dto.getReservationEmail(), sendMessagePerformanceSeat);
     }
 
     private Alarm getAlarm(CreateAlarmPerformanceSeatRequest dto) {
@@ -77,13 +75,13 @@ public class AlarmMailService {
     }
 
 
-    public void messageBody(String reservationEmail, SendMessagePerformanceSeatInfoDto dto) {
+    public void messageBody(String reservationEmail, SendMessagePerformanceSeat sendMessagePerformanceSeat) {
         Session session = getSession(this.username, this.password, getProperties());
 
-        sendMessageBody(session, reservationEmail, dto);
+        sendMessageBody(session, reservationEmail, sendMessagePerformanceSeat);
     }
 
-    private void sendMessageBody(Session session, String reservationEmail, SendMessagePerformanceSeatInfoDto dto) {
+    private void sendMessageBody(Session session, String reservationEmail, SendMessagePerformanceSeat dto) {
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(this.username));
@@ -115,7 +113,7 @@ public class AlarmMailService {
     }
 
 
-    private String createMessage(SendMessagePerformanceSeatInfoDto dto) {
+    private String createMessage(SendMessagePerformanceSeat dto) {
         return String.format("공연ID: %s\n공연명: %s\n회차: %s\n시작 일시: %s\n예매 가능한 좌석 정보: Gate: %s, Line: %s, Seat: %s",
                 dto.getPerformanceId(), dto.getPerformanceName(),
                 dto.getRound(), dto.getStartDate(), dto.getGate(), dto.getLine(), dto.getSeat());
