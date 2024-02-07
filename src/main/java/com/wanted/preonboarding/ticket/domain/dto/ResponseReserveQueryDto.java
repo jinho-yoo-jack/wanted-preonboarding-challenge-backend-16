@@ -22,15 +22,15 @@ public class ResponseReserveQueryDto extends BaseResDto {
     private String reservationName; //이름
     private String reservationPhoneNumber; //연락처
 
-    public static ResponseReserveQueryDto from(Reservation entity) {
+    public static ResponseReserveQueryDto from(Reservation reservation) {
         return ResponseReserveQueryDto.builder()
-                .performanceId(entity.getPerformanceId())
-                .round(entity.getRound())
-                .gate(entity.getGate())
-                .line(entity.getLine())
-                .seat(entity.getSeat())
-                .reservationName(entity.getName())
-                .reservationPhoneNumber(entity.getPhoneNumber())
+                .performanceId(reservation.getPerformanceId())
+                .round(reservation.getRound())
+                .gate(reservation.getGate())
+                .line(reservation.getLine())
+                .seat(reservation.getSeat())
+                .reservationName(reservation.getName())
+                .reservationPhoneNumber(reservation.getPhoneNumber())
                 .build();
     }
 

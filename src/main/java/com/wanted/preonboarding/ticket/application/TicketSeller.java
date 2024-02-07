@@ -35,12 +35,6 @@ public class TicketSeller {
             .toList();
     }
 
-    public BaseResDto getPerformanceInfoDetail(CreateReservationRequest createReservationRequest) {
-        Performance performance = getPerformance(createReservationRequest.getPerformanceId(), createReservationRequest.getRound());
-        Reservation reservation = getReservation(createReservationRequest, performance);
-        return ResponseReserveQueryDto.of(performance, reservation);
-    }
-
     private Reservation getReservation(CreateReservationRequest reserveInfo, Performance performance) {
         return reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
                 performance.getId(), performance.getRound(), reserveInfo.getLine(), reserveInfo.getSeat())
@@ -66,9 +60,9 @@ public class TicketSeller {
             performance.checkHasEnoughBalance(createReservationRequest.getBalance());
 
             //4. 예약
-            reservationRepository.save(Reservation.from(createReservationRequest));
+            Reservation reservation = reservationRepository.save(Reservation.from(createReservationRequest));
 
-            return getPerformanceInfoDetail(createReservationRequest);
+            return ResponseReserveQueryDto.of(performance, reservation);
         } else {
             throw new ServiceException(ResultCode.RESERVE_NOT_VALID);
         }
