@@ -18,4 +18,8 @@ public class CreateReservationRequest {
     private char line; // 좌석 정보
     private int seat; // 좌석 정보
     private String reservationStatus; // 예약; 취소;
+
+    public void payAmount(long amount) {
+        this.amount = this.amount - amount;
+    }
 }

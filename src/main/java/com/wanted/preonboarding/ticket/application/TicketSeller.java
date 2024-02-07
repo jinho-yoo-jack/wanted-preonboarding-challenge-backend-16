@@ -76,7 +76,12 @@ public class TicketSeller {
 
     private void paymentProcess(Performance performance, CreateReservationRequest createReservationRequest) {
         int price = performance.getPrice();
-        createReservationRequest.setAmount(createReservationRequest.getAmount() - price);
+        if(createReservationRequest.getAmount() - price >= 0) {
+            createReservationRequest.payAmount(createReservationRequest.getAmount() - price);
+        } else {
+            throw new ServiceException(ResultCode.NOT_ENOUGH_AMOUNT);
+        }
+
     }
 
     private void reservePerformance(CreateReservationRequest createReservationRequest) {
