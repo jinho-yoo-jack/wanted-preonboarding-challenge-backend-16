@@ -1,19 +1,24 @@
 window.onload = () => {
 
     const performanceList = document.getElementById("performanceList");
-    const reservable = document.getElementById("reserve");
-    const disable = document.getElementById("disable");
+    const reservable = document.getElementById("reservable");
     const reservableUrl = "/query/reservable/performance"
     const disableUrl = "/query/disable/performance"
 
-    reservable.addEventListener("click", () => {
-        performanceList.replaceChildren();
-        createList(reservableUrl);
+
+
+    reservable.addEventListener("change", () => {
+        const selected = reservable.options[reservable.selectedIndex].value;
+        if(selected === "reserve"){
+            performanceList.replaceChildren();
+            createList(reservableUrl);
+        }
+        if(selected === "disable"){
+            performanceList.replaceChildren();
+            createList(disableUrl);
+        }
+
     });
-    disable.addEventListener("click", () => {
-        performanceList.replaceChildren();
-        createList(disableUrl);
-    })
 
     createList(reservableUrl);
 };
