@@ -9,10 +9,10 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   mail:
-    host: ${spring.mail.host}
-    port: ${spring.mail.port}
-    username: ${spring.mail.username}
-    password: ${spring.mail.password}
+    host: ${mail.host}
+    port: ${mail.port}
+    username: ${mail.username}
+    password: ${mail.password}
     properties:
       mail.smtp.auth:  true
       mail.smtp.starttls.enable: true
