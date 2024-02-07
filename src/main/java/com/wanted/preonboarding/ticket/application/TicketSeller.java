@@ -53,25 +53,38 @@ public class TicketSeller {
     }
 
     @Transactional
-    public void createReservation(CreateReservationRequest createReservationRequest) {
+    public BaseResDto createReservation(CreateReservationRequest createReservationRequest) {
         Performance performance = getPerformance(createReservationRequest.getPerformanceId(), createReservationRequest.getRound());
+
+        //1. 예약 가능한 공연인지 확인
         String enableReserve = performance.getIsReserve();
         if (enableReserve.equalsIgnoreCase(ReserveStatus.ENABLE.getValue())) {
-            // 1. 결제
-            int price = performance.getPrice();
-            createReservationRequest.setAmount(createReservationRequest.getAmount() - price);
 
-            // 2. 예매 된 좌석인지 확인
-            checkIsReserved(createReservationRequest);
+            //2. 예매 된 좌석인지 확인
+            checkIsReservedPerformanceSeat(createReservationRequest);
 
-            // 3. 예매 진행
-            reservationRepository.save(Reservation.from(createReservationRequest));
+            //3. 결제
+            paymentProcess(performance, createReservationRequest);
+
+            //4. 예약
+            reservePerformance(createReservationRequest);
+
+            return getPerformanceInfoDetail(createReservationRequest);
         } else {
             throw new ServiceException(ResultCode.RESERVE_NOT_VALID);
         }
     }
 
-    private void checkIsReserved(CreateReservationRequest reserveInfo) {
+    private void paymentProcess(Performance performance, CreateReservationRequest createReservationRequest) {
+        int price = performance.getPrice();
+        createReservationRequest.setAmount(createReservationRequest.getAmount() - price);
+    }
+
+    private void reservePerformance(CreateReservationRequest createReservationRequest) {
+        reservationRepository.save(Reservation.from(createReservationRequest));
+    }
+
+    private void checkIsReservedPerformanceSeat(CreateReservationRequest reserveInfo) {
         reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
                                         reserveInfo.getPerformanceId(),
                                         reserveInfo.getRound(),

@@ -25,9 +25,7 @@ public class ReservationController {
      */
     @PostMapping
     public ResponseEntity<BaseResDto> createReservation(@RequestBody CreateReservationRequest createReservationRequest) {
-        log.info("ReservationController reservation");
-        ticketSeller.createReservation(createReservationRequest);
-        return ResponseEntity.ok(ticketSeller.getPerformanceInfoDetail(createReservationRequest));
+        return ResponseEntity.ok(ticketSeller.createReservation(createReservationRequest));
     }
 }
 
