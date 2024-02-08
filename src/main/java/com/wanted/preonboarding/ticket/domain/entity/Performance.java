@@ -25,7 +25,7 @@ public class Performance extends BaseEntity {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
+    private UUID  id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)

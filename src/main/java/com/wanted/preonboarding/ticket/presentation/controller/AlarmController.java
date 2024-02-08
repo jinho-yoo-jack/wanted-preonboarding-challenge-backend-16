@@ -15,20 +15,13 @@ import org.springframework.web.bind.annotation.*;
 public class AlarmController {
     private final AlarmMailService alarmMailService;
 
-    /**
-     * 예약 가능 알림 서비스
-     * 특정 공연에 대해서 취소 건이 발생하는 경우, 알림 신청을 해놓은 고객에게 취소된 예약이 있다는 사실을 알리는 알림 서비스
-     * Send Message: 공연ID, 공연명, 회차, 시작 일시 예매 가능한 좌석 정보
-     * @param createAlarmPerformanceSeatRequest
-     * @return
-     */
     @PostMapping("/send")
-    public void sendAlarm(@RequestBody CreateAlarmPerformanceSeatRequest createAlarmPerformanceSeatRequest) {
-        alarmMailService.sendAlarmPerformanceSeat(createAlarmPerformanceSeatRequest);
+    public void sendAlarm(@RequestBody CreateAlarmPerformanceSeatRequest dto) {
+        alarmMailService.sendAlarmPerformanceSeat(dto);
     }
 
     @PostMapping("/create")
-    public void createAlarm(@RequestBody CreateAlarmPerformanceSeatRequest createAlarmPerformanceSeatRequest) {
-        alarmMailService.createAlarmPerformanceSeat(createAlarmPerformanceSeatRequest);
+    public void createAlarm(@RequestBody CreateAlarmPerformanceSeatRequest dto) {
+        alarmMailService.createAlarmPerformanceSeat(dto);
     }
 }

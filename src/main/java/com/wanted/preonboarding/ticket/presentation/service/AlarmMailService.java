@@ -22,6 +22,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -38,17 +39,17 @@ public class AlarmMailService {
     private final AlarmRepository alarmRepository;
 
     @Transactional
-    public void createAlarmPerformanceSeat(CreateAlarmPerformanceSeatRequest createAlarmPerformanceSeatRequest) {
+    public void createAlarmPerformanceSeat(CreateAlarmPerformanceSeatRequest dto) {
 
-        Performance performance = getPerformance(createAlarmPerformanceSeatRequest);
+        Performance performance = getPerformance(dto.getPerformanceId());
 
         //1. 알림 가능한 공연인지 확인
         performance.isReserve(ReserveStatus.ENABLE);
 
         //2. 알림 가능한 공연 좌석인지 확인
-        PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(createAlarmPerformanceSeatRequest, ReserveStatus.DISABLE.getValue());
+        PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto.getPerformanceId(), ReserveStatus.DISABLE.getValue());
 
-        Alarm alarm = Alarm.of(performanceSeatInfo, createAlarmPerformanceSeatRequest);
+        Alarm alarm = Alarm.of(performanceSeatInfo, dto);
 
         alarmRepository.save(alarm);
     }
@@ -57,8 +58,8 @@ public class AlarmMailService {
     public void sendAlarmPerformanceSeat(CreateAlarmPerformanceSeatRequest dto) {
 
         Alarm alarm = getAlarm(dto);
-        Performance performance = getPerformance(dto);
-        PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto, ReserveStatus.CANCEL.getValue());
+        Performance performance = getPerformance(dto.getPerformanceId());
+        PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto.getPerformanceId(), ReserveStatus.CANCEL.getValue());
 
         SendMessagePerformanceSeat sendMessagePerformanceSeat = SendMessagePerformanceSeat.of(performance, performanceSeatInfo);
 
@@ -75,10 +76,10 @@ public class AlarmMailService {
     }
 
 
-    public void messageBody(String reservationEmail, SendMessagePerformanceSeat sendMessagePerformanceSeat) {
+    public void messageBody(String reservationEmail, SendMessagePerformanceSeat dto) {
         Session session = getSession(this.username, this.password, getProperties());
 
-        sendMessageBody(session, reservationEmail, sendMessagePerformanceSeat);
+        sendMessageBody(session, reservationEmail, dto);
     }
 
     private void sendMessageBody(Session session, String reservationEmail, SendMessagePerformanceSeat dto) {
@@ -102,13 +103,13 @@ public class AlarmMailService {
         }
     }
 
-    private PerformanceSeatInfo getPerformanceSeatInfoAndStatus(CreateAlarmPerformanceSeatRequest dto, String status) {
-        return performanceSeatInfoRepository.findByPerformanceIdAndIsReserve(dto.getPerformanceId(), status)
+    private PerformanceSeatInfo getPerformanceSeatInfoAndStatus(UUID performanceId, String status) {
+        return performanceSeatInfoRepository.findByPerformanceIdAndIsReserve(performanceId, status)
                 .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
     }
 
-    private Performance getPerformance(CreateAlarmPerformanceSeatRequest dto) {
-        return performanceRepository.findById(dto.getPerformanceId())
+    private Performance getPerformance(UUID performanceId) {
+        return performanceRepository.findById(performanceId)
                 .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
     }
 

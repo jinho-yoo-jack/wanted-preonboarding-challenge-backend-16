@@ -20,25 +20,25 @@ public class ReservationController {
     private final TicketSeller ticketSeller;
 
     @PostMapping
-    public ResponseEntity<ResponseHandler<CreateReservationResponse>> createReservation(@RequestBody CreateReservationRequest createReservationRequest) {
+    public ResponseEntity<ResponseHandler<CreateReservationResponse>> createReservation(@RequestBody CreateReservationRequest dto) {
         return ResponseEntity
                 .ok()
                 .body(ResponseHandler.<CreateReservationResponse>builder()
                         .message("Success")
                         .statusCode(HttpStatus.OK)
-                        .data(ticketSeller.createReservation(createReservationRequest))
+                        .data(ticketSeller.createReservation(dto))
                         .build());
     }
 
 
     @GetMapping("/customer")
-    public ResponseEntity<ResponseHandler<CreateReservationResponse>> readReservation(@RequestBody ReadReservationRequest readReservationRequest) {
+    public ResponseEntity<ResponseHandler<CreateReservationResponse>> readReservation(@RequestBody ReadReservationRequest dto) {
         return ResponseEntity
                 .ok()
                 .body(ResponseHandler.<CreateReservationResponse>builder()
                         .message("Success")
                         .statusCode(HttpStatus.OK)
-                        .data(ticketSeller.readReservation(readReservationRequest))
+                        .data(ticketSeller.readReservation(dto))
                         .build());
     }
 }

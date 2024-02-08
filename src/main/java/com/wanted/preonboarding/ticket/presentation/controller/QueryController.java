@@ -18,12 +18,6 @@ import java.util.List;
 public class QueryController {
     private final TicketSeller ticketSeller;
 
-    /**
-     * 공연 및 전시 정보 조회(목록, 상세 조회)
-     * Request Message: 예매 가능 여부
-     * Response Message: 예매 가능한 공연 리스트(정보: 공연명, 회차, 시작 일시, 예매 가능 여부)
-     * @return
-     */
     @GetMapping("/all/performance")
     public ResponseEntity<ResponseHandler<List<PerformanceInfoResponse>>> readAllPerformances() {
         return ResponseEntity
