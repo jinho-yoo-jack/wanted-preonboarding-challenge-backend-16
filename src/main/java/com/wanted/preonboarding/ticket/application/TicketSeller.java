@@ -14,6 +14,8 @@ import com.wanted.preonboarding.ticket.global.common.ReserveStatus;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
+import com.wanted.preonboarding.ticket.presentation.ConcreteReserveStrategy;
+import com.wanted.preonboarding.ticket.presentation.ReserveStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,12 +25,22 @@ import java.util.*;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class TicketSeller {
+
+    private long totalAmount = 0L;
     private final PerformanceRepository performanceRepository;
     private final ReservationRepository reservationRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
-    private long totalAmount = 0L;
+    private final ReserveStrategy reserveStrategy;
+    public TicketSeller(PerformanceRepository performanceRepository,
+                        ReservationRepository reservationRepository,
+                        PerformanceSeatInfoRepository performanceSeatInfoRepository,
+                        ConcreteReserveStrategy concreteReserveStrategy) {
+        this.performanceRepository = performanceRepository;
+        this.reservationRepository = reservationRepository;
+        this.performanceSeatInfoRepository = performanceSeatInfoRepository;
+        this.reserveStrategy = concreteReserveStrategy;
+    }
 
     public List<PerformanceInfoResponse> readAllPerformances() {
         return performanceRepository.findByIsReserve(ReserveStatus.ENABLE.getValue())
@@ -64,8 +76,10 @@ public class TicketSeller {
                                                                                     , dto.getRound()
                                                                                     , dto.getLine()
                                                                                     , dto.getSeat());
+
         //3. 예약 가능한 좌석인지 확인
-        performanceSeatInfo.isReserve(ReserveStatus.ENABLE);
+        reserveStrategy.isReserveEnable(performanceSeatInfo.getIsReserve());
+
 
         //4. 예약이 불가능하도록 수정
         performanceSeatInfo.updateIsReserve(ReserveStatus.DISABLE);
