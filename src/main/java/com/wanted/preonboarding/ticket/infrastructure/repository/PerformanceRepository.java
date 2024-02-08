@@ -11,5 +11,5 @@ public interface PerformanceRepository extends JpaRepository<Performance, UUID> 
     List<Performance> findByIsReserve(String isReserve);
     Optional<Performance> findByName(String name);
 
-    Optional<Performance> findByIdAndRound(UUID id, int round);
+    Optional<Performance> findByIdAndRoundAndIsReserve(UUID id, int round, String isReserve);
 }

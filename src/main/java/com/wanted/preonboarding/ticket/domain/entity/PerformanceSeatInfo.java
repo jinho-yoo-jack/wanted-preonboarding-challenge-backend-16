@@ -36,4 +36,14 @@ public class PerformanceSeatInfo extends BaseEntity {
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
     private String isReserve;
 
+
+    public void isReserve(ReserveStatus status) {
+        if(!this.isReserve.equalsIgnoreCase(status.getValue())) {
+            throw new ServiceException(StatusCode.RESERVE_NOT_VALID_PERFORMANCE_SEAT);
+        }
+    }
+
+    public void updateIsReserve(ReserveStatus reserveStatus) {
+        this.isReserve = reserveStatus.getValue();
+    }
 }

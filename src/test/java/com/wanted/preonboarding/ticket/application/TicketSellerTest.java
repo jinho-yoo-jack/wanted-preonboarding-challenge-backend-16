@@ -74,7 +74,7 @@ public class TicketSellerTest {
 
 
         //then
-        Performance resultPerformance = performanceRepository.findByIdAndRound(performance.getId(), performance.getRound()).get();
+        Performance resultPerformance = performanceRepository.findByIdAndRoundAndIsReserve(performance.getId(), performance.getRound(), performance.getIsReserve()).get();
         Reservation resultReservation = reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(performance.getId(),performance.getRound(), info.getLine(), info.getSeat()).get();;
         assertThat(resultPerformance.getId()).isEqualTo(resultReservation.getPerformanceId());
 

@@ -23,6 +23,7 @@ public enum StatusCode {
     INVALID_KEY(500, Message.INVALID_KEY),
     JSON_PROCESSING(400, Message.JSON_PROCESSING),
     RESERVE_NOT_VALID(400, Message.RESERVE_NOT_VALID),
+    RESERVE_NOT_VALID_PERFORMANCE_SEAT(400, Message.RESERVE_NOT_VALID_PERFORMANCE_SEAT),
     EMAIL_SENDING(500, Message.EMAIL_SENDING),
     EMAIL_ADDRESS_INVALID(400, Message.EMAIL_ADDRESS_INVALID),
     NOT_ENOUGH_BALANCE(400, Message.NOT_ENOUGH_BALANCE);
@@ -68,5 +69,6 @@ public enum StatusCode {
         String EMAIL_ADDRESS_INVALID = "이메일 주소 형식이 잘못되었습니다.";
         String ALREADY_EXISTS_RESERVATION = "이미 예약된 좌석입니다.";
         String NOT_ENOUGH_BALANCE = "결재 가능한 금액을 초과했습니다.";
+        String RESERVE_NOT_VALID_PERFORMANCE_SEAT = "이미 예약된 공연 좌석입니다.";
     }
 }
