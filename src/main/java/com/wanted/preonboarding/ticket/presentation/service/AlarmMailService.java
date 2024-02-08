@@ -11,6 +11,8 @@ import com.wanted.preonboarding.ticket.global.common.ReserveStatus;
 import com.wanted.preonboarding.ticket.infrastructure.repository.AlarmRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
+import com.wanted.preonboarding.ticket.presentation.ConcreteReserveStrategy;
+import com.wanted.preonboarding.ticket.presentation.ReserveStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +30,6 @@ import java.util.UUID;
 @Slf4j
 @Service
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
 public class AlarmMailService {
 
     @Value("${spring.mail.username}")
@@ -38,6 +39,17 @@ public class AlarmMailService {
     private final PerformanceRepository performanceRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private final AlarmRepository alarmRepository;
+    private final ReserveStrategy reserveStrategy;
+
+    public AlarmMailService(PerformanceRepository performanceRepository,
+                            PerformanceSeatInfoRepository performanceSeatInfoRepository,
+                            AlarmRepository alarmRepository,
+                            ConcreteReserveStrategy concreteReserveStrategy) {
+        this.performanceRepository = performanceRepository;
+        this.performanceSeatInfoRepository = performanceSeatInfoRepository;
+        this.alarmRepository = alarmRepository;
+        this.reserveStrategy = concreteReserveStrategy;
+    }
 
     @Transactional
     public void createAlarmPerformanceSeat(CreateAlarmPerformanceSeatRequest dto) {
@@ -45,7 +57,7 @@ public class AlarmMailService {
         Performance performance = getPerformance(dto.getPerformanceId());
 
         //1. 알림 가능한 공연인지 확인
-        performance.isReserve(ReserveStatus.ENABLE);
+        reserveStrategy.isReserveEnable(performance.getIsReserve());
 
         //2. 알림 가능한 공연 좌석인지 확인
         List<PerformanceSeatInfo> performanceSeatInfoList = getPerformanceSeat(dto.getPerformanceId(), performance.getRound(), ReserveStatus.DISABLE);

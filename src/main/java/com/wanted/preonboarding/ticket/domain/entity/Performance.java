@@ -40,12 +40,6 @@ public class Performance extends BaseEntity {
     private String isReserve;
 
 
-    public void isReserve(ReserveStatus status) {
-        if(!this.isReserve.equalsIgnoreCase(status.getValue())) {
-            throw new ServiceException(StatusCode.RESERVE_NOT_VALID);
-        }
-    }
-
     public void checkHasEnoughBalance(long balance) {
         if(balance - this.price < 0) {
             throw new ServiceException(StatusCode.NOT_ENOUGH_BALANCE);
