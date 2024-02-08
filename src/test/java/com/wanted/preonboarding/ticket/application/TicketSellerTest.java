@@ -18,6 +18,7 @@ import java.sql.Date;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
 
 public class TicketSellerTest {
@@ -31,10 +32,11 @@ public class TicketSellerTest {
     private AlarmApp alarmApp;
     @InjectMocks
     private TicketSeller ticketSeller;
-    private final UUID testUUID = UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002");
     private Performance testPerformance;
     private Reservation reservation;
     private PerformanceSeatInfo testPerformanceSeatInfo;
+    private ReserveInfo reserveInfo;
+    private List<String> seatRequest = Arrays.asList("A1");;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -49,14 +51,25 @@ public class TicketSellerTest {
                 .start_date(new Date(125, 3, 30))
                 .build();
 
+        reserveInfo = ReserveInfo.builder()
+                .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
+                .reservationName("유진호")
+                .reservationPhoneNumber("010-1234-1234")
+                .reservationStatus("reserve")
+                .amount(20000)
+                .round(1)
+                .seats(seatRequest)
+                .build();
 
+        testPerformanceSeatInfo = PerformanceSeatInfo.convertSeatInfo(seatRequest.get(0));
+        reservation = Reservation.of(reserveInfo, testPerformanceSeatInfo);
+        testPerformanceSeatInfo.setPerformance(testPerformance);
     }
 
 
     @Test
     public void getAllPerformanceInfoList() {
         //given
-
         when(performanceRepository.findByIsReserve("enable")).thenReturn(Collections.singletonList(testPerformance));
 
         //when
@@ -72,20 +85,6 @@ public class TicketSellerTest {
     @DisplayName("Test reserve")
     void testReserve() throws Exception {
         //given
-        List<String> seats = Arrays.asList("A1");
-        ReserveInfo reserveInfo = ReserveInfo.builder()
-                .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
-                .reservationName("유진호")
-                .reservationPhoneNumber("010-1234-1234")
-                .reservationStatus("reserve")
-                .amount(20000)
-                .round(1)
-                .seats(seats)
-                .build();
-
-        testPerformanceSeatInfo = PerformanceSeatInfo.convertSeatInfo(seats.get(0));
-        reservation = Reservation.of(reserveInfo, testPerformanceSeatInfo);
-
         when(performanceRepository.findById(any())).thenReturn(Optional.ofNullable(testPerformance));
         when(performanceSeatRepository
                 .findByPerformanceIdAndSeatLineAndSeatNumber(testPerformance.getId(), testPerformanceSeatInfo.getSeatLine(), testPerformanceSeatInfo.getSeatNumber()))
@@ -94,6 +93,7 @@ public class TicketSellerTest {
 
         //when
         List<ResponseReserveInfo> reserveInfoList = ticketSeller.reserve(reserveInfo);
+
         //then
         assertEquals(reserveInfoList.size(),1);
     }
@@ -102,31 +102,30 @@ public class TicketSellerTest {
     @DisplayName("Test DiscountReserve")
     void testDiscountReserve() throws Exception {
         //given
-        List<String> seats = Arrays.asList("A1");
-        ReserveInfo reserveInfo = ReserveInfo.builder()
+        ReserveInfo discountReserveInfo = ReserveInfo.builder()
                 .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
                 .reservationName("유진호")
                 .reservationPhoneNumber("010-1234-1234")
                 .reservationStatus("reserve")
                 .amount(20000)
                 .round(1)
-                .seats(seats)
+                .seats(seatRequest)
                 .discountPolicy("0.1")
                 .build();
-        PerformanceSeatInfo testSeatInfo = PerformanceSeatInfo.convertSeatInfo(seats.get(0));
-        Reservation reservation = Reservation.of(reserveInfo,testSeatInfo);
 
-        when(performanceRepository.findById(reserveInfo.getPerformanceId())).thenReturn(Optional.ofNullable(testPerformance));
+        Reservation discountTestReservation = Reservation.of(discountReserveInfo,testPerformanceSeatInfo);
+
+        when(performanceRepository.findById(discountReserveInfo.getPerformanceId())).thenReturn(Optional.ofNullable(testPerformance));
         when(performanceSeatRepository
-                .findByPerformanceIdAndSeatLineAndSeatNumber(testPerformance.getId(), testSeatInfo.getSeatLine(),testSeatInfo.getSeatNumber()))
-                .thenReturn(Optional.of(testSeatInfo));
-        when(reservationRepository.save(any(Reservation.class))).thenReturn(reservation);
+                .findByPerformanceIdAndSeatLineAndSeatNumber(testPerformance.getId(), discountTestReservation.getLine(),discountTestReservation.getSeat()))
+                .thenReturn(Optional.of(testPerformanceSeatInfo));
+        when(reservationRepository.save(any(Reservation.class))).thenReturn(discountTestReservation);
 
         //when
-        ticketSeller.reserve(reserveInfo);
+        ticketSeller.reserve(discountReserveInfo);
 
         //then
-        assertEquals(11000, reserveInfo.getAmount()); // 20000 - 9000
+        assertEquals(11000, discountReserveInfo.getAmount()); // 20000 - 9000
     }
 
     @Test
@@ -134,21 +133,6 @@ public class TicketSellerTest {
     void getReserveInfo() throws Exception {
         //given
         GetReservationRequestDto requestDto = new GetReservationRequestDto("유진호","010-1234-1234");
-        List<String> seats = Arrays.asList("A1");
-        ReserveInfo reserveInfo = ReserveInfo.builder()
-                .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
-                .reservationName("유진호")
-                .reservationPhoneNumber("010-1234-1234")
-                .reservationStatus("reserve")
-                .amount(20000)
-                .round(1)
-                .seats(seats)
-                .build();
-
-        testPerformanceSeatInfo = PerformanceSeatInfo.convertSeatInfo(seats.get(0));
-        testPerformanceSeatInfo.setPerformance(testPerformance);
-
-        reservation = Reservation.of(reserveInfo, testPerformanceSeatInfo);
 
         when(reservationRepository.findByNameAndPhoneNumber(requestDto.getReservationName(),requestDto.getReservationPhoneNumber()))
                 .thenReturn(Collections.singletonList(reservation));
@@ -163,5 +147,21 @@ public class TicketSellerTest {
         //then
         assertEquals(1, result.size());
         assertEquals(reserveInfo.getReservationName(), result.get(0).getReservationName());
+    }
+
+    @Test
+    @DisplayName("cancel reservation")
+    void cancel() throws Exception {
+        //given
+        CancelReservationRequestDto requestDto = new CancelReservationRequestDto(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"),'A',1,"유진호","010-1234-1234");
+        when(performanceSeatRepository.findByPerformanceIdAndSeatLineAndSeatNumber(requestDto.getPerformanceId(),requestDto.getLine(),requestDto.getSeat()))
+                .thenReturn(Optional.ofNullable(testPerformanceSeatInfo));
+
+        //when
+        ticketSeller.cancel(requestDto);
+
+        //then
+        assertFalse(testPerformanceSeatInfo.isReserve());
+        verify(alarmApp,times(1)).sendAlarm(requestDto.getPerformanceId());
     }
 }
