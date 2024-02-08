@@ -59,7 +59,7 @@ public class AlarmMailService {
 
     @Transactional
     public void sendAlarmPerformanceSeat(CreateAlarmPerformanceSeatRequest dto) {
-
+        //TODO 저장한 알람 가져와서 보내면 됨. Performance, PerformanceInfo 안가져와도 됨
         Alarm alarm = getAlarm(dto);
         Performance performance = getPerformance(dto.getPerformanceId());
 
@@ -71,7 +71,9 @@ public class AlarmMailService {
             sendMessagePerformanceSeatList.add(sendMessagePerformanceSeat);
         }
 
-        messageBody(dto.getReservationEmail(), sendMessagePerformanceSeatList);
+        if(sendMessagePerformanceSeatList != null) {
+            messageBody(dto.getReservationEmail(), sendMessagePerformanceSeatList);
+        }
     }
 
     private Alarm getAlarm(CreateAlarmPerformanceSeatRequest dto) {
