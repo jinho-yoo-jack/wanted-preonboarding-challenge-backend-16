@@ -1,5 +1,5 @@
 # 🎨 공연/전시 티켓 예매
-- 객체지향 스터디용 기능 구현 프로젝트
+- 객체지향 스터디, 기능 구현 프로젝트
 
 ## 구현 API
 | API 명                | Method | Path | 설명 |
@@ -25,11 +25,14 @@
 │ │ │ └── com
 │ │ │     └── wanted
 │ │ │         └── preonboarding
-│ │ │             ├── BackendPreonboardingApplication.java
+│ │ │             ├── TicketApplication.java
 │ │ │             ├── core
 │ │ │             │ ├── code
+│ │ │             │ │ ├── ErrorMessage.java
 │ │ │             │ │ ├── NoticeType.java
 │ │ │             │ │ └── ReservationStatus.java
+│ │ │             │ ├── config
+│ │ │             │ │ └── JpaConfiguration.java
 │ │ │             │ └── domain
 │ │ │             │     └── response
 │ │ │             │         └── ResponseHandler.java
@@ -75,5 +78,6 @@
 │                     └── ticket
 │                         └── service
 │                             ├── PerformanceServiceTest.java
+│                             └── ReservationServiceTest.java
 
 ```
