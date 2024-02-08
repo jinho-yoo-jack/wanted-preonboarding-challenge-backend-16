@@ -3,26 +3,19 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:13306/wanted
-    username: wanted
-    password: backend
+    url: jdbc:mysql://localhost:3306/study?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: root
+    password: tiger
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  # JPA ??
   jpa:
     hibernate:
-      ddl-auto: none        # DB ??? ?? (none, create, create-drop, update, validate)
+      ddl-auto: create
     properties:
       hibernate:
         auto_quote_keyword: false
         globally_quoted_identifiers: false
-        format_sql: true      # ?? ?? ?? (??)
-        show_sql: true        # ?? ?? ??
 
 logging:
   level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql: trace
+    p6spy: debug

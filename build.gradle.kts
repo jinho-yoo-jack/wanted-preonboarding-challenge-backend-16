@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.org.codehaus.plexus.util.StringUtils
+
 plugins {
     java
     id("org.springframework.boot") version "3.2.1"
@@ -24,14 +26,25 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.1")
     compileOnly("org.projectlombok:lombok")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("com.mysql:mysql-connector-j:8.0.33")
+    runtimeOnly("com.mysql:mysql-connector-j")
+//    runtimeOnly ("com.h2database:h2")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.vintage:junit-vintage-engine") {
         exclude("org.hamcrest", "hamcrest-core")
     }
+
+    //test 롬복 사용
+    testCompileOnly ("org.projectlombok:lombok")
+    testAnnotationProcessor ("org.projectlombok:lombok")
+
+    //Querydsl 추가
+    implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    annotationProcessor ("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties["querydsl.version"]}:jakarta")
+    annotationProcessor ("jakarta.annotation:jakarta.annotation-api")
+    annotationProcessor ("jakarta.persistence:jakarta.persistence-api")
 }
 
 tasks.withType<Test> {
@@ -46,3 +59,19 @@ tasks.bootJar {
 tasks.bootBuildImage {
     imageName = "wanted/preonboarding-backend"
 }
+
+val generated = "src/main/generated"
+
+tasks.withType<JavaCompile> {
+    options.generatedSourceOutputDirectory.set(file(generated))
+}
+
+sourceSets {
+    val main by getting {
+        java.srcDir(generated)
+    }
+}
+
+//tasks.register("clean", Delete::class) {
+//    delete(file(generated))
+//}

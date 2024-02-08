@@ -1,13 +1,15 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -32,7 +34,19 @@ public class Performance {
     private int type;
     @Column(nullable = false)
     private Date start_date;
-    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
+    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar(255) default 'disable'")
     private String isReserve;
+    @OneToMany(mappedBy = "performance")
+    private List<PerformanceSeatInfo> performanceSeatInfos = new ArrayList<>();
 
+    public static Performance create(String name, int price, int round, int type, Date start_date, String isReserve) {
+        Performance performance = new Performance();
+        performance.name = name;
+        performance.price = price;
+        performance.round = round;
+        performance.type = type;
+        performance.start_date = start_date;
+        performance.isReserve = isReserve;
+        return performance;
+    }
 }
