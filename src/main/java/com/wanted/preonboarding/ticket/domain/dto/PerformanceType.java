@@ -1,7 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
 
 public enum PerformanceType {
     NONE(0),
@@ -16,6 +15,13 @@ public enum PerformanceType {
 
     public int getCategory() {
         return category;
+    }
+
+    public static PerformanceType fromCategory(int category) {
+        return Arrays.stream(values())
+                .filter(type -> type.category == category)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("존재 하지 않는 카테고리 입니다: " + category));
     }
 
 }

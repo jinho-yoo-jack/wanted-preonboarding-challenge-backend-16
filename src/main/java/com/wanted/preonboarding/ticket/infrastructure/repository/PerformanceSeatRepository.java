@@ -1,0 +1,11 @@
+package com.wanted.preonboarding.ticket.infrastructure.repository;
+
+import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public interface PerformanceSeatRepository extends JpaRepository<PerformanceSeatInfo,Long> {
+    Optional<PerformanceSeatInfo> findByPerformanceIdAndSeatLineAndSeatNumber(UUID performanceId, char seatLine, int seatNumber);
+}

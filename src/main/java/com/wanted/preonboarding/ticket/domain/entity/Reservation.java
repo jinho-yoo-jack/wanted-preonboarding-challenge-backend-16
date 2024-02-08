@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
 import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.dto.ResponseReserveInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,28 +24,37 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
     private UUID performanceId;
+
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false, name = "phone_number")
     private String phoneNumber;
+
     @Column(nullable = false)
     private int round;
     private int gate;
     private char line;
     private int seat;
+    private long amount;
 
-    public static Reservation of(ReserveInfo info) {
+    public static Reservation of(ReserveInfo info,PerformanceSeatInfo seatInfo) {
         return Reservation.builder()
             .performanceId(info.getPerformanceId())
             .name(info.getReservationName())
             .phoneNumber(info.getReservationPhoneNumber())
             .round(info.getRound())
             .gate(1)
-            .line(info.getLine())
-            .seat(info.getSeat())
+            .line(seatInfo.getSeatLine())
+            .seat(seatInfo.getSeatNumber())
+            .amount(info.getAmount())
             .build();
     }
+
+
+
 
 }
