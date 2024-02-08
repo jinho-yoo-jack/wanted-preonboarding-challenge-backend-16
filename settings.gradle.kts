@@ -1,1 +1,1 @@
-rootProject.name = "preonboarding"
+rootProject.name = "ticket"
