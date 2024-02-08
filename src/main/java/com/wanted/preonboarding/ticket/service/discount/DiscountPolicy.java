@@ -1,5 +1,7 @@
 package com.wanted.preonboarding.ticket.service.discount;
 
+import java.math.BigDecimal;
+
 public interface DiscountPolicy {
-    double discount(double amount);
+    BigDecimal discount(BigDecimal amount);
 }

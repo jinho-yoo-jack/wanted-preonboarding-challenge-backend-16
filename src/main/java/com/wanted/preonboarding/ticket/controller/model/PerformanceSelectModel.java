@@ -17,7 +17,7 @@ public class PerformanceSelectModel {
     private LocalDate startDate;
     private boolean isReserve;
 
-    public static PerformanceSelectModel of(Performance performance) {
+    public static PerformanceSelectModel from(Performance performance) {
         return PerformanceSelectModel.builder()
                 .performanceId(performance.getId())
                 .title(performance.getTitle())

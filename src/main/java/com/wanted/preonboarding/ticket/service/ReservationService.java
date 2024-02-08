@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.wanted.preonboarding.core.code.ErrorMessage.*;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -32,7 +34,7 @@ public class ReservationService {
     @Transactional
     public ReservationApplyModel apply(ReservationApplyRequest request) {
         Performance performance = performanceRepository.findById(request.getPerformanceId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 공연/전시 데이터가 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException(EMPTY_DATA.getDescription()));
 
         validApply(request, performance);
 
@@ -53,11 +55,11 @@ public class ReservationService {
 
     private void validApply(ReservationApplyRequest request, Performance performance) {
         if (!performance.isReserve()) {
-            throw new IllegalStateException("해당 공연은 예약이 불가능 합니다.");
+            throw new IllegalStateException(RESERVATION_FAIL.getDescription());
         }
 
-        if (performance.getPrice() > request.getAmountAvailable()) {
-            throw new IllegalStateException("결제 가능 금액보다 공연/전시 금액 비쌉니다.");
+        if (performance.getPrice().compareTo(request.getAmountAvailable()) > 0) {
+            throw new IllegalStateException(OVER_PRICE.getDescription());
         }
     }
 
@@ -73,10 +75,10 @@ public class ReservationService {
     @Transactional
     public Long cancel(Long id, String userName, String phoneNumber) {
         Reservation reservation = reservationRepository.findByIdAndUserNameAndPhoneNumber(id, userName, phoneNumber)
-                .orElseThrow(() -> new IllegalArgumentException("예약 데이터가 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException(EMPTY_DATA.getDescription()));
 
         if (reservation.getStatus() != ReservationStatus.APPLY) {
-            throw new IllegalStateException("신청 상태의 예약만 취소 가능합니다.");
+            throw new IllegalStateException(CANCEL_STATUS_APPLY.getDescription());
         }
 
         reservation.cancel();
@@ -96,7 +98,7 @@ public class ReservationService {
             }
             log.info("");
         } catch (Exception e) { // 알림 발송에서 실패 발생 시 트랜잭션 롤백 되지 않도록 처리(에러 로그만 출력)
-            log.error("알림 발송 에러 발생!");
+            log.error(e.getMessage());
         }
     }
 

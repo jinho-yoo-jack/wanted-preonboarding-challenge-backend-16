@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -64,7 +65,7 @@ class PerformanceServiceTest {
     private Performance createPerformance(String title) {
         return Performance.builder()
                 .title(title)
-                .price(100000)
+                .price(BigDecimal.valueOf(100000))
                 .round(1)
                 .startDate(LocalDate.now())
                 .isReserve(true)

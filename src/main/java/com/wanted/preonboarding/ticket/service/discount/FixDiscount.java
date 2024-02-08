@@ -1,12 +1,15 @@
 package com.wanted.preonboarding.ticket.service.discount;
 
+import java.math.BigDecimal;
+
 public class FixDiscount implements DiscountPolicy {
 
+    // 1만원 부터 크면 1천원 할인
     @Override
-    public double discount(double amount) {
-        if (amount < 10000) {
+    public BigDecimal discount(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.valueOf(10000)) < 0)  {
             return amount;
         }
-        return amount - 1000;
+        return amount.add(BigDecimal.valueOf(-1000));
     }
 }

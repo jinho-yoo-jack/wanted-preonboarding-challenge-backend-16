@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +50,7 @@ class ReservationServiceTest {
     private Performance createPerformance(String title) {
         return Performance.builder()
                 .title(title)
-                .price(100000)
+                .price(BigDecimal.valueOf(100000))
                 .round(1)
                 .startDate(LocalDate.now())
                 .isReserve(true)
@@ -86,7 +87,7 @@ class ReservationServiceTest {
         ReservationApplyRequest applyRequest = ReservationApplyRequest.builder()
                 .userName(userName)
                 .phoneNumber("010-1234-1234")
-                .amountAvailable(2000000)
+                .amountAvailable(BigDecimal.valueOf(2000000))
                 .round(savePerformance.getRound())
                 .performanceId(savePerformance.getId())
                 .performanceSeatId(saveSeat.getId())

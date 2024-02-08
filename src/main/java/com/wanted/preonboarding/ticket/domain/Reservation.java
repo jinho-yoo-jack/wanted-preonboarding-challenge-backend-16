@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
+
 
 @Entity
 @Getter
@@ -28,7 +30,7 @@ public class Reservation extends BaseEntity {
     private int round;
 
     @Column(name = "amount", updatable = false, nullable = false)
-    private double amount;
+    private BigDecimal amount;
 
     @Column(name = "user_name", length = 100, nullable = false)
     private String userName;
