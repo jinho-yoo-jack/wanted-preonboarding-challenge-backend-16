@@ -5,12 +5,15 @@ import com.wanted.preonboarding.ticket.application.TicketSeller;
 import com.wanted.preonboarding.ticket.aop.dto.BaseResDto;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReadReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.CreateReservationRequest;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReadReservationResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.CreateReservationResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -32,10 +35,10 @@ public class ReservationController {
 
 
     @GetMapping("/customer")
-    public ResponseEntity<ResponseHandler<CreateReservationResponse>> readReservation(@RequestBody ReadReservationRequest dto) {
+    public ResponseEntity<ResponseHandler<List<ReadReservationResponse>>> readReservation(@RequestBody ReadReservationRequest dto) {
         return ResponseEntity
                 .ok()
-                .body(ResponseHandler.<CreateReservationResponse>builder()
+                .body(ResponseHandler.<List<ReadReservationResponse>>builder()
                         .message("Success")
                         .statusCode(HttpStatus.OK)
                         .data(ticketSeller.readReservation(dto))

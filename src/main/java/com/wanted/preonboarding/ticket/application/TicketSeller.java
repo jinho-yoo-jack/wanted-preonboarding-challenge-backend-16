@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReadReservationRequest;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReadReservationResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.CreateReservationResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceInfoResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
@@ -36,7 +37,7 @@ public class TicketSeller {
             .toList();
     }
 
-    private Reservation getReservation(CreateReservationRequest dto, Performance performance) {
+    private Reservation getReservationList(CreateReservationRequest dto, Performance performance) {
         return reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
                 performance.getId(), performance.getRound(), dto.getLine(), dto.getSeat())
                 .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
@@ -44,6 +45,11 @@ public class TicketSeller {
 
     private Performance getPerformance(UUID id, int round, ReserveStatus reserveStatus) {
         return performanceRepository.findByIdAndRoundAndIsReserve(id, round, reserveStatus.getValue())
+                .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
+    }
+
+    private Performance getPerformanceByUUIDAndRound(UUID id, int round) {
+        return performanceRepository.findByIdAndRound(id, round)
                 .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
     }
 
@@ -94,15 +100,19 @@ public class TicketSeller {
                 });
     }
 
-    public CreateReservationResponse readReservation(ReadReservationRequest dto) {
-        Reservation reservation = getReservation(dto.getReservationName(), dto.getReservationPhoneNumber());
-        Performance performance = getPerformance(reservation.getPerformanceId(), reservation.getRound(), ReserveStatus.ENABLE);
-        return CreateReservationResponse.of(performance, reservation);
+    public List<ReadReservationResponse> readReservation(ReadReservationRequest dto) {
+        List<Reservation> reservationList = getReservationList(dto.getReservationName(), dto.getReservationPhoneNumber());
+        List<ReadReservationResponse> readReservationResponseList = new ArrayList<>();
+        for (Reservation reservation : reservationList) {
+            Performance performance = getPerformanceByUUIDAndRound(reservation.getPerformanceId(), reservation.getRound());
+            ReadReservationResponse readReservationResponse = ReadReservationResponse.of(performance, reservation);
+            readReservationResponseList.add(readReservationResponse);
+        }
+        return readReservationResponseList;
     }
 
-    private Reservation getReservation(String reservationName, String reservationPhoneNumber) {
-        return reservationRepository.findByNameAndPhoneNumber(reservationName, reservationPhoneNumber)
-                .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
+    private List<Reservation> getReservationList(String reservationName, String reservationPhoneNumber) {
+        return reservationRepository.findByNameAndPhoneNumber(reservationName, reservationPhoneNumber);
     }
 
 }
