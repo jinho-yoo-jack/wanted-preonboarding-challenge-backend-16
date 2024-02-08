@@ -21,6 +21,7 @@ import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -47,11 +48,13 @@ public class AlarmMailService {
         performance.isReserve(ReserveStatus.ENABLE);
 
         //2. 알림 가능한 공연 좌석인지 확인
-        PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto.getPerformanceId(), ReserveStatus.DISABLE.getValue());
+        List<PerformanceSeatInfo> performanceSeatInfoList = getPerformanceSeat(dto.getPerformanceId(), performance.getRound(), ReserveStatus.DISABLE);
 
-        Alarm alarm = Alarm.of(performanceSeatInfo, dto);
+        for (PerformanceSeatInfo performanceSeatInfo : performanceSeatInfoList) {
+            Alarm alarm = Alarm.of(performanceSeatInfo, dto);
+            alarmRepository.save(alarm);
+        }
 
-        alarmRepository.save(alarm);
     }
 
     @Transactional
@@ -59,11 +62,16 @@ public class AlarmMailService {
 
         Alarm alarm = getAlarm(dto);
         Performance performance = getPerformance(dto.getPerformanceId());
-        PerformanceSeatInfo performanceSeatInfo = getPerformanceSeatInfoAndStatus(dto.getPerformanceId(), ReserveStatus.CANCEL.getValue());
 
-        SendMessagePerformanceSeat sendMessagePerformanceSeat = SendMessagePerformanceSeat.of(performance, performanceSeatInfo);
+        List<PerformanceSeatInfo> performanceSeatInfoList = getPerformanceSeat(dto.getPerformanceId(), performance.getRound(), ReserveStatus.CANCEL);
 
-        messageBody(dto.getReservationEmail(), sendMessagePerformanceSeat);
+        List<SendMessagePerformanceSeat> sendMessagePerformanceSeatList = null;
+        for (PerformanceSeatInfo performanceSeatInfo : performanceSeatInfoList) {
+            SendMessagePerformanceSeat sendMessagePerformanceSeat = SendMessagePerformanceSeat.of(performance, performanceSeatInfo);
+            sendMessagePerformanceSeatList.add(sendMessagePerformanceSeat);
+        }
+
+        messageBody(dto.getReservationEmail(), sendMessagePerformanceSeatList);
     }
 
     private Alarm getAlarm(CreateAlarmPerformanceSeatRequest dto) {
@@ -76,13 +84,13 @@ public class AlarmMailService {
     }
 
 
-    public void messageBody(String reservationEmail, SendMessagePerformanceSeat dto) {
+    public void messageBody(String reservationEmail, List<SendMessagePerformanceSeat> dto) {
         Session session = getSession(this.username, this.password, getProperties());
 
         sendMessageBody(session, reservationEmail, dto);
     }
 
-    private void sendMessageBody(Session session, String reservationEmail, SendMessagePerformanceSeat dto) {
+    private void sendMessageBody(Session session, String reservationEmail, List<SendMessagePerformanceSeat> dto) {
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(this.username));
@@ -103,9 +111,8 @@ public class AlarmMailService {
         }
     }
 
-    private PerformanceSeatInfo getPerformanceSeatInfoAndStatus(UUID performanceId, String status) {
-        return performanceSeatInfoRepository.findByPerformanceIdAndIsReserve(performanceId, status)
-                .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
+    private List<PerformanceSeatInfo> getPerformanceSeat(UUID performanceId, int round, ReserveStatus reserveStatus) {
+        return performanceSeatInfoRepository.findByPerformanceIdAndRound(performanceId, round, reserveStatus.getValue());
     }
 
     private Performance getPerformance(UUID performanceId) {
@@ -114,10 +121,14 @@ public class AlarmMailService {
     }
 
 
-    private String createMessage(SendMessagePerformanceSeat dto) {
-        return String.format("공연ID: %s\n공연명: %s\n회차: %s\n시작 일시: %s\n예매 가능한 좌석 정보: Gate: %s, Line: %s, Seat: %s",
-                dto.getPerformanceId(), dto.getPerformanceName(),
-                dto.getRound(), dto.getStartDate(), dto.getGate(), dto.getLine(), dto.getSeat());
+    private String createMessage(List<SendMessagePerformanceSeat> dto) {
+        String message = null;
+        for (SendMessagePerformanceSeat performanceSeat : dto) {
+            message += String.format("공연ID: %s\n공연명: %s\n회차: %s\n시작 일시: %s\n예매 가능한 좌석 정보: Gate: %s, Line: %s, Seat: %s\n\n",
+                    performanceSeat.getPerformanceId(), performanceSeat.getPerformanceName(),
+                    performanceSeat.getRound(), performanceSeat.getStartDate(), performanceSeat.getGate(), performanceSeat.getLine(), performanceSeat.getSeat());
+        }
+        return message;
     }
 
     private static Session getSession(String username, String password, Properties prop) {

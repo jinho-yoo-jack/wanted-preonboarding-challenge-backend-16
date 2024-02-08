@@ -1,6 +1,9 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.ticket.aop.StatusCode;
+import com.wanted.preonboarding.ticket.aop.exception.ServiceException;
 import com.wanted.preonboarding.ticket.global.common.BaseEntity;
+import com.wanted.preonboarding.ticket.global.common.ReserveStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
