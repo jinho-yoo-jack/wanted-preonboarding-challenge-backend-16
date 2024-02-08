@@ -14,7 +14,7 @@ import com.wanted.preonboarding.ticket.global.common.ReserveStatus;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
-import com.wanted.preonboarding.ticket.presentation.ConcreteReserveStrategy;
+import com.wanted.preonboarding.ticket.presentation.ConcreteEnableReserveStrategy;
 import com.wanted.preonboarding.ticket.presentation.ReserveStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +25,7 @@ import java.util.*;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class TicketSeller {
 
     private long totalAmount = 0L;
@@ -32,26 +33,17 @@ public class TicketSeller {
     private final ReservationRepository reservationRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private final ReserveStrategy reserveStrategy;
-    public TicketSeller(PerformanceRepository performanceRepository,
-                        ReservationRepository reservationRepository,
-                        PerformanceSeatInfoRepository performanceSeatInfoRepository,
-                        ConcreteReserveStrategy concreteReserveStrategy) {
-        this.performanceRepository = performanceRepository;
-        this.reservationRepository = reservationRepository;
-        this.performanceSeatInfoRepository = performanceSeatInfoRepository;
-        this.reserveStrategy = concreteReserveStrategy;
-    }
 
     public List<PerformanceInfoResponse> readAllPerformances() {
         return performanceRepository.findByIsReserve(ReserveStatus.ENABLE.getValue())
-            .stream()
-            .map(PerformanceInfoResponse::from)
-            .toList();
+                .stream()
+                .map(PerformanceInfoResponse::from)
+                .toList();
     }
 
     private Reservation getReservationList(CreateReservationRequest dto, Performance performance) {
         return reservationRepository.findByPerformanceIdAndRoundAndLineAndSeat(
-                performance.getId(), performance.getRound(), dto.getLine(), dto.getSeat())
+                        performance.getId(), performance.getRound(), dto.getLine(), dto.getSeat())
                 .orElseThrow(() -> new ServiceException(StatusCode.NOT_FOUND));
     }
 
@@ -73,13 +65,12 @@ public class TicketSeller {
 
         //2. 공연 좌석 자리가 있는지 가져옴
         PerformanceSeatInfo performanceSeatInfo = checkIsReservePerformanceSeat(dto.getPerformanceId()
-                                                                                    , dto.getRound()
-                                                                                    , dto.getLine()
-                                                                                    , dto.getSeat());
+                , dto.getRound()
+                , dto.getLine()
+                , dto.getSeat());
 
         //3. 예약 가능한 좌석인지 확인
-        reserveStrategy.isReserveEnable(performanceSeatInfo.getIsReserve());
-
+        reserveStrategy.isReserveEnable(new ConcreteEnableReserveStrategy(), performanceSeatInfo.getIsReserve());
 
         //4. 예약이 불가능하도록 수정
         performanceSeatInfo.updateIsReserve(ReserveStatus.DISABLE);
@@ -87,9 +78,9 @@ public class TicketSeller {
 
         //5. 이미 예약 되었는지 확인(3번 절차 이후 더블체크)
         checkIsReserveReservation(dto.getPerformanceId()
-                                        ,dto.getRound()
-                                        ,dto.getLine()
-                                        ,dto.getSeat());
+                ,dto.getRound()
+                ,dto.getLine()
+                ,dto.getSeat());
 
         //6. 결제 가능한지 확인
         performance.checkHasEnoughBalance(dto.getBalance());

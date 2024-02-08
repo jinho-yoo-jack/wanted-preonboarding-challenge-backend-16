@@ -1,6 +1,10 @@
 package com.wanted.preonboarding.ticket.presentation;
 
+import org.springframework.stereotype.Service;
 
-public interface ReserveStrategy {
-    void isReserveEnable(String isReserve);
+@Service
+public class ReserveStrategy {
+    public void isReserveEnable(ReserveStrategyInterface reserveStrategy, String isReserve) {
+        reserveStrategy.isReserveEnable(isReserve);
+    }
 }

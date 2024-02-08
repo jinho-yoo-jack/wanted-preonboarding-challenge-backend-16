@@ -6,7 +6,7 @@ import com.wanted.preonboarding.ticket.global.common.ReserveStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ConcreteReserveStrategy implements ReserveStrategy{
+public class ConcreteEnableReserveStrategy implements ReserveStrategyInterface {
 
     @Override
     public void isReserveEnable(String isReserve) {
