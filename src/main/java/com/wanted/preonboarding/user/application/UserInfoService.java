@@ -1,18 +1,14 @@
 package com.wanted.preonboarding.user.application;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wanted.preonboarding.user.domain.dto.PaymentSetting;
 import com.wanted.preonboarding.user.domain.dto.SignUpInfo;
 import com.wanted.preonboarding.user.domain.dto.UserAndPaymentInfo;
 import com.wanted.preonboarding.user.domain.dto.UserInfo;
-import com.wanted.preonboarding.user.domain.entity.Payment;
 import com.wanted.preonboarding.user.domain.entity.PaymentCard;
 import com.wanted.preonboarding.user.domain.entity.User;
 import com.wanted.preonboarding.user.infrastructure.PaymentRepository;
 import com.wanted.preonboarding.user.infrastructure.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.Objects;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,15 +77,24 @@ public class UserInfoService {
      * @param paymentSetting
      * @param userUuid
      */
-    public void setPaymentInfo(PaymentSetting paymentSetting, String userUuid){
-        log.info("setPaymentInfo");
-        PaymentCard payment = PaymentCard.of(paymentSetting, UUID.fromString(userUuid));
-        paymentRepository.save(payment);
+    public void setPaymentInfoProcess(PaymentSetting paymentSetting, String userUuid){
+        log.info("setPaymentInfoProcess");
+        PaymentCard payment = savePayment(paymentSetting,
+            userUuid);
+        updateUserPaymentInfo(userUuid, payment);
+    }
+
+    private void updateUserPaymentInfo(String userUuid, PaymentCard payment) {
         User user = userRepository.getReferenceById(UUID.fromString(userUuid));
         user.updatedefaultPaymentCode(payment.getId());
         userRepository.save(user);
     }
 
+    private PaymentCard savePayment(PaymentSetting paymentSetting, String userUuid) {
+        PaymentCard payment = PaymentCard.of(paymentSetting, UUID.fromString(userUuid));
+        paymentRepository.save(payment);
+        return payment;
+    }
 
 
 }
