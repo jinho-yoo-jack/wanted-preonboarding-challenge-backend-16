@@ -102,8 +102,10 @@ public class TicketSeller {
     @Transactional(readOnly = true)
     public PerformanceAndSeatInfo getPerformanceAndSeatInfo(String id, int round, int seat, char line){
         UUID performanceId = UUID.fromString(id);
-         return PerformanceAndSeatInfo.of(performanceSeatInfoRepository.findBySeatAndLineAndPerformance_idAndPerformance_round(seat, line, performanceId, round)
-             .orElseThrow(EntityNotFoundException::new));
+        PerformanceSeatInfo performanceSeatInfo =
+            performanceSeatInfoRepository.findBySeatAndLineAndPerformance_idAndPerformance_round(seat, line, performanceId, round)
+            .orElseThrow(EntityNotFoundException::new);
+         return PerformanceAndSeatInfo.of(performanceSeatInfo);
     }
 
 
@@ -117,7 +119,7 @@ public class TicketSeller {
     public List<SeatInfo> getPerformanceSeatInfoDetailListById(String id){
         UUID performanceId = UUID.fromString(id);
         List<PerformanceSeatInfo> detailInfos =
-            performanceSeatInfoRepository.findByIsReserveAndPerformance_id("enable", performanceId)
+            performanceSeatInfoRepository.findByIsReserveAndPerformance_id(ReservationStatus.ENABLE.getStatus(), performanceId)
                 .orElseThrow(EntityNotFoundException::new);
         return detailInfos.stream().map(SeatInfo::of).toList();
     }
@@ -126,12 +128,12 @@ public class TicketSeller {
      * 공연 예매 메서드
      * @param reserveInfo
      * @param reservationId
-     * @return
+     * @return boolean
      */
     @Transactional
-    public boolean reserve(ReserveInfo reserveInfo, ReservationId reservationId) {
+    public boolean reserveProcess(ReserveInfo reserveInfo, ReservationId reservationId) {
         log.info("reserveInfo ID => {}", reserveInfo.getPerformanceId());
-
+        
         Performance performance = performanceRepository.findById(reserveInfo.getPerformanceId())
             .orElseThrow(EntityNotFoundException::new);
         User user = userRepository.getReferenceByPhoneNumber(reserveInfo.getPhoneNumber());
@@ -142,30 +144,71 @@ public class TicketSeller {
             .orElseThrow(EntityNotFoundException::new);
         PerformanceSeatInfo seatInfo = performanceSeatInfoRepository.findBySeatAndLineAndPerformance_idAndPerformance_round(reserveInfo.getSeat(),
             reserveInfo.getLine(), performance.getId(), performance.getRound()).orElseThrow(EntityNotFoundException::new);
-        String enableReserve = performance.getIsReserve();
+        String isReserve = performance.getIsReserve();
 
-        if (enableReserve.equalsIgnoreCase(ReservationStatus.ENABLE.getStatus())) {
+        if (isReserve.equalsIgnoreCase(ReservationStatus.ENABLE.getStatus())) {
             // 1. 결제
-            Discount discount = new Discount(performance.getPrice(), user.getBirthday(), performance.getStartDate());
-            int resultPrice = discount.discountCalc();
-            paymentCard.updateBalanceAmount(reserveInfo.getBalanceAmount() - resultPrice);
+            int resultPrice = getResultPrice(performance, user);
+            Long newBalanceAmount = reserveInfo.getBalanceAmount() - resultPrice;
+            updateBalanceAmount(paymentCard, newBalanceAmount);
             // 2. 예매 진행
-            Reservation reservation = Reservation.of(reserveInfo, resultPrice, performance, user);
-            seatInfo.reserved();
-            paymentRepository.save(paymentCard);
-            reservationRepository.save(reservation);
-            performanceSeatInfoRepository.save(seatInfo);
-            long enableReserveCount = performanceSeatInfoRepository.countByIsReserveAndPerformance_id(
-                ReservationStatus.ENABLE.getStatus(), performance.getId());
-            if(enableReserveCount == 0){
-                performance.soldOut();
-                performanceRepository.save(performance);
-            }
-            reservationId.setReservationId(reservation.getId());
+            reserve(reserveInfo, reservationId, resultPrice, performance, user, seatInfo);
+            // 3. 매진 여부 판단
+            checkSoldOut(performance, isReserve);
             return true;
         } else {
             return false;
         }
+    }
+
+    /**
+     * 좌석 예약 메서드
+     * @param reserveInfo
+     * @param reservationId
+     * @param resultPrice
+     * @param performance
+     * @param user
+     * @param seatInfo
+     */
+    private void reserve(ReserveInfo reserveInfo, ReservationId reservationId, int resultPrice,
+        Performance performance, User user, PerformanceSeatInfo seatInfo) {
+        Reservation reservation = Reservation.of(reserveInfo, resultPrice, performance, user);
+        seatInfo.reserved();
+        performanceSeatInfoRepository.save(seatInfo);
+        reservationRepository.save(reservation);
+        reservationId.setReservationId(reservation.getId());
+    }
+
+    /**
+     * 공연 매진 여부 판단 메서드
+     * @param performance
+     *
+     */
+    private void checkSoldOut(Performance performance, String isReserve) {
+
+        if(isReserve.equals(ReservationStatus.DISABLE.getStatus())){
+            performance.reservable();
+            performanceRepository.save(performance);
+            return;
+        }
+
+        long enableReserveCount = performanceSeatInfoRepository.countByIsReserveAndPerformance_id(
+            ReservationStatus.ENABLE.getStatus(), performance.getId());
+        if(enableReserveCount == 0){
+            performance.soldOut();
+            performanceRepository.save(performance);
+        }
+    }
+
+    /**
+     * 결제 및 결제 금액 계산 메서드
+     * @param performance
+     * @param user
+     * @return int
+     */
+    private int getResultPrice(Performance performance, User user) {
+        Discount discount = new Discount(performance.getPrice(), user.getBirthday(), performance.getStartDate());
+        return discount.discountCalc();
     }
 
     /**
@@ -196,7 +239,7 @@ public class TicketSeller {
      * @param reservationId
      */
     @Transactional
-    public void reservationCancel(int reservationId){
+    public void reservationCancelProcess(int reservationId){
         Reservation reservation = reservationRepository.findById(reservationId)
             .orElseThrow(EntityNotFoundException::new);
         Performance performance = reservation.getPerformance();
@@ -210,15 +253,27 @@ public class TicketSeller {
             .findBySeatAndLineAndPerformance_idAndPerformance_round(reservation.getSeat(), reservation.getLine(), performance
             .getId(), performance.getRound())
             .orElseThrow(EntityNotFoundException::new);
-        seatInfo.cancel();
-        paymentCard.updateBalanceAmount(paymentCard.getBalanceAmount() + reservation.getPrice());
+        // 1. 예약 취소
+        reservationCancel(seatInfo, reservation);
+        // 2. 환불
+        Long newBalanceAmount = paymentCard.getBalanceAmount() + reservation.getPrice();
+        updateBalanceAmount(paymentCard, newBalanceAmount);
+        // 3. 매진 여부 판단
+        String isReserve = performance.getIsReserve();
+        checkSoldOut(performance, isReserve);
 
-        if(performance.getIsReserve().equals(ReservationStatus.DISABLE.getStatus())){
-            performance.reservable();
-            performanceRepository.save(performance);
-        }
-        reservationRepository.delete(reservation);
+
+
+    }
+
+    private void reservationCancel(PerformanceSeatInfo seatInfo, Reservation reservation) {
+        seatInfo.cancel();
         performanceSeatInfoRepository.save(seatInfo);
+        reservationRepository.delete(reservation);
+    }
+
+    private void updateBalanceAmount(PaymentCard paymentCard, Long newBalanceAmount) {
+        paymentCard.updateBalanceAmount(newBalanceAmount);
         paymentRepository.save(paymentCard);
     }
 

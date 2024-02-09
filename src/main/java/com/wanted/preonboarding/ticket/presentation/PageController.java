@@ -83,7 +83,7 @@ public class PageController {
     @PostMapping("/performance/{performanceId}/{round:[0-9]*}")
     public String reservationPage(@PathVariable String performanceId, @PathVariable int round, @ModelAttribute ReserveInfo reserveInfo, RedirectAttributes redirectAttributes){
         ReservationId reservationId = new ReservationId(0);
-        boolean result = ticketSeller.reserve(reserveInfo, reservationId);
+        boolean result = ticketSeller.reserveProcess(reserveInfo, reservationId);
 
         if(result) {
             redirectAttributes.addAttribute("reservationId", reservationId.getReservationId());
@@ -115,7 +115,7 @@ public class PageController {
     @PostMapping("/reservation/{reservationId}")
     public String reservationCancel(@PathVariable int reservationId){
         log.info("reservation cancel reservationId={}", reservationId);
-        ticketSeller.reservationCancel(reservationId);
+        ticketSeller.reservationCancelProcess(reservationId);
         return "redirect:/";
     }
 
