@@ -28,6 +28,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
 	testCompileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
     runtimeOnly("com.mysql:mysql-connector-j:8.0.33")
 	runtimeOnly("com.h2database:h2")
     annotationProcessor("org.projectlombok:lombok")
