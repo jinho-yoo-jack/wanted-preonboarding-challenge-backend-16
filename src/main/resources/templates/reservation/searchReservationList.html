@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<div class="row">
+  <div class="col">
+    공연 명
+  </div>
+  <div class="col">
+    공연 회차
+  </div>
+  <div class="col">
+    좌석 정보
+  </div>
+  <div class="col">
+    시작 일시
+  </div>
+  <div class="col">
+    예약 일시
+  </div>
+  <div class="col">
+
+  </div>
+</div>
+<div class="row" th:each="result: ${results}">
+  <div class="col">
+    <a th:text="${result.performanceName}"></a>
+  </div>
+  <div class="col">
+    <a th:text="${result.round}"></a>
+  </div>
+  <div class="col">
+    <a th:text="|${result.line}${result.seat}|"></a>
+  </div>
+  <div class="col">
+    <a th:text="${result.startDate}"></a>
+  </div>
+  <div class="col">
+    <a th:text="${result.createAt}"></a>
+  </div>
+  <div class="col">
+    <input type="button" class="btn" value="예약 정보 확인하기" th:onclick="|location.href='@{/reservation/}${result.reservationId}'|">
+  </div>
+</div>
+
+<script src="" async defer></script>
+</body>
+</html>

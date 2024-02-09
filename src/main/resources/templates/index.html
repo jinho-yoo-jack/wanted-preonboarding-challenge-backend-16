@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="">
+</head>
+
+<body>
+
+  웰컴
+  <input type="button" value="공연 리스트" onclick="location.href='/performance'">
+  <input sec:authorize="isAnonymous()" type="button" value="로그인" onclick="location.href='/login'">
+  <input sec:authorize="isAnonymous()" type="button" value="회원 가입" onclick="location.href='/signup'">
+  <input sec:authorize="isAuthenticated()" type="button" value="회원 정보" th:data-url="@{/user/{userUuid}(userUuid=${#authentication.principal.userUuid})}"
+    th:onclick="location.href=(this.getAttribute('data-url'))">
+  <!-- url에 추가로 값을 설정하는 등의 작업을 할 시에는 th:data-url 등의 th:data- 태그를 이용해볼 것 -->
+  <input sec:authorize="isAuthenticated()" type="button" value="예약 조회" onclick="location.href='/reservation/search'">
+  <script src="" async defer></script>
+</body>
+
+</html>

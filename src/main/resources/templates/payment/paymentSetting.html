@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<form method="post" th:action="@{paymentsetting}">
+  카드사 : <input type="text" name="cardName" placeholder="카드사를 입력해주세요 ex) 국민카드">
+  카드 번호: <input type="text" name="cardNum" placeholder="카드 번호를 입력해주세요">
+  유효기간: <input type="text" name="expiredDate" placeholder="유효 기간을 입력해주세요 ex) MM/YY">
+  CVC: <input type="text" name="cvc" placeholder="cvc를 입력해주세요">
+  <input type="submit" value="등록">
+</form>
+
+
+<script src="" async defer></script>
+</body>
+</html>

@@ -1,11 +1,11 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -14,7 +14,8 @@ public class PerformanceInfo {
     private UUID performanceId;
     private String performanceName;
     private String performanceType;
-    private Date startDate;
+    private int performanceRound;
+    private LocalDate startDate;
     private String isReserve;
 
     public static PerformanceInfo of(Performance entity) {
@@ -22,7 +23,8 @@ public class PerformanceInfo {
             .performanceId(entity.getId())
             .performanceName(entity.getName())
             .performanceType(convertCodeToName(entity.getType()))
-            .startDate(entity.getStart_date())
+            .performanceRound(entity.getRound())
+            .startDate(entity.getStartDate().toLocalDate())
             .isReserve(entity.getIsReserve())
             .build();
     }

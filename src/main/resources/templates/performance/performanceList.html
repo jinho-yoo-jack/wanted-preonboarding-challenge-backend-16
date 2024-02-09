@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="row">
+    <div class="col">
+      공연 명
+    </div>
+    <div class="col">
+      공연 종류
+    </div>
+    <div class="col">
+      공연 회차
+    </div>
+    <div class="col">
+      공연 시작 일시
+    </div>
+    <div class="col">
+      <select id="reservable">
+        <option id="reserve" value="reserve">예약 가능</option>
+        <option id="disable" value="disable">매진</option>
+      </select>
+    </div>
+    <div class="col"></div>
+  </div>
+  <div id="performanceList" class="row"></div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"
+    defer></script>
+  <script src="/js/performance/performanceList.js" defer></script>
+</body>
+
+</html>

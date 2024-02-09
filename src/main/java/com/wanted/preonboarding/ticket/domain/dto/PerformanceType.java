@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 public enum PerformanceType {
     NONE(0),
-    CONCERT(1),
-    EXHIBITION(2);
+    CONCERT(1), // 공연
+    EXHIBITION(2);  // 전시회
 
     private final int category;
 

@@ -8,5 +8,12 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
-    Reservation findByNameAndPhoneNumber(String name, String phoneNumber);
+
+    /**
+     * Reservation의 연관 엔티티인 User 엔티티의 phoneNumber, name 필드를 통해 예약 정보 질의
+     * @param name
+     * @param phoneNumber
+     * @return List<Reservation>
+     */
+    List<Reservation> findByUser_phoneNumberAndUser_name(String phoneNumber, String name);
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="">
+</head>
+<body>
+<form method="post" action="signup">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+  아이디: <input type="text" name="id">
+  비밀번호: <input type="password" name="password">
+  비밀번호 확인:<input type="password" name="passwordCheck">
+  이름: <input type="text" name="name">
+  이메일: <input type="email" name="email">
+  휴대전화 번호: <input type="tel" name="phoneNumber">
+  생년월일 :<input type="date" name="birthday">
+  <input type="submit" value="회원가입">
+</form>
+
+</body>
+</html>

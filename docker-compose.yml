@@ -4,12 +4,18 @@ services:
     image: mysql:8.0.33
     ports:
       - 13306:3306
-    volumes:
-      - /Users/black/dev/mysql_docker/data:/var/lib/mysql:rw
-      - /Users/black/IdeaProjects/backend-preonboarding/src/main/resources/initdb:/docker-entrypoint-initdb.d
     command:
       - '--character-set-server=utf8mb4'
       - '--collation-server=utf8mb4_unicode_ci'
+      - '--skip-character-set-client-handshake' # Mysql character_set_xxx 인코딩 utf8mb4 로 변경하기 위해 추가
+    env_file:
+      - .env  # 보안을 위해 MySql 설정 로컬 파일로 분리  ./.env  # 보안을 위해 MySql 설정 로컬 파일로 분리
     environment:
-      MYSQL_ROOT_PASSWORD: preonboarding
-      MYSQL_DATABASE: wanted
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}  # Mysql 유저 추가
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD} # Mysql 유저 비밀번호 추가
+      TZ: ${TZ}  # 타임존 추가
+    volumes: # Mysql 저장소 경로 변경
+      - ${VOLUME_PATH}:/var/lib/mysql:rw
+      - ${initdb_PATH}:/docker-entrypoint-initdb.d
