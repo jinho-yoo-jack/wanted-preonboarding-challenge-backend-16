@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReserveStrategy {
-    public void isReserveEnable(ReserveStrategyInterface reserveStrategy, String isReserve) {
-        reserveStrategy.isReserveEnable(isReserve);
+    public void isReserveEnable(ReserveStrategyInterface reserveStrategyInterface, String isReserve) {
+        reserveStrategyInterface.isReserveEnable(isReserve);
     }
 }
