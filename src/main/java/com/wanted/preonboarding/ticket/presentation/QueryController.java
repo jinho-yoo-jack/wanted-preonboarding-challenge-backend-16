@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QueryController {
     private final TicketSeller ticketSeller;
+    private static final String success = "Success";
 
     /**
      * 예약 가능 공연 및 전시 정보 조회(목록)
@@ -30,7 +31,7 @@ public class QueryController {
         return ResponseEntity
             .ok()
             .body(ResponseHandler.<List<PerformanceInfo>>builder()
-                .message("Success")
+                .message(success)
                 .statusCode(HttpStatus.OK)
                 .data(ticketSeller.getAllPerformanceInfoList())
                 .build()
@@ -47,7 +48,7 @@ public class QueryController {
         return ResponseEntity
             .ok()
             .body(ResponseHandler.<List<PerformanceInfo>>builder()
-                .message("Success")
+                .message(success)
                 .statusCode(HttpStatus.OK)
                 .data(ticketSeller.getAllPerformanceUnreservaleList())
                 .build()
@@ -68,7 +69,7 @@ public class QueryController {
             return ResponseEntity
                 .ok()
                 .body(ResponseHandler.<PerformanceDetailInfo>builder()
-                    .message("Success")
+                    .message(success)
                     .statusCode(HttpStatus.OK)
                     .data(performanceInfo)
                     .build()
@@ -78,7 +79,7 @@ public class QueryController {
         return ResponseEntity
             .ok()
             .body(ResponseHandler.<PerformanceDetailInfo>builder()
-                .message("Success")
+                .message(success)
                 .statusCode(HttpStatus.OK)
                 .data(performanceInfo)
                 .build()
