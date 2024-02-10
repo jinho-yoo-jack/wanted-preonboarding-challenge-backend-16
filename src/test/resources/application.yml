@@ -1,4 +1,3 @@
-
 server:
   port: 8016
 
@@ -17,7 +16,7 @@ spring:
         auto_quote_keyword: false
         globally_quoted_identifiers: false
   profiles:
-    active: real
+    active: test
 
 logging:
   level:

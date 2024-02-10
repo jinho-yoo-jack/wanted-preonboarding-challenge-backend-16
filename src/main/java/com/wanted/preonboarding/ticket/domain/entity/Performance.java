@@ -1,9 +1,10 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import static lombok.AccessLevel.PROTECTED;
+
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,14 +14,12 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 public class Performance {
     @Id
     @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
     @Column(nullable = false)
@@ -35,6 +34,7 @@ public class Performance {
     private Date start_date;
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar(255) default 'disable'")
     private String isReserve;
+
     @OneToMany(mappedBy = "performance")
     private List<PerformanceSeatInfo> performanceSeatInfos = new ArrayList<>();
 
@@ -48,4 +48,12 @@ public class Performance {
         performance.isReserve = isReserve;
         return performance;
     }
+
+    public void calculateAmount(long amount) {
+        long result = amount - this.price;
+        if (result < 0) {
+            throw new IllegalArgumentException("잔액이 부족합니다.");
+        }
+    }
+
 }

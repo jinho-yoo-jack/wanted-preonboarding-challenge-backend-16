@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.infrastructure.repository;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReserveInfoRequest;
 
 public interface PerformanceSeatInfoRepositoryCustom {
-	boolean isAvailable(ReserveInfo request);
+	boolean isAvailable(ReserveInfoRequest request);
 }

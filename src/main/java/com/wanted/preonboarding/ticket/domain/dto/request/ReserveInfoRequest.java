@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain.dto;
+package com.wanted.preonboarding.ticket.domain.dto.request;
 
 import lombok.Data;
 import java.util.UUID;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ReserveInfo {
+public class ReserveInfoRequest {
     // 공연 및 전시 정보 + 예약자 정보
     private UUID performanceId;
     private String reservationName;
