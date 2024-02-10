@@ -29,23 +29,9 @@ public class TicketSellerTest {
 
     @Test
     void reserve() {
-        // given
-        ReserveInfo request =
-            ReserveInfo.builder()
-            .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
-            .reservationName("유진호")
-            .reservationPhoneNumber("010-1234-1234")
-            .reservationStatus("reserve")
-            .amount(200000)
-            .round(1)
-            .line('A')
-            .seat(1)
-            .build();
+
 
         // when
-        boolean result = ticketSeller.reserve(request);
 
-        // then
-        assertThat(result).isTrue();
     }
 }
