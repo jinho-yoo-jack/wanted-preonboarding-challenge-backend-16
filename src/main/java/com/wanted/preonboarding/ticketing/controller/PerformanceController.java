@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticketing.controller;
 
-import com.wanted.preonboarding.ticketing.domain.dto.response.ReadPerformanceResponse;
+import com.wanted.preonboarding.ticketing.controller.response.ReadPerformanceResponse;
 import com.wanted.preonboarding.ticketing.service.PerformanceService;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;

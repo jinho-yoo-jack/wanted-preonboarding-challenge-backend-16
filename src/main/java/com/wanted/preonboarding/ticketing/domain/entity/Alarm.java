@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
-import com.wanted.preonboarding.ticketing.domain.dto.response.CreateAlarmResponse;
-import com.wanted.preonboarding.ticketing.domain.dto.AlarmInfo;
+import com.wanted.preonboarding.ticketing.controller.response.CreateAlarmResponse;
+import com.wanted.preonboarding.ticketing.service.dto.AlarmInfo;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;

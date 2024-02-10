@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticketing.domain.dto.request;
+package com.wanted.preonboarding.ticketing.controller.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;

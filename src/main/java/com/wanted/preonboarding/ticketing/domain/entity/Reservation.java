@@ -1,9 +1,9 @@
 package com.wanted.preonboarding.ticketing.domain.entity;
 
-import com.wanted.preonboarding.ticketing.domain.dto.Discount;
-import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
-import com.wanted.preonboarding.ticketing.domain.dto.response.CreateReservationResponse;
-import com.wanted.preonboarding.ticketing.domain.dto.response.ReadReservationResponse;
+import com.wanted.preonboarding.ticketing.service.dto.Discount;
+import com.wanted.preonboarding.ticketing.controller.request.CreateReservationRequest;
+import com.wanted.preonboarding.ticketing.controller.response.CreateReservationResponse;
+import com.wanted.preonboarding.ticketing.controller.response.ReadReservationResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;

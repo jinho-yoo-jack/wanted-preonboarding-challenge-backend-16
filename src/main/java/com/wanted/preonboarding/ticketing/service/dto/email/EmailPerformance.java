@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticketing.domain.dto.email;
+package com.wanted.preonboarding.ticketing.service.dto.email;
 
 import lombok.Builder;
 import lombok.Getter;

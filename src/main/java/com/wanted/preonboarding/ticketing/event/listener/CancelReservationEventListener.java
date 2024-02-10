@@ -2,7 +2,7 @@ package com.wanted.preonboarding.ticketing.event.listener;
 
 import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundPerformanceSeatInfoException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
-import com.wanted.preonboarding.ticketing.domain.dto.AlarmInfo;
+import com.wanted.preonboarding.ticketing.service.dto.AlarmInfo;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.event.CancelReservationEvent;
 import com.wanted.preonboarding.ticketing.repository.PerformanceSeatInfoRepository;

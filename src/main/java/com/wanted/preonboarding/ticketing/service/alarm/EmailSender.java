@@ -2,9 +2,9 @@ package com.wanted.preonboarding.ticketing.service.alarm;
 
 import com.wanted.preonboarding.ticketing.aop.advice.exception.DefaultException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
-import com.wanted.preonboarding.ticketing.domain.dto.AlarmInfo;
-import com.wanted.preonboarding.ticketing.domain.dto.email.EmailPerformance;
-import com.wanted.preonboarding.ticketing.domain.dto.email.EmailPerformanceSeatInfo;
+import com.wanted.preonboarding.ticketing.service.dto.AlarmInfo;
+import com.wanted.preonboarding.ticketing.service.dto.email.EmailPerformance;
+import com.wanted.preonboarding.ticketing.service.dto.email.EmailPerformanceSeatInfo;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

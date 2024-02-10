@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticketing.event;
 
-import com.wanted.preonboarding.ticketing.domain.dto.AlarmInfo;
+import com.wanted.preonboarding.ticketing.service.dto.AlarmInfo;
 
 import java.util.List;
 

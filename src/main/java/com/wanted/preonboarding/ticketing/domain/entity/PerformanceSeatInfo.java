@@ -2,8 +2,8 @@ package com.wanted.preonboarding.ticketing.domain.entity;
 
 import com.wanted.preonboarding.ticketing.aop.advice.exception.SoldOutException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
-import com.wanted.preonboarding.ticketing.domain.dto.email.EmailPerformanceSeatInfo;
-import com.wanted.preonboarding.ticketing.domain.dto.response.CancelReservationResponse;
+import com.wanted.preonboarding.ticketing.service.dto.email.EmailPerformanceSeatInfo;
+import com.wanted.preonboarding.ticketing.controller.response.CancelReservationResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;

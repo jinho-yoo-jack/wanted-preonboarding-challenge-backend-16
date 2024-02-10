@@ -1,8 +1,8 @@
 package com.wanted.preonboarding.ticketing.service.alarm;
 
-import com.wanted.preonboarding.ticketing.domain.dto.AlarmInfo;
-import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
-import com.wanted.preonboarding.ticketing.domain.dto.response.CreateAlarmResponse;
+import com.wanted.preonboarding.ticketing.service.dto.AlarmInfo;
+import com.wanted.preonboarding.ticketing.controller.request.CreateAlarmRequest;
+import com.wanted.preonboarding.ticketing.controller.response.CreateAlarmResponse;
 import com.wanted.preonboarding.ticketing.domain.entity.Alarm;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.domain.entity.PerformanceSeatInfo;

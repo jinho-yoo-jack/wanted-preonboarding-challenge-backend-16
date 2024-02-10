@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticketing.domain.dto.request;
+package com.wanted.preonboarding.ticketing.controller.request;
 
 import com.wanted.preonboarding.ticketing.domain.entity.Alarm;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;

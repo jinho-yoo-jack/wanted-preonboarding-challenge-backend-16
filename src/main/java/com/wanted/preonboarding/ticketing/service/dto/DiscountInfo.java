@@ -1,6 +1,6 @@
-package com.wanted.preonboarding.ticketing.domain.dto;
+package com.wanted.preonboarding.ticketing.service.dto;
 
-import com.wanted.preonboarding.ticketing.domain.dto.request.CreateReservationRequest;
+import com.wanted.preonboarding.ticketing.controller.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import lombok.Builder;
 import lombok.Getter;

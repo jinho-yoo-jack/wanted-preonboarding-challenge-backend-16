@@ -3,7 +3,7 @@ package com.wanted.preonboarding.ticketing.service;
 import com.wanted.preonboarding.ticketing.aop.advice.exception.DefaultException;
 import com.wanted.preonboarding.ticketing.aop.advice.exception.NotFoundPerformanceException;
 import com.wanted.preonboarding.ticketing.aop.advice.payload.ErrorCode;
-import com.wanted.preonboarding.ticketing.domain.dto.response.ReadPerformanceResponse;
+import com.wanted.preonboarding.ticketing.controller.response.ReadPerformanceResponse;
 import com.wanted.preonboarding.ticketing.domain.entity.Performance;
 import com.wanted.preonboarding.ticketing.repository.PerformanceRepository;
 import jakarta.validation.constraints.NotNull;

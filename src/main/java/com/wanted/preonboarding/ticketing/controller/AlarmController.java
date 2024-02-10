@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticketing.controller;
 
-import com.wanted.preonboarding.ticketing.domain.dto.request.CreateAlarmRequest;
-import com.wanted.preonboarding.ticketing.domain.dto.response.CreateAlarmResponse;
+import com.wanted.preonboarding.ticketing.controller.request.CreateAlarmRequest;
+import com.wanted.preonboarding.ticketing.controller.response.CreateAlarmResponse;
 import com.wanted.preonboarding.ticketing.service.alarm.AlarmService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
