@@ -35,6 +35,10 @@ public class Alarm extends Time {
     @Comment("이메일")
     private String email;
 
+    @Column(nullable = false)
+    @Comment("이메일")
+    private AlarmType alarmType;
+
     public CreateAlarmResponse toCreateAlarmResponse() {
         return CreateAlarmResponse.builder()
                 .alarmId(this.id)
