@@ -24,4 +24,15 @@ public class PerformanceSeatDto {
   private int gate;
   private String line;
   private int seat;
+
+  public static PerformanceSeatDto of(SeatInfo seat) {
+    return PerformanceSeatDto.builder()
+        .performanceId(seat.getPerformance().getId())
+        .performanceName(seat.getPerformance().getName())
+        .round(seat.getPerformance().getRound())
+        .gate(seat.getGate())
+        .line(seat.getLine())
+        .seat(seat.getSeat())
+        .build();
+  }
 }

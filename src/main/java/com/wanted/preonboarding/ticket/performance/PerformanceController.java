@@ -1,8 +1,9 @@
 package com.wanted.preonboarding.ticket.performance;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
+import com.wanted.preonboarding.ticket.domain.dto.performance.PerformanceDetailDto;
+import com.wanted.preonboarding.ticket.domain.dto.performance.PerformanceInfoDto;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("v1/performance")
 public class PerformanceController {
-  private final PerformanceRepository repository;
+  private final PerformanceService service;
 
   @Autowired
-  public PerformanceController(PerformanceRepository repository) {
-    this.repository = repository;
+  public PerformanceController(PerformanceService service) {
+    this.service = service;
   }
 
   /**
@@ -34,12 +35,13 @@ public class PerformanceController {
    * @return 모든 {@Performance}의 리스트
    */
   @GetMapping("/")
-  public ResponseEntity<ResponseHandler<List<Performance>>> getPerformanceList() {
+  public ResponseEntity<ResponseHandler<List<PerformanceInfoDto>>> getPerformanceList() {
+    List<PerformanceInfoDto> res = this.service.getPerformanceList("enable");
     return ResponseEntity.ok()
-        .body(ResponseHandler.<List<Performance>>builder()
+        .body(ResponseHandler.<List<PerformanceInfoDto>>builder()
         .message("success")
         .statusCode(HttpStatus.OK)
-        .data(this.repository.findAll())
+        .data(res)
         .build());
   }
 
@@ -50,14 +52,15 @@ public class PerformanceController {
    * @return 공연의 상세 정보
    */
   @GetMapping("/{id}")
-  public ResponseEntity<ResponseHandler<Performance>> getPerformanceDetail(
+  public ResponseEntity<ResponseHandler<PerformanceDetailDto>> getPerformanceDetail(
       @PathVariable("id") UUID id
   ) {
+    PerformanceDetailDto detailDto = this.service.getPerformanceDetail(id);
     return ResponseEntity.ok()
-        .body(ResponseHandler.<Performance>builder()
+        .body(ResponseHandler.<PerformanceDetailDto>builder()
             .statusCode(HttpStatus.OK)
             .message("success")
-            .data(this.repository.findById(id).orElse(null))
+            .data(detailDto)
             .build()
         );
   }

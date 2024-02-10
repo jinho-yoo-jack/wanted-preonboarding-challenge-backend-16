@@ -1,10 +1,29 @@
 package com.wanted.preonboarding.ticket.reservation;
 
-import com.wanted.preonboarding.ticket.application.TicketSeller;
+import com.wanted.preonboarding.core.domain.exception.TicketException;
+import com.wanted.preonboarding.core.domain.response.ErrorResponseHandler;
+import com.wanted.preonboarding.core.domain.response.ResponseHandler;
+import com.wanted.preonboarding.ticket.domain.dto.DtoSchemaSerializer;
+import com.wanted.preonboarding.ticket.domain.dto.LinkInfo;
+import com.wanted.preonboarding.ticket.domain.dto.UserDto;
+import com.wanted.preonboarding.ticket.domain.dto.performance.PerformanceSeatDto;
+import com.wanted.preonboarding.ticket.domain.dto.reservation.NotificationDto;
 import com.wanted.preonboarding.ticket.domain.dto.reservation.CreateReservationDto;
+import com.wanted.preonboarding.ticket.domain.dto.reservation.NotificationResponseDto;
+import com.wanted.preonboarding.ticket.domain.dto.reservation.ReserveResponseDto;
+import com.wanted.preonboarding.ticket.domain.dto.reservation.ReservedListDto;
+import com.wanted.preonboarding.ticket.notification.NotificationService;
+import com.wanted.preonboarding.ticket.reservation.discount.DefaultDiscountPolicy;
+import com.wanted.preonboarding.ticket.reservation.discount.DiscountPolicy;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +36,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("v1/reserve")
 @RequiredArgsConstructor
+@Slf4j
 public class ReserveController {
+  final private ReservationService service;
+  final private NotificationService notiService;
+  final private DtoSchemaSerializer serializer;
+
   /**
    * 고객의 정보를 받아 해당 고객의 예약들을 반환합니다.
    *
@@ -31,9 +55,17 @@ public class ReserveController {
       @RequestParam(value = "phone") String phone
   ) {
     //  TODO : Valid phone Number
-    System.out.println(name);
-    System.out.println(phone);
-    return ResponseEntity.ok().body(null);
+    UserDto user = UserDto.builder()
+        .userName(name)
+        .phoneNumber(phone)
+        .build();
+    return ResponseEntity.ok().body(
+        ResponseHandler.<ReservedListDto>builder()
+            .statusCode(HttpStatus.OK)
+            .message("success")
+            .data(this.service.reservedList(user))
+            .build()
+    );
   }
 
   /**
@@ -41,13 +73,72 @@ public class ReserveController {
    * POST 메서드로 요청을 받고, 예약의 결과를 반환합니다.
    *
    * @param createReservationDto 예약에 필요한 정보
-   * @return 주어진 정보로 예약을 실행한 후, {@link TicketSeller}의 reserve 메소드 실행 결과를 반환합니다.
+   * @return 주어진 정보로 예약을 실행한 후, {@link PerformanceSeatDto}를 반환합니다.
    */
   @PostMapping
   public ResponseEntity<?> makeReservation(
       @RequestBody CreateReservationDto createReservationDto
   ) {
-    System.out.println(createReservationDto);
-    return ResponseEntity.ok().body(createReservationDto);
+    DiscountPolicy policy = new DefaultDiscountPolicy();
+    try {
+      return ResponseEntity.ok().body(
+          ResponseHandler.<ReserveResponseDto>builder()
+              .statusCode(HttpStatus.OK)
+              .message("예약 성공")
+              //  TODO: 할인 정책 적용 방법 수정
+              .data(this.service.createReservation(createReservationDto, policy))
+              .build()
+      );
+    } catch (TicketException e) {
+      throw e;
+    } catch (RuntimeException e) {
+      Map<String, LinkInfo> links = new HashMap<>();
+      links.put("예약하기", LinkInfo.builder()
+          .schema(serializer.getClassSchema(CreateReservationDto.class))
+          .build());
+      return ResponseEntity
+          .status(HttpStatus.BAD_REQUEST)
+          .body(ErrorResponseHandler.builder()
+              .statusCode(HttpStatus.BAD_REQUEST)
+              .message("올바른 요청 바람")
+              .links(links)
+              .build()
+          );
+    }
+  }
+
+  @DeleteMapping("{id}")
+  public ResponseEntity<?> deleteReservation(
+      @PathVariable("id") int id
+  ) {
+    log.info("id : {}", id);
+    this.service.deleteReservation(id);
+    return ResponseEntity.ok().body("삭제 완료");
+  }
+
+  @PostMapping("/notice")
+  public ResponseEntity<ResponseHandler<NotificationResponseDto>> makeNotification(
+      @RequestBody NotificationDto dto
+  ) {
+    NotificationResponseDto responseDto = this.notiService.register(dto);
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(ResponseHandler.<NotificationResponseDto>builder()
+            .statusCode(HttpStatus.CREATED)
+            .message("알림 설정 완료")
+            .data(responseDto)
+            .build());
+  }
+
+  @DeleteMapping("/notice/{notificationId}")
+  public ResponseEntity<ResponseHandler> cancelNotification(
+      @PathVariable("notificationId") long id
+  ) {
+    this.notiService.unregister(id);
+    return ResponseEntity.ok().body(
+        ResponseHandler.builder()
+            .statusCode(HttpStatus.OK)
+            .message("예약 알림 제거")
+            .build()
+    );
   }
 }
