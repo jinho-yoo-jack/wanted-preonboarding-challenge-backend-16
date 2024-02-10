@@ -3,15 +3,14 @@ package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.dto.request.FindReserveRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.PerformanceListRequest;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReserveInfoRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.WaitReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.response.FindReserveResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceListResponse;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
-import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
-import com.wanted.preonboarding.ticket.domain.dto.request.ReservationRequest;
-import com.wanted.preonboarding.ticket.domain.dto.response.ReservationResponse;
 import jakarta.persistence.EntityManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,7 +22,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -33,10 +31,9 @@ public class TicketSellerTest {
 
     @Autowired
     private EntityManager em;
+
     @Autowired
     private TicketSeller ticketSeller;
-    @Autowired
-    private PerformanceRepository performanceRepository;
 
     private static Performance performance;
 
@@ -50,8 +47,6 @@ public class TicketSellerTest {
         for (int i = 1; i <= 4; i++) {
             em.persist(PerformanceSeatInfo.create(performance, 1, 1, 'A', i, "enable"));
         }
-
-        reserve();
     }
 
     @Test
@@ -70,6 +65,7 @@ public class TicketSellerTest {
 
     @Test
     void findReserve() {
+        reserve();
         // given
         FindReserveRequest request = new FindReserveRequest();
         request.setName("홍길동");
@@ -81,6 +77,7 @@ public class TicketSellerTest {
 
     @Test
     void findAllCond() {
+        reserve();
         // given
         PerformanceListRequest request = new PerformanceListRequest();
         request.setSrchPerformanceCond("enable");
@@ -89,8 +86,8 @@ public class TicketSellerTest {
     }
 
     @Test
-    @Rollback(false)
     void waitReservation() {
+        reserve();
         WaitReservationRequest request = new WaitReservationRequest();
         request.setId(performance.getId());
         request.setRound(1);

@@ -1,12 +1,15 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.ticket.application.policy.discount.DiscountPolicy;
 import com.wanted.preonboarding.ticket.domain.dto.PerformanceInfo;
 import com.wanted.preonboarding.ticket.domain.dto.request.FindReserveRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.PerformanceListRequest;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReserveInfoRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.WaitReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.response.FindReserveResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceListResponse;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.ReserveInfoResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.WaitReservationResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
@@ -14,9 +17,6 @@ import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
-import com.wanted.preonboarding.ticket.infrastructure.repository.WaitingListRepository;
-import com.wanted.preonboarding.ticket.domain.dto.request.ReservationRequest;
-import com.wanted.preonboarding.ticket.domain.dto.response.ReservationResponse;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class TicketSeller {
     private final PerformanceRepository performanceRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private final ReservationRepository reservationRepository;
-    private final WaitingListRepository waitingListRepository;
+    private final DiscountPolicy discountPolicy;
     private long totalAmount = 0L;
 
     public List<PerformanceInfo> getAllPerformanceInfoList() {
@@ -56,8 +56,10 @@ public class TicketSeller {
 
         // 예약 가능 상태일 때
         if (enableReserve.equalsIgnoreCase("enable")) {
-            // 1. 결제
-            info.calculateAmount(request.getAmount());
+            // 1. 결제하기
+            log.info("discountPolicy => {}", discountPolicy);
+            Long result = discountPolicy.calculateAmount(info.getPrice(), request.getAmount());
+            log.info("result => {}", result);
 
             // 2. 전시회 ID, 회차, 좌석 정보 찾기
             if (!performanceSeatInfoRepository.isAvailable(request)) {

@@ -1,13 +1,10 @@
 package com.wanted.preonboarding.ticket.domain.dto.response;
 
 import com.wanted.preonboarding.ticket.domain.dto.request.ReserveInfoRequest;
-import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
