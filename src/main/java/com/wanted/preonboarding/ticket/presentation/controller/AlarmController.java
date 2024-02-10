@@ -5,6 +5,8 @@ import com.wanted.preonboarding.ticket.domain.dto.request.CreateAlarmPerformance
 import com.wanted.preonboarding.ticket.presentation.service.AlarmMailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -16,12 +18,14 @@ public class AlarmController {
     private final AlarmMailService alarmMailService;
 
     @PostMapping("/send")
-    public void sendAlarm(@RequestBody CreateAlarmPerformanceSeatRequest dto) {
+    public ResponseEntity<Void> sendAlarm(@RequestBody CreateAlarmPerformanceSeatRequest dto) {
         alarmMailService.sendAlarmPerformanceSeat(dto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping("/create")
-    public void createAlarm(@RequestBody CreateAlarmPerformanceSeatRequest dto) {
+    public ResponseEntity<Void> createAlarm(@RequestBody CreateAlarmPerformanceSeatRequest dto) {
         alarmMailService.createAlarmPerformanceSeat(dto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

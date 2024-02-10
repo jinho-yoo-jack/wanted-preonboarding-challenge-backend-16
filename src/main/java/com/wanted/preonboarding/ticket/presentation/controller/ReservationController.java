@@ -2,7 +2,6 @@ package com.wanted.preonboarding.ticket.presentation.controller;
 
 import com.wanted.preonboarding.core.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.application.TicketSeller;
-import com.wanted.preonboarding.ticket.aop.dto.BaseResDto;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReadReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.CreateReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReadReservationResponse;
