@@ -1,13 +1,15 @@
-import org.gradle.internal.impldep.org.codehaus.plexus.util.StringUtils
+import com.ewerk.gradle.plugins.tasks.QuerydslCompile
 
 plugins {
     java
     id("org.springframework.boot") version "3.2.1"
     id("io.spring.dependency-management") version "1.1.4"
+    id("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
 }
 
 group = "com.wanted"
 version = "0.0.1-SNAPSHOT"
+val queryDslVersion = "5.0.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -41,6 +43,8 @@ dependencies {
     testAnnotationProcessor ("org.projectlombok:lombok")
 
     //Querydsl 추가
+    implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    annotationProcessor ("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties["querydsl.version"]}:jakarta")
     annotationProcessor ("jakarta.annotation:jakarta.annotation-api")
     annotationProcessor ("jakarta.persistence:jakarta.persistence-api")
 }
@@ -56,4 +60,25 @@ tasks.bootJar {
 
 tasks.bootBuildImage {
     imageName = "wanted/preonboarding-backend"
+}
+
+val querydslDir = layout.buildDirectory.dir("generated/querydsl").get().toString()
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+sourceSets.getByName("main") {
+    java.srcDir(querydslDir)
+}
+
+configurations {
+    named("querydsl") {
+        extendsFrom(configurations.compileClasspath.get())
+    }
+}
+
+tasks.withType<QuerydslCompile> {
+    options.annotationProcessorPath = configurations.querydsl.get()
 }

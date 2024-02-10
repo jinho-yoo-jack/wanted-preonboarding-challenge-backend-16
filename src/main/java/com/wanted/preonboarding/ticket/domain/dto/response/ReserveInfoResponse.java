@@ -20,14 +20,6 @@ public class ReserveInfoResponse {
     private char line;
     private int seat;
 
-    public void calculateAmount(int price) {
-        long result = this.amount - price;
-        if (result < 0) {
-            throw new IllegalArgumentException("잔액이 부족합니다.");
-        }
-        this.amount = result;
-    }
-
     public static ReserveInfoResponse of(ReserveInfoRequest request) {
         return ReserveInfoResponse.builder()
             .round(request.getRound())

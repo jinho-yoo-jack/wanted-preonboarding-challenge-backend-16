@@ -21,16 +21,22 @@ public class Performance {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
+
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private int price;
+
     @Column(nullable = false)
     private int round;
+
     @Column(nullable = false)
     private int type;
+
     @Column(nullable = false)
     private Date start_date;
+
     @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar(255) default 'disable'")
     private String isReserve;
 
@@ -47,12 +53,4 @@ public class Performance {
         performance.isReserve = isReserve;
         return performance;
     }
-
-    public void calculateAmount(long amount) {
-        long result = amount - this.price;
-        if (result < 0) {
-            throw new IllegalArgumentException("잔액이 부족합니다.");
-        }
-    }
-
 }

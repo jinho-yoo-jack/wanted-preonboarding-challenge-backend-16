@@ -28,8 +28,11 @@ public class WaitingList {
     private String phoneNumber;
 
     private UUID performanceId;
+
     private int round;
+
     private char line;
+
     private int seat;
 
     public static WaitingList of(WaitReservationRequest request, PerformanceSeatInfo entity) {

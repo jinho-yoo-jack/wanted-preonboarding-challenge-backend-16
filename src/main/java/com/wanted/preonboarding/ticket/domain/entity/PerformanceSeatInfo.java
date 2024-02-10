@@ -29,10 +29,15 @@ public class PerformanceSeatInfo {
 	private Performance performance;
 
 	private int round;
+
 	private int gate;
+
 	private char line;
+
 	private int seat;
+
 	private String isReserve;
+
 	private LocalDateTime createdAt = now();
 	private LocalDateTime updatedAt = now();
 
