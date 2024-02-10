@@ -1,5 +1,9 @@
 package com.wanted.preonboarding.core.domain.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.wanted.preonboarding.ticket.domain.dto.LinkInfo;
+import java.util.Map;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;
 
@@ -10,5 +14,7 @@ import org.springframework.http.HttpStatus;
  * @param <T> 데이터의 유형을 나타내는 제네릭 타입 매개변수
  */
 @Builder
-public record ResponseHandler<T>(HttpStatus statusCode, String message, T data) {
+public record ResponseHandler<T>(HttpStatus statusCode, String message,
+                                 @JsonInclude(Include.NON_NULL) T data,
+                                 @JsonInclude(Include.NON_NULL) Map<String, LinkInfo> links) {
 }
