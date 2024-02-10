@@ -43,12 +43,12 @@ public class ReserveController {
     }
 
     @PostMapping("/wait")
-    public ResponseEntity<WaitReservationResponse> waitReservation(WaitReservationRequest request) {
+    public ResponseEntity<WaitReservationResponse> waitReservation(@RequestBody WaitReservationRequest request) {
         return ResponseEntity.ok(ticketSeller.waitReservation(request));
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<ReservationResponse> waitReservation(ReservationRequest request) {
+    public ResponseEntity<ReservationResponse> waitReservation(@RequestBody ReservationRequest request) {
         return ResponseEntity.ok(ticketSeller.cancelReservation(request));
     }
 }
