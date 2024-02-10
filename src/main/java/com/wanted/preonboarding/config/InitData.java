@@ -1,7 +1,5 @@
 package com.wanted.preonboarding.config;
 
-import static java.util.UUID.fromString;
-
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import jakarta.annotation.PostConstruct;

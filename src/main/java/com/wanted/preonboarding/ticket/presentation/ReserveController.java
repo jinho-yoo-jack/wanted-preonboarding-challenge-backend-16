@@ -3,10 +3,12 @@ package com.wanted.preonboarding.ticket.presentation;
 import com.wanted.preonboarding.ticket.application.TicketSeller;
 import com.wanted.preonboarding.ticket.domain.dto.request.FindReserveRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.PerformanceListRequest;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReserveInfoRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.WaitReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.response.FindReserveResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceListResponse;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.ReserveInfoResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.WaitReservationResponse;
 import java.util.List;
@@ -43,5 +45,10 @@ public class ReserveController {
     @PostMapping("/wait")
     public ResponseEntity<WaitReservationResponse> waitReservation(WaitReservationRequest request) {
         return ResponseEntity.ok(ticketSeller.waitReservation(request));
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<ReservationResponse> waitReservation(ReservationRequest request) {
+        return ResponseEntity.ok(ticketSeller.cancelReservation(request));
     }
 }

@@ -1,25 +1,22 @@
 package com.wanted.preonboarding.ticket.application;
 
 
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.wanted.preonboarding.ticket.domain.dto.request.FindReserveRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.PerformanceListRequest;
 import com.wanted.preonboarding.ticket.domain.dto.request.ReserveInfoRequest;
+import com.wanted.preonboarding.ticket.domain.dto.request.WaitReservationRequest;
 import com.wanted.preonboarding.ticket.domain.dto.response.FindReserveResponse;
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceListResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
-import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
-import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReservationRequest;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationResponse;
 import jakarta.persistence.EntityManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -92,18 +89,22 @@ public class TicketSellerTest {
     }
 
     @Test
+    @Rollback(false)
     void waitReservation() {
-        // given
-        Performance result = performanceRepository.findById(performance.getId())
-            .orElseThrow(() -> new IllegalArgumentException("공연이 존재하지 않습니다."));
-        if (result.getIsReserve().equalsIgnoreCase("disable")) {
-
-        }
-        // when
-
-
-        // then
-
+        WaitReservationRequest request = new WaitReservationRequest();
+        request.setId(performance.getId());
+        request.setRound(1);
+        request.setLine('A');
+        request.setSeat(1);
+        request.setName("홍길동");
+        request.setPhoneNumber("010-1234-1234");
+        ticketSeller.waitReservation(request);
+        ReservationRequest request2 = new ReservationRequest();
+        request2.setId(performance.getId());
+        request2.setRound(1);
+        request2.setLine('A');
+        request2.setSeat(1);
+        ReservationResponse response = ticketSeller.cancelReservation(request2);
     }
 
     private Date valueOf(String date) throws ParseException {

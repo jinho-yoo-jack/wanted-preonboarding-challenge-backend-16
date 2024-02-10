@@ -11,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,8 +33,6 @@ public class PerformanceSeatInfo {
 	private char line;
 	private int seat;
 	private String isReserve;
-	@OneToOne(mappedBy = "performanceSeatInfo")
-	private WaitingList waitingList;
 	private LocalDateTime createdAt = now();
 	private LocalDateTime updatedAt = now();
 

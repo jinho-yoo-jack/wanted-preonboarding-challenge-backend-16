@@ -4,11 +4,9 @@ import java.util.UUID;
 import lombok.Data;
 
 @Data
-public class WaitReservationRequest {
+public class ReservationRequest {
 	private UUID id;
 	private int round;
 	private char line;
 	private int seat;
-	private String name;
-	private String phoneNumber;
 }

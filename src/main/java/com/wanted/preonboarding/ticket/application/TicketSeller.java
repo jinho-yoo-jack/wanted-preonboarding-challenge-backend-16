@@ -14,12 +14,14 @@ import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
+import com.wanted.preonboarding.ticket.infrastructure.repository.WaitingListRepository;
+import com.wanted.preonboarding.ticket.domain.dto.request.ReservationRequest;
+import com.wanted.preonboarding.ticket.domain.dto.response.ReservationResponse;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -30,6 +32,7 @@ public class TicketSeller {
     private final PerformanceRepository performanceRepository;
     private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
     private final ReservationRepository reservationRepository;
+    private final WaitingListRepository waitingListRepository;
     private long totalAmount = 0L;
 
     public List<PerformanceInfo> getAllPerformanceInfoList() {
@@ -79,6 +82,10 @@ public class TicketSeller {
     }
 
     public WaitReservationResponse waitReservation(WaitReservationRequest request) {
-        return null;
+        return performanceSeatInfoRepository.isAvailable(request);
+    }
+
+    public ReservationResponse cancelReservation(ReservationRequest request) {
+        return reservationRepository.cancelReservation(request);
     }
 }
