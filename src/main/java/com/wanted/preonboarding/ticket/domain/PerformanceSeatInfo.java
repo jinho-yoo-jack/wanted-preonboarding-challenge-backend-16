@@ -1,5 +1,7 @@
 package com.wanted.preonboarding.ticket.domain;
 
+import com.wanted.preonboarding.ticket.domain.code.ActiveType;
+import com.wanted.preonboarding.ticket.domain.code.converter.ActiveTypeConverter;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -36,7 +38,8 @@ public class PerformanceSeatInfo {
     private int seat;
     
     @Column(name = "is_reserve")
-    private String isReserve;
+    @Convert(converter = ActiveTypeConverter.class)
+    private ActiveType isReserve;
 
     @CreatedDate
     @Column(name = "created_at")

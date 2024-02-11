@@ -1,12 +1,13 @@
 package com.wanted.preonboarding.ticket.domain;
 
+import com.wanted.preonboarding.ticket.domain.code.ActiveType;
+import com.wanted.preonboarding.ticket.domain.code.converter.ActiveTypeConverter;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -35,10 +36,11 @@ public class Performance {
     private int type;
     
     @Column(name = "start_date")
-    private Timestamp startDate;
-    
+    private LocalDateTime startDate;
+
     @Column(name = "is_reserve")
-    private String isReserve;
+    @Convert(converter = ActiveTypeConverter.class)
+    private ActiveType isReserve;
 
     @CreatedDate
     @Column(name = "created_at")
