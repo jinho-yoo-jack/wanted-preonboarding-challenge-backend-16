@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.interfaces.dto;
 
-import com.wanted.preonboarding.ticket.domain.Reservation;
+import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

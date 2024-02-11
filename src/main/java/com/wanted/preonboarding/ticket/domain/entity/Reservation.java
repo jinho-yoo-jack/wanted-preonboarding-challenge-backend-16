@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain;
+package com.wanted.preonboarding.ticket.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

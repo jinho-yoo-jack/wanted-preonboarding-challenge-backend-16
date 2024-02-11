@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain;
+package com.wanted.preonboarding.ticket.domain.entity;
 
 import com.wanted.preonboarding.ticket.domain.code.ActiveType;
 import com.wanted.preonboarding.ticket.domain.code.PerformanceType;

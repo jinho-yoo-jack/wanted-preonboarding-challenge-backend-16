@@ -1,13 +1,13 @@
-package com.wanted.preonboarding.ticket.interfaces.controller;
+package com.wanted.preonboarding.ticket.domain.service;
 
 import com.wanted.preonboarding.core.exception.PerformanceNotFoundException;
 import com.wanted.preonboarding.core.exception.PerformanceSeatInfoNotFoundException;
-import com.wanted.preonboarding.ticket.domain.Performance;
-import com.wanted.preonboarding.ticket.domain.PerformanceId;
-import com.wanted.preonboarding.ticket.domain.PerformanceSeatInfo;
-import com.wanted.preonboarding.ticket.domain.Reservation;
-import com.wanted.preonboarding.ticket.domain.infrastructure.PerformanceRepository;
-import com.wanted.preonboarding.ticket.domain.infrastructure.PerformanceSeatInfoRepository;
+import com.wanted.preonboarding.ticket.domain.entity.Performance;
+import com.wanted.preonboarding.ticket.domain.entity.PerformanceId;
+import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
+import com.wanted.preonboarding.ticket.domain.entity.Reservation;
+import com.wanted.preonboarding.ticket.infrastructure.PerformanceRepository;
+import com.wanted.preonboarding.ticket.infrastructure.PerformanceSeatInfoRepository;
 import com.wanted.preonboarding.ticket.interfaces.dto.ReservationRequestDto;
 import com.wanted.preonboarding.ticket.interfaces.dto.ReservationResponseDto;
 import lombok.RequiredArgsConstructor;
