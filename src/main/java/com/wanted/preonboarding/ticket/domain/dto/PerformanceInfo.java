@@ -1,23 +1,24 @@
 package com.wanted.preonboarding.ticket.domain.dto;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
-@Data
-@Builder
+@Getter @Setter
+@SuperBuilder
 public class PerformanceInfo {
     private UUID performanceId;
-    private String performanceName;
+    private String performanceName; // 공연명
     private String performanceType;
     private Date startDate;
     private String isReserve;
 
-    public static PerformanceInfo of(Performance entity) {
+    public static PerformanceInfo from(Performance entity) {
         return PerformanceInfo.builder()
             .performanceId(entity.getId())
             .performanceName(entity.getName())

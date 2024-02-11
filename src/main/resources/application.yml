@@ -8,6 +8,15 @@ spring:
     password: backend
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  mail:
+    host: ${mail.host}
+    port: ${mail.port}
+    username: ${mail.username}
+    password: ${mail.password}
+    properties:
+      mail.smtp.auth:  true
+      mail.smtp.starttls.enable: true
+
   # JPA 설정
   jpa:
     hibernate:

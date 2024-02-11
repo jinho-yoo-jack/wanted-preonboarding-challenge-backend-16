@@ -1,25 +1,22 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
+import com.wanted.preonboarding.ticket.domain.dto.request.CreateReservationRequest;
+import com.wanted.preonboarding.ticket.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.experimental.SuperBuilder;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Entity
 @Table
 @Getter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Reservation {
+public class Reservation extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -35,15 +32,15 @@ public class Reservation {
     private char line;
     private int seat;
 
-    public static Reservation of(ReserveInfo info) {
+    public static Reservation from(CreateReservationRequest createReservationRequest) {
         return Reservation.builder()
-            .performanceId(info.getPerformanceId())
-            .name(info.getReservationName())
-            .phoneNumber(info.getReservationPhoneNumber())
-            .round(info.getRound())
-            .gate(1)
-            .line(info.getLine())
-            .seat(info.getSeat())
+            .performanceId(createReservationRequest.getPerformanceId())
+            .name(createReservationRequest.getReservationName())
+            .phoneNumber(createReservationRequest.getReservationPhoneNumber())
+            .round(createReservationRequest.getRound())
+            .gate(createReservationRequest.getGate())
+            .line(createReservationRequest.getLine())
+            .seat(createReservationRequest.getSeat())
             .build();
     }
 
