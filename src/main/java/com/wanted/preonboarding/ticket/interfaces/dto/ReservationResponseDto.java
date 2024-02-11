@@ -31,7 +31,7 @@ public class ReservationResponseDto {
                 .performanceName(reservation.getPerformance().getName())
                 .line(reservation.getLine())
                 .seat(reservation.getSeat())
-                .reservationHolderName(reservation.getName())
+                .reservationHolderName(reservation.getReservationHolderName())
                 .reservationHolderPhoneNumber(reservation.getPhoneNumber())
                 .reservationDate(reservation.getCreatedAt())
                 .build();

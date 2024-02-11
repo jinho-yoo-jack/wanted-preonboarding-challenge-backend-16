@@ -23,8 +23,8 @@ public class TicketController {
     }
 
     @GetMapping(path = "/reservation/inquiry")
-    public ResultResponse<ReservationInquiryDto> getReservationInquiry() {
-        return new ResultResponse<>(null);
+    public ResultResponse<ReservationInquiryDto> getReservationInquiry(ReservationInquiryRequestDto dto) {
+        return new ResultResponse<>(reservationService.getReservationInquiry(dto));
     }
 
     @GetMapping(path = "/performances")

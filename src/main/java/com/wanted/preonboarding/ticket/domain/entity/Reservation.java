@@ -30,7 +30,7 @@ public class Reservation {
     private Performance performance;
     
     @Column(name = "name")
-    private String name;
+    private String reservationHolderName;
     
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -52,12 +52,12 @@ public class Reservation {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static Reservation newInstance(Performance performance, PerformanceSeatInfo seatInfo, String name, String phoneNumber) {
+    public static Reservation newInstance(Performance performance, PerformanceSeatInfo seatInfo, String reservationHolderName, String phoneNumber) {
         return Reservation.builder()
                 .performance(performance)
                 .line(seatInfo.getLine())
                 .seat(seatInfo.getSeat())
-                .name(name)
+                .reservationHolderName(reservationHolderName)
                 .phoneNumber(phoneNumber)
                 .build();
     }
