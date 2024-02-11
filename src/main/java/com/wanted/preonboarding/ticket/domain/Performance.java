@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.domain;
 
 import com.wanted.preonboarding.ticket.domain.code.ActiveType;
+import com.wanted.preonboarding.ticket.domain.code.PerformanceType;
 import com.wanted.preonboarding.ticket.domain.code.converter.ActiveTypeConverter;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -9,8 +10,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Entity
@@ -18,10 +19,8 @@ import java.util.UUID;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Performance {
 
-    @Id
-    @Column(name = "id")
-    @EqualsAndHashCode.Include
-    private UUID id;
+    @EmbeddedId
+    private PerformanceId id;
     
     @Column(name = "name")
     private String name;
@@ -29,11 +28,8 @@ public class Performance {
     @Column(name = "price")
     private int price;
     
-    @Column(name = "round")
-    private int round;
-    
     @Column(name = "type")
-    private int type;
+    private PerformanceType type;
     
     @Column(name = "start_date")
     private LocalDateTime startDate;
@@ -51,8 +47,8 @@ public class Performance {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "performance", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<PerformanceSeatInfo> performanceSeatInfos;
+    private List<PerformanceSeatInfo> performanceSeatInfos = new ArrayList<>();
 
     @OneToMany(mappedBy = "performance", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<Reservation> reservations;
+    private List<Reservation> reservations = new ArrayList<>();
 }

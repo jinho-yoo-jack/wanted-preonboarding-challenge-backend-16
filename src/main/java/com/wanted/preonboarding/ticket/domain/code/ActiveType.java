@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 
 @Getter
 @AllArgsConstructor
-public enum ActiveType {
+public enum ActiveType {//todo 이름 바꾸기
 
     OPEN("enable"),
 
