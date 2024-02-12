@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.interfaces.controller;
 
-import com.wanted.preonboarding.ticket.domain.service.ReservationService;
+import com.wanted.preonboarding.ticket.application.service.ReservationService;
 import com.wanted.preonboarding.ticket.interfaces.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

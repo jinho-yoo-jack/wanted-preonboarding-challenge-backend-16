@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain.service;
+package com.wanted.preonboarding.ticket.application.service;
 
 import com.wanted.preonboarding.ticket.domain.delegator.ReservationValidateDelegator;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
