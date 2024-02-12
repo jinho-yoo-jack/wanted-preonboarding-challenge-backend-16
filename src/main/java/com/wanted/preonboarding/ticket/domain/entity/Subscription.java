@@ -9,14 +9,14 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Entity
-@Table(name = "reservation", uniqueConstraints = {
-        @UniqueConstraint(name = "reservation_round_row_seat", columnNames = {"performance_id", "round", "line", "seat"})
+@Table(name = "subscription", uniqueConstraints = {
+        @UniqueConstraint(name = "subscription_unique", columnNames = {"performance_id", "name", "phone_number"})
 })
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reservation extends BaseEntity {
+public class Subscription extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,4 @@ public class Reservation extends BaseEntity {
 
     @Embedded
     private UserInfo userInfo;
-
-    @Embedded
-    private SeatInfo seatInfo;
 }
