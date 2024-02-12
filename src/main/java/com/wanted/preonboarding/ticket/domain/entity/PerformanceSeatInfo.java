@@ -5,6 +5,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.time.LocalDateTime.now;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.wanted.preonboarding.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class PerformanceSeatInfo {
+public class PerformanceSeatInfo extends BaseTimeEntity<PerformanceSeatInfo, Long> {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "performance_seat_info_id")
@@ -37,9 +38,6 @@ public class PerformanceSeatInfo {
 	private int seat;
 
 	private String isReserve;
-
-	private LocalDateTime createdAt = now();
-	private LocalDateTime updatedAt = now();
 
 	public static PerformanceSeatInfo create(Performance performance, int round, int gate, char line, int seat, String isReserve) {
 		PerformanceSeatInfo entity = new PerformanceSeatInfo();
