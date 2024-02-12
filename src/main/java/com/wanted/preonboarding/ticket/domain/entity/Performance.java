@@ -29,7 +29,7 @@ public class Performance {
     private int price;
     
     @Column(name = "type")
-    private PerformanceType type;
+    private int type;
     
     @Column(name = "start_date")
     private LocalDateTime startDate;
