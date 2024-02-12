@@ -6,3 +6,7 @@ INSERT INTO performance_seat_info VALUES
 ,(DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 2, 'enable', DEFAULT, DEFAULT)
 ,(DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 3, 'enable', DEFAULT, DEFAULT)
 ,(DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 4, 'enable', DEFAULT, DEFAULT);
+
+INSERT INTO discount_info VALUES
+ (DEFAULT, 'SKT', 10, DEFAULT, DEFAULT, DEFAULT)
+,(DEFAULT, 'CJ', 10, DEFAULT, DEFAULT, DEFAULT);

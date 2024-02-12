@@ -1,38 +1,55 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
+import com.wanted.preonboarding.core.code.ActiveType;
+import com.wanted.preonboarding.core.code.converter.ActiveTypeConverter;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.sql.Date;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
-@Table
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@Table(name = "performance")
+@EntityListeners(AuditingEntityListener.class)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Performance {
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
-    @Column(nullable = false)
-    private String name;
-    @Column(nullable = false)
-    private int price;
-    @Column(nullable = false)
-    private int round;
-    @Column(nullable = false)
-    private int type;
-    @Column(nullable = false)
-    private Date start_date;
-    @Column(nullable = false, name = "is_reserve", columnDefinition = "varchar default 'disable'")
-    private String isReserve;
 
+    @EmbeddedId
+    private PerformanceId id;
+    
+    @Column(name = "name")
+    private String name;
+    
+    @Column(name = "price")
+    private int price;
+    
+    @Column(name = "type")
+    private int type;
+    
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
+
+    @Column(name = "is_reserve")
+    @Convert(converter = ActiveTypeConverter.class)
+    private ActiveType isReserve;
+
+    @CreatedDate
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "performance", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<PerformanceSeatInfo> performanceSeatInfos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "performance", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<Reservation> reservations = new ArrayList<>();
 }

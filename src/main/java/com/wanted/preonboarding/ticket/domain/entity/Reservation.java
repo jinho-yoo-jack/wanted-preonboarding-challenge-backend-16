@@ -1,50 +1,66 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.dto.ReserveInfo;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.UUID;
 
-@Entity
-@Table
 @Getter
+@Entity
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "reservation")
+@EntityListeners(AuditingEntityListener.class)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Reservation {
+
     @Id
+    @Column(name = "id")
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(columnDefinition = "BINARY(16)", nullable = false, name = "performance_id")
-    private UUID performanceId;
-    @Column(nullable = false)
-    private String name;
-    @Column(nullable = false, name = "phone_number")
+    private Integer id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumns({
+            @JoinColumn(referencedColumnName = "id", name = "performance_id"),
+            @JoinColumn(referencedColumnName = "round", name = "round")
+    })
+    private Performance performance;
+    
+    @Column(name = "name")
+    private String reservationHolderName;
+    
+    @Column(name = "phone_number")
     private String phoneNumber;
-    @Column(nullable = false)
-    private int round;
+    
+    @Column(name = "gate")
     private int gate;
-    private char line;
+    
+    @Column(name = "line")
+    private String line;
+    
+    @Column(name = "seat")
     private int seat;
 
-    public static Reservation of(ReserveInfo info) {
-        return Reservation.builder()
-            .performanceId(info.getPerformanceId())
-            .name(info.getReservationName())
-            .phoneNumber(info.getReservationPhoneNumber())
-            .round(info.getRound())
-            .gate(1)
-            .line(info.getLine())
-            .seat(info.getSeat())
-            .build();
-    }
+    @CreatedDate
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    public static Reservation newInstance(Performance performance, PerformanceSeatInfo seatInfo, String reservationHolderName, String phoneNumber) {
+        return Reservation.builder()
+                .performance(performance)
+                .line(seatInfo.getLine())
+                .seat(seatInfo.getSeat())
+                .reservationHolderName(reservationHolderName)
+                .phoneNumber(phoneNumber)
+                .build();
+    }
 }

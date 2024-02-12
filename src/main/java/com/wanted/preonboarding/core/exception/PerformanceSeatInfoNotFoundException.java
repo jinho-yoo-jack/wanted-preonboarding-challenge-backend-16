@@ -1,0 +1,15 @@
+package com.wanted.preonboarding.core.exception;
+
+import com.wanted.preonboarding.core.exception.code.ErrorCode;
+import org.springframework.http.HttpStatus;
+
+public class PerformanceSeatInfoNotFoundException extends WantedTicketException {
+
+    public PerformanceSeatInfoNotFoundException() {
+        super(HttpStatus.NOT_FOUND, ErrorCode.PERFORMANCE_SEAT_INFO_NOT_FOUND.getErrorCode(), ErrorCode.PERFORMANCE_SEAT_INFO_NOT_FOUND.getMessage());
+    }
+
+    public PerformanceSeatInfoNotFoundException(String message) {
+        super(HttpStatus.NOT_FOUND, ErrorCode.PERFORMANCE_SEAT_INFO_NOT_FOUND.getErrorCode(), message);
+    }
+}
