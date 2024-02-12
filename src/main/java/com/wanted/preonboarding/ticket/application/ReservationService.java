@@ -129,7 +129,7 @@ public class ReservationService {
 
     private static void checkSeatInfoReserved(PerformanceSeatInfo seatInfo) {
         if (seatInfo.getIsReserve().equalsIgnoreCase("enable")) {
-            throw new NoAvailableCancelSeatException("좌석을 취소할 수 없습니다 (예매되어있지 않는 좌석)");
+            throw new NoAvailableCancelSeatException("좌석을 취소할 수 없습니다 (예매 되어있지 않는 좌석)");
         }
     }
 

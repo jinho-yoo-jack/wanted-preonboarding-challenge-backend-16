@@ -61,7 +61,7 @@ public class Notification extends AuditInformation {
                 .build();
     }
 
-    public MailRequest toMailRequest(Reservation reservation){
+    public MailRequest toMailRequest(Reservation reservation) {
         return MailRequest.builder()
                 .email(this.email)
                 .performanceId(this.performance.getId())

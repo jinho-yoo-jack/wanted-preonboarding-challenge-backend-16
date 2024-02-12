@@ -5,14 +5,14 @@ import com.wanted.preonboarding.ticket.domain.dto.request.DiscountRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class DiscountService {
-    private final List<DiscountPolicy> discountPolicies;
+    private final Set<DiscountPolicy> discountPolicies;
 
     @Autowired
-    public DiscountService(List<DiscountPolicy> discountPolicies) {
+    public DiscountService(Set<DiscountPolicy> discountPolicies) {
         this.discountPolicies = discountPolicies;
     }
 

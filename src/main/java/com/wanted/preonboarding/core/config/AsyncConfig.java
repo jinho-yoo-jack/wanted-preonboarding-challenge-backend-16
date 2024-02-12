@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.config;
+package com.wanted.preonboarding.core.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
