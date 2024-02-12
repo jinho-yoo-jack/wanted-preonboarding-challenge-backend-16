@@ -15,16 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class PerformanceService {
 
     private final PerformanceRepository performanceRepository;
 
+    @Transactional(readOnly = true)
     public Page<PerformanceDto> getPerformances(final PerformanceSearchCondition condition, final Pageable pageable) {
         return performanceRepository.searchPage(condition, pageable);
     }
 
+    @Transactional(readOnly = true)
     public PerformanceDetailDto getPerformance(final UUID id) {
         Performance performance =  performanceRepository.findById(id).orElseThrow(() -> new NotFoundException("공연이 존재하지 않습니다."));
         return PerformanceDetailDto.of(performance);

@@ -5,6 +5,7 @@ import com.wanted.preonboarding.ticket.domain.event.ReservationCanceledEvent;
 import com.wanted.preonboarding.ticket.infrastructure.repository.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -12,13 +13,13 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class NotificationService {
 
     private final SubscriptionRepository subscriptionRepository;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
     public void notify(final ReservationCanceledEvent event){
         List<Subscription> subscriptions = subscriptionRepository.findAllByPerformanceId(event.getPerformanceId());
         for (Subscription s : subscriptions){

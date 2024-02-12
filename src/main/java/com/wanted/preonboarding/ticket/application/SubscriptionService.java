@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class SubscriptionService {
 
@@ -21,6 +20,7 @@ public class SubscriptionService {
 
     private final SubscriptionRepository subscriptionRepository;
 
+    @Transactional
     public Subscription subscribe(final SubscribeParam param) {
         performanceRepository.findById(param.getPerformanceId()).orElseThrow(() -> new NotFoundException("공연이 존재하지 않습니다."));
 
@@ -35,6 +35,7 @@ public class SubscriptionService {
         return subscriptionRepository.save(subscription);
     }
 
+    @Transactional
     public void unsubscribe(final UnsubscribeParam param) {
         Subscription subscription = subscriptionRepository.findById(param.getSubscriptionId()).orElseThrow(() -> new NotFoundException("구독이 존재하지 않습니다."));
 

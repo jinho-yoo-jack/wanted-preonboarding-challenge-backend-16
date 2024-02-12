@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ReservationService {
 
@@ -29,10 +28,12 @@ public class ReservationService {
     private final ApplicationEventPublisher eventPublisher;
     private final DiscountPolicy discountPolicy;
 
+    @Transactional(readOnly = true)
     public List<Reservation> getReservations(final String userName, final String userPhoneNumber) {
         return reservationRepository.findAllByUserInfo(UserInfo.builder().name(userName).phoneNumber(userPhoneNumber).build());
     }
 
+    @Transactional
     public Reservation reserve(final ReservationCreateParam param) {
         Performance performance = performanceRepository.findById(param.getPerformanceId()).orElseThrow(() -> new NotFoundException("공연이 존재하지 않습니다."));
 
@@ -56,6 +57,7 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
+    @Transactional
     public void cancel(final ReservationCancelParam param) {
         Reservation reservation = reservationRepository.findById(param.getReservationId()).orElseThrow(() -> new NotFoundException("예약이 존재하지 않습니다."));
 
