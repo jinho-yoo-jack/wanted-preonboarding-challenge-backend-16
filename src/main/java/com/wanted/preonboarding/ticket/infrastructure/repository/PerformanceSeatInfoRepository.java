@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.infrastructure;
+package com.wanted.preonboarding.ticket.infrastructure.repository;
 
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;

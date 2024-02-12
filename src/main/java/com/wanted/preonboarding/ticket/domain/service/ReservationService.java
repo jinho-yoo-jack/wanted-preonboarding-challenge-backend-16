@@ -1,16 +1,14 @@
 package com.wanted.preonboarding.ticket.domain.service;
 
-import com.wanted.preonboarding.core.exception.PerformanceNotFoundException;
-import com.wanted.preonboarding.core.exception.PerformanceSeatInfoNotFoundException;
-import com.wanted.preonboarding.core.exception.ReservationNotFoundException;
-import com.wanted.preonboarding.ticket.domain.code.ActiveType;
+import com.wanted.preonboarding.ticket.domain.delegator.ReservationValidateDelegator;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import com.wanted.preonboarding.ticket.domain.entity.PerformanceId;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.infrastructure.PerformanceRepository;
-import com.wanted.preonboarding.ticket.infrastructure.PerformanceSeatInfoRepository;
-import com.wanted.preonboarding.ticket.infrastructure.ReservationRepository;
+import com.wanted.preonboarding.ticket.infrastructure.factory.ReservationReadSimpleFactory;
+import com.wanted.preonboarding.ticket.infrastructure.reader.PerformanceReader;
+import com.wanted.preonboarding.ticket.infrastructure.reader.ReservationReader;
+import com.wanted.preonboarding.ticket.infrastructure.store.PerformanceSeatInfoStore;
+import com.wanted.preonboarding.ticket.infrastructure.store.ReservationStore;
 import com.wanted.preonboarding.ticket.interfaces.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,25 +22,28 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReservationService {
 
-    private final PerformanceRepository performanceRepository;
-    private final PerformanceSeatInfoRepository performanceSeatInfoRepository;
-    private final ReservationRepository reservationRepository;
+    private final ReservationReadSimpleFactory reservationReadSimpleFactory;
+    private final ReservationValidateDelegator reservationValidateDelegator;
+    private final ReservationStore reservationStore;
+    private final PerformanceReader performanceReader;
+    private final PerformanceSeatInfoStore performanceSeatInfoStore;
+    private final ReservationReader reservationReader;
 
 
     public ReservationResponseDto reserve(ReservationRequestDto reservationRequestDto) {
+        ReservationReadDto reservationReadDto = reservationReadSimpleFactory.getReservationReadDto(reservationRequestDto);
+        reservationValidateDelegator.validate(reservationReadDto);
 
-        Performance performance = performanceRepository.findById(new PerformanceId(reservationRequestDto.getPerformanceId(), reservationRequestDto.getRound())).orElseThrow(PerformanceNotFoundException::new);
-        PerformanceSeatInfo performanceSeatInfo = performanceSeatInfoRepository.findByPerformanceAndLineAndSeat(performance, reservationRequestDto.getLine(), reservationRequestDto.getSeat())//todo 예약 가능!
-                .orElseThrow(PerformanceSeatInfoNotFoundException::new);
-
-        Reservation reservation = Reservation.newInstance(performance, performanceSeatInfo, reservationRequestDto.getReservationHolderName(), reservationRequestDto.getReservationHolderPhoneNumber());
-        return ReservationResponseDto.newInstance(reservation);
-
+        Reservation reservation = Reservation.newInstance(reservationReadDto.getPerformance(), reservationReadDto.getPerformanceSeatInfo(), reservationReadDto.getReservationHolderName(), reservationReadDto.getReservationHolderPhoneNumber());
+        PerformanceSeatInfo performanceSeatInfo = reservationReadDto.getPerformanceSeatInfo();
+        performanceSeatInfo.reserved();
+        performanceSeatInfoStore.store(performanceSeatInfo);
+        return ReservationResponseDto.newInstance(reservationStore.store(reservation));
     }
 
     @Transactional(readOnly = true)
     public ReservationInquiryDto getReservationInquiry(ReservationInquiryRequestDto dto) {
-        Reservation reservation = reservationRepository.findByReservationHolderNameAndPhoneNumber(dto.getReservationHolderName(), dto.getPhoneNumber()).orElseThrow(ReservationNotFoundException::new);
+        Reservation reservation = reservationReader.getReservationInquiry(dto.getReservationHolderName(), dto.getPhoneNumber());
         return ReservationInquiryDto.builder()
                 .performanceId(reservation.getPerformance().getId().getId())
                 .performanceName(reservation.getPerformance().getName())
@@ -57,7 +58,7 @@ public class ReservationService {
 
     @Transactional(readOnly = true)
     public List<PerformanceDto> getPerformances() {
-        List<Performance> performances = performanceRepository.findAllByIsReserve(ActiveType.OPEN);
+        List<Performance> performances = performanceReader.getOpeningPerformances();
         return performances.stream()
                 .map(x -> PerformanceDto.builder()
                         .performanceId(x.getId().getId())
@@ -71,7 +72,7 @@ public class ReservationService {
 
     @Transactional(readOnly = true)
     public PerformanceDto getPerformanceDetail(UUID performanceId) {
-        Performance performance = performanceRepository.findByIdId(performanceId);
+        Performance performance = performanceReader.getById(performanceId);
         return PerformanceDto.builder()
                 .performanceId(performance.getId().getId())
                 .name(performance.getName())

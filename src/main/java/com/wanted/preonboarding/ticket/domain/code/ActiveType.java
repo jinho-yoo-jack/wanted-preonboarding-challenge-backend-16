@@ -22,4 +22,8 @@ public enum ActiveType {//todo 이름 바꾸기
                 .findFirst()
                 .orElseThrow(NoSuchElementException::new);
     }
+
+    public boolean isDisable() {
+        return CLOSE.equals(this);
+    }
 }

@@ -15,14 +15,13 @@ public class TicketController {
 
     private final ReservationService reservationService;
 
-
     @PostMapping(path = "/reservation")
-    public ResultResponse<ReservationResponseDto> reserve(ReservationRequestDto reservationRequestDto) {
+    public ResultResponse<ReservationResponseDto> reserve(@RequestBody ReservationRequestDto reservationRequestDto) {//todo 여기랑
         return new ResultResponse<>(reservationService.reserve(reservationRequestDto));
     }
 
     @GetMapping(path = "/reservation/inquiry")
-    public ResultResponse<ReservationInquiryDto> getReservationInquiry(ReservationInquiryRequestDto dto) {
+    public ResultResponse<ReservationInquiryDto> getReservationInquiry(@RequestBody ReservationInquiryRequestDto dto) {
         return new ResultResponse<>(reservationService.getReservationInquiry(dto));
     }
 
@@ -35,7 +34,6 @@ public class TicketController {
     public ResultResponse<PerformanceDto> getPerformanceDetail(@PathVariable(name = "id") UUID id) {
         return new ResultResponse<>(reservationService.getPerformanceDetail(id));
     }
-
 
     @PostMapping(path = "/notification")
     public ResultResponse<EmptyResultResponse> notice() {
