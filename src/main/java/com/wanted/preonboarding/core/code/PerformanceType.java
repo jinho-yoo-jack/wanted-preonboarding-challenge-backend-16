@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.ticket.domain.code;
+package com.wanted.preonboarding.core.code;
 
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.validator;
 
-import com.wanted.preonboarding.ticket.domain.code.DiscountType;
+import com.wanted.preonboarding.core.code.DiscountType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.interfaces.dto;
 
-import com.wanted.preonboarding.ticket.domain.code.DiscountType;
+import com.wanted.preonboarding.core.code.DiscountType;
 import lombok.Getter;
 import lombok.Setter;
 

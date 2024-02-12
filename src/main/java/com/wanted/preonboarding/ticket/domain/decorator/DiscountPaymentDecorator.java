@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.domain.decorator;
 
-import com.wanted.preonboarding.ticket.domain.code.DiscountType;
+import com.wanted.preonboarding.core.code.DiscountType;
 import com.wanted.preonboarding.ticket.domain.validator.ReservationPaymentDto;
 
 import java.math.BigDecimal;

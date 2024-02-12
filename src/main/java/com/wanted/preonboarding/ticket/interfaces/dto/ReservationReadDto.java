@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.interfaces.dto;
 
-import com.wanted.preonboarding.ticket.domain.code.DiscountType;
+import com.wanted.preonboarding.core.code.DiscountType;
 import com.wanted.preonboarding.ticket.domain.entity.DiscountInfo;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceSeatInfo;

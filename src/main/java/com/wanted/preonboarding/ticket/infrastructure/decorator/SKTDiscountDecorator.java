@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.infrastructure.decorator;
 
-import com.wanted.preonboarding.ticket.domain.code.DiscountType;
+import com.wanted.preonboarding.core.code.DiscountType;
 import com.wanted.preonboarding.ticket.domain.decorator.DiscountPaymentDecorator;
 import com.wanted.preonboarding.ticket.domain.decorator.Payment;
 

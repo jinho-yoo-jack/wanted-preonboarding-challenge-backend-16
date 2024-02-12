@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.validator;
 
 import com.wanted.preonboarding.core.exception.PaymentAmountNotCorrectException;
-import com.wanted.preonboarding.ticket.domain.code.DiscountType;
+import com.wanted.preonboarding.core.code.DiscountType;
 import com.wanted.preonboarding.ticket.domain.decorator.Payment;
 import com.wanted.preonboarding.ticket.infrastructure.decorator.PerformancePayment;
 import com.wanted.preonboarding.ticket.domain.entity.DiscountInfo;

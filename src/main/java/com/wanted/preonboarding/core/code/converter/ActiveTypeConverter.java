@@ -1,6 +1,6 @@
-package com.wanted.preonboarding.ticket.domain.code.converter;
+package com.wanted.preonboarding.core.code.converter;
 
-import com.wanted.preonboarding.ticket.domain.code.ActiveType;
+import com.wanted.preonboarding.core.code.ActiveType;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

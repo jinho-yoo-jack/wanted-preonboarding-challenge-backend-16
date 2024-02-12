@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.infrastructure.repository;
 
-import com.wanted.preonboarding.ticket.domain.code.ActiveType;
+import com.wanted.preonboarding.core.code.ActiveType;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceId;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -16,7 +16,7 @@ public class TicketController {
     private final ReservationService reservationService;
 
     @PostMapping(path = "/reservation")
-    public ResultResponse<ReservationResponseDto> reserve(@RequestBody ReservationRequestDto reservationRequestDto) {//todo 여기랑
+    public ResultResponse<ReservationResponseDto> reserve(@RequestBody ReservationRequestDto reservationRequestDto) {
         return new ResultResponse<>(reservationService.reserve(reservationRequestDto));
     }
 

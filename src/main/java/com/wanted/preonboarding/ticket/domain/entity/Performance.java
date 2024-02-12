@@ -1,8 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.code.ActiveType;
-import com.wanted.preonboarding.ticket.domain.code.PerformanceType;
-import com.wanted.preonboarding.ticket.domain.code.converter.ActiveTypeConverter;
+import com.wanted.preonboarding.core.code.ActiveType;
+import com.wanted.preonboarding.core.code.converter.ActiveTypeConverter;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

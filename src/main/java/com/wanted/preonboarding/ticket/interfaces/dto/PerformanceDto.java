@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.interfaces.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.wanted.preonboarding.ticket.domain.code.ActiveType;
+import com.wanted.preonboarding.core.code.ActiveType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

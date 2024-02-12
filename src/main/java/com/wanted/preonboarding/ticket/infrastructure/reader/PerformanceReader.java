@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.infrastructure.reader;
 
 import com.wanted.preonboarding.core.exception.PerformanceNotFoundException;
-import com.wanted.preonboarding.ticket.domain.code.ActiveType;
+import com.wanted.preonboarding.core.code.ActiveType;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.PerformanceId;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;

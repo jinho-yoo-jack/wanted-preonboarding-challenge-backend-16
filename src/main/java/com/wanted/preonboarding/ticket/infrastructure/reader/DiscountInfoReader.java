@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.infrastructure.reader;
 
-import com.wanted.preonboarding.ticket.domain.code.ActiveType;
+import com.wanted.preonboarding.core.code.ActiveType;
 import com.wanted.preonboarding.ticket.domain.entity.DiscountInfo;
 import com.wanted.preonboarding.ticket.infrastructure.repository.DiscountInfoRepository;
 import lombok.RequiredArgsConstructor;

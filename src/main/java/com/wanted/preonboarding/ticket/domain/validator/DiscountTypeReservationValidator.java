@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.validator;
 
 import com.wanted.preonboarding.core.exception.DisableDiscountException;
-import com.wanted.preonboarding.ticket.domain.code.DiscountType;
+import com.wanted.preonboarding.core.code.DiscountType;
 import com.wanted.preonboarding.ticket.domain.entity.DiscountInfo;
 import com.wanted.preonboarding.ticket.interfaces.dto.ReservationReadDto;
 import org.springframework.stereotype.Service;
