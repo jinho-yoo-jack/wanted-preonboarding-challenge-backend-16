@@ -69,6 +69,7 @@ public class Notification extends AuditInformation {
                 .round(reservation.getRound())
                 .line(reservation.getLine())
                 .seat(reservation.getSeat())
+                .startDate(this.performance.getStart_date())
                 .build();
     }
 

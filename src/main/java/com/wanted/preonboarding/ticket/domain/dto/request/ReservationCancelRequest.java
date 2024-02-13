@@ -6,6 +6,12 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ReservationCancelRequest {
-    private int reservationId;
+    private Integer reservationId;
 
+    protected ReservationCancelRequest() {
+    }
+
+    public ReservationCancelRequest(Integer reservationId) {
+        this.reservationId = reservationId;
+    }
 }
