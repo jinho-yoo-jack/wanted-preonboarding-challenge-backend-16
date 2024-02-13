@@ -41,6 +41,7 @@ public class ReservationService {
     @Transactional
     public ReservationCreateResponse reserve(ReservationCreateRequest request) {
         log.info("ReservationService.reserve");
+        System.out.println(request.getPerformanceId());
         Performance performance = findPerformance(request);
         PerformanceSeatInfo seatInfo = findSeatInfo(request);
         checkReservationAvailable(seatInfo);
@@ -59,7 +60,6 @@ public class ReservationService {
     }
 
     // 조회
-
     @Transactional(readOnly = true)
     public List<ReservationFindResponse> findReservation(ReservationFindRequest request) {
         log.info("ReservationService.findReservation");

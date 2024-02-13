@@ -37,7 +37,7 @@ public class PerformanceSeatInfo extends AuditInformation {
     @Comment("좌석 행")
     private int seat;
 
-    @Column(name = "is_reverse", nullable = false, columnDefinition = "varchar default 'disable'")
+    @Column(name = "is_reserve", nullable = false, columnDefinition = "varchar default 'disable'")
     @Comment("예약 여부")
     private String isReserve;
 

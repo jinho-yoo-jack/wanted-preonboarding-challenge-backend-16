@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.advice;
 
+import com.wanted.preonboarding.core.domain.response.ErrorResponse;
 import com.wanted.preonboarding.ticket.exception.*;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
@@ -8,87 +9,86 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 
 @RestControllerAdvice(basePackages = "com.wanted.preonboarding.ticket")
 @EnableAutoConfiguration(exclude = ErrorMvcAutoConfiguration.class)
 public class TicketControllerAdvice {
     @ExceptionHandler(NoAvailableCancelSeatException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Problem> noAvailableCancelSeatExceptionHandler(NoAvailableCancelSeatException e) {
-        Problem problem = Problem.builder()
-                .withStatus(Status.BAD_REQUEST)
-                .withTitle(Status.BAD_REQUEST.getReasonPhrase())
-                .withDetail(e.getMessage())
+    public ResponseEntity<ErrorResponse> noAvailableCancelSeatExceptionHandler(NoAvailableCancelSeatException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(e.getMessage())
                 .build();
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(problem);
+                .body(errorResponse);
     }
 
     @ExceptionHandler(NotEnoughBalanceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Problem> notEnoughBalanceExceptionHandler(NotEnoughBalanceException e) {
-        Problem problem = Problem.builder()
-                .withStatus(Status.BAD_REQUEST)
-                .withTitle(Status.BAD_REQUEST.getReasonPhrase())
-                .withDetail(e.getMessage())
+    public ResponseEntity<ErrorResponse> notEnoughBalanceExceptionHandler(NotEnoughBalanceException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(e.getMessage())
                 .build();
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(problem);
+                .body(errorResponse);
     }
 
     @ExceptionHandler(PerformanceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<Problem> performanceNotFoundExceptionHandler(PerformanceNotFoundException e) {
-        Problem problem = Problem.builder()
-                .withStatus(Status.NOT_FOUND)
-                .withTitle(Status.NOT_FOUND.getReasonPhrase())
-                .withDetail(e.getMessage())
+    public ResponseEntity<ErrorResponse> performanceNotFoundExceptionHandler(PerformanceNotFoundException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.NOT_FOUND)
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .message(e.getMessage())
                 .build();
+
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(problem);
+                .body(errorResponse);
     }
 
     @ExceptionHandler(PerformanceSeatInfoNotFound.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<Problem> performanceSeatInfoNotFoundExceptionHandler(PerformanceSeatInfoNotFound e) {
-        Problem problem = Problem.builder()
-                .withStatus(Status.NOT_FOUND)
-                .withTitle(Status.NOT_FOUND.getReasonPhrase())
-                .withDetail(e.getMessage())
+    public ResponseEntity<ErrorResponse> performanceSeatInfoNotFoundExceptionHandler(PerformanceSeatInfoNotFound e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.NOT_FOUND)
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .message(e.getMessage())
                 .build();
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(problem);
+                .body(errorResponse);
     }
 
     @ExceptionHandler(ReservationNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<Problem> reservationNotFoundExceptionHandler(ReservationNotFoundException e) {
-        Problem problem = Problem.builder()
-                .withStatus(Status.NOT_FOUND)
-                .withTitle(Status.NOT_FOUND.getReasonPhrase())
-                .withDetail(e.getMessage())
+    public ResponseEntity<ErrorResponse> reservationNotFoundExceptionHandler(ReservationNotFoundException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.NOT_FOUND)
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .message(e.getMessage())
                 .build();
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(problem);
+                .body(errorResponse);
     }
 
     @ExceptionHandler(SeatAlreadyReservedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Problem> seatAlreadyReservedException(SeatAlreadyReservedException e) {
-        Problem problem = Problem.builder()
-                .withStatus(Status.BAD_REQUEST)
-                .withTitle(Status.BAD_REQUEST.getReasonPhrase())
-                .withDetail(e.getMessage())
+    public ResponseEntity<ErrorResponse> seatAlreadyReservedException(SeatAlreadyReservedException e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(e.getMessage())
                 .build();
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(problem);
+                .body(errorResponse);
     }
 }

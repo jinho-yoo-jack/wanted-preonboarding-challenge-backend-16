@@ -26,17 +26,6 @@ public class ReservationController {
     @PostMapping("/")
     public ResponseEntity<ResponseHandler<ReservationCreateResponse>> reserve(@RequestBody ReservationCreateRequest request) {
         log.info("ReserveController.reserve");
-/*      //테스트용
-        ReserveCreateResponse reserve = reservationService.reserve(ReserveCreateRequest.builder()
-                .performanceId(UUID.fromString("4438a3e6-b01c-11ee-9426-0242ac180002"))
-                .reservationName("JH")
-                .reservationPhoneNumber("010-1234-5678")
-                .balance(200000)
-                .round(1)
-                .line('A')
-                .seat(1)
-                .build());
-*/
         ReservationCreateResponse reserve = reservationService.reserve(request);
         return ResponseEntity.ok()
                 .body(ResponseHandler.<ReservationCreateResponse>builder()
@@ -48,7 +37,7 @@ public class ReservationController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<ResponseHandler<List<ReservationFindResponse>>> findReservation(@RequestParam ReservationFindRequest request) {
+    public ResponseEntity<ResponseHandler<List<ReservationFindResponse>>> findReservation(@ModelAttribute ReservationFindRequest request) {
         log.info("ReserveController.findReservation");
         List<ReservationFindResponse> reservation = reservationService.findReservation(request);
 

@@ -8,5 +8,4 @@ import java.util.UUID;
 
 public interface PerformanceSeatInfoRepository extends JpaRepository<PerformanceSeatInfo, Integer> {
     Optional<PerformanceSeatInfo> findByPerformanceIdAndRoundAndSeatAndLine(UUID performanceId, int round, int seat, char line);
-    //TODO: performanceId, line, seat, round로 찾는것
 }

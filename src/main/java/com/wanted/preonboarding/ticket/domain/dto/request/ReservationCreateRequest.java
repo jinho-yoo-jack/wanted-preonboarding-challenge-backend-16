@@ -11,8 +11,8 @@ public class ReservationCreateRequest {
     private UUID performanceId;
     private String reservationName; //고객 이름
     private String reservationPhoneNumber;
-    private int balance;
-    private int round;
-    private int seat;
-    private char line;
+    private Integer balance;
+    private Integer round;
+    private Integer seat;
+    private Character line;
 }
