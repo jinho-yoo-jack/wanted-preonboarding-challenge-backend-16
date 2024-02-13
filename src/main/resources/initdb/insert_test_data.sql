@@ -6,3 +6,7 @@ INSERT INTO performance_seat_info VALUES
 ,(DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 2, 'enable', DEFAULT, DEFAULT)
 ,(DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 3, 'enable', DEFAULT, DEFAULT)
 ,(DEFAULT, (SELECT id FROM performance limit 1), 1, 1, 'A', 4, 'enable', DEFAULT, DEFAULT);
+
+INSERT INTO ticket_cancel_notification
+VALUES (DEFAULT, (SELECT id FROM performance limit 1), "유진호", "010-1234-1234", "jhy7342@gmail.com", DEFAULT,
+        DEFAULT, DEFAULT, DEFAULT);
