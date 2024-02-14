@@ -28,7 +28,7 @@ import java.util.UUID;
 @AutoConfigureMockMvc
 class NotificationControllerTest {
     @Mock
-    NotificationService notificationService;
+    private NotificationService notificationService;
     @Autowired
     private MockMvc mockMvc;
     private final String baseUrl = "/notification";

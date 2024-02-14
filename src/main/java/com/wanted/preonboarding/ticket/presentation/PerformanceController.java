@@ -21,7 +21,7 @@ import java.util.List;
 public class PerformanceController {
     private final PerformanceService performanceService;
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<ResponseHandler<List<PerformanceFindResponse>>> findAllPerformanceInfo(@NotBlank(message = "예매 가능 여부를 입력해주세요.") String isReserve) {
         List<PerformanceFindResponse> findPerformancesList = performanceService.findPerformances(isReserve);
         return ResponseEntity.ok()
