@@ -22,7 +22,8 @@ public class NotificationController {
     @PostMapping
     public ResponseEntity<ResponseHandler<NotificationCreateResponse>> saveNotification(@RequestBody NotificationCreateRequest request) {
         NotificationCreateResponse notificationCreateResponse = notificationService.saveNotification(request);
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
                 .body(ResponseHandler.<NotificationCreateResponse>builder()
                         .message("created")
                         .statusCode(HttpStatus.CREATED)

@@ -5,6 +5,7 @@ import com.wanted.preonboarding.ticket.domain.dto.response.NotificationCreateRes
 import com.wanted.preonboarding.ticket.domain.dto.response.NotificationFindResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Notification;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
+import com.wanted.preonboarding.ticket.exception.ErrorCode;
 import com.wanted.preonboarding.ticket.exception.PerformanceNotFoundException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.NotificationRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
@@ -54,7 +55,7 @@ public class NotificationService {
 
     private Performance findPerformanceById(UUID performanceId) {
         return performanceRepository.findById(performanceId)
-                .orElseThrow(() -> new PerformanceNotFoundException("공연 정보가 존재하지 않습니다."));
+                .orElseThrow(() -> new PerformanceNotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
     }
 
     private Notification getSaveNotification(NotificationCreateRequest request, Performance performance) {
@@ -63,7 +64,7 @@ public class NotificationService {
 
     private Performance findPerformance(NotificationCreateRequest request) {
         return performanceRepository.findById(request.getPerformanceId())
-                .orElseThrow(() -> new PerformanceNotFoundException("공연 정보가 존재하지 않습니다."));
+                .orElseThrow(() -> new PerformanceNotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
     }
 
 }

@@ -105,7 +105,7 @@ public class ReservationService {
 
     private static void checkReservationListNotEmpty(List<Reservation> reservations) {
         if (reservations.isEmpty()) {
-            throw new ReservationNotFoundException("예매된 공연이 없습니다.");  //TODO: 상수로 변경
+            throw new ReservationNotFoundException(ErrorCode.RESERVATION_NOT_FOUND);
         }
     }
 
@@ -119,17 +119,17 @@ public class ReservationService {
                 reservation.getRound(),
                 reservation.getSeat(),
                 reservation.getLine()
-        ).orElseThrow(() -> new PerformanceNotFoundException("좌석 정보가 존재하지 않습니다."));
+        ).orElseThrow(() -> new PerformanceNotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
     }
 
     private Reservation findReservation(ReservationCancelRequest request) {
         return reservationRepository.findById(request.getReservationId())
-                .orElseThrow(() -> new ReservationNotFoundException("예매된 공연이 없습니다."));
+                .orElseThrow(() -> new ReservationNotFoundException(ErrorCode.RESERVATION_NOT_FOUND));
     }
 
     private static void checkSeatInfoReserved(PerformanceSeatInfo seatInfo) {
         if (seatInfo.getIsReserve().equalsIgnoreCase("enable")) {
-            throw new NoAvailableCancelSeatException("좌석을 취소할 수 없습니다 (예매 되어있지 않는 좌석)");
+            throw new NoAvailableCancelSeatException(ErrorCode.NO_AVAILABLE_CANCEL_SEAT);
         }
     }
 
@@ -139,7 +139,7 @@ public class ReservationService {
 
     private void isAffordable(ReservationCreateRequest request, int discountedPrice) {
         if (request.getBalance() < discountedPrice) {
-            throw new NotEnoughBalanceException("잔고가 부족합니다.");
+            throw new NotEnoughBalanceException(ErrorCode.NOT_ENOUGH_BALANCE);
         }
     }
 
@@ -150,12 +150,12 @@ public class ReservationService {
 
     private Performance findPerformance(ReservationCreateRequest reserveCreateRequest) {
         return performanceRepository.findById(reserveCreateRequest.getPerformanceId())
-                .orElseThrow(() -> new PerformanceNotFoundException("공연 정보가 존재하지 않습니다.")); //TODO: 분리 및 상수화
+                .orElseThrow(() -> new PerformanceNotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND));
     }
 
     private static void checkReservationAvailable(PerformanceSeatInfo seatInfo) {
         if (seatInfo.getIsReserve().equalsIgnoreCase("disable")) {
-            throw new SeatAlreadyReservedException("좌석이 매진되었습니다.");
+            throw new SeatAlreadyReservedException(ErrorCode.SEAT_ALREADY_RESERVED);
         }
     }
 
@@ -164,7 +164,7 @@ public class ReservationService {
                 request.getPerformanceId(),
                 request.getRound(),
                 request.getSeat(),
-                request.getLine()        //TODO: String 상수화 및 분리
-        ).orElseThrow(() -> new PerformanceSeatInfoNotFound("좌석 정보가 존재하지 않습니다."));
+                request.getLine()
+        ).orElseThrow(() -> new PerformanceSeatInfoNotFound(ErrorCode.PERFORMANCE_SEAT_INFO_NOT_FOUND));
     }
 }

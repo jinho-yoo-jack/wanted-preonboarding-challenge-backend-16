@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceFindResponse;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
+import com.wanted.preonboarding.ticket.exception.ErrorCode;
 import com.wanted.preonboarding.ticket.exception.PerformanceNotFoundException;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class PerformanceService {
 
     private static void checkPerformanceEmpty(List<Performance> performanceList) {
         if (performanceList.isEmpty()) {
-            throw new PerformanceNotFoundException("공연 정보가 존재하지 않습니다.");    //TODO: 분리하기, String 상수로
+            throw new PerformanceNotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND);
         }
     }
 
