@@ -23,11 +23,12 @@ import java.util.List;
 public class ReservationController {
     private final ReservationService reservationService;
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<ResponseHandler<ReservationCreateResponse>> reserve(@RequestBody ReservationCreateRequest request) {
         log.info("ReserveController.reserve");
         ReservationCreateResponse reserve = reservationService.reserve(request);
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
                 .body(ResponseHandler.<ReservationCreateResponse>builder()
                         .statusCode(HttpStatus.CREATED)
                         .message("Created")
@@ -36,7 +37,7 @@ public class ReservationController {
                 );
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<ResponseHandler<List<ReservationFindResponse>>> findReservation(@ModelAttribute ReservationFindRequest request) {
         log.info("ReserveController.findReservation");
         List<ReservationFindResponse> reservation = reservationService.findReservation(request);

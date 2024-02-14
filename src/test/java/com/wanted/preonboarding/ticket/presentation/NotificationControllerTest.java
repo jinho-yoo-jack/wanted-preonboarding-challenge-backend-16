@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -26,6 +27,7 @@ import java.util.UUID;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 class NotificationControllerTest {
     @Mock
     private NotificationService notificationService;
@@ -56,8 +58,7 @@ class NotificationControllerTest {
                                         .build()))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
     @Test
@@ -77,8 +78,7 @@ class NotificationControllerTest {
                         MockMvcRequestBuilders.post(baseUrl)
                                 .content(JsonUtil.toJsonString(request))
                                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
     @Test
@@ -87,7 +87,6 @@ class NotificationControllerTest {
         mockMvc.perform(
                         MockMvcRequestBuilders.get(baseUrl)
                                 .param("performanceId", "2a4d95dc-c77e-11ee-88ff-0242ac130002"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
