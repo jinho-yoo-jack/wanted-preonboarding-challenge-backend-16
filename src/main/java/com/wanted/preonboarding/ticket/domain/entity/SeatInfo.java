@@ -1,6 +1,5 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

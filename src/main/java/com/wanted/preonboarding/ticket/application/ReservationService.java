@@ -42,8 +42,6 @@ public class ReservationService {
 
         Integer price = performance.getPrice();
         Integer discountedPrice = discountPolicy.calculateDiscountedPrice(price,performance);
-        System.out.println("정가: " + price);
-        System.out.println("할인가: " + discountedPrice);
 
         if(param.getAmount() < discountedPrice){
             throw new PaymentException("잔액이 부족합니다.");
