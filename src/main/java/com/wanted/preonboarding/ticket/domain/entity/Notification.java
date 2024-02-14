@@ -47,6 +47,7 @@ public class Notification extends AuditInformation {
 
     public NotificationCreateResponse toNotificationCreateResponse() {
         return NotificationCreateResponse.builder()
+                .id(this.id)
                 .name(this.name)
                 .performanceId(this.performance.getId())
                 .build();

@@ -8,6 +8,7 @@ import java.util.UUID;
 @Getter
 @Builder
 public class NotificationCreateResponse {
+    private Integer id;
     private String name;
     private UUID performanceId;
 }
