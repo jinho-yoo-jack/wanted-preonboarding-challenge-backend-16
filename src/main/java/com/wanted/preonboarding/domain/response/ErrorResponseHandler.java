@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.core.domain.response;
+package com.wanted.preonboarding.domain.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
  * @param statusCode HTTP 상태 코드
  * @param message 에러 메세지
  */
-@Builder
 public record ErrorResponseHandler(HttpStatus statusCode, String message,
                                    @JsonInclude(Include.NON_NULL) Map<String, LinkInfo> links) {
+  @Builder public ErrorResponseHandler {}
 }

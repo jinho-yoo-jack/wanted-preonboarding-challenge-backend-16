@@ -4,13 +4,12 @@ import com.wanted.preonboarding.ticket.domain.dto.UserDto;
 import com.wanted.preonboarding.ticket.domain.dto.performance.PerformanceSeatDto;
 import com.wanted.preonboarding.ticket.domain.entity.UserInfo;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
 @Builder
+@Getter
 @AllArgsConstructor
 public class ReservedListDto {
   private UserDto user;

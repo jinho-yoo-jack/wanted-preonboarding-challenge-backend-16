@@ -1,7 +1,6 @@
-package com.wanted.preonboarding.core.domain.exception;
+package com.wanted.preonboarding.domain.exception;
 
-import com.wanted.preonboarding.core.domain.response.ErrorResponseHandler;
-import com.wanted.preonboarding.ticket.domain.dto.DtoSchemaSerializer;
+import com.wanted.preonboarding.domain.response.ErrorResponseHandler;
 import com.wanted.preonboarding.ticket.domain.dto.LinkInfo;
 import com.wanted.preonboarding.ticket.domain.dto.reservation.NotificationDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,11 +18,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static com.wanted.preonboarding.ticket.domain.dto.DtoSchemaSerializer.getClassSchema;
+
 @RestControllerAdvice
 @Slf4j
 @RequiredArgsConstructor
 public class ExceptionController {
-  final private DtoSchemaSerializer serializer;
 
   @ExceptionHandler(ReserveConflictException.class)
   public ResponseEntity<ErrorResponseHandler> conflictHandler(
@@ -36,7 +36,7 @@ public class ExceptionController {
           .link(UriComponentsBuilder.fromUriString(baseurl).path("/notice").build().toString())
           .description("해당 URL을 통해 알림 설정을 할 수 있습니다.")
           .method("POST")
-          .schema(serializer.getClassSchema(NotificationDto.class))
+          .schema(getClassSchema(NotificationDto.class))
           .build());
       return ResponseEntity.status(e.getStatus())
           .body(ErrorResponseHandler.builder()

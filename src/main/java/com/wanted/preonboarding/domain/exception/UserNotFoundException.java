@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.core.domain.exception;
+package com.wanted.preonboarding.domain.exception;
 
 import org.springframework.http.HttpStatus;
 
