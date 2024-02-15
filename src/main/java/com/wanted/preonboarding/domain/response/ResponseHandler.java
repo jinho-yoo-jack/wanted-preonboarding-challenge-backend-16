@@ -2,7 +2,7 @@ package com.wanted.preonboarding.domain.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.wanted.preonboarding.ticket.domain.dto.LinkInfo;
+import com.wanted.preonboarding.domain.dto.LinkInfo;
 import java.util.Map;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;

@@ -1,9 +1,9 @@
 package com.wanted.preonboarding.ticket.repository;
 
-import com.wanted.preonboarding.ticket.domain.entity.Reservation;
-import com.wanted.preonboarding.ticket.domain.entity.SeatInfo;
-import com.wanted.preonboarding.ticket.domain.entity.UserInfo;
-import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
+import com.wanted.preonboarding.domain.entity.Reservation;
+import com.wanted.preonboarding.domain.entity.SeatInfo;
+import com.wanted.preonboarding.domain.entity.UserInfo;
+import com.wanted.preonboarding.layered.repository.ReservationRepository;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
