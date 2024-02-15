@@ -40,7 +40,7 @@ public class SubscriptionService {
         Subscription subscription = subscriptionRepository.findById(param.getSubscriptionId()).orElseThrow(() -> new NotFoundException("구독이 존재하지 않습니다."));
 
         if(!subscription.getUserInfo().equals(param.getUserInfo())){
-            throw new ForbiddenException("예약 취소 권한이 없습니다.");
+            throw new ForbiddenException("구독 취소 권한이 없습니다.");
         }
         subscriptionRepository.delete(subscription);
     }
