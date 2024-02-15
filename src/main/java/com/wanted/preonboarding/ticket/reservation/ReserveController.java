@@ -1,9 +1,8 @@
 package com.wanted.preonboarding.ticket.reservation;
 
-import com.wanted.preonboarding.core.domain.exception.TicketException;
-import com.wanted.preonboarding.core.domain.response.ErrorResponseHandler;
-import com.wanted.preonboarding.core.domain.response.ResponseHandler;
-import com.wanted.preonboarding.ticket.domain.dto.DtoSchemaSerializer;
+import com.wanted.preonboarding.domain.exception.TicketException;
+import com.wanted.preonboarding.domain.response.ErrorResponseHandler;
+import com.wanted.preonboarding.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.domain.dto.LinkInfo;
 import com.wanted.preonboarding.ticket.domain.dto.UserDto;
 import com.wanted.preonboarding.ticket.domain.dto.performance.PerformanceSeatDto;
@@ -30,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.wanted.preonboarding.ticket.domain.dto.DtoSchemaSerializer.getClassSchema;
+
+
 /**
  * 공연 예약과 관련된 정보를 처리하는 REST 컨트롤러로, /reserve 경로로 매핑되어있습니다.
  */
@@ -40,7 +42,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReserveController {
   final private ReservationService service;
   final private NotificationService notiService;
-  final private DtoSchemaSerializer serializer;
 
   /**
    * 고객의 정보를 받아 해당 고객의 예약들을 반환합니다.
@@ -94,7 +95,7 @@ public class ReserveController {
     } catch (RuntimeException e) {
       Map<String, LinkInfo> links = new HashMap<>();
       links.put("예약하기", LinkInfo.builder()
-          .schema(serializer.getClassSchema(CreateReservationDto.class))
+          .schema(getClassSchema(CreateReservationDto.class))
           .build());
       return ResponseEntity
           .status(HttpStatus.BAD_REQUEST)
@@ -130,7 +131,7 @@ public class ReserveController {
   }
 
   @DeleteMapping("/notice/{notificationId}")
-  public ResponseEntity<ResponseHandler> cancelNotification(
+  public ResponseEntity<?> cancelNotification(
       @PathVariable("notificationId") long id
   ) {
     this.notiService.unregister(id);

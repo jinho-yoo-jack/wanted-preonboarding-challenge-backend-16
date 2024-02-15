@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.notification;
 
-import com.wanted.preonboarding.core.domain.exception.TicketException;
-import com.wanted.preonboarding.core.domain.exception.UserNotFoundException;
+import com.wanted.preonboarding.domain.exception.TicketException;
+import com.wanted.preonboarding.domain.exception.UserNotFoundException;
 import com.wanted.preonboarding.ticket.domain.dto.reservation.NotificationDto;
 import com.wanted.preonboarding.ticket.domain.dto.reservation.NotificationResponseDto;
 import com.wanted.preonboarding.ticket.domain.entity.Notification;

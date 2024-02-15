@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.performance;
 
-import com.wanted.preonboarding.core.domain.response.ResponseHandler;
+import com.wanted.preonboarding.domain.response.ResponseHandler;
 import com.wanted.preonboarding.ticket.domain.dto.performance.PerformanceDetailDto;
 import com.wanted.preonboarding.ticket.domain.dto.performance.PerformanceInfoDto;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;

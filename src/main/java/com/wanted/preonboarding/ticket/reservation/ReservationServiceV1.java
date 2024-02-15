@@ -1,9 +1,9 @@
 package com.wanted.preonboarding.ticket.reservation;
 
-import com.wanted.preonboarding.core.domain.exception.PaymentException;
-import com.wanted.preonboarding.core.domain.exception.ReserveConflictException;
-import com.wanted.preonboarding.core.domain.exception.SeatNotFoundException;
-import com.wanted.preonboarding.core.domain.exception.UserNotFoundException;
+import com.wanted.preonboarding.domain.exception.PaymentException;
+import com.wanted.preonboarding.domain.exception.ReserveConflictException;
+import com.wanted.preonboarding.domain.exception.SeatNotFoundException;
+import com.wanted.preonboarding.domain.exception.UserNotFoundException;
 import com.wanted.preonboarding.ticket.domain.dto.UserDto;
 import com.wanted.preonboarding.ticket.domain.dto.reservation.CreateReservationDto;
 import com.wanted.preonboarding.ticket.domain.dto.reservation.ReserveResponseDto;
@@ -75,7 +75,7 @@ public class ReservationServiceV1 implements ReservationService {
 
   @Override
   public boolean deleteReservation(int id) {
-    Reservation reservation = this.reservationRepository.findById(id).orElseThrow(() -> new SeatNotFoundException());
+    Reservation reservation = this.reservationRepository.findById(id).orElseThrow(SeatNotFoundException::new);
     SeatInfo seatInfo = reservation.getSeatInfo();
     seatInfo.setIsReserve("enable");
     this.seatRepository.save(seatInfo);
