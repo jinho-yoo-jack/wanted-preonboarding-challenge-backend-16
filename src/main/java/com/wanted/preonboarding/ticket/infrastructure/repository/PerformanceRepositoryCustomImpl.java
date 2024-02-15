@@ -61,9 +61,6 @@ public class PerformanceRepositoryCustomImpl implements PerformanceRepositoryCus
     }
 
     private BooleanExpression nameContains(String name) {
-        System.out.println("--------------");
-        System.out.println(name);
-        System.out.println(StringUtils.hasText(name));
         return StringUtils.hasText(name) ? performance.name.contains(name) : null;
     }
 
