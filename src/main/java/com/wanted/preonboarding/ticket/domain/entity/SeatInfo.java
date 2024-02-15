@@ -11,19 +11,20 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
  * {@link Performance}의 자리를 나타내는 Entity입니다.
  * {@link Reservation}에서 예약 시, 유저가 선택하는 자리입니다.
  */
-@Data
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Table(name = "performance_seat_info")
-public class SeatInfo {
+public class SeatInfo extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
@@ -43,4 +44,8 @@ public class SeatInfo {
   @ManyToOne
   @JoinColumn(name = "performance_id")
   private Performance performance;
+
+  public void setIsReserve(String isReserve) {
+    this.isReserve = isReserve;
+  }
 }

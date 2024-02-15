@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
@@ -20,10 +20,10 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(name = "user_info")
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class UserInfo {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

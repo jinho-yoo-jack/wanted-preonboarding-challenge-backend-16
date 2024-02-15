@@ -14,6 +14,7 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
@@ -22,11 +23,11 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(name = "reservation")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Reservation {
+@Getter
+public class Reservation extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;

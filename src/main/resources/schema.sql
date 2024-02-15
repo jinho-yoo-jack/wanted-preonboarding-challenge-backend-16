@@ -56,7 +56,27 @@ CREATE TABLE IF NOT EXISTS `waitlist`
     `user_id`        INT(10)                NOT NULL COMMENT '유저(FK)',
     `performance_id` BINARY(16)             NOT NULL COMMENT '공연(FK)',
     `mail`           varchar(255)           NOT NULL COMMENT '알림 전송용 메일',
+    `created_at`     DATETIME DEFAULT NOW() NOT NULL,
+    `updated_at`     DATETIME DEFAULT NOW() NOT NULL,
+    `deleted_at`     DATETIME DEFAULT NOW() NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES `user_info`(id),
     FOREIGN KEY (performance_id) REFERENCES `performance`(id)
+);
+
+CREATE TABLE IF NOT EXISTS `discount_policy`
+(
+    `id`             INT(10)                NOT NULL AUTO_INCREMENT,
+    `performance_id` BINARY(16)             NOT NULL COMMENT '공연 id',
+    `type`           varchar(255)           NOT NULL COMMENT '할인 종류(정책명, 할인률)',
+    `name`           varchar(255)           NOT NULL COMMENT '할인 정책명',
+    `rate`           DECIMAL(7, 2)              NULL COMMENT '할인률(%)',
+    `discount_fee`   INT                        NULL COMMENT '할인 가격',
+    `started_at`     DATETIME DEFAULT NOW() NOT NULL COMMENT '할인 시작일시',
+    `ended_at`       DATETIME DEFAULT NOW() NOT NULL COMMENT '할인 종료일시',
+    `created_at`     DATETIME DEFAULT NOW() NOT NULL,
+    `updated_at`     DATETIME DEFAULT NOW() NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (performance_id) REFERENCES `performance`(id),
+    UNIQUE KEY (performance_id, `type`, `name`)
 );
