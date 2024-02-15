@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.exception.BadRequestException;
-import com.wanted.preonboarding.ticket.domain.exception.NotFoundException;
+import com.wanted.preonboarding.core.domain.exception.CustomException;
+import com.wanted.preonboarding.ticket.domain.exception.TicketErrorCode;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -45,7 +45,7 @@ public class Performance extends BaseEntity {
 
     public void reserveSeat(SeatInfo seatInfo) {
         if(!isReservable){
-            throw new BadRequestException("예약할 수 없는 공연입니다.");
+            throw new CustomException(TicketErrorCode.PERFORMANCE_NOT_RESERVABLE);
         }
         getSeat(seatInfo).reserveSeat();
     }
@@ -54,7 +54,7 @@ public class Performance extends BaseEntity {
         return seatInfos.stream()
                 .filter(s -> s.getSeatInfo().equals(seatInfo))
                 .findAny()
-                .orElseThrow(() -> new NotFoundException("좌석이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(TicketErrorCode.PERFORMANCE_SEAT_NOT_FOUND));
     }
 
     public void cancelSeat(SeatInfo seatInfo) {

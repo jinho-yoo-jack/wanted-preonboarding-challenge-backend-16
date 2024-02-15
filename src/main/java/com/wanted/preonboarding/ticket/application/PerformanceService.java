@@ -1,10 +1,11 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.core.domain.exception.CustomException;
 import com.wanted.preonboarding.ticket.application.dto.PerformanceDetailDto;
 import com.wanted.preonboarding.ticket.application.dto.PerformanceDto;
 import com.wanted.preonboarding.ticket.application.dto.PerformanceSearchCondition;
 import com.wanted.preonboarding.ticket.domain.entity.Performance;
-import com.wanted.preonboarding.ticket.domain.exception.NotFoundException;
+import com.wanted.preonboarding.ticket.domain.exception.TicketErrorCode;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,7 @@ public class PerformanceService {
 
     @Transactional(readOnly = true)
     public PerformanceDetailDto getPerformance(final UUID id) {
-        Performance performance =  performanceRepository.findById(id).orElseThrow(() -> new NotFoundException("공연이 존재하지 않습니다."));
+        Performance performance =  performanceRepository.findById(id).orElseThrow(() -> new CustomException(TicketErrorCode.PERFORMANCE_NOT_FOUND));
         return PerformanceDetailDto.of(performance);
     }
 }

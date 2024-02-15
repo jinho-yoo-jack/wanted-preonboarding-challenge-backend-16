@@ -1,6 +1,7 @@
 package com.wanted.preonboarding.ticket.domain.entity;
 
-import com.wanted.preonboarding.ticket.domain.exception.BadRequestException;
+import com.wanted.preonboarding.core.domain.exception.CustomException;
+import com.wanted.preonboarding.ticket.domain.exception.TicketErrorCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +35,7 @@ public class PerformanceSeatInfo extends BaseEntity {
 
     public void reserveSeat(){
         if(!isReservable){
-            throw new BadRequestException("예약할 수 없는 좌석입니다.");
+            throw new CustomException(TicketErrorCode.PERFORMANCE_SEAT_NOT_RESERVABLE);
         }
         isReservable = false;
     }

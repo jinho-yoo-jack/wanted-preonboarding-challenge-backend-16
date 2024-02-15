@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.application;
 
+import com.wanted.preonboarding.core.domain.exception.CustomException;
 import com.wanted.preonboarding.ticket.application.discount.DiscountPolicy;
 import com.wanted.preonboarding.ticket.application.dto.ReservationCancelParam;
 import com.wanted.preonboarding.ticket.application.dto.ReservationCreateParam;
@@ -7,9 +8,7 @@ import com.wanted.preonboarding.ticket.domain.entity.Performance;
 import com.wanted.preonboarding.ticket.domain.entity.Reservation;
 import com.wanted.preonboarding.ticket.domain.entity.UserInfo;
 import com.wanted.preonboarding.ticket.domain.event.ReservationCanceledEvent;
-import com.wanted.preonboarding.ticket.domain.exception.NotFoundException;
-import com.wanted.preonboarding.ticket.domain.exception.PaymentException;
-import com.wanted.preonboarding.ticket.domain.exception.ForbiddenException;
+import com.wanted.preonboarding.ticket.domain.exception.TicketErrorCode;
 import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import com.wanted.preonboarding.ticket.infrastructure.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,16 +34,15 @@ public class ReservationService {
 
     @Transactional
     public Reservation reserve(final ReservationCreateParam param) {
-        Performance performance = performanceRepository.findById(param.getPerformanceId()).orElseThrow(() -> new NotFoundException("공연이 존재하지 않습니다."));
+        Performance performance = performanceRepository.findById(param.getPerformanceId()).orElseThrow(() -> new CustomException(TicketErrorCode.PERFORMANCE_NOT_FOUND));
 
         performance.reserveSeat(param.getSeatInfo());
         performanceRepository.save(performance);
 
         Integer price = performance.getPrice();
         Integer discountedPrice = discountPolicy.calculateDiscountedPrice(price,performance);
-
         if(param.getAmount() < discountedPrice){
-            throw new PaymentException("잔액이 부족합니다.");
+            throw new CustomException(TicketErrorCode.BALANCE_INSUFFICIENT);
         }
 
         Reservation reservation = Reservation.builder()
@@ -57,14 +55,15 @@ public class ReservationService {
 
     @Transactional
     public void cancel(final ReservationCancelParam param) {
-        Reservation reservation = reservationRepository.findById(param.getReservationId()).orElseThrow(() -> new NotFoundException("예약이 존재하지 않습니다."));
+        Reservation reservation = reservationRepository.findById(param.getReservationId()).orElseThrow(() -> new CustomException(TicketErrorCode.RESERVATION_NOT_FOUND));
 
         if(!reservation.getUserInfo().equals(param.getUserInfo())){
-            throw new ForbiddenException("예약 취소 권한이 없습니다.");
+            throw new CustomException(TicketErrorCode.NOT_RESERVATION_OWNER);
         }
         reservationRepository.delete(reservation);
 
-        Performance performance = performanceRepository.findById(reservation.getPerformanceId()).orElseThrow(() -> new NotFoundException("공연이 존재하지 않습니다."));
+        Performance performance = performanceRepository.findById(reservation.getPerformanceId()).orElseThrow(() -> new CustomException(TicketErrorCode.PERFORMANCE_NOT_FOUND));
+
         performance.cancelSeat(reservation.getSeatInfo());
         performanceRepository.save(performance);
 
