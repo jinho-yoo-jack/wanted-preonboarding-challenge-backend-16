@@ -2,7 +2,6 @@ package com.wanted.preonboarding.ticket.application;
 
 import com.wanted.preonboarding.ticket.domain.dto.response.PerformanceFindResponse;
 import com.wanted.preonboarding.ticket.exception.PerformanceNotFoundException;
-import com.wanted.preonboarding.ticket.infrastructure.repository.PerformanceRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,8 +14,6 @@ import java.util.List;
 class PerformanceServiceTest {
     @Autowired
     private PerformanceService performanceService;
-    @Autowired
-    private PerformanceRepository performanceRepository;
     private final String DISABLE = "disable";
     private final String ENABLE = "enable";
 

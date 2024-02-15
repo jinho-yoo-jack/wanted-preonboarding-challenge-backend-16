@@ -8,6 +8,7 @@ import java.util.UUID;
 @Getter
 @Builder
 public class ReservationCreateResponse {
+    private Integer id;
     private UUID performanceId;
     private String performanceName;
     private int round;

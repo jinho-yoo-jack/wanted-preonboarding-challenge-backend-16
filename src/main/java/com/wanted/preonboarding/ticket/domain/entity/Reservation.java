@@ -14,7 +14,7 @@ import org.hibernate.annotations.Comment;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Reservation extends AuditInformation {
+public class  Reservation extends AuditInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -73,6 +73,7 @@ public class Reservation extends AuditInformation {
 
     public ReservationCreateResponse toReservationCreateResponse() {
         return ReservationCreateResponse.builder()
+                .id(this.id)
                 .performanceId(this.performance.getId())
                 .performanceName(this.performance.getName())
                 .round(this.round)

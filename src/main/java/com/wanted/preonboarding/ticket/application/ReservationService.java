@@ -154,7 +154,7 @@ public class ReservationService {
     }
 
     private static void checkReservationAvailable(PerformanceSeatInfo seatInfo) {
-        if (seatInfo.getIsReserve().equalsIgnoreCase("disable")) {
+        if (seatInfo.getIsReserve().equalsIgnoreCase("disable")) {  // 실제는 enable이어야 함
             throw new SeatAlreadyReservedException(ErrorCode.SEAT_ALREADY_RESERVED);
         }
     }
