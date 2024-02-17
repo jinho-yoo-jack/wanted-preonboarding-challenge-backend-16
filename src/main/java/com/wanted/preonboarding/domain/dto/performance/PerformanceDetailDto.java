@@ -1,7 +1,7 @@
 package com.wanted.preonboarding.domain.dto.performance;
 
 import com.wanted.preonboarding.domain.entity.Performance;
-import com.wanted.preonboarding.domain.dto.PerformanceType;
+import com.wanted.preonboarding.domain.dto.enums.PerformanceType;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import lombok.Builder;

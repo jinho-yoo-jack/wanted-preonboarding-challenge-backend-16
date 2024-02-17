@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.domain.entity;
 
-import com.wanted.preonboarding.domain.dto.PerformanceType;
+import com.wanted.preonboarding.domain.dto.enums.PerformanceType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

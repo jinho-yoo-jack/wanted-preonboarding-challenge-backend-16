@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.domain.dto;
+package com.wanted.preonboarding.domain.dto.enums;
 
 /**
  * 공연의 타입을 나타내는 Enum 클래스입니다.

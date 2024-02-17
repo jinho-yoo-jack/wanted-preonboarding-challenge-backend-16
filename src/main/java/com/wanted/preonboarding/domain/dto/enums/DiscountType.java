@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.domain.dto;
+package com.wanted.preonboarding.domain.dto.enums;
 
 public enum DiscountType {
   NONE(0),

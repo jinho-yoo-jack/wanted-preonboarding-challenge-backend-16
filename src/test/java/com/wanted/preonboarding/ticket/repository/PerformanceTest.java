@@ -1,6 +1,6 @@
 package com.wanted.preonboarding.ticket.repository;
 
-import com.wanted.preonboarding.domain.dto.PerformanceType;
+import com.wanted.preonboarding.domain.dto.enums.PerformanceType;
 import com.wanted.preonboarding.domain.entity.Performance;
 import com.wanted.preonboarding.layered.repository.PerformanceRepository;
 import java.time.LocalDateTime;
