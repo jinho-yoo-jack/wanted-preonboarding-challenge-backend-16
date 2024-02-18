@@ -1,11 +1,10 @@
 package com.wanted.preonboarding.layered.service.reservation;
 
-import com.wanted.preonboarding.domain.exception.PaymentException;
+import com.wanted.preonboarding.domain.dto.request.CreateReservationDto;
 import com.wanted.preonboarding.domain.exception.ReserveConflictException;
 import com.wanted.preonboarding.domain.exception.SeatNotFoundException;
 import com.wanted.preonboarding.domain.exception.UserNotFoundException;
 import com.wanted.preonboarding.domain.dto.UserDto;
-import com.wanted.preonboarding.domain.dto.reservation.CreateReservationDto;
 import com.wanted.preonboarding.domain.dto.reservation.ReserveResponseDto;
 import com.wanted.preonboarding.domain.dto.reservation.ReservedListDto;
 import com.wanted.preonboarding.domain.entity.Reservation;
@@ -15,7 +14,7 @@ import com.wanted.preonboarding.layered.repository.ReservationRepository;
 import com.wanted.preonboarding.layered.repository.SeatRepository;
 import com.wanted.preonboarding.layered.repository.UserInfoRepository;
 import com.wanted.preonboarding.layered.service.notification.NotificationService;
-import com.wanted.preonboarding.layered.service.discount.DiscountPolicy;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,21 +40,21 @@ public class ReservationServiceV1 implements ReservationService {
   //  할인 정책이 있을 경우, 해당 메소드 호출
   @Override
   @Transactional
-  public ReserveResponseDto createReservation(CreateReservationDto createReservationDto,
-      DiscountPolicy discountPolicy) {
+  public ReserveResponseDto createReservation(CreateReservationDto createReservationDto) {
     UserInfo user = this.userInfoRepository.findUserInfoByUserNameAndPhoneNumber(
-        createReservationDto.getName(),
-        createReservationDto.getPhone()
+        createReservationDto.userName(),
+        createReservationDto.phoneNum()
     ).orElseThrow(() -> new UserNotFoundException("존재하지 않는 유저"));
+    UUID performanceId = this.
     SeatInfo seat = this.seatRepository.findSeatInfoByLineAndSeatAndPerformanceId(
-        createReservationDto.getSeatInfo().getLine(),
-        createReservationDto.getSeatInfo().getSeat(),
-        createReservationDto.getSeatInfo().getPerformanceId()
+        createReservationDto.line(),
+        createReservationDto.seat(),
+        createReservationDto.
     ).orElseThrow(() -> new SeatNotFoundException("자리 없음"));
 
-    //  1. 계산
-    int price = discountPolicy.calc(seat.getPerformance().getPrice());
-    if (price > createReservationDto.getAmount()) throw new PaymentException("잔액 부족");
+    //  1. 계산 TODO
+    // int price = discountPolicy.calc(seat.getPerformance().getPrice());
+    //if (price > createReservationDto.getAmount()) throw new PaymentException("잔액 부족");
 
     Reservation res = null;
     //  2. 예약

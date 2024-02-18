@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.layered.controller;
 
+import com.wanted.preonboarding.domain.dto.request.CreateReservationDto;
 import com.wanted.preonboarding.domain.exception.TicketException;
 import com.wanted.preonboarding.domain.response.ErrorResponseHandler;
 import com.wanted.preonboarding.domain.response.ResponseHandler;
@@ -7,7 +8,6 @@ import com.wanted.preonboarding.domain.dto.LinkInfo;
 import com.wanted.preonboarding.domain.dto.UserDto;
 import com.wanted.preonboarding.domain.dto.performance.PerformanceSeatDto;
 import com.wanted.preonboarding.domain.dto.reservation.NotificationDto;
-import com.wanted.preonboarding.domain.dto.reservation.CreateReservationDto;
 import com.wanted.preonboarding.domain.dto.reservation.NotificationResponseDto;
 import com.wanted.preonboarding.domain.dto.reservation.ReserveResponseDto;
 import com.wanted.preonboarding.domain.dto.reservation.ReservedListDto;
@@ -87,8 +87,7 @@ public class ReserveController {
           ResponseHandler.<ReserveResponseDto>builder()
               .statusCode(HttpStatus.OK)
               .message("예약 성공")
-              //  TODO: 할인 정책 적용 방법 수정
-              .data(this.service.createReservation(createReservationDto, policy))
+              .data(this.service.createReservation(createReservationDto))
               .build()
       );
     } catch (TicketException e) {
