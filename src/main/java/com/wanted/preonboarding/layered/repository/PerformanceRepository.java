@@ -16,5 +16,5 @@ public interface PerformanceRepository extends JpaRepository<Performance, UUID> 
 
   List<Performance> findAllByName(String name);
 
-  Performance findByName(String name);
+  Performance findByNameAndRound(String name, int round);
 }
