@@ -1,11 +1,9 @@
 package com.wanted.preonboarding.layered.service.performance;
 
 import com.wanted.preonboarding.domain.dto.performance.PerformanceDetailDto;
-import com.wanted.preonboarding.domain.dto.performance.PerformanceInfoDto;
 import com.wanted.preonboarding.layered.repository.PerformanceRepository;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +16,9 @@ public class PerformanceServiceV1 implements PerformanceService {
     this.repository = repository;
   }
 
-  public List<PerformanceInfoDto> getPerformanceList(String isReserved) {
+  public List<PerformanceDetailDto> getPerformanceList(String isReserved) {
     return this.repository.findByIsReserve(isReserved).stream()
-        .map(PerformanceInfoDto::of).collect(Collectors.toList());
+        .map(PerformanceDetailDto::of).toList();
   }
   public PerformanceDetailDto getPerformanceDetail(UUID id) {
     return this.repository.findById(id).map(PerformanceDetailDto::of).get();
