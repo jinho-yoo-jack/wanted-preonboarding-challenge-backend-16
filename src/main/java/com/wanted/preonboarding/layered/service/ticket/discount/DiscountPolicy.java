@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.layered.service.discount;
+package com.wanted.preonboarding.layered.service.ticket.discount;
 
 @FunctionalInterface
 public interface DiscountPolicy {

@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.layered.service.discount;
+package com.wanted.preonboarding.layered.service.ticket.discount;
 
 public class FeeDiscountPolicy implements DiscountPolicy {
   private final Integer discountFee;

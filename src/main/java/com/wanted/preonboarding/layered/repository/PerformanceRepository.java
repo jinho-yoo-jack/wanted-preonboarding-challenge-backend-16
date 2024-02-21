@@ -2,6 +2,7 @@ package com.wanted.preonboarding.layered.repository;
 
 import com.wanted.preonboarding.domain.entity.Performance;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,5 +17,5 @@ public interface PerformanceRepository extends JpaRepository<Performance, UUID> 
 
   List<Performance> findAllByName(String name);
 
-  Performance findByNameAndRound(String name, int round);
+  Optional<Performance> findByNameAndRound(String name, int round);
 }

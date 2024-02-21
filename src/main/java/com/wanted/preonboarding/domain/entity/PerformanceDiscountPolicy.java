@@ -9,7 +9,11 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.Builder;
+import lombok.Getter;
 
+@Getter
+@Builder
 @Entity
 @Table(name = "discount_policy")
 public class PerformanceDiscountPolicy extends BaseEntity {
@@ -37,5 +41,5 @@ public class PerformanceDiscountPolicy extends BaseEntity {
   private BigDecimal rate;
 
   @Column(name = "discount_fee")
-  private int fee;
+  private Integer    fee;
 }
