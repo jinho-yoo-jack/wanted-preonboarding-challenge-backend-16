@@ -15,7 +15,7 @@ public class TicketFactory {
   private final PerformanceRepository performanceRepository;
 
   //  요청 컨텍스트에서 Ticket 객체를 생성
-  public Ticket create(CreateReservationDto req) throws Exception {
+  public Ticket create(CreateReservationDto req) throws TicketException {
     Performance performance = this.performanceRepository
         .findByNameAndRound(req.performanceName(), req.round()).orElseThrow(
             () -> new TicketException("공연 조회 실패", HttpStatus.NOT_FOUND));
