@@ -6,6 +6,6 @@ import java.util.UUID;
 
 public interface NotificationService {
   NotificationResponseDto register(NotificationDto dto);
-  boolean unregister(long notificationId);
-  boolean notice(UUID performanceId);
+  void unregister(int notificationId);
+  void notice(UUID performanceId);
 }

@@ -8,5 +8,5 @@ import lombok.Getter;
 @Getter
 public class NotificationResponseDto {
   private UserDto user;
-  private long    notificationId;
+  private Integer notificationId;
 }

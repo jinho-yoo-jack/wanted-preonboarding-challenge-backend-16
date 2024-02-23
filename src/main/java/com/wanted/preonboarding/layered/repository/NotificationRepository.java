@@ -5,6 +5,6 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface NotificationRepository extends JpaRepository<Notification, Long> {
+public interface NotificationRepository extends JpaRepository<Notification, Integer> {
   List<Notification> findAllByPerformanceId(UUID id);
 }
