@@ -1,4 +1,4 @@
-package com.wanted.preonboarding.layered.service.ticket.discount.factory;
+package com.wanted.preonboarding.layered.service.ticket.factory;
 
 import com.wanted.preonboarding.domain.dto.request.CreateReservationDto;
 import com.wanted.preonboarding.domain.entity.Performance;

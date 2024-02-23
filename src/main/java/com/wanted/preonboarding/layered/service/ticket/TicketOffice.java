@@ -1,13 +1,16 @@
-package com.wanted.preonboarding.layered.service.ticket.discount;
+package com.wanted.preonboarding.layered.service.ticket;
 
 import com.wanted.preonboarding.domain.dto.reservation.NotificationDto;
 import com.wanted.preonboarding.domain.entity.Reservation;
-import com.wanted.preonboarding.layered.service.ticket.Client;
-import com.wanted.preonboarding.layered.service.ticket.Ticket;
 import java.util.List;
 import java.util.UUID;
 
 public interface TicketOffice {
-  List<NotificationDto> getAllNotificationByPerformanceId(UUID uuid);
   Reservation sellTo(Client client, Ticket ticket);
+
+  List<NotificationDto> getSubscribers(UUID performanceId);
+
+  int setSubscribers(NotificationDto dto);
+
+  void delSubscriber(Integer id);
 }
