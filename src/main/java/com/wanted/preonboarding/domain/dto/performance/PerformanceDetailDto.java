@@ -20,7 +20,7 @@ public class PerformanceDetailDto {
   private int     round;
   private LocalDateTime startDate;
   private String  isReserve;
-  private int     price;
+  private Long    price;
   private String  type;
 
   /**
@@ -35,7 +35,7 @@ public class PerformanceDetailDto {
         .round(entity.getRound())
         .startDate(entity.getStartDate())
         .isReserve(entity.getIsReserve())
-        .price(entity.getPrice())
+        .price(Long.valueOf(entity.getPrice().longValue()))
         .type(convertCodeToName(entity.getType().getCategory()))
         .build();
   }

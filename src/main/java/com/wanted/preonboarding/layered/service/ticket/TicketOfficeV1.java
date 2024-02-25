@@ -10,6 +10,8 @@ import com.wanted.preonboarding.domain.exception.UserNotFoundException;
 import com.wanted.preonboarding.layered.repository.NotificationRepository;
 import com.wanted.preonboarding.layered.repository.SeatRepository;
 import com.wanted.preonboarding.layered.repository.UserInfoRepository;
+import com.wanted.preonboarding.layered.service.notification.Observable;
+import com.wanted.preonboarding.layered.service.notification.message.Message;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class TicketOfficeV1 implements TicketOffice {
   private final NotificationRepository  notificationRepository;
   private final UserInfoRepository      userInfoRepository;
   private final SeatRepository          seatRepository;
+  private final Observable<Message>     cancelTopic;
 
   @Override
   @Transactional
@@ -72,5 +75,12 @@ public class TicketOfficeV1 implements TicketOffice {
   @Override
   public void delSubscriber(Integer id) {
     this.notificationRepository.deleteById(id);
+  }
+
+  @Override
+  @Transactional
+  public void cancelTicket(Reservation reservation) {
+    reservation.getSeatInfo().setIsReserve("enable");
+    this.cancelTopic.sendMessage(Message.of(reservation.getSeatInfo()));
   }
 }

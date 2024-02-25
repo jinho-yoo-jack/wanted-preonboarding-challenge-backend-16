@@ -13,4 +13,6 @@ public interface TicketOffice {
   int setSubscribers(NotificationDto dto);
 
   void delSubscriber(Integer id);
+
+  void cancelTicket(Reservation reservation);
 }

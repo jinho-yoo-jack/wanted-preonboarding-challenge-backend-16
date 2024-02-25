@@ -8,7 +8,9 @@ import com.wanted.preonboarding.layered.service.ticket.Ticket;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class TicketFactory {
   private final DiscountPolicyFactory discountPolicyFactory;

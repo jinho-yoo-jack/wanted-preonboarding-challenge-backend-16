@@ -1,12 +1,13 @@
 package com.wanted.preonboarding.domain.dto.reservation;
 
-import com.wanted.preonboarding.domain.dto.UserDto;
 import lombok.Builder;
 import lombok.Getter;
 
 @Builder
 @Getter
 public class NotificationResponseDto {
-  private UserDto user;
   private Integer notificationId;
+  private String  userName;
+  private String  phoneNumber;
+  private String  userEmail;
 }
