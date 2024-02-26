@@ -1,5 +1,9 @@
 # 도메인 다이어그램
-![스크린샷 2024-01-31 오후 11 54 58](https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/assets/47974623/0450cff3-c27c-4b6c-91bf-2525cebec54e)
+<img width="766" alt="스크린샷 2024-02-01 오전 1 41 05" src="https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/assets/47974623/0d71fd13-9b9f-46da-aa1d-9ec2c66294f3">
+
+# ERD
+<img width="766" alt="스크린샷 2024-02-01 오전 1 41 05" src="https://github.com/jinho-yoo-jack/wanted-preonboarding-challenge-backend-16/assets/47974623/435b698e-7138-4b37-a78b-c5d91d75571f">
+
 
 
 ## 1. Perform 과 Perfomance
@@ -51,3 +55,7 @@ public void 예약_취소_시_구독자_알림_발송_실패_예약취소에_영
 3. 할인정책 CURD가 구현되지 않았습니다.
 4. 부적절한 네이밍이 존재합니다.
 5. 가독성이 좋지 않은 메소드가 있습니다.
+6. 깔끔한 커밋메시지를 작성하지 못했습니다.
+7. 중복되는 코드가 많습니다.
+8. JPA 상속사용으로 발생한 조회쿼리 문제, 최적화가 필요합니다.
+9. embedded컬럼명 재정의가 필요합니다.
